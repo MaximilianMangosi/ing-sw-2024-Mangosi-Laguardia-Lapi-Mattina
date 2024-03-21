@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-03-21T12:28:51.114Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15" etag="RDwlDBh0Fx1Zk8AFmXUO" version="24.0.7" type="github">
+<mxfile host="app.diagrams.net" modified="2024-03-21T15:17:55.080Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="ibUJQNU4CNPgMQba7KEy" version="24.0.7" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="1406" dy="3947" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2339" pageHeight="3300" math="0" shadow="0">
+    <mxGraphModel dx="1591" dy="3966" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2339" pageHeight="3300" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -316,7 +316,7 @@
         <mxCell id="cQWzsJ5Ow6czlzq-uUI3-6" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="cQWzsJ5Ow6czlzq-uUI3-4" vertex="1">
           <mxGeometry y="150" width="270" height="38" as="geometry" />
         </mxCell>
-        <mxCell id="cQWzsJ5Ow6czlzq-uUI3-7" value="&lt;div&gt;+ startGame():void&lt;/div&gt;&lt;div&gt;+ playTurn(): void&lt;/div&gt;&lt;div&gt;&lt;div&gt;+ drawVisibleCard(int): void&lt;/div&gt;&lt;div&gt;+ drawFromDeck(int): void&lt;/div&gt;&lt;div&gt;+ playCardFront(Card,Vector): void&lt;/div&gt;&lt;div&gt;+ playCardBack(Card,Vector): void&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;+ playFinalTurn():Player&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cQWzsJ5Ow6czlzq-uUI3-4" vertex="1">
+        <mxCell id="cQWzsJ5Ow6czlzq-uUI3-7" value="&lt;div&gt;+ startGame():void&lt;/div&gt;&lt;div&gt;+ nextPlayer(): void&lt;/div&gt;&lt;div&gt;&lt;div&gt;+ drawVisibleCard(int): void&lt;/div&gt;&lt;div&gt;+ drawFromDeck(int): void&lt;/div&gt;&lt;div&gt;+ playCardFront(Card,Vector): void&lt;/div&gt;&lt;div&gt;+ playCardBack(Card,Vector): void&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;+ getWinner():Player&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="cQWzsJ5Ow6czlzq-uUI3-4" vertex="1">
           <mxGeometry y="188" width="270" height="152" as="geometry" />
         </mxCell>
         <mxCell id="cQWzsJ5Ow6czlzq-uUI3-13" value="1..4" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;rounded=0;exitX=0.006;exitY=0.173;exitDx=0;exitDy=0;exitPerimeter=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="cQWzsJ5Ow6czlzq-uUI3-5" target="AA-iRr0cbiNNM53GynT9-29" edge="1">
