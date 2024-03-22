@@ -32,7 +32,7 @@ public class Player {
         return new ArrayList<>(hand);
     }
 
-    public void addCardToMap(ResourceCard selectedCard, Coordinates position) {
+    public void addCardToMap(Card selectedCard, Coordinates position) {
     }
 }
 

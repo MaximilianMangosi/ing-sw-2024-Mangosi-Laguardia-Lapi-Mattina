@@ -57,11 +57,24 @@ public class Game{
         currentPlayer.addCardToHand(drawCard);
     }
 
-    public void playCardFront(ResourceCard selectedCard, Coordinates position){
+    public void playCardFront(Card selectedCard, Coordinates position){
         //add points if there are any
-        int selectedCardPoints = selectedCard.getPoints();
-        Player.addPoints(selectedCardPoints);
-        currentPlayer.addCardToMap(selectedCard, position);
-
+        if (selectedCard instanceof GoldCard) {
+            //check the requirements for the gold card
+            if(selectedCard.getRequirements == true){
+                int selectedCardPoints = selectedCard.getPoints();
+                Player.addPoints(selectedCardPoints);
+                currentPlayer.addCardToMap(selectedCard, position);
+            }
+        }else{
+            int selectedCardPoints = selectedCard.getPoints();
+            Player.addPoints(selectedCardPoints);
+            currentPlayer.addCardToMap(selectedCard, position);
+        }
     }
+
+    public void playCardBack(Card selectedCard, Coordinates position){
+        currentPlayer.addCardToMap(selectedCard, position);
+    }
+
 }
