@@ -15,13 +15,9 @@ public class Game{
     private final List<Goal> listOfGoal;
     private Player currentPlayer; 
 
-    public Game(Player firstPlayer, int numOfPlayers, List<ResourceCard> resourceCardDeck, List<GoldCard> goldCardDeck, List<Card> visibleCards, List<Goal> listOfGoal) {
+    public Game(Player firstPlayer, int numOfPlayers) {
         listOfPlayers.add(firstPlayer);
         this.numOfPlayers = numOfPlayers;
-        this.resourceCardDeck = resourceCardDeck;
-        this.goldCardDeck = goldCardDeck;
-        this.visibleCards = visibleCards;
-        this.listOfGoal = listOfGoal;
     }
 
     public List<Player> getPlayers() {
@@ -80,7 +76,6 @@ public class Game{
     public boolean someoneHas20Points(){
         return listOfPlayers.stream().anyMatch(p->p.getPoints()>=20);
     }
-
 
 
 }
