@@ -2,7 +2,10 @@ package it.polimi.ingsw.model.gamelogic;
 import it.polimi.ingsw.model.gamecards.*;
 import it.polimi.ingsw.model.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class Player {
     private List<Card> hand;
@@ -15,13 +18,9 @@ public class Player {
     private String check;
     private int points;
 
-    private Map<Resource,Integer> resourceCounters = new HashMap<>();
+    private Map<Resource,Integer> resourceCounters;
 
-    public HashMap<Resource, Integer> getResourceCounters() {
-
-    }
-
-    public void addPoints(int selectedCardPoints) {
+    public static void addPoints(int selectedCardPoints) {
     }
 
 
@@ -34,13 +33,6 @@ public class Player {
     }
 
     public void addCardToMap(Card selectedCard, Coordinates position) {
-    }
-
-    public Card getCardAtPosition(int x, int y) {
-        //it has to return an object Card at that position on the field
-    }
-
-    public void decrementResourceCounter(Resource resource) {
     }
 }
 
