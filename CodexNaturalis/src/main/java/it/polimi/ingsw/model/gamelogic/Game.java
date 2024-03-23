@@ -121,7 +121,7 @@ public class Game{
 
             try {
                 currentPlayer.decrementResourceCounter(cardToBeCovered.getResource(angleToBeCovered));
-            }catch (NoSuchElementException){
+            }catch (NoSuchElementException e){
 
             }
 
