@@ -73,6 +73,8 @@ public class Game{
 
         //add counter of resources
 
+        //covering all the angles the new card is covering
+        coverAngle(position);
     }
 
     public void playCardFront(ResourceCard selectedCard, Coordinates position){
@@ -81,6 +83,9 @@ public class Game{
         currentPlayer.addCardToMap(selectedCard, position);
 
         //add counter of resources
+
+        //covering all the angles the new card is covering
+        coverAngle(position);
     }
 
     public void playCardBack(Card selectedCard, Coordinates position){
@@ -88,10 +93,13 @@ public class Game{
         currentPlayer.addCardToMap(selectedCard, position);
 
         //add counter resources
+
+        //covering all the angles the new card is covering
+        coverAngle(position);
     }
 
     private boolean elementCounter(GoldCard selectedCard){
-        //receive a list with all resources in the field of the current player
+        //receive map with all resources in the field of the current player
         HashMap <Resource, Integer> allResourcesOnField = currentPlayer.getResourceCounters();
         //compare the hashmap with the requirements of the card
         HashMap <Reign, Integer> selectedCardRequirements = selectedCard.getRequirements();
@@ -124,8 +132,6 @@ public class Game{
             }catch (NoSuchElementException e){
 
             }
-
-
         }
     }
 
