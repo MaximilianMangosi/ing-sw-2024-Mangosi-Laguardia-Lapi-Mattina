@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
@@ -98,13 +99,14 @@ public class Game{
         }
     }
 
-    public void drawVisibleCard(int choice) throws HandFullException {
+    public void drawVisibleCard(int choice) throws HandFullException, AllDeckEmptyExeption {
         List<Card> hand = currentPlayer.getHand();
         if (hand.size() > 2) {
             throw new HandFullException();
         }
 
         Card drawCard = visibleCards.remove(choice);
+        currentPlayer.addCardToHand(drawCard);
         if (!(goldCardDeck.isEmpty() && resourceCardDeck.isEmpty())) {
             if (drawCard instanceof GoldCard) {
                 try {
@@ -119,28 +121,88 @@ public class Game{
                     visibleCards.add(goldCardDeck.removeFirst());
                 }
             }
+        } else{
+            throw new AllDeckEmptyExeption();
         }
-        currentPlayer.addCardToHand(drawCard);
+
     }
 
-    public void playCardFront(Card selectedCard, Coordinates position){
-        //add points if there are any
-        if (selectedCard instanceof GoldCard) {
-            //check the requirements for the gold card
-            if(selectedCard.getRequirements == true){
-                int selectedCardPoints = selectedCard.getPoints();
-                Player.addPoints(selectedCardPoints);
-                currentPlayer.addCardToMap(selectedCard, position);
-            }
-        }else{
-            int selectedCardPoints = selectedCard.getPoints();
-            Player.addPoints(selectedCardPoints);
-            currentPlayer.addCardToMap(selectedCard, position);
+    public void playCardFront(GoldCard selectedCard, Coordinates position) throws RequirementsNotMetException {
+        //check the requirements for the gold card
+        if(!elementCounter(selectedCard)){
+            throw new RequirementsNotMetException();
         }
+
+        int selectedCardPoints = selectedCard.getPoints();
+        currentPlayer.addPoints(selectedCardPoints);
+        currentPlayer.addCardToMap(selectedCard, position);
+
+        //add counter of resources
+
+        //covering all the angles the new card is covering
+        coverAngle(position);
+    }
+
+    public void playCardFront(ResourceCard selectedCard, Coordinates position){
+        int selectedCardPoints = selectedCard.getPoints();
+        currentPlayer.addPoints(selectedCardPoints);
+        currentPlayer.addCardToMap(selectedCard, position);
+
+        //add counter of resources
+
+        //covering all the angles the new card is covering
+        coverAngle(position);
     }
 
     public void playCardBack(Card selectedCard, Coordinates position){
+        selectedCard.setIsFront(false);
         currentPlayer.addCardToMap(selectedCard, position);
+
+        //add counter resources
+
+        //covering all the angles the new card is covering
+        coverAngle(position);
     }
 
+    private boolean elementCounter(GoldCard selectedCard){
+        //receive map with all resources in the field of the current player
+        HashMap <Resource, Integer> allResourcesOnField = currentPlayer.getResourceCounters();
+        //compare the hashmap with the requirements of the card
+        HashMap <Reign, Integer> selectedCardRequirements = selectedCard.getRequirements();
+        for (Reign reign : selectedCardRequirements.keySet()) {
+            if(selectedCardRequirements.get(reign) >= allResourcesOnField.get(reign)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void coverAngle(Coordinates position){
+        //check all angles of the newly positioned card and set the angles covered by the new card as covered
+        int x, y;
+        x = position.x;
+        y= position.y;
+        cover(x-1, y+1, "SE");
+        cover(x+1, y+1, "SW");
+        cover(x-1, y-1, "NE");
+        cover(x+1, y-1, "NW");
+    }
+
+    private void cover(int x, int y, String angleToBeCovered) {
+        Card cardToBeCovered = currentPlayer.getCardAtPosition(x, y);
+        if (cardToBeCovered != null){
+            cardToBeCovered.setAngleCovered(angleToBeCovered);
+
+            try {
+                currentPlayer.decrementResourceCounter(cardToBeCovered.getResource(angleToBeCovered));
+            }catch (NoSuchElementException e){
+
+            }
+        }
+    }
+
+
+
 }
+
+
