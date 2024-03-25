@@ -18,7 +18,10 @@ public class Player {
     private Map<Resource,Integer> resourceCounters = new HashMap<>();
 
     public HashMap<Resource, Integer> getResourceCounters() {
-
+        return resourceCounters;
+    }
+    public int getResourceCounter(Resource resource){
+        return resourceCounters[resource];
     }
 
     public void addPoints(int selectedCardPoints) {
