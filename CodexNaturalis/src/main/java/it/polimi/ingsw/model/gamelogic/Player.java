@@ -118,7 +118,10 @@ public class Player {
     }
 
     public void updateResourceCounter(List <Resource> resourceList){
-
+        for (Resource r : resourceList){
+            int temp = resourceCounters.get(r);
+            resourceCounters.replace(r, temp+1);
+        }
     }
 }
 
