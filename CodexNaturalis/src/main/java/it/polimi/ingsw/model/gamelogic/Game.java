@@ -180,6 +180,38 @@ public class Game{
 
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * postition the starter card on the map in the front or back position
+     * @param front decides if the card is positioned in front or back
+     */
+    public void firstCard(boolean front){
+        Coordinates position = new Coordinates(0,0);
+        StarterCard firstCard = new StarterCard();
+        if (!front){
+            //starter card in the back position
+            playCardBack(firstCard, position);
+        }else {
+            playCardFront(firstCard, position);
+        }
+    }
+
+    /**
+     * @author Maximilian Mangosi
+     * play card front for starter card
+     * @param selectedCard it's the starter card
+     * @param position position 0,0
+     */
+    public void playCardFront(Card selectedCard, Coordinates position){
+        currentPlayer.addCardToMap(selectedCard, position);
+
+        //TODO add counter of resources
+        //add counter of resources
+        currentPlayer.updateResourceCounter(selectedCard.getCardResources());
+
+        //covering all the angles the new card is covering
+        //TODO update availablePosition list
+    }
 
     /**
      * @author Maximilian Mangosi
@@ -285,6 +317,7 @@ public class Game{
         //TODO update availablePosition list
     }
     //not completed
+
 
     /**
      * @author Maximilan Mangosi
