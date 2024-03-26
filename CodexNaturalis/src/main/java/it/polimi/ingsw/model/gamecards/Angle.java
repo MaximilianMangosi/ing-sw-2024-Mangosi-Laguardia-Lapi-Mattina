@@ -21,10 +21,11 @@ public class Angle {
 
     }
 
-
     public boolean isCovered() {
+        return isCovered;
     }
 
     public Resource getResource() {
+        return  resource;
     }
 }
