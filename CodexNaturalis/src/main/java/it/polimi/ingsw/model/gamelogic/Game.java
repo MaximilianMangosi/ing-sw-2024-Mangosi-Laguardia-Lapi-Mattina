@@ -2,13 +2,14 @@ package it.polimi.ingsw.model.gamelogic;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.*;
 
-import java.util.ArrayList;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
-
-import static java.util.Collections.shuffle;
+import java.util.NoSuchElementException;
+import java.util.Vector;
 
 public class Game{
-    private List<Player> ListOfPlayers;
+     private List<Player> ListOfPlayers;
     private int numOfPlayers;
     private List<ResourceCard> resourceCardDeck;
     private List<GoldCard> goldCardDeck;
@@ -16,69 +17,149 @@ public class Game{
     private List<Goal> listOfGoal;
     private Player currentPlayer;
 
-    //Takes an App Class (static), and shuffles the lists.
+    public void drawFromDeck(int choice) throws HandFullException {
+        List<Card> hand = currentPlayer.getHand();
+        if (hand.size() > 2) {
+            throw new HandFullException();
+        }
+        if (choice == 0) {
+            //normal cards
+            Card drawCard = resourceCardDeck.removeFirst();
+            currentPlayer.addCardToHand(drawCard);
+        } else {
+            //gold cards
+            Card drawCard = goldCardDeck.removeFirst();
+            currentPlayer.addCardToHand(drawCard);
+        }
+    }
 
-    private void startGame() {
-        //building players' hands
-        int i = 0;
-        int j = 0;
-        Coordinates origin = new Coordinates(0,0);
-        Player player;
-        //Mi manca un attimo come funziona APP ,cioè devo fare una copia dei mazzi da APP e poi fare lo shuffle
+    public void drawVisibleCard(int choice) throws HandFullException, AllDeckEmptyExeption {
+        List<Card> hand = currentPlayer.getHand();
+        if (hand.size() > 2) {
+            throw new HandFullException();
+        }
 
-        List<String> Colors= new ArrayList<String>();
-        Colors.add("Red");
-        Colors.add("Blue");
-        Colors.add("Yellow");
-        Colors.add("Green");
-
-
-        shuffle(resourceCardDeck);
-        shuffle(goldCardDeck);
-        shuffle(listOfGoal);
-
-
-        for (i = 0; i < numOfPlayers; i++) {
-
-            player = ListOfPlayers.get(i);
-            player.setname("Player"+i);
-            player.setColor(Colors.get(i));
-            player.setPoints(0);
-
-
-            //two resource cards
-            for (j = 0; j < 2; j++) {
-                player.addCardToHand(resourceCardDeck.removeFirst());
-
+        Card drawCard = visibleCards.remove(choice);
+        currentPlayer.addCardToHand(drawCard);
+        if (!(goldCardDeck.isEmpty() && resourceCardDeck.isEmpty())) {
+            if (drawCard instanceof GoldCard) {
+                try {
+                    visibleCards.add(goldCardDeck.removeFirst());
+                } catch (NoSuchElementException e) {
+                    visibleCards.add(resourceCardDeck.removeFirst());
+                }
+            } else {
+                try{
+                    visibleCards.add(resourceCardDeck.removeFirst());
+                }catch (NoSuchElementException e){
+                    visibleCards.add(goldCardDeck.removeFirst());
+                }
             }
-
-            //one gold card
-            player.addCardToHand(goldCardDeck.removeFirst());
-
-
-            //one starter card
-            player.setStarterCard();
-            player.setGoal(listOfGoal.removeFirst());
-
-
-
-            //aggiungere posizione della starter card
-
-
-
+        } else{
+            throw new AllDeckEmptyExeption();
         }
-        //Builds a list of public goals
-
-        //Builds the visiblecardsdeck
-        for ( i=0 ; i< 2 ; i++) {
-            visibleCards.add(goldCardDeck.removeFirst());
-        }
-        for ( i=0 ; i< 2 ; i++) {
-            visibleCards.add(resourceCardDeck.removeFirst());
-        }
-
-
 
     }
 
+    public void playCardFront(GoldCard selectedCard, Coordinates position) throws RequirementsNotMetException {
+        //check the requirements for the gold card
+        if(!elementCounter(selectedCard)){
+            throw new RequirementsNotMetException();
+        }
+
+        int selectedCardPoints = selectedCard.getPoints();
+        currentPlayer.addPoints(selectedCardPoints);
+        currentPlayer.addCardToMap(selectedCard, position);
+
+        //add counter of resources
+
+        //covering all the angles the new card is covering
+        coverAngle(position);
+    }
+
+    public void playCardFront(ResourceCard selectedCard, Coordinates position){
+        int selectedCardPoints = selectedCard.getPoints();
+        currentPlayer.addPoints(selectedCardPoints);
+        currentPlayer.addCardToMap(selectedCard, position);
+
+        //add counter of resources
+
+        //covering all the angles the new card is covering
+        coverAngle(position);
+    }
+
+    public void playCardBack(Card selectedCard, Coordinates position){
+        selectedCard.setIsFront(false);
+        currentPlayer.addCardToMap(selectedCard, position);
+
+        //add counter resources
+
+        //covering all the angles the new card is covering
+        coverAngle(position);
+    }
+
+    private boolean elementCounter(GoldCard selectedCard){
+        //receive map with all resources in the field of the current player
+        HashMap <Resource, Integer> allResourcesOnField = currentPlayer.getResourceCounters();
+        //compare the hashmap with the requirements of the card
+        HashMap <Reign, Integer> selectedCardRequirements = selectedCard.getRequirements();
+        for (Reign reign : selectedCardRequirements.keySet()) {
+            if(selectedCardRequirements.get(reign) >= allResourcesOnField.get(reign)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void coverAngle(Coordinates position){
+        //check all angles of the newly positioned card and set the angles covered by the new card as covered
+        int x, y;
+        x = position.x;
+        y= position.y;
+        cover(x-1, y+1, "SE");
+        cover(x+1, y+1, "SW");
+        cover(x-1, y-1, "NE");
+        cover(x+1, y-1, "NW");
+    }
+
+    private void cover(int x, int y, String angleToBeCovered) {
+        Card cardToBeCovered = currentPlayer.getCardAtPosition(x, y);
+        if (cardToBeCovered != null){
+            cardToBeCovered.setAngleCovered(angleToBeCovered);
+
+            try {
+                currentPlayer.decrementResourceCounter(cardToBeCovered.getResource(angleToBeCovered));
+            }catch (NoSuchElementException e){
+
+            }
+        }
+    }
+
+    public int calculateGoal(Goal goal, HashMap<Coordinates, Card>,Player player){
+
+        //1 Point for every 3 Resources
+        if(goal instanceof IdenticalGoal){
+            return calculateIdentialGoalPoint(player.getResourceCounter(goal.getNumOfResource()));
+        }
+        if(goal instanceof DistinctGoal){
+            return calculateDistincGoalPoint(player.getResourceCounters(), Tool.FEATHER,Tool.SCROLL, Tool.PHIAL);
+        }
+    }
+
+    private int calculateIdentialGoalPoint(int counter){
+        return counter / 3;
+    }
+
+    private int calculateDistincGoalPoint(HashMap<Resource, Integer> resourceCounters, Resource... resources){
+        return resourceCounters.entrySet().stream()
+                .filter(entry -> Stream.of(resources).anyMatch(resource -> resource == entry.getKey()))
+                .map(Map.Entry::getValue)
+                .min(Integer::compareTo)
+                .orElse(0);
+    }
+
+
+
 }
+
+
