@@ -18,10 +18,19 @@ public class Game{
     private List<ResourceCard> resourceCardDeck;
     private List<GoldCard> goldCardDeck;
     private List<Card> visibleCards;
-    private final List<Goal> listOfGoal;
-    private Player currentPlayer; 
+    private final List<Goal> listOfGoal= new ArrayList<>();
+    private Player currentPlayer;
 
-    public Game(Player firstPlayer, int numOfPlayers) {
+    /**
+     * constructor of class Game
+     * @author Giuseppe Laguardia
+     * @param firstPlayer the player who creates the game
+     * @param numOfPlayers the number of player that can join the game, must be bigger than 1
+     * @throws LessThanTwoPlayersException if numOfPlayer less than 2
+     */
+    public Game(Player firstPlayer, int numOfPlayers) throws LessThanTwoPlayersException {
+        if(numOfPlayers<2)
+            throw new LessThanTwoPlayersException();
         listOfPlayers.add(firstPlayer);
         this.numOfPlayers = numOfPlayers;
     }
@@ -62,23 +71,36 @@ public class Game{
         return currentPlayer;
     }
 
+    /**
+     * set the next player to play, according to the order of ListOfPlayers
+     * @author Giuseppe Laguardia
+     */
     public void nextTurn(){
         int currPlayerIdx= listOfPlayers.indexOf(currentPlayer);
         Player nextPlayer= listOfPlayers.get((currPlayerIdx+1) % numOfPlayers); //if currPlayerIdx+1==numOfPlayers next player is the first of the list
         setCurrentPlayer(nextPlayer);
     }
 
-    public Optional<Player> getWinner(){
+    /**
+     * Finds the player with most points, when more than one player have the same amount of point the winner is who has more goalPoints
+     * @author Giuseppe Laguardia
+     * @return the winner of the game
+     */
+    public Player getWinner(){
 
         int maxPoints = listOfPlayers.stream().max(Comparator.comparing((Player::getPoints))).
                         get().getPoints();
         // don't know if a check for maxPoints >=20 is needed
         return listOfPlayers.stream().
                 filter(p->p.getPoints() == maxPoints).
-                max(Comparator.comparing((Player::getGoalPoints)));
+                max(Comparator.comparing((Player::getGoalPoints))).get();
 
-    }                              
+    }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return true if a player has reached at least 20 points
+     */
     public boolean someoneHas20Points(){
         return listOfPlayers.stream().anyMatch(p->p.getPoints()>=20);
     }
@@ -126,7 +148,7 @@ public class Game{
         }
 
     }
-
+    //TODO implement playCardFront(StarterCard selectedCard, Coordinates position)
     public void playCardFront(GoldCard selectedCard, Coordinates position) throws RequirementsNotMetException {
         //check the requirements for the gold card
         if(!elementCounter(selectedCard)){
@@ -137,33 +159,36 @@ public class Game{
         currentPlayer.addPoints(selectedCardPoints);
         currentPlayer.addCardToMap(selectedCard, position);
 
-        //add counter of resources
+        //TODO add counter of resources
 
         //covering all the angles the new card is covering
         coverAngle(position);
+        //TODO update availablePosition list
     }
-
+    //not completed
     public void playCardFront(ResourceCard selectedCard, Coordinates position){
         int selectedCardPoints = selectedCard.getPoints();
         currentPlayer.addPoints(selectedCardPoints);
         currentPlayer.addCardToMap(selectedCard, position);
 
-        //add counter of resources
+        //TODO add counter of resources
 
         //covering all the angles the new card is covering
         coverAngle(position);
+        //TODO update availablePosition list
     }
-
+    //not completed
     public void playCardBack(Card selectedCard, Coordinates position){
         selectedCard.setIsFront(false);
         currentPlayer.addCardToMap(selectedCard, position);
 
-        //add counter resources
+        // TODO add counter resources
 
         //covering all the angles the new card is covering
         coverAngle(position);
+        //TODO update availablePosition list
     }
-
+    //change name
     private boolean elementCounter(GoldCard selectedCard){
         //receive map with all resources in the field of the current player
         HashMap <Resource, Integer> allResourcesOnField = currentPlayer.getResourceCounters();
@@ -187,7 +212,7 @@ public class Game{
         cover(x-1, y-1, "NE");
         cover(x+1, y-1, "NW");
     }
-
+    //not completed
     private void cover(int x, int y, String angleToBeCovered) {
         Card cardToBeCovered = currentPlayer.getCardAtPosition(x, y);
         if (cardToBeCovered != null){
