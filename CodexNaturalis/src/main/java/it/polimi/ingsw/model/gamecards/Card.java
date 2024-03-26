@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.gamecards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public abstract class Card {
     private Angle NW;
@@ -16,6 +17,11 @@ public abstract class Card {
     }
 
     public Resource getResource(String angleToBeCovered) {
+        Angle angle = getAngle(angleToBeCovered);
+        if (angle!=null){
+            return angle.getResource();
+        }
+        throw (new NoSuchElementException());
     }
 
     /**
