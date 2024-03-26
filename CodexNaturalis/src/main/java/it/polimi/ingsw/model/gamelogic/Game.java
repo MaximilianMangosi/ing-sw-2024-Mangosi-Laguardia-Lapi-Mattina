@@ -269,7 +269,10 @@ public class Game{
 
 
     public int calculateGoal(DistinctGoal goal, Player player){
-        List<Resource> validResources = new List<Resource>({Tool.FEATHER,Tool.SCROLL, Tool.PHIAL});
+        List<Resource> validResources = new ArrayList<Resource>();
+        validResources.add(Tool.FEATHER);
+        validResources.add(Tool.SCROLL);
+        validResources.add(Tool.PHIAL);
 
         return player.getResourceCounters().entrySet()
                 .stream()
