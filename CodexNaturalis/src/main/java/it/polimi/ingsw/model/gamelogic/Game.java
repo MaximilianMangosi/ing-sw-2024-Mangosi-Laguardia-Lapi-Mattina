@@ -204,6 +204,12 @@ public class Game{
         coverAngle(position);
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * counts the elements needed for the gold card requirements
+     * @param selectedCard selected gold card
+     * @return returns the value true or false to give an answer for the requirements
+     */
     private boolean elementCounter(GoldCard selectedCard){
         //receive map with all resources in the field of the current player
         HashMap <Resource, Integer> allResourcesOnField = currentPlayer.getResourceCounters();

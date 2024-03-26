@@ -21,21 +21,21 @@ public abstract class Card {
      */
     public List<Resource> getCardResources() {
         //cycle through the card angles and return a list with all the resources in the card
-        List<Resource> cardResouces = new ArrayList<>();
+        List<Resource> cardResources = new ArrayList<>();
         if(getAngle("NW")!=null && !(getAngle("NW").isCovered())){
-            cardResouces.add(getAngle("NW").getResource());
+            cardResources.add(getAngle("NW").getResource());
         }
         if(getAngle("SW")!=null && !(getAngle("SW").isCovered())){
-            cardResouces.add(getAngle("SW").getResource());
+            cardResources.add(getAngle("SW").getResource());
         }
         if(getAngle("NE")!=null && !(getAngle("NE").isCovered())){
-            cardResouces.add(getAngle("NE").getResource());
+            cardResources.add(getAngle("NE").getResource());
         }
         if(getAngle("SE")!=null && !(getAngle("SE").isCovered())){
-            cardResouces.add(getAngle("SE").getResource());
+            cardResources.add(getAngle("SE").getResource());
         }
 
-        return cardResouces;
+        return cardResources;
     }
 
 }
