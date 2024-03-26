@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
+
+import static java.util.Collections.shuffle;
+
 /**
  * Game class
  * @author Giorgio Mattina
@@ -22,8 +25,9 @@ public class Game{
     private Player currentPlayer;
 
     /**
+     * @author Giorgio Mattina
      * Builds the Players' hands and all the game decks
-      */
+     */
     private void startGame() {
         //building players' hands
         int i = 0;
@@ -204,6 +208,12 @@ public class Game{
         coverAngle(position);
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * counts the elements needed for the gold card requirements
+     * @param selectedCard selected gold card
+     * @return returns the value true or false to give an answer for the requirements
+     */
     private boolean elementCounter(GoldCard selectedCard){
         //receive map with all resources in the field of the current player
         HashMap <Resource, Integer> allResourcesOnField = currentPlayer.getResourceCounters();
