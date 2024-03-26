@@ -45,5 +45,9 @@ public class Player {
 
     public void decrementResourceCounter(Resource resource) {
     }
+
+    public void updateResourceCounter(List <Resource> resourceList){
+
+    }
 }
 

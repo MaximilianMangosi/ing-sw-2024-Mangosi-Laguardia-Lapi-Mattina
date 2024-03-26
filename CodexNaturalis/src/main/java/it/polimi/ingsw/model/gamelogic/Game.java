@@ -87,7 +87,13 @@ public class Game{
 
     }
 
-}
+
+    /**
+     * @author Maximilian Mangosi
+     * draw a card from one of the two decks
+     * @param choice it's the input given from the player to decide witch deck to draw from
+     * @throws HandFullException catches the exception when the hand is already full
+     */
     public void drawFromDeck(int choice) throws HandFullException {
         List<Card> hand = currentPlayer.getHand();
         if (hand.size() > 2) {
@@ -104,6 +110,13 @@ public class Game{
         }
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * drawing from the visible cards on the field
+     * @param choice it's the input given from the player to decide witch card to draw
+     * @throws HandFullException catches the exception when the hand is already full
+     * @throws AllDeckEmptyExeption catches the exception when the decks are all empty
+     */
     public void drawVisibleCard(int choice) throws HandFullException, AllDeckEmptyExeption {
         List<Card> hand = currentPlayer.getHand();
         if (hand.size() > 2) {
@@ -132,6 +145,13 @@ public class Game{
 
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * playing the card in the front position on the field for the gold card
+     * @param selectedCard the card selected by the user
+     * @param position the coordinates in witch th user wants the card to be positioned
+     * @throws RequirementsNotMetException catches the exception when the requirements for the gold card are not met
+     */
     public void playCardFront(GoldCard selectedCard, Coordinates position) throws RequirementsNotMetException {
         //check the requirements for the gold card
         if(!elementCounter(selectedCard)){
@@ -143,27 +163,42 @@ public class Game{
         currentPlayer.addCardToMap(selectedCard, position);
 
         //add counter of resources
+        currentPlayer.updateResourceCounter(selectedCard.getCardResources());
 
         //covering all the angles the new card is covering
         coverAngle(position);
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * playing the card in the front position on the field for the nortmal card
+     * @param selectedCard the card selected by the user
+     * @param position the coordinates in witch th user wants the card to be positioned
+     */
     public void playCardFront(ResourceCard selectedCard, Coordinates position){
         int selectedCardPoints = selectedCard.getPoints();
         currentPlayer.addPoints(selectedCardPoints);
         currentPlayer.addCardToMap(selectedCard, position);
 
         //add counter of resources
+        currentPlayer.updateResourceCounter(selectedCard.getCardResources());
 
         //covering all the angles the new card is covering
         coverAngle(position);
     }
 
+    /**
+     * @author Maximilan Mangosi
+     * playing the card in the back position on the field
+     * @param selectedCard the card selected by the user
+     * @param position the coordinates in witch th user wants the card to be positioned
+     */
     public void playCardBack(Card selectedCard, Coordinates position){
         selectedCard.setIsFront(false);
         currentPlayer.addCardToMap(selectedCard, position);
 
         //add counter resources
+        currentPlayer.updateResourceCounter(selectedCard.getCardResources());
 
         //covering all the angles the new card is covering
         coverAngle(position);
@@ -182,6 +217,11 @@ public class Game{
         return true;
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * when a card is positioned on the field, this card coveres the angles of other cards
+     * @param position coordinates in witch the card has been positioned
+     */
     private void coverAngle(Coordinates position){
         //check all angles of the newly positioned card and set the angles covered by the new card as covered
         int x, y;
@@ -193,6 +233,13 @@ public class Game{
         cover(x+1, y-1, "NW");
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * checkes all angles and sees witch ones are covered
+     * @param x coordinate x
+     * @param y coordinate y
+     * @param angleToBeCovered angle to be covered by the card
+     */
     private void cover(int x, int y, String angleToBeCovered) {
         Card cardToBeCovered = currentPlayer.getCardAtPosition(x, y);
         if (cardToBeCovered != null){
