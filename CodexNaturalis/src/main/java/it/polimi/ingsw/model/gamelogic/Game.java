@@ -7,7 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
-
+/**
+ * Game class
+ * @author Giorgio Mattina
+ * @author Maximilian Mangosi
+ */
 public class Game{
      private List<Player> ListOfPlayers;
     private int numOfPlayers;
@@ -17,6 +21,9 @@ public class Game{
     private List<Goal> listOfGoal;
     private Player currentPlayer;
 
+    /**
+     * Builds the Players' hands and all the game decks
+      */
     private void startGame() {
         //building players' hands
         int i = 0;
