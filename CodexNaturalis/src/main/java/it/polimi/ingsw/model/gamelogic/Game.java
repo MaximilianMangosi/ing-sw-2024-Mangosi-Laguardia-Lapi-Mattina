@@ -122,6 +122,8 @@ public class Game{
         int i = 0;
         int j = 0;
         Coordinates origin = new Coordinates(0,0);
+        List<Coordinates> start_position = new ArrayList<>();
+        start_position.add(origin);
         Player player;
         //Mi manca un attimo come funziona APP ,cioè devo fare una copia dei mazzi da APP e poi fare lo shuffle
 
@@ -143,7 +145,7 @@ public class Game{
             player.setname("Player"+i);
             player.setColor(Colors.get(i));
             player.setPoints(0);
-
+            player.setAvailablePositions(start_position);
 
             //two resource cards
             for (j = 0; j < 2; j++) {
