@@ -253,30 +253,19 @@ public class Game{
         }
     }
 
-    public int calculateGoal(Goal goal, HashMap<Coordinates, Card>,Player player){
-
-        //1 Point for every 3 Resources
-        if(goal instanceof IdenticalGoal){
-            return calculateIdentialGoalPoint(player.getResourceCounter(goal.getNumOfResource()));
-        }
-        if(goal instanceof DistinctGoal){
-            return calculateDistincGoalPoint(player.getResourceCounters(), Tool.FEATHER,Tool.SCROLL, Tool.PHIAL);
-        }
+    public int calculateGoal(IdenticalGoal goal, Player player){
+        return player.getResourceCounter(goal.getResource()) / 3;
     }
+    public int calculateGoal(DistinctGoal goal, Player player){
+        List<Resource> validResources = new List<Resource>({Tool.FEATHER,Tool.SCROLL, Tool.PHIAL});
 
-    private int calculateIdentialGoalPoint(int counter){
-        return counter / 3;
-    }
-
-    private int calculateDistincGoalPoint(HashMap<Resource, Integer> resourceCounters, Resource... resources){
-        return resourceCounters.entrySet().stream()
-                .filter(entry -> Stream.of(resources).anyMatch(resource -> resource == entry.getKey()))
+        return player.getResourceCounters().entrySet()
+                .stream()
+                .filter(entry -> validResources.contains(entry.getKey()))
                 .map(Map.Entry::getValue)
                 .min(Integer::compareTo)
                 .orElse(0);
     }
-
-
 
 }
 
