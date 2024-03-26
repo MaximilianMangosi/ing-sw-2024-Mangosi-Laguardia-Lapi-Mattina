@@ -22,5 +22,9 @@ public class Angle {
     }
 
 
+    public boolean isCovered() {
+    }
 
+    public Resource getResource() {
+    }
 }

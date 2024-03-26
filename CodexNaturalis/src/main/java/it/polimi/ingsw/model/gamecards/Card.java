@@ -33,7 +33,10 @@ public abstract class Card {
             return new Angle(SE);
         if(x.equals("SW"))
             return new Angle(SW);
+        else
+            return null;
     }
+    /**
      * @author Maximilian Mangosi
      * Retourns a list with all the resources present in the card
      * @return idem

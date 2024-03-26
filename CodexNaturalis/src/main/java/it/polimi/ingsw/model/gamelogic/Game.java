@@ -109,8 +109,9 @@ public class Game{
         return listOfPlayers.stream().anyMatch(p->p.getPoints()>=20);
     }
 
-     * Builds the Players' hands and all the game decks
-      */
+    /**
+    *   Builds the Players' hands and all the game decks
+     */
     private void startGame() {
         //building players' hands
         int i = 0;
