@@ -7,5 +7,7 @@ public class IdenticalGoal extends Goal{
     public int getNumOfResource(){
         return numOfResource;
     }
-
+    public Resource getResource() {
+        return resource;
+    }
 }
