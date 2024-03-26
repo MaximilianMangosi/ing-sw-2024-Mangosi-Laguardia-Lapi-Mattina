@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.gamecards;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Card {
     private Angle NW;
     private Angle NE;
@@ -31,4 +34,27 @@ public abstract class Card {
         if(x.equals("SW"))
             return new Angle(SW);
     }
+     * @author Maximilian Mangosi
+     * Retourns a list with all the resources present in the card
+     * @return idem
+     */
+    public List<Resource> getCardResources() {
+        //cycle through the card angles and return a list with all the resources in the card
+        List<Resource> cardResources = new ArrayList<>();
+        if(getAngle("NW")!=null && !(getAngle("NW").isCovered())){
+            cardResources.add(getAngle("NW").getResource());
+        }
+        if(getAngle("SW")!=null && !(getAngle("SW").isCovered())){
+            cardResources.add(getAngle("SW").getResource());
+        }
+        if(getAngle("NE")!=null && !(getAngle("NE").isCovered())){
+            cardResources.add(getAngle("NE").getResource());
+        }
+        if(getAngle("SE")!=null && !(getAngle("SE").isCovered())){
+            cardResources.add(getAngle("SE").getResource());
+        }
+
+        return cardResources;
+    }
+
 }

@@ -89,7 +89,10 @@ public class Player {
     }
 
     public HashMap<Resource, Integer> getResourceCounters() {
-
+        return resourceCounters;
+    }
+    public int getResourceCounter(Resource resource){
+        return resourceCounters[resource];
     }
 
     public void addPoints(int selectedCardPoints) {
@@ -112,6 +115,10 @@ public class Player {
     }
 
     public void decrementResourceCounter(Resource resource) {
+    }
+
+    public void updateResourceCounter(List <Resource> resourceList){
+
     }
 }
 
