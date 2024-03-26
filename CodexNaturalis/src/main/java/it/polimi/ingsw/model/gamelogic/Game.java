@@ -246,7 +246,6 @@ public class Game{
     public void playCardFront(StarterCard selectedCard, Coordinates position){
         currentPlayer.addCardToMap(selectedCard, position);
 
-        //TODO add counter of resources
         //add counter of resources
         currentPlayer.updateResourceCounter(selectedCard.getCardResources());
 
@@ -270,7 +269,6 @@ public class Game{
         currentPlayer.addPoints(selectedCardPoints);
         currentPlayer.addCardToMap(selectedCard, position);
 
-        //TODO add counter of resources
         //add counter of resources
         currentPlayer.updateResourceCounter(selectedCard.getCardResources());
 
@@ -291,7 +289,6 @@ public class Game{
         currentPlayer.addPoints(selectedCardPoints);
         currentPlayer.addCardToMap(selectedCard, position);
 
-        //TODO add counter of resources
         //add counter of resources
         currentPlayer.updateResourceCounter(selectedCard.getCardResources());
 
@@ -312,7 +309,6 @@ public class Game{
         selectedCard.setIsFront(false);
         currentPlayer.addCardToMap(selectedCard, position);
 
-        // TODO add counter resources
         //add counter resources
         currentPlayer.updateResourceCounter(selectedCard.getCardResources());
 
@@ -372,9 +368,7 @@ public class Game{
 
             try {
                 currentPlayer.decrementResourceCounter(cardToBeCovered.getResource(angleToBeCovered));
-            }catch (NoSuchElementException e){
-
-            }
+            }catch (NoSuchElementException ignore){}
         }
     }
 
