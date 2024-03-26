@@ -267,6 +267,7 @@ public class Game{
         return player.getResourceCounter(goal.getResource()) / 3;
     }
 
+
     public int calculateGoal(DistinctGoal goal, Player player){
         List<Resource> validResources = new List<Resource>({Tool.FEATHER,Tool.SCROLL, Tool.PHIAL});
 
