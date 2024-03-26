@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
+
+import static java.util.Collections.shuffle;
+
 /**
  * Game class
  * @author Giorgio Mattina
@@ -22,8 +25,9 @@ public class Game{
     private Player currentPlayer;
 
     /**
+     * @author Giorgio Mattina
      * Builds the Players' hands and all the game decks
-      */
+     */
     private void startGame() {
         //building players' hands
         int i = 0;
