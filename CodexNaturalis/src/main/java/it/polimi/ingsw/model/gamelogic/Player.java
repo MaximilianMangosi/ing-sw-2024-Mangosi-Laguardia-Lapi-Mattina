@@ -21,7 +21,7 @@ public class Player {
         return resourceCounters;
     }
     public int getResourceCounter(Resource resource){
-        return resourceCounters[resource];
+        return resourceCounters.get(resource);
     }
 
     public void addPoints(int selectedCardPoints) {
