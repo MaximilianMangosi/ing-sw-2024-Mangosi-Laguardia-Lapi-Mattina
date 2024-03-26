@@ -2,15 +2,9 @@ package it.polimi.ingsw.model.gamelogic;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Vector;
 
 import static java.util.Collections.shuffle;
 
@@ -239,7 +233,22 @@ public class Game{
         }
 
     }
+    /**
+     * @author Maximilian Mangosi
+     * play card front for starter card
+     * @param selectedCard it's the starter card
+     * @param position position 0,0
+     */
+    public void playCardFront(StarterCard selectedCard, Coordinates position){
+        currentPlayer.addCardToMap(selectedCard, position);
 
+        //TODO add counter of resources
+        //add counter of resources
+        currentPlayer.updateResourceCounter(selectedCard.getCardResources());
+
+        //covering all the angles the new card is covering
+        //TODO update availablePosition list
+    }
     /**
      * @author Maximilian Mangosi
      * playing the card in the front position on the field for the gold card
@@ -287,6 +296,7 @@ public class Game{
         //TODO update availablePosition list
     }
     //not completed
+
 
     /**
      * @author Maximilan Mangosi
@@ -370,7 +380,10 @@ public class Game{
 
 
     public int calculateGoal(DistinctGoal goal, Player player){
-        List<Resource> validResources = new List<Resource>({Tool.FEATHER,Tool.SCROLL, Tool.PHIAL});
+        List<Resource> validResources = new ArrayList<Resource>();
+        validResources.add(Tool.FEATHER);
+        validResources.add(Tool.SCROLL);
+        validResources.add(Tool.PHIAL);
 
         return player.getResourceCounters().entrySet()
                 .stream()
