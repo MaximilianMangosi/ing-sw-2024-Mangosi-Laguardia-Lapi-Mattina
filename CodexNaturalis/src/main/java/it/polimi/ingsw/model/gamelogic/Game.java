@@ -136,7 +136,7 @@ public class Game{
 
         for (i = 0; i < numOfPlayers; i++) {
 
-            player = ListOfPlayers.get(i);
+            player = listOfPlayers.get(i);
            // player.setname("Player"+i);
             //player.setColor(Colors.get(i));
             player.setPoints(0);
