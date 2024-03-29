@@ -118,15 +118,19 @@ public class Player {
      * @param x coordinate x
      * @param y coordinate y
      * @param cardinal cardinal position
-     * @return returns true if the cardinal position is not nonexistent
+     * @return returns true if the cardinal position is not nonexistent and if there is no card
      */
     private boolean isThatCardOk(int x, int y, String cardinal){
-        //TODO how do i check if they are not nonexistent
-        if (getCardAtPosition(x, y).getResource(cardinal) != null){
-            //the position could be valid
+        if (getCardAtPosition(x, y) != null) {
+            //TODO how do i check if they are not nonexistent
+            if (getCardAtPosition(x, y).getResource(cardinal) != null) {
+                //the position could be valid
+                return true;
+            }
+            return false;
+        }else {
             return true;
         }
-        return false;
     }
 
 
