@@ -8,7 +8,7 @@ public class Player {
     private List<Card> hand;
     private Goal goal;
     private Map<Coordinates,Card> field;
-    private Map<Resource,Integer> resourceCounters = new HashMap<>();
+    private HashMap<Resource,Integer> resourceCounters = new HashMap<>();
     private StarterCard starterCard;
     private List<Coordinates> availablePositions;
     private String name;
@@ -88,35 +88,78 @@ public class Player {
         this.points = points;
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * @return returns the number of all the resources the player has on the field
+     */
     public HashMap<Resource, Integer> getResourceCounters() {
         return resourceCounters;
     }
+
+    /**
+     * @author Maximilian Mangosi
+     * @return returns the number of all the selected resource on the field
+     */
     public int getResourceCounter(Resource resource){
         return resourceCounters.get(resource);
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * adds points to the player
+     */
     public void addPoints(int selectedCardPoints) {
+        points = points + selectedCardPoints;
     }
 
-
+    /**
+     * @author Maximilian Mangosi
+     * adds a drawn card to the hand of the player
+     */
     public void addCardToHand(Card drawCard) {
-
+        hand.add(drawCard);
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * @return returns a list with all the cards
+     */
     public List<Card> getHand() {
         return new ArrayList<>(hand);
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * positions the card on the field at the desired coordinates
+     */
     public void addCardToMap(Card selectedCard, Coordinates position) {
+        field.put(position, selectedCard);
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * @return returns the card at a certain coordinate
+     */
     public Card getCardAtPosition(int x, int y) {
         //it has to return an object Card at that position on the field
+        Coordinates curr = new Coordinates(x ,y);
+        Card selectedCard = field.get(curr);
+        return selectedCard;
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * decrements the resource counter of a selected resource
+     */
     public void decrementResourceCounter(Resource resource) {
+        int temp = resourceCounters.get(resource);
+        resourceCounters.replace(resource, temp-1);
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * updates the resource counter
+     */
     public void updateResourceCounter(List <Resource> resourceList){
         for (Resource r : resourceList){
             int temp = resourceCounters.get(r);

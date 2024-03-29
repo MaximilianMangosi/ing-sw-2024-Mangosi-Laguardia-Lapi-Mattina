@@ -6,6 +6,7 @@ import java.util.*;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import static java.util.Collections.list;
 import static java.util.Collections.shuffle;
 
 /**
@@ -121,11 +122,11 @@ public class Game{
         Player player;
         //Mi manca un attimo come funziona APP ,cioè devo fare una copia dei mazzi da APP e poi fare lo shuffle
 
-        List<String> Colors= new ArrayList<String>();
+        /*List<String> Colors= new ArrayList<String>();
         Colors.add("Red");
         Colors.add("Blue");
         Colors.add("Yellow");
-        Colors.add("Green");
+        Colors.add("Green");*/
 
 
         shuffle(resourceCardDeck);
@@ -135,9 +136,9 @@ public class Game{
 
         for (i = 0; i < numOfPlayers; i++) {
 
-            player = ListOfPlayers.get(i);
-            player.setname("Player"+i);
-            player.setColor(Colors.get(i));
+            player = listOfPlayers.get(i);
+           // player.setname("Player"+i);
+            //player.setColor(Colors.get(i));
             player.setPoints(0);
             player.setAvailablePositions(start_position);
 
@@ -172,6 +173,9 @@ public class Game{
             visibleCards.add(resourceCardDeck.removeFirst());
         }
 
+        //the current player is the first player in the players list
+        shuffle(listOfPlayers);
+        currentPlayer = listOfPlayers.getFirst();
 
 
     }

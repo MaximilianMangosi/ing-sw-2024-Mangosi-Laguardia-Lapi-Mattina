@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.gamecards;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 public abstract class Card {
     private Resource NW;
