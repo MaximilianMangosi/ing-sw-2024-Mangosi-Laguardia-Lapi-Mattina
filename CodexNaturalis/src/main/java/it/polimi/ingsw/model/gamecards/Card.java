@@ -5,11 +5,20 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public abstract class Card {
-    private Resource NW;
-    private Resource NE;
-    private Resource SW;
-    private Resource SE;
+    private final Resource NW;
+    private final Resource NE;
+    private final Resource SW;
+    private final Resource SE;
 
+    private boolean isFront;
+
+    /**
+     * Card constructor
+     * @param NW resource in left-up angle
+     * @param NE resource in right-up angle
+     * @param SW resource in left-down angle
+     * @param SE resource in right-down angle
+     */
  public Card(Resource NW,Resource NE,Resource SW,Resource SE){
      this.NW=NW;
      this.NE=NE;
@@ -46,10 +55,17 @@ public abstract class Card {
         String[] angles ={"NW","SW","NE","SE"};
 
         for (String angle: angles)
-            if(getResource(angle)!=null)
+            if(getResource(angle)!=null && !getResource(angle).isEmpty())
                 cardResources.add(getResource(angle));
 
         return cardResources;
     }
 
+    public void setIsFront(boolean b) {
+        isFront=b;
+    }
+
+    public boolean IsFront() {
+        return isFront;
+    }
 }
