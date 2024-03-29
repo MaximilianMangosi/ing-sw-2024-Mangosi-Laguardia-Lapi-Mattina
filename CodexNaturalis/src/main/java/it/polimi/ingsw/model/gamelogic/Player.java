@@ -66,12 +66,70 @@ public class Player {
 
     /**
      * @author Maximilian Mangosi
+     * updates available positions for the player
+     * @param x coordinate x
+     * @param y coordinate y
+     */
+    private void updateAvailablePositions(int x, int y){
+        Coordinates coordinates = new Coordinates(x, y);
+        availablePositions.add(coordinates);
+    }
+
+    /**
+     * @author Maximilian Mangosi
      * the function updates the available positions list after placing a new card
      * @param newCardPositioned position of the newly placed card
      */
-    public void updateAvailablePositions(Coordinates newCardPositioned, Card selectedCard){
-
+    public void checkAvailablePositions(Coordinates newCardPositioned, Card selectedCard) {
+        int x = newCardPositioned.x;
+        int y = newCardPositioned.y;
+        //Verify that the angles are not nonexistent
+        //TODO how do i check if they are not nonexistent
+        if (selectedCard.getResource("NW") != null) //NW
+            iteratorForAvailablePositions(x+1, y-1);
+        if (selectedCard.getResource("SW") != null) //SW
+            iteratorForAvailablePositions(x+1, y+1);
+        if (selectedCard.getResource("NE") != null) //NE
+            iteratorForAvailablePositions(x-1, y-1);
+        if (selectedCard.getResource("SE") != null) //SE
+            iteratorForAvailablePositions(x-1, y+1);
     }
+
+    /**
+     * @author Maximilian Mangosi
+     * if a card already exists at that position then don't update the available position list
+     * otherwise check if the angle opposite is not nonexistent
+     * if not then all the update function
+     * @param x coordinate x
+     * @param y coordinate y
+     */
+    private void iteratorForAvailablePositions(int x, int y){
+        if (getCardAtPosition(x,y) != null){
+            if(isThatCardOk(x+1, y-1, "SE")
+                    && isThatCardOk(x+1, y+1, "NE")
+                    && isThatCardOk(x-1, y-1, "SW")
+                    && isThatCardOk(x-1, y+1, "NW"))
+                updateAvailablePositions(x, y);
+        }
+    }
+
+    /**
+     * @author Maximilian Mangosi
+     * @param x coordinate x
+     * @param y coordinate y
+     * @param cardinal cardinal position
+     * @return returns true if the cardinal position is not nonexistent
+     */
+    private boolean isThatCardOk(int x, int y, String cardinal){
+        //TODO how do i check if they are not nonexistent
+        if (getCardAtPosition(x, y).getResource(cardinal) != null){
+            //the position could be valid
+            return true;
+        }
+        return false;
+    }
+
+
 
     public String getName() {
         return name;

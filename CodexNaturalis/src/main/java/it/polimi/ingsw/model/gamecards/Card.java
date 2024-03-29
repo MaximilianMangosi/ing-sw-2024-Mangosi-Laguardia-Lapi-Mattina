@@ -44,6 +44,32 @@ public abstract class Card {
          return null;
      }
 
+    /**
+     * @author Maximilian Mangosi
+     * @param angle selected angle
+     * @return a string format the cardinal position of the selected angle
+     */
+     public String getResourceName(Resource angle) {
+         String temp;
+         if(angle == NW) {
+            temp = "NW";
+            return temp;
+         }
+         if(angle == SW) {
+            temp = "SW";
+            return temp;
+         }
+         if(angle == NE) {
+            temp = "NE";
+            return temp;
+         }
+         if(angle == SE) {
+            temp = "SE";
+            return temp;
+         }
+         return null;
+     }
+
      /**
       * @author Maximilian Mangosi
       * Returns a list with all the resources present in the card
@@ -69,16 +95,18 @@ public abstract class Card {
         return isFront;
     }
 
+
     /**
      * @author Maximilian Mangosi
      * @param angleToBeCovered sets selected angle to covered.
      *        In other terms, the selected resource at that angle is removed
      */
+    /*
     public void decrementCardResourceCounter(String angleToBeCovered) {
         //setting the angle covered by eliminating the resource in that angle
         getResource(angleToBeCovered);
-
     }
+    */
 
 
 }

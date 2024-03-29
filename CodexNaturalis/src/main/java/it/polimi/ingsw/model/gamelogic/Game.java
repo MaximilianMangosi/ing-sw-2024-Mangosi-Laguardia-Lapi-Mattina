@@ -249,8 +249,8 @@ public class Game{
         //add counter of resources
         currentPlayer.updateResourceCounter(selectedCard.getCardResources());
 
-        //TODO update availablePosition list
-        currentPlayer.updateAvailablePositions(position, selectedCard);
+        //update availablePosition list
+        currentPlayer.checkAvailablePositions(position, selectedCard);
     }
     /**
      * @author Maximilian Mangosi
@@ -275,7 +275,8 @@ public class Game{
         //covering all the angles the new card is covering
         coverAngle(position);
 
-        //TODO update availablePosition list
+        //update availablePosition list
+        currentPlayer.checkAvailablePositions(position, selectedCard);
     }
     //not completed
 
@@ -296,7 +297,8 @@ public class Game{
         //covering all the angles the new card is covering
         coverAngle(position);
 
-        //TODO update availablePosition list
+        //update availablePosition list
+        currentPlayer.checkAvailablePositions(position, selectedCard);
     }
     //not completed
 
@@ -317,9 +319,9 @@ public class Game{
         //covering all the angles the new card is covering
         coverAngle(position);
 
-        //TODO update availablePosition list
+        //update availablePosition list
+        currentPlayer.checkAvailablePositions(position, selectedCard);
     }
-    //change name
 
     /**
      * @author Maximilian Mangosi
@@ -369,7 +371,7 @@ public class Game{
         if (cardToBeCovered != null){
             try {
                 currentPlayer.decrementResourceCounter(cardToBeCovered.getResource(angleToBeCovered));
-                cardToBeCovered.decrementCardResourceCounter(angleToBeCovered);
+                //cardToBeCovered.decrementCardResourceCounter(angleToBeCovered);
             }catch (NoSuchElementException ignore){}
         }
     }
