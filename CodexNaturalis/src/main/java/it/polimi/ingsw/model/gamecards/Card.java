@@ -2,60 +2,52 @@ package it.polimi.ingsw.model.gamecards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class Card {
-    private Angle NW;
-    private Angle NE;
-    private Angle SW;
-    private Angle SE;
-    public void setIsFront(boolean b) {
-    }
+    private Resource NW;
+    private Resource NE;
+    private Resource SW;
+    private Resource SE;
 
-    public void setAngleCovered(String angleToBeCovered) {
-
-    }
-
-    public Resource getResource(String angleToBeCovered) {
-    }
-
+ public Card(Resource NW,Resource NE,Resource SW,Resource SE){
+     this.NW=NW;
+     this.NE=NE;
+     this.SW=SW;
+     this.SE=SE;
+ }
     /**
-     * Angle getter
+     * Resource getter
      * @author Giuseppe Laguardia
-     * @param x string that determine the desired angle's position
-     * @return the Angle in position x
+     * @param angle string that determine the desired angle's position, accepted values:(NW,SW,NE,SE)
+     * @return the Resource in position angle. If the angle isn't accepted returns null
      */
-    public Angle getAngle(String x){
-        if(x.equals("NE"))
-            return new Angle(NE);
-        if(x.equals("NW"))
-            return new Angle(NW);
-        if(x.equals("SE"))
-            return new Angle(SE);
-        if(x.equals("SW"))
-            return new Angle(SW);
-        else
-            return null;
+
+    public Resource getResource(String angle) {
+        if(angle.equals("NW"))
+            return NW;
+        if(angle.equals("SW"))
+            return SW;
+        if (angle.equals("NE"))
+            return NE;
+        if(angle.equals("SE"))
+            return SE;
+        return null;
     }
+
     /**
      * @author Maximilian Mangosi
-     * Retourns a list with all the resources present in the card
+     * Returns a list with all the resources present in the card
      * @return idem
      */
     public List<Resource> getCardResources() {
         //cycle through the card angles and return a list with all the resources in the card
         List<Resource> cardResources = new ArrayList<>();
-        if(getAngle("NW")!=null && !(getAngle("NW").isCovered())){
-            cardResources.add(getAngle("NW").getResource());
-        }
-        if(getAngle("SW")!=null && !(getAngle("SW").isCovered())){
-            cardResources.add(getAngle("SW").getResource());
-        }
-        if(getAngle("NE")!=null && !(getAngle("NE").isCovered())){
-            cardResources.add(getAngle("NE").getResource());
-        }
-        if(getAngle("SE")!=null && !(getAngle("SE").isCovered())){
-            cardResources.add(getAngle("SE").getResource());
-        }
+        String[] angles ={"NW","SW","NE","SE"};
+
+        for (String angle: angles)
+            if(getResource(angle)!=null)
+                cardResources.add(getResource(angle));
 
         return cardResources;
     }
