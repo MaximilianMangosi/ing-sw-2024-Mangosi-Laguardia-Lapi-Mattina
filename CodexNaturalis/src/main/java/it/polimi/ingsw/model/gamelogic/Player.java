@@ -64,6 +64,15 @@ public class Player {
         this.availablePositions = availablePositions;
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * the function updates the available positions list after placing a new card
+     * @param newCardPositioned position of the newly placed card
+     */
+    public void updateAvailablePositions(Coordinates newCardPositioned, Card selectedCard){
+
+    }
+
     public String getName() {
         return name;
     }

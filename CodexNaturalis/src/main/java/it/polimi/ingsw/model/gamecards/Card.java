@@ -76,9 +76,8 @@ public abstract class Card {
      */
     public void decrementCardResourceCounter(String angleToBeCovered) {
         //setting the angle covered by eliminating the resource in that angle
-        Resource resourceToEliminate = getResource(angleToBeCovered);
-        resourceToEliminate = null;
-        //TODO i don't know if this works??
+        getResource(angleToBeCovered);
+
     }
 
 

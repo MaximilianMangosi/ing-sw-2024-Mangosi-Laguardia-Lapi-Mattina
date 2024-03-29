@@ -249,8 +249,8 @@ public class Game{
         //add counter of resources
         currentPlayer.updateResourceCounter(selectedCard.getCardResources());
 
-        //covering all the angles the new card is covering
         //TODO update availablePosition list
+        currentPlayer.updateAvailablePositions(position, selectedCard);
     }
     /**
      * @author Maximilian Mangosi
@@ -274,6 +274,7 @@ public class Game{
 
         //covering all the angles the new card is covering
         coverAngle(position);
+
         //TODO update availablePosition list
     }
     //not completed
@@ -294,6 +295,7 @@ public class Game{
 
         //covering all the angles the new card is covering
         coverAngle(position);
+
         //TODO update availablePosition list
     }
     //not completed
@@ -314,6 +316,7 @@ public class Game{
 
         //covering all the angles the new card is covering
         coverAngle(position);
+
         //TODO update availablePosition list
     }
     //change name
