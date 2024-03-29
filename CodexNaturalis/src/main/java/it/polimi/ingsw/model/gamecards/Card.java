@@ -19,36 +19,36 @@ public abstract class Card {
      * @param SW resource in left-down angle
      * @param SE resource in right-down angle
      */
- public Card(Resource NW,Resource NE,Resource SW,Resource SE){
-     this.NW=NW;
-     this.NE=NE;
-     this.SW=SW;
-     this.SE=SE;
- }
-    /**
+     public Card(Resource NW,Resource NE,Resource SW,Resource SE){
+         this.NW=NW;
+         this.NE=NE;
+         this.SW=SW;
+         this.SE=SE;
+     }
+
+     /**
      * Resource getter
      * @author Giuseppe Laguardia
      * @param angle string that determine the desired angle's position, accepted values:(NW,SW,NE,SE)
      * @return the Resource in position angle. If the angle isn't accepted returns null
      */
+     public Resource getResource(String angle) {
+         if(angle.equals("NW"))
+             return NW;
+         if(angle.equals("SW"))
+             return SW;
+         if (angle.equals("NE"))
+             return NE;
+         if(angle.equals("SE"))
+             return SE;
+         return null;
+     }
 
-    public Resource getResource(String angle) {
-        if(angle.equals("NW"))
-            return NW;
-        if(angle.equals("SW"))
-            return SW;
-        if (angle.equals("NE"))
-            return NE;
-        if(angle.equals("SE"))
-            return SE;
-        return null;
-    }
-
-    /**
-     * @author Maximilian Mangosi
-     * Returns a list with all the resources present in the card
-     * @return idem
-     */
+     /**
+      * @author Maximilian Mangosi
+      * Returns a list with all the resources present in the card
+      * @return idem
+      */
     public List<Resource> getCardResources() {
         //cycle through the card angles and return a list with all the resources in the card
         List<Resource> cardResources = new ArrayList<>();
@@ -62,10 +62,24 @@ public abstract class Card {
     }
 
     public void setIsFront(boolean b) {
-        isFront=b;
+        isFront = b;
     }
 
     public boolean IsFront() {
         return isFront;
     }
+
+    /**
+     * @author Maximilian Mangosi
+     * @param angleToBeCovered sets selected angle to covered.
+     *        In other terms, the selected resource at that angle is removed
+     */
+    public void decrementCardResourceCounter(String angleToBeCovered) {
+        //setting the angle covered by eliminating the resource in that angle
+        Resource resourceToEliminate = getResource(angleToBeCovered);
+        resourceToEliminate = null;
+        //TODO i don't know if this works??
+    }
+
+
 }

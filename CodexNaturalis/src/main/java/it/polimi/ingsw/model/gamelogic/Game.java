@@ -364,10 +364,9 @@ public class Game{
     private void cover(int x, int y, String angleToBeCovered) {
         Card cardToBeCovered = currentPlayer.getCardAtPosition(x, y);
         if (cardToBeCovered != null){
-            cardToBeCovered.setAngleCovered(angleToBeCovered);
-
             try {
                 currentPlayer.decrementResourceCounter(cardToBeCovered.getResource(angleToBeCovered));
+                cardToBeCovered.decrementCardResourceCounter(angleToBeCovered);
             }catch (NoSuchElementException ignore){}
         }
     }
