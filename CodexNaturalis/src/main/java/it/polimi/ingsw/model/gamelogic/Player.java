@@ -72,7 +72,20 @@ public class Player {
      */
     private void updateAvailablePositions(int x, int y){
         Coordinates coordinates = new Coordinates(x, y);
-        availablePositions.add(coordinates);
+        if (!availablePositions.contains(coordinates))
+            availablePositions.add(coordinates);
+    }
+
+    /**
+     * @author Maximilian Mangosi
+     * eliminates poition that is no longer available
+     * @param x coordinate x
+     * @param y coordinate y
+     */
+    private void removeFromAvailablePositions(int x, int y){
+        Coordinates coordinates = new Coordinates(x, y);
+        if (!availablePositions.contains(coordinates))
+            availablePositions.remove(coordinates);
     }
 
     /**
@@ -84,15 +97,26 @@ public class Player {
         int x = newCardPositioned.x;
         int y = newCardPositioned.y;
         //Verify that the angles are not nonexistent
-        //TODO how do i check if they are not nonexistent
-        if (selectedCard.getResource("NW") != null) //NW
-            iteratorForAvailablePositions(x+1, y-1);
-        if (selectedCard.getResource("SW") != null) //SW
-            iteratorForAvailablePositions(x+1, y+1);
-        if (selectedCard.getResource("NE") != null) //NE
-            iteratorForAvailablePositions(x-1, y-1);
-        if (selectedCard.getResource("SE") != null) //SE
-            iteratorForAvailablePositions(x-1, y+1);
+        if (selectedCard.getResource("NW") != null){ //NW
+            iteratorForAvailablePositions(x + 1, y - 1);
+        }else{
+            removeFromAvailablePositions(x+1, y-1);
+        }
+        if (selectedCard.getResource("SW") != null) { //SW
+            iteratorForAvailablePositions(x + 1, y + 1);
+        }else{
+            removeFromAvailablePositions(x+1, y+1);
+        }
+        if (selectedCard.getResource("NE") != null) { //NE
+            iteratorForAvailablePositions(x - 1, y - 1);
+        }else{
+            removeFromAvailablePositions(x-1, y-1);
+        }
+        if (selectedCard.getResource("SE") != null) { //SE
+            iteratorForAvailablePositions(x - 1, y + 1);
+        }else{
+            removeFromAvailablePositions(x-1, y+1);
+        }
     }
 
     /**
@@ -108,8 +132,13 @@ public class Player {
             if(isThatCardOk(x+1, y-1, "SE")
                     && isThatCardOk(x+1, y+1, "NE")
                     && isThatCardOk(x-1, y-1, "SW")
-                    && isThatCardOk(x-1, y+1, "NW"))
+                    && isThatCardOk(x-1, y+1, "NW")){
                 updateAvailablePositions(x, y);
+            }else{
+                //removeFromAvailablePositions(x, y);
+            }
+        }else{
+            updateAvailablePositions(x, y);
         }
     }
 
@@ -122,7 +151,6 @@ public class Player {
      */
     private boolean isThatCardOk(int x, int y, String cardinal){
         if (getCardAtPosition(x, y) != null) {
-            //TODO how do i check if they are not nonexistent
             if (getCardAtPosition(x, y).getResource(cardinal) != null) {
                 //the position could be valid
                 return true;
