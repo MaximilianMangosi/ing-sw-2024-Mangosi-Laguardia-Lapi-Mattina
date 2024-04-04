@@ -74,7 +74,6 @@ public class Player {
      */
     private void updateAvailablePositions(int x, int y){
         Coordinates coordinates = new Coordinates(x, y);
-        //TODO check the unavailable list
         if (!unavailablePositions.contains(coordinates))
             if (!availablePositions.contains(coordinates))
                 availablePositions.add(coordinates);
