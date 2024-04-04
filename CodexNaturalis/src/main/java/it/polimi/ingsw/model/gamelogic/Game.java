@@ -16,12 +16,13 @@ import static java.util.Collections.shuffle;
  */
 public class Game{
     private List<Player> listOfPlayers=new ArrayList<>();
-    private final  int numOfPlayers;
+    private final int numOfPlayers;
     private List<ResourceCard> resourceCardDeck;
     private List<GoldCard> goldCardDeck;
     private List<Card> visibleCards;
     private final List<Goal> listOfGoal= new ArrayList<>();
     private Player currentPlayer;
+    //TODO add listOfStarterCard
 
     /**
      * constructor of class Game
@@ -30,6 +31,7 @@ public class Game{
      * @param numOfPlayers the number of player that can join the game, must be bigger than 1
      * @throws LessThanTwoPlayersException if numOfPlayer less than 2
      */
+    //TODO add GameBox to parameters
     public Game(Player firstPlayer, int numOfPlayers) throws LessThanTwoPlayersException {
         if(numOfPlayers<2)
             throw new LessThanTwoPlayersException();
@@ -153,7 +155,7 @@ public class Game{
 
 
             //one starter card
-            player.setStarterCard();
+            //player.setStarterCard();
             player.setGoal(listOfGoal.removeFirst());
 
 
@@ -261,12 +263,13 @@ public class Game{
      */
     public void playCardFront(GoldCard selectedCard, Coordinates position) throws RequirementsNotMetException {
         //check the requirements for the gold card
+        selectedCard.setIsFront(true);
         if(!elementCounter(selectedCard)){
             throw new RequirementsNotMetException();
         }
 
         int selectedCardPoints = selectedCard.getPoints();
-        currentPlayer.addPoints(selectedCardPoints);
+        currentPlayer.addPoints(selectedCardPoints); //TODO overload to distinguish all the GoldCard subclasses
         currentPlayer.addCardToMap(selectedCard, position);
 
         //add counter of resources
@@ -287,6 +290,7 @@ public class Game{
      * @param position the coordinates in witch th user wants the card to be positioned
      */
     public void playCardFront(ResourceCard selectedCard, Coordinates position){
+        selectedCard.setIsFront(true);
         int selectedCardPoints = selectedCard.getPoints();
         currentPlayer.addPoints(selectedCardPoints);
         currentPlayer.addCardToMap(selectedCard, position);
@@ -309,7 +313,7 @@ public class Game{
      * @param selectedCard the card selected by the user
      * @param position the coordinates in witch th user wants the card to be positioned
      */
-    public void playCardBack(Card selectedCard, Coordinates position){
+    public void playCardBack(Card selectedCard, Coordinates position){ //TODO overload for StarterCard
         selectedCard.setIsFront(false);
         currentPlayer.addCardToMap(selectedCard, position);
 

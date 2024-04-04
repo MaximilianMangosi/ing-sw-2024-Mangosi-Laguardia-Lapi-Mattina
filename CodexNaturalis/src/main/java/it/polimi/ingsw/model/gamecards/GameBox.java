@@ -34,14 +34,7 @@ public class GameBox {
     }
 
     public GameBox(List<String> jsonFiles) {
-
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Resource.class, new ResourceAdapter());
-        Gson gson = builder.create();
-        resourceCardSet.add(gson.fromJson(jsonFiles.getFirst(), ResourceCard.class));
-        goldCardSet.add((GoldCard) gson.fromJson(jsonFiles.get(1), GoldCard.class));
-        goldCardSet.add((GoldCardTool) gson.fromJson(jsonFiles.get(2), GoldCardTool.class));
-        goldCardSet.add((GoldCardAngles) gson.fromJson(jsonFiles.get(3), GoldCardAngles.class));
+        // WIP
 
     }
     private class ResourceAdapter extends TypeAdapter<Resource> {
@@ -53,7 +46,6 @@ public class GameBox {
         public Resource read(JsonReader jsonReader) throws IOException {
             String val = jsonReader.nextString();
             return stringToResource(val);
-
         }
 
         private Resource stringToResource(String val) throws IOException {
@@ -86,7 +78,6 @@ public class GameBox {
             throw new IOException();
         }
     }
-    /*
     public static void main(String[] arg) throws FileNotFoundException {
 
         List<String> jsons= new ArrayList<>();
@@ -120,18 +111,32 @@ public class GameBox {
             json.append(s.nextLine());
         }
         jsons.add(json.toString());
+        f=new File("C:\\Users\\glagu\\Desktop\\università\\PROVA FINALE (INGEGNERIA DEL SOFTWARE)\\json\\StarterCard_template.json");
+        s= new Scanner(f);
+        json= new StringBuilder();
+        while(s.hasNext()){
+            json.append(s.nextLine());
+        }
+        jsons.add(json.toString());
 
 
         GameBox gb=new GameBox(jsons);
+        /*
         for(GoldCard card: gb.getGoldCardSet()){
             System.out.println(card.getCardResources());
             System.out.println(card.getPoints());
             System.out.println(card.getReign());
             System.out.println(card.IsFront());
             System.out.println(card.getRequirements());
-            //System.out.println(card.getTool());
+            System.out.println(card.getTool());
+          }
+        */
+        for(StarterCard card: gb.getStarterCardSet()){
+            System.out.println(card.getCardResources());
+            System.out.println(card.IsFront());
+            System.out.println(card.getResourceBack("NW"));
+            System.out.println(card.getCentralResource());
         }
-    }
 
-     */
+    }
 }
