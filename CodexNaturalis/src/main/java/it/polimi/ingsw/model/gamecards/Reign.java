@@ -13,8 +13,6 @@ public enum Reign implements Resource{
     PLANTS,
     @SerializedName("e")
     EMPTY,
-    @SerializedName("n")
-    NONEXISTENT,
     ;
 
     @Override
