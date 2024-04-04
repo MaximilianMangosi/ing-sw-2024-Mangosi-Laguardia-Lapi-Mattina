@@ -1,0 +1,9 @@
+{
+    "NW" :"m",
+    "NE" :"m",
+    "SW" :"null",
+    "SE" :"e",
+    "isFront": false,
+    "points": 0,
+    "reign":"m"
+}

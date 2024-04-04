@@ -1,0 +1,9 @@
+{
+    "NW" :"Resource",
+    "NE" :"Resource",
+    "SW" :"Resource",
+    "SE" :"Resource",
+    "isFront": false,
+    "points": int,
+    "reign":"Reign"
+}

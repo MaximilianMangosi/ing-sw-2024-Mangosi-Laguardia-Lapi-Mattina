@@ -1,0 +1,12 @@
+{
+    "NW" :"a",
+    "NE" :"b",
+    "SW" :"pl",
+    "SE" :"m",
+    "isFront": false,
+    "BackNW" :"null",
+    "BackNE" :"null",
+    "BackSW" :"e",
+    "BackSE" :"e",
+    "centralResources":["a","b"]
+}
