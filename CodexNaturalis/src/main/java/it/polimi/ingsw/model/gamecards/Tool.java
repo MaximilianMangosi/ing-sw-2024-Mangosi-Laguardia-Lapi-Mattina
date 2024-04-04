@@ -11,6 +11,8 @@ public enum Tool implements Resource{
     PHIAL,
     @SerializedName("e")
     EMPTY,
+    @SerializedName("n")
+    NONEXISTENT,
     ;
 
     @Override

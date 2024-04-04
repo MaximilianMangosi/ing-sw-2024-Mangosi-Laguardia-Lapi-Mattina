@@ -11,6 +11,7 @@ public class Player {
     private HashMap<Resource,Integer> resourceCounters = new HashMap<>();
     private StarterCard starterCard;
     private List<Coordinates> availablePositions;
+    private List<Coordinates> unavailablePositions;
     private String name;
     private String check;
     private int points;
@@ -59,6 +60,7 @@ public class Player {
     public List<Coordinates> getAvailablePositions() {
         return availablePositions;
     }
+    public List<Coordinates> getUnavailablePositions(){return unavailablePositions;}
 
     public void setAvailablePositions(List<Coordinates> availablePositions) {
         this.availablePositions = availablePositions;
@@ -72,20 +74,22 @@ public class Player {
      */
     private void updateAvailablePositions(int x, int y){
         Coordinates coordinates = new Coordinates(x, y);
-        if (!availablePositions.contains(coordinates))
-            availablePositions.add(coordinates);
+        //TODO check the unavailable list
+        if (!unavailablePositions.contains(coordinates))
+            if (!availablePositions.contains(coordinates))
+                availablePositions.add(coordinates);
     }
 
     /**
      * @author Maximilian Mangosi
-     * eliminates poition that is no longer available
+     * updates available positions for the player
      * @param x coordinate x
      * @param y coordinate y
      */
-    private void removeFromAvailablePositions(int x, int y){
+    private void updateUnavailablePositions(int x, int y){
         Coordinates coordinates = new Coordinates(x, y);
-        if (!availablePositions.contains(coordinates))
-            availablePositions.remove(coordinates);
+        if (!unavailablePositions.contains(coordinates))
+            unavailablePositions.add(coordinates);
     }
 
     /**
@@ -98,66 +102,24 @@ public class Player {
         int y = newCardPositioned.y;
         //Verify that the angles are not nonexistent
         if (selectedCard.getResource("NW") != null){ //NW
-            iteratorForAvailablePositions(x + 1, y - 1);
+            updateAvailablePositions(x - 1, y + 1);
         }else{
-            removeFromAvailablePositions(x+1, y-1);
+            updateUnavailablePositions(x-1, y+1);
         }
         if (selectedCard.getResource("SW") != null) { //SW
-            iteratorForAvailablePositions(x + 1, y + 1);
+            updateAvailablePositions(x - 1, y - 1);
         }else{
-            removeFromAvailablePositions(x+1, y+1);
+            updateUnavailablePositions(x-1, y-1);
         }
         if (selectedCard.getResource("NE") != null) { //NE
-            iteratorForAvailablePositions(x - 1, y - 1);
+            updateAvailablePositions(x + 1, y + 1);
         }else{
-            removeFromAvailablePositions(x-1, y-1);
+            updateUnavailablePositions(x+1, y+1);
         }
         if (selectedCard.getResource("SE") != null) { //SE
-            iteratorForAvailablePositions(x - 1, y + 1);
+            updateAvailablePositions(x + 1, y - 1);
         }else{
-            removeFromAvailablePositions(x-1, y+1);
-        }
-    }
-
-    /**
-     * @author Maximilian Mangosi
-     * if a card already exists at that position then don't update the available position list
-     * otherwise check if the angle opposite is not nonexistent
-     * if not then all the update function
-     * @param x coordinate x
-     * @param y coordinate y
-     */
-    private void iteratorForAvailablePositions(int x, int y){
-        if (getCardAtPosition(x,y) != null){
-            if(isThatCardOk(x+1, y-1, "SE")
-                    && isThatCardOk(x+1, y+1, "NE")
-                    && isThatCardOk(x-1, y-1, "SW")
-                    && isThatCardOk(x-1, y+1, "NW")){
-                updateAvailablePositions(x, y);
-            }else{
-                //removeFromAvailablePositions(x, y);
-            }
-        }else{
-            updateAvailablePositions(x, y);
-        }
-    }
-
-    /**
-     * @author Maximilian Mangosi
-     * @param x coordinate x
-     * @param y coordinate y
-     * @param cardinal cardinal position
-     * @return returns true if the cardinal position is not nonexistent and if there is no card
-     */
-    private boolean isThatCardOk(int x, int y, String cardinal){
-        if (getCardAtPosition(x, y) != null) {
-            if (getCardAtPosition(x, y).getResource(cardinal) != null) {
-                //the position could be valid
-                return true;
-            }
-            return false;
-        }else {
-            return true;
+            updateUnavailablePositions(x+1, y-1);
         }
     }
 
