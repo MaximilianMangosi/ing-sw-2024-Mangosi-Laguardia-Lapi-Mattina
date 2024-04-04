@@ -1,0 +1,15 @@
+{
+  "NW" :"f",
+  "NE" :"e",
+  "SW" :"e",
+  "SE" :"null",
+  "isFront": false,
+  "points": 1,
+  "reign":"pl",
+  "requirements":{
+    "a":0,
+    "m":0,
+    "pl":2,
+    "b":1
+  }
+}
