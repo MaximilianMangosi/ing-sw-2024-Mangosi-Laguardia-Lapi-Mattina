@@ -11,35 +11,107 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * GameBox contains a Set for each type of card of the game: ResourceCard,GoldCard,StarterCard,Goal
+ * and a Gson object used for adding cards to sets using jsons files
+ */
 public class GameBox {
+    private final Gson gson;
     private final Set<ResourceCard> resourceCardSet = new HashSet<>();
     private final Set<GoldCard> goldCardSet = new HashSet<>();
     private final Set<StarterCard> starterCardSet = new HashSet<>();
     private final Set<Goal> goalSet = new HashSet<>();
 
+    /**
+     * resourceCardSet getter
+     * @author GiuseppeLaguardia
+     * @return a copy of resourceCardSet
+     */
     public Set<ResourceCard> getResourceCardSet() {
         return new HashSet<>(resourceCardSet);
     }
-
+    /**
+     * goldCardSet getter
+     * @author GiuseppeLaguardia
+     * @return a copy of goldCardSet
+     */
     public Set<GoldCard> getGoldCardSet() {
         return new HashSet<>(goldCardSet);
     }
-
+    /**
+     * starterCardSet getter
+     * @author GiuseppeLaguardia
+     * @return a copy of starterCardSet
+     */
     public Set<StarterCard> getStarterCardSet() {
         return new HashSet<>(starterCardSet);
     }
-
+    /**
+     * GoalSet getter
+     * @author GiuseppeLaguardia
+     * @return a copy of goalSet
+     */
     public Set<Goal> getGoalSet() {
         return new HashSet<>(goalSet);
     }
 
-    public GameBox(List<String> jsonFiles) {
-        // WIP
+    /**
+     * GameBox constructor
+     * @author Giuseppe Laguardia
+     */
+    public GameBox() {
+        GsonBuilder gsonBuilder= new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Resource.class,new ResourceAdapter());
+        gson=gsonBuilder.create();
+    }
 
+    /**
+     * Add a list of ResourceCard to resourceCardSet, parsing a list of json
+     * @author Giuseppe Laguardia
+     * @param jsons a list of String representing a ResourceCard in json format
+     * @throws JsonSyntaxException if the string is badly formatted
+     */
+    public void addToResourceCardSet(List<String> jsons){
+        for(String json :jsons){
+            resourceCardSet.add(gson.fromJson(json,ResourceCard.class));
+        }
+    }
+    /**
+     * Add a list of GoldCard to goldCardSet, parsing a list of json
+     * @author Giuseppe Laguardia
+     * @param jsons a list of String representing a GoldCard in json format
+     * @throws JsonSyntaxException if the string is badly formatted
+     */
+    public void addToGoldCardSet(List<String> jsons){
+        for(String json :jsons){
+            goldCardSet.add(gson.fromJson(json,GoldCard.class));
+        }
+    }
+    /**
+     * Add a list of StarterCard to starterCardSet, parsing a list of json
+     * @author Giuseppe Laguardia
+     * @param jsons a list of String representing a StarterCard in json format
+     * @throws JsonSyntaxException if the string is badly formatted
+     */
+    public void addToStarterCardSet(List<String> jsons){
+        for(String json :jsons){
+            starterCardSet.add(gson.fromJson(json,StarterCard.class));
+        }
+    }
+    /**
+     * Add a list of Goal to goalSet, parsing a list of json
+     * @author Giuseppe Laguardia
+     * @param jsons a list of String representing a Goal in json format
+     * @throws JsonSyntaxException if the string is badly formatted
+     */
+    public void addToGoalSet(List<String> jsons){
+        for(String json :jsons){
+            goalSet.add(gson.fromJson(json,Goal.class));
+        }
     }
     private class ResourceAdapter extends TypeAdapter<Resource> {
         @Override
-        public void write(JsonWriter jsonWriter, Resource resource) throws IOException {
+        public void write(JsonWriter jsonWriter, Resource resource) {
         }
 
         @Override
@@ -49,7 +121,6 @@ public class GameBox {
         }
 
         private Resource stringToResource(String val) throws IOException {
-            Resource r;
             if (val.equals("a")) {
                 return Reign.ANIMAL;
             }
@@ -77,66 +148,5 @@ public class GameBox {
                 return null;
             throw new IOException();
         }
-    }
-    public static void main(String[] arg) throws FileNotFoundException {
-
-        List<String> jsons= new ArrayList<>();
-        File f=new File("C:\\Users\\glagu\\Desktop\\università\\PROVA FINALE (INGEGNERIA DEL SOFTWARE)\\json\\ResourceCard_template.json");
-        Scanner s= new Scanner(f);
-
-        StringBuilder json= new StringBuilder();
-        while(s.hasNext()){
-            json.append(s.nextLine());
-        }
-
-        jsons.add(json.toString());
-        f=new File("C:\\Users\\glagu\\Desktop\\università\\PROVA FINALE (INGEGNERIA DEL SOFTWARE)\\json\\GoldCard_template.json");
-        s= new Scanner(f);
-        json= new StringBuilder();
-        while(s.hasNext()){
-            json.append(s.nextLine());
-        }
-        jsons.add(json.toString());
-        f=new File("C:\\Users\\glagu\\Desktop\\università\\PROVA FINALE (INGEGNERIA DEL SOFTWARE)\\json\\GoldCardTool_template.json");
-        s= new Scanner(f);
-        json= new StringBuilder();
-        while(s.hasNext()){
-            json.append(s.nextLine());
-        }
-        jsons.add(json.toString());
-        f=new File("C:\\Users\\glagu\\Desktop\\università\\PROVA FINALE (INGEGNERIA DEL SOFTWARE)\\json\\GoldCardAngles_template.json");
-        s= new Scanner(f);
-        json= new StringBuilder();
-        while(s.hasNext()){
-            json.append(s.nextLine());
-        }
-        jsons.add(json.toString());
-        f=new File("C:\\Users\\glagu\\Desktop\\università\\PROVA FINALE (INGEGNERIA DEL SOFTWARE)\\json\\StarterCard_template.json");
-        s= new Scanner(f);
-        json= new StringBuilder();
-        while(s.hasNext()){
-            json.append(s.nextLine());
-        }
-        jsons.add(json.toString());
-
-
-        GameBox gb=new GameBox(jsons);
-        /*
-        for(GoldCard card: gb.getGoldCardSet()){
-            System.out.println(card.getCardResources());
-            System.out.println(card.getPoints());
-            System.out.println(card.getReign());
-            System.out.println(card.IsFront());
-            System.out.println(card.getRequirements());
-            System.out.println(card.getTool());
-          }
-        */
-        for(StarterCard card: gb.getStarterCardSet()){
-            System.out.println(card.getCardResources());
-            System.out.println(card.IsFront());
-            System.out.println(card.getResourceBack("NW"));
-            System.out.println(card.getCentralResource());
-        }
-
     }
 }
