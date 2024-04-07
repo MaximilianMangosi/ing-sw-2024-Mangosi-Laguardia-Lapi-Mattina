@@ -166,12 +166,32 @@ public class Player {
 
     /**
      * @author Maximilian Mangosi
+     * @param playedCard
      * adds points to the player
      */
-    public void addPoints(int selectedCardPoints) {
-        points = points + selectedCardPoints;
+    public void addPoints(GoldCardTool playedCard) {
+
+
+
     }
 
+    /**
+     * @author Giorgio Mattina
+     * @param playedCard
+     * adds point to the player
+     */
+    public void addPoints(GoldCardAngles playedCard){
+
+    }
+
+    /**
+     * @author Giorgio Mattina
+     * @param playedCard
+     * adds points to the player
+     */
+    public void addPoints(ResourceCard playedCard){
+
+    }
     /**
      * @author Maximilian Mangosi
      * adds a drawn card to the hand of the player

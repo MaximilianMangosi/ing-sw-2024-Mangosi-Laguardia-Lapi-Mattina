@@ -37,6 +37,7 @@ public class Game{
             throw new LessThanTwoPlayersException();
         listOfPlayers.add(firstPlayer);
         this.numOfPlayers = numOfPlayers;
+
     }
 
     public List<Player> getPlayers() {
@@ -269,7 +270,7 @@ public class Game{
         }
 
         int selectedCardPoints = selectedCard.getPoints();
-        currentPlayer.addPoints(selectedCardPoints); //TODO overload to distinguish all the GoldCard subclasses
+        currentPlayer.addPoints(selectedCard); //TODO overload to distinguish all the GoldCard subclasses
         currentPlayer.addCardToMap(selectedCard, position);
 
         //add counter of resources
@@ -292,7 +293,7 @@ public class Game{
     public void playCardFront(ResourceCard selectedCard, Coordinates position){
         selectedCard.setIsFront(true);
         int selectedCardPoints = selectedCard.getPoints();
-        currentPlayer.addPoints(selectedCardPoints);
+        currentPlayer.addPoints(selectedCard);
         currentPlayer.addCardToMap(selectedCard, position);
 
         //add counter of resources
