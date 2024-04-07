@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gamelogic;
 import it.polimi.ingsw.model.App;
+import it.polimi.ingsw.model.gamecards.GameBox;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +22,9 @@ public class GameManager {
      */
     public void bootGame(int numOfPlayer, String playerName) throws LessThanTwoPlayersException{
         Player player= new Player(playerName);
+        GameBox gamebox = new GameBox();
         if(gameWaiting==null){
-            gameWaiting = new Game(player,numOfPlayer);
+            gameWaiting = new Game(player,numOfPlayer,gamebox);
         }
         else{
             gameWaiting.addPlayer(player);

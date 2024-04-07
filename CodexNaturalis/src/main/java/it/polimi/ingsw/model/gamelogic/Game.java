@@ -17,8 +17,8 @@ import static java.util.Collections.shuffle;
 public class Game{
     private List<Player> listOfPlayers=new ArrayList<>();
     private final int numOfPlayers;
-    private List<ResourceCard> resourceCardDeck;
-    private List<GoldCard> goldCardDeck;
+    private List<ResourceCard> resourceCardDeck ;
+    private List<GoldCard> goldCardDeck ;
     private List<Card> visibleCards;
     private final List<Goal> listOfGoal= new ArrayList<>();
     private Player currentPlayer;
@@ -32,11 +32,36 @@ public class Game{
      * @throws LessThanTwoPlayersException if numOfPlayer less than 2
      */
     //TODO add GameBox to parameters
-    public Game(Player firstPlayer, int numOfPlayers) throws LessThanTwoPlayersException {
+    public Game(Player firstPlayer, int numOfPlayers,GameBox gamebox) throws LessThanTwoPlayersException {
         if(numOfPlayers<2)
             throw new LessThanTwoPlayersException();
         listOfPlayers.add(firstPlayer);
         this.numOfPlayers = numOfPlayers;
+        this.currentPlayer=firstPlayer;
+
+        //create new lists for resource and Gold Cards
+       this.resourceCardDeck = new ArrayList<>();
+       this.goldCardDeck = new ArrayList<>();
+        //adds from gamebox
+        try {
+            this.resourceCardDeck.addAll(gamebox.getResourceCardSet());
+            this.goldCardDeck.addAll(gamebox.getGoldCardSet());
+            this.listOfGoal.addAll(gamebox.getGoalSet());
+
+        }catch (NullPointerException e){
+            System.out.println("one of the sets in gamebox is empty");
+        }
+
+        //create a new List for visible cards
+        this.visibleCards = new ArrayList<Card>();
+        //adds them from this class
+        for (int i = 0; i<2; i++){
+            this.visibleCards.add(resourceCardDeck.removeFirst());
+        }
+        for (int i = 0; i<2; i++){
+            this.visibleCards.add(goldCardDeck.removeFirst());
+        }
+
 
     }
 
