@@ -165,33 +165,68 @@ public class Player {
     }
 
     /**
-     * @author Maximilian Mangosi
+     * @author Maximilian Mangosi, Giorgio Mattina
      * @param playedCard
-     * adds points to the player
+     * adds points to the player,
      */
     public void addPoints(GoldCardTool playedCard) {
-
-
-
+        points += getResourceCounter(playedCard.getTool());
     }
 
     /**
      * @author Giorgio Mattina
      * @param playedCard
-     * adds point to the player
+     * adds point to the player, takes has to check for covered angles
      */
-    public void addPoints(GoldCardAngles playedCard){
+    public void addPoints(GoldCardAngles playedCard,Coordinates coordinates){
+        int x = coordinates.x;
+        int y = coordinates.y;
+        if(look(x-1, y+1)){
+            points+=2;
+        }
+        if(look(x+1, y+1)){
+            points+=2;
+        }
 
+        if(look(x-1, y-1)){
+            points+=2;
+        }
+        if(look(x+1, y-1)){
+            points+=2;
+        }
+    }
+
+    /**
+     * @author Giorgio Mattina
+     * @param x
+     * @param y
+     * @return true if there is a card at (x,y), otherwise returns false
+     */
+    private boolean look (int x, int y){
+        if (getCardAtPosition(x,y)!=null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    /**
+     * @author Giorgio Mattina
+     * @param playedCard
+     * adds points to the player, it takes a normal gold card that isn't of type Angle or Tool
+     */
+    public void addPoints(GoldCard playedCard,Coordinates coordinates){
+        points += playedCard.getPoints();
     }
 
     /**
      * @author Giorgio Mattina
      * @param playedCard
-     * adds points to the player
+     * adds points to player, takes a normal resource card
      */
     public void addPoints(ResourceCard playedCard){
-
+        points += playedCard.getPoints();
     }
+
     /**
      * @author Maximilian Mangosi
      * adds a drawn card to the hand of the player

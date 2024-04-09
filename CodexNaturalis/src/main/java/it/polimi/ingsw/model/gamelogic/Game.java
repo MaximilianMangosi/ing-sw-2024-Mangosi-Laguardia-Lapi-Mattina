@@ -295,7 +295,7 @@ public class Game{
         }
 
         int selectedCardPoints = selectedCard.getPoints();
-        currentPlayer.addPoints(selectedCard); //TODO overload to distinguish all the GoldCard subclasses
+
         currentPlayer.addCardToMap(selectedCard, position);
 
         //add counter of resources
@@ -303,7 +303,7 @@ public class Game{
 
         //covering all the angles the new card is covering
         coverAngle(position);
-
+        currentPlayer.addPoints(selectedCard,position);
         //update availablePosition list
         currentPlayer.checkAvailablePositions(position, selectedCard);
     }
@@ -318,7 +318,7 @@ public class Game{
     public void playCardFront(ResourceCard selectedCard, Coordinates position){
         selectedCard.setIsFront(true);
         int selectedCardPoints = selectedCard.getPoints();
-        currentPlayer.addPoints(selectedCard);
+
         currentPlayer.addCardToMap(selectedCard, position);
 
         //add counter of resources
@@ -326,7 +326,7 @@ public class Game{
 
         //covering all the angles the new card is covering
         coverAngle(position);
-
+        currentPlayer.addPoints(selectedCard);
         //update availablePosition list
         currentPlayer.checkAvailablePositions(position, selectedCard);
     }
