@@ -140,7 +140,7 @@ public class Game{
      * @author Giorgio Mattina
      * Builds the Players' hands and all the game decks
      */
-    private void startGame() {
+    public void startGame() {
         //building players' hands
         int i = 0;
         int j = 0;
@@ -293,7 +293,6 @@ public class Game{
         if(!elementCounter(selectedCard)){
             throw new RequirementsNotMetException();
         }
-
         int selectedCardPoints = selectedCard.getPoints();
 
         currentPlayer.addCardToMap(selectedCard, position);

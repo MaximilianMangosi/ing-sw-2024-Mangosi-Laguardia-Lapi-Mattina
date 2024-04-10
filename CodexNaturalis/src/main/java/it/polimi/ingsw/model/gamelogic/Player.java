@@ -165,18 +165,20 @@ public class Player {
     }
 
     /**
+     * adds points to the player
      * @author Maximilian Mangosi, Giorgio Mattina
-     * @param playedCard
-     * adds points to the player,
+     * @param playedCard GoldCard that grants points
+     *
      */
     public void addPoints(GoldCardTool playedCard) {
         points += getResourceCounter(playedCard.getTool());
     }
 
     /**
+     * adds point to the player, checking the cards covered by playedCard
      * @author Giorgio Mattina
-     * @param playedCard
-     * adds point to the player, takes has to check for covered angles
+     * @param playedCard takes a GoldCardAngles
+     *
      */
     public void addPoints(GoldCardAngles playedCard,Coordinates coordinates){
         int x = coordinates.x;
@@ -198,8 +200,8 @@ public class Player {
 
     /**
      * @author Giorgio Mattina
-     * @param x
-     * @param y
+     * @param x int that indicates the x coordinate where are you looking
+     * @param y int that indicates the y coordinate where are you looking
      * @return true if there is a card at (x,y), otherwise returns false
      */
     private boolean look (int x, int y){
@@ -210,9 +212,9 @@ public class Player {
         }
     }
     /**
+     * adds points to the player
      * @author Giorgio Mattina
-     * @param playedCard
-     * adds points to the player, it takes a normal gold card that isn't of type Angle or Tool
+     * @param playedCard, takes a normal GoldCard that isn't of type Angle or Tool
      */
     public void addPoints(GoldCard playedCard,Coordinates coordinates){
         points += playedCard.getPoints();
@@ -220,8 +222,8 @@ public class Player {
 
     /**
      * @author Giorgio Mattina
-     * @param playedCard
-     * adds points to player, takes a normal resource card
+     * @param playedCard, takes a ResourceCard
+     * adds points to player
      */
     public void addPoints(ResourceCard playedCard){
         points += playedCard.getPoints();
@@ -253,7 +255,7 @@ public class Player {
 
     /**
      * @author Maximilian Mangosi
-     * @return returns the card at a certain coordinate
+     * @return returns the card at a certain coordinates
      */
     public Card getCardAtPosition(int x, int y) {
         //it has to return an object Card at that position on the field

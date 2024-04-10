@@ -8,7 +8,7 @@ import java.util.Map;
 public class GameManager {
     private Map<String,Game> gameInProcess= new HashMap<>();
     private Game gameWaiting;
-    private Map<String,String> playerToGame=new HashMap<>();
+    private Map<String,Integer> playerToGame=new HashMap<>();
 
     public GameManager() {
     }
@@ -22,17 +22,20 @@ public class GameManager {
      */
     public void bootGame(int numOfPlayer, String playerName) throws LessThanTwoPlayersException{
         Player player= new Player(playerName);
-        GameBox gamebox = new GameBox();
+
         if(gameWaiting==null){
+            GameBox gamebox = new GameBox();
             gameWaiting = new Game(player,numOfPlayer,gamebox);
         }
         else{
+            //TODO Unique playerName check
             gameWaiting.addPlayer(player);
         }
-        playerToGame.put(playerName,gameWaiting.toString());
+        playerToGame.put(playerName,gameWaiting.hashCode());
+        //TODO move game full check in controller
         if(gameWaiting.getNumOfPlayers() == gameWaiting.getPlayers().size()){
             gameInProcess.put(gameWaiting.toString(),gameWaiting);
-            //gameWaiting.startGame();
+            gameWaiting.startGame();
         }
     }
 
