@@ -1,13 +1,14 @@
 package it.polimi.ingsw.model.gamecards;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StarterCard extends Card{
     private final Reign BackNW;
     private final Reign BackNE;
     private final Reign BackSW;
     private final Reign BackSE;
-    private final ArrayList<Reign> centralResources;
+    private final List<Reign> centralResources;
     public StarterCard(Resource NW, Resource NE, Resource SW, Resource SE, Reign backNW, Reign backNE, Reign backSW, Reign backSE, ArrayList<Reign> centralResources) {
         super(NW, NE, SW, SE);
         BackNW = backNW;
@@ -35,7 +36,7 @@ public class StarterCard extends Card{
         return null;
     }
 
-    public ArrayList<Reign> getCentralResource() {
+    public List<Resource> getCentralResource() {
         return new ArrayList<>(centralResources);
     }
     //TODO override getCardResources()

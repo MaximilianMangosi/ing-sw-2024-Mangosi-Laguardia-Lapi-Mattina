@@ -275,6 +275,7 @@ public class Game{
 
         //add counter of resources
         currentPlayer.updateResourceCounter(selectedCard.getCardResources());
+        currentPlayer.updateResourceCounter(selectedCard.getCentralResource());
 
         //update availablePosition list
         currentPlayer.checkAvailablePositions(position, selectedCard);
