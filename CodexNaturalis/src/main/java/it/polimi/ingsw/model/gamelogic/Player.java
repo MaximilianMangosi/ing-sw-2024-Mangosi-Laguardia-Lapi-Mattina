@@ -165,24 +165,33 @@ public class Player {
     }
 
     /**
-     * adds points to the player
      * @author Maximilian Mangosi, Giorgio Mattina
-     * @param playedCard GoldCard that grants points
-     *
+     * @param playedCard
+     * adds points to the player,
      */
     public void addPoints(GoldCardTool playedCard) {
         points += getResourceCounter(playedCard.getTool());
     }
 
     /**
-     * adds point to the player, checking the cards covered by playedCard
      * @author Giorgio Mattina
-     * @param playedCard takes a GoldCardAngles
-     *
+     * @param playedCard
+     * adds point to the player, has to check for covered angles around the played card
      */
-    public void addPoints(GoldCardAngles playedCard,Coordinates coordinates){
-        int x = coordinates.x;
-        int y = coordinates.y;
+    public void addPoints(GoldCardAngles playedCard){
+        Coordinates position = new Coordinates(0,0);
+
+        //for loop that finds the coordinates of a given card in the field Map
+        for (Map.Entry<Coordinates, Card> instance : field.entrySet()) {
+
+            if (instance.getValue().equals(playedCard)) {
+                position = instance.getKey();
+                break;
+            }
+        }
+
+        int x = position.x;
+        int y = position.y;
         if(look(x-1, y+1)){
             points+=2;
         }
@@ -200,8 +209,8 @@ public class Player {
 
     /**
      * @author Giorgio Mattina
-     * @param x int that indicates the x coordinate where are you looking
-     * @param y int that indicates the y coordinate where are you looking
+     * @param x
+     * @param y
      * @return true if there is a card at (x,y), otherwise returns false
      */
     private boolean look (int x, int y){
@@ -212,18 +221,18 @@ public class Player {
         }
     }
     /**
-     * adds points to the player
      * @author Giorgio Mattina
-     * @param playedCard, takes a normal GoldCard that isn't of type Angle or Tool
+     * @param playedCard
+     * adds points to the player, it takes a normal gold card that isn't of type Angle or Tool
      */
-    public void addPoints(GoldCard playedCard,Coordinates coordinates){
+    public void addPoints(GoldCard playedCard){
         points += playedCard.getPoints();
     }
 
     /**
      * @author Giorgio Mattina
-     * @param playedCard, takes a ResourceCard
-     * adds points to player
+     * @param playedCard
+     * adds points to player, takes a normal resource card
      */
     public void addPoints(ResourceCard playedCard){
         points += playedCard.getPoints();
@@ -255,7 +264,7 @@ public class Player {
 
     /**
      * @author Maximilian Mangosi
-     * @return returns the card at a certain coordinates
+     * @return returns the card at a certain coordinate
      */
     public Card getCardAtPosition(int x, int y) {
         //it has to return an object Card at that position on the field
