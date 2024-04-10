@@ -176,7 +176,7 @@ public class Player {
     /**
      * @author Giorgio Mattina
      * @param playedCard
-     * adds point to the player, takes has to check for covered angles
+     * adds point to the player, has to check for covered angles around the played card
      */
     public void addPoints(GoldCardAngles playedCard){
         Coordinates position = new Coordinates(0,0);
