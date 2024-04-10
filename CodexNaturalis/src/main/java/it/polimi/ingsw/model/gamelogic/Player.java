@@ -178,9 +178,20 @@ public class Player {
      * @param playedCard
      * adds point to the player, takes has to check for covered angles
      */
-    public void addPoints(GoldCardAngles playedCard,Coordinates coordinates){
-        int x = coordinates.x;
-        int y = coordinates.y;
+    public void addPoints(GoldCardAngles playedCard){
+        Coordinates position = new Coordinates(0,0);
+
+        //for loop that finds the coordinates of a given card in the field Map
+        for (Map.Entry<Coordinates, Card> instance : field.entrySet()) {
+
+            if (instance.getValue().equals(playedCard)) {
+                position = instance.getKey();
+                break;
+            }
+        }
+
+        int x = position.x;
+        int y = position.y;
         if(look(x-1, y+1)){
             points+=2;
         }
@@ -214,7 +225,7 @@ public class Player {
      * @param playedCard
      * adds points to the player, it takes a normal gold card that isn't of type Angle or Tool
      */
-    public void addPoints(GoldCard playedCard,Coordinates coordinates){
+    public void addPoints(GoldCard playedCard){
         points += playedCard.getPoints();
     }
 

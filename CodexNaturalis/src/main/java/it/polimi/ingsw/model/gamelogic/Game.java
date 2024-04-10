@@ -31,7 +31,6 @@ public class Game{
      * @param numOfPlayers the number of player that can join the game, must be bigger than 1
      * @throws LessThanTwoPlayersException if numOfPlayer less than 2
      */
-    //TODO add GameBox to parameters
     public Game(Player firstPlayer, int numOfPlayers,GameBox gamebox) throws LessThanTwoPlayersException {
         if(numOfPlayers<2)
             throw new LessThanTwoPlayersException();
@@ -303,7 +302,7 @@ public class Game{
 
         //covering all the angles the new card is covering
         coverAngle(position);
-        currentPlayer.addPoints(selectedCard,position);
+        currentPlayer.addPoints(selectedCard);
         //update availablePosition list
         currentPlayer.checkAvailablePositions(position, selectedCard);
     }
