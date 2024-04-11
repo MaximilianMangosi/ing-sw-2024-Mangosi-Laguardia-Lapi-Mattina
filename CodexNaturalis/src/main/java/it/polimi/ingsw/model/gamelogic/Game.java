@@ -39,8 +39,8 @@ public class Game{
         this.currentPlayer=firstPlayer;
 
         //create new lists for resource and Gold Cards
-       this.resourceCardDeck = new ArrayList<>();
-       this.goldCardDeck = new ArrayList<>();
+        this.resourceCardDeck = new ArrayList<>();
+        this.goldCardDeck = new ArrayList<>();
         //adds from gamebox
         try {
             this.resourceCardDeck.addAll(gamebox.getResourceCardSet());
@@ -60,8 +60,6 @@ public class Game{
         for (int i = 0; i<2; i++){
             this.visibleCards.add(goldCardDeck.removeFirst());
         }
-
-
     }
 
     public List<Player> getPlayers() {
@@ -148,12 +146,8 @@ public class Game{
         start_position.add(origin);
         Player player;
         //Mi manca un attimo come funziona APP ,cioè devo fare una copia dei mazzi da APP e poi fare lo shuffle
-
-        /*List<String> Colors= new ArrayList<String>();
-        Colors.add("Red");
-        Colors.add("Blue");
-        Colors.add("Yellow");
-        Colors.add("Green");*/
+        String[] colorArray={"Red","Blue","Yellow","Green"};
+        List<String> Colors= new ArrayList<String>(List.of(colorArray));
 
 
         shuffle(resourceCardDeck);
@@ -164,8 +158,7 @@ public class Game{
         for (i = 0; i < numOfPlayers; i++) {
 
             player = listOfPlayers.get(i);
-           // player.setname("Player"+i);
-            //player.setColor(Colors.get(i));
+            player.setColor(Colors.get(i));
             player.setPoints(0);
             player.setAvailablePositions(start_position);
 
@@ -192,7 +185,7 @@ public class Game{
         }
         //Builds a list of public goals
 
-        //Builds the visiblecardsdeck
+        //Builds the visible cards deck
         for ( i=0 ; i< 2 ; i++) {
             visibleCards.add(goldCardDeck.removeFirst());
         }
@@ -306,7 +299,6 @@ public class Game{
         //update availablePosition list
         currentPlayer.checkAvailablePositions(position, selectedCard);
     }
-    //not completed
 
     /**
      * @author Maximilian Mangosi
@@ -316,7 +308,6 @@ public class Game{
      */
     public void playCardFront(ResourceCard selectedCard, Coordinates position){
         selectedCard.setIsFront(true);
-        int selectedCardPoints = selectedCard.getPoints();
 
         currentPlayer.addCardToMap(selectedCard, position);
 
@@ -329,7 +320,6 @@ public class Game{
         //update availablePosition list
         currentPlayer.checkAvailablePositions(position, selectedCard);
     }
-    //not completed
 
 
     /**
@@ -376,17 +366,16 @@ public class Game{
      * when a card is positioned on the field, this card coveres the angles of other cards
      * @param position coordinates in witch the card has been positioned
      */
-    private void coverAngle(Coordinates position){
+    private void coverAngle(Coordinates position) {
         //check all angles of the newly positioned card and set the angles covered by the new card as covered
         int x, y;
         x = position.x;
-        y= position.y;
-        cover(x-1, y+1, "SE");
-        cover(x+1, y+1, "SW");
-        cover(x-1, y-1, "NE");
-        cover(x+1, y-1, "NW");
+        y = position.y;
+        cover(x - 1, y + 1, "SE");
+        cover(x + 1, y + 1, "SW");
+        cover(x - 1, y - 1, "NE");
+        cover(x + 1, y - 1, "NW");
     }
-    //not completed
 
     /**
      * @author Maximilian Mangosi

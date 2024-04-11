@@ -82,7 +82,29 @@ public class GameBox {
      * @param jsons a list of String representing a GoldCard in json format
      * @throws JsonSyntaxException if the string is badly formatted
      */
-    public void addToGoldCardSet(List<String> jsons){
+    public void addGoldCards(List<String> jsons){
+        for(String json :jsons){
+            goldCardSet.add(gson.fromJson(json,GoldCard.class));
+        }
+    }
+    /**
+     * Add a list of GoldCardAngle to goldCardSet, parsing a list of json
+     * @author Giuseppe Laguardia
+     * @param jsons a list of String representing a GoldCardAngle in json format
+     * @throws JsonSyntaxException if the string is badly formatted
+     */
+    public void addGoldCardAngles(List<String> jsons){
+        for(String json :jsons){
+            goldCardSet.add(gson.fromJson(json,GoldCardAngles.class));
+        }
+    }
+    /**
+     * Add a list of GoldCardTool to goldCardSet, parsing a list of json
+     * @author Giuseppe Laguardia
+     * @param jsons a list of String representing a GoldCardTool in json format
+     * @throws JsonSyntaxException if the string is badly formatted
+     */
+    public void addGoldCardTools(List<String> jsons){
         for(String json :jsons){
             goldCardSet.add(gson.fromJson(json,GoldCard.class));
         }
@@ -99,16 +121,46 @@ public class GameBox {
         }
     }
     /**
-     * Add a list of Goal to goalSet, parsing a list of json
+     * Add a list of StairGoal to goalSet, parsing a list of json
      * @author Giuseppe Laguardia
-     * @param jsons a list of String representing a Goal in json format
+     * @param jsons a list of String representing a StairGoal in json format
      * @throws JsonSyntaxException if the string is badly formatted
      */
-    public void addToGoalSet(List<String> jsons){
+    public void addStairGoals(List<String> jsons){
         for(String json :jsons){
-            goalSet.add(gson.fromJson(json,Goal.class));
+            goalSet.add(gson.fromJson(json, StairGoal.class));
         }
     }
+    /**
+     * Add a list of LGoal to goalSet, parsing a list of json
+     * @author Giuseppe Laguardia
+     * @param jsons a list of String representing a LGoal in json format
+     * @throws JsonSyntaxException if the string is badly formatted
+     */
+    public void addLGoals(List<String> jsons){
+        for(String json :jsons){
+            goalSet.add(gson.fromJson(json, LGoal.class));
+        }
+    }
+    /**
+     * Add a list of IdenticalGoal to goalSet, parsing a list of json
+     * @author Giuseppe Laguardia
+     * @param jsons a list of String representing a IdenticalGoal in json format
+     * @throws JsonSyntaxException if the string is badly formatted
+     */
+    public void addIdenticalGoals(List<String> jsons){
+        for(String json :jsons){
+            goalSet.add(gson.fromJson(json, IdenticalGoal.class));
+        }
+    }
+    /**
+     * Add a DistinctGoal to goalSet
+     * @author Giuseppe Laguardia
+     */
+    public void addDistinctGoals(){
+        goalSet.add(new DistinctGoal());
+    }
+
     private class ResourceAdapter extends TypeAdapter<Resource> {
         @Override
         public void write(JsonWriter jsonWriter, Resource resource) {

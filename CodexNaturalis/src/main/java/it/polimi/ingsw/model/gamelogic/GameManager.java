@@ -19,24 +19,27 @@ public class GameManager {
      * @param numOfPlayer the number of player that can join the game, if there is already a game waiting for player this parameter is ignored
      * @param playerName the unique nickname of the player joining/creating the game
      * @throws LessThanTwoPlayersException if numOfPlayer less than 2
+     * @throws PlayerNameNotUniqueException if any Players's name in gameWaiting matches with playerName
      */
-    public void bootGame(int numOfPlayer, String playerName) throws LessThanTwoPlayersException{
+    public void bootGame(int numOfPlayer, String playerName) throws LessThanTwoPlayersException, PlayerNameNotUniqueException {
         Player player= new Player(playerName);
 
         if(gameWaiting==null){
             GameBox gamebox = new GameBox();
+            if(numOfPlayer<2)
+                throw new LessThanTwoPlayersException();
             gameWaiting = new Game(player,numOfPlayer,gamebox);
         }
         else{
-            //TODO Unique playerName check
+            if(!isPlayerNameUnique(playerName))
+                throw new PlayerNameNotUniqueException();
             gameWaiting.addPlayer(player);
         }
         playerToGame.put(playerName,gameWaiting.hashCode());
-        //TODO move game full check in controller
-        if(gameWaiting.getNumOfPlayers() == gameWaiting.getPlayers().size()){
-            gameInProcess.put(gameWaiting.toString(),gameWaiting);
-            gameWaiting.startGame();
-        }
+    }
+
+    private boolean isPlayerNameUnique(String playerName) {
+        return gameWaiting.getPlayers().stream().anyMatch(p -> p.getName().equals(playerName));
     }
 
 }

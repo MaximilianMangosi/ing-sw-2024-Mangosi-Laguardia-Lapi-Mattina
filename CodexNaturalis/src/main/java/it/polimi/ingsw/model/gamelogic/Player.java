@@ -198,7 +198,6 @@ public class Player {
         if(look(x+1, y+1)){
             points+=2;
         }
-
         if(look(x-1, y-1)){
             points+=2;
         }
@@ -290,6 +289,18 @@ public class Player {
         for (Resource r : resourceList){
             int temp = resourceCounters.get(r);
             resourceCounters.replace(r, temp+1);
+        }
+    }
+
+    /**
+     * set the check's color to given value if is accepted {"Red","Blue","Yellow","Green"}, otherwise nothing happens
+     * @author Giuseppe Laguardia
+     * @param s a String representing the color of the check,
+     */
+    public void setColor(String s) {
+        String[] colorArray={"Red","Blue","Yellow","Green"};
+        if(Arrays.asList(colorArray).contains(s)){
+            check=s;
         }
     }
 }
