@@ -7,5 +7,5 @@ public class TerminalState extends GameState{
     TerminalState(Game game, GameManager gameManager) {
         super(game, gameManager);
     }
-    //poop
+
 }

@@ -10,7 +10,7 @@ public class InitState extends GameState{
     }
     //TODO BootGame
     //TODO StartGame
-    //todo ChooseObjective
-    //todo ChooseStarterCardSide
+    //todo ChooseGoal(UserId,Goal)
+    //todo ChooseStarterCardSide(boolean)
 
 }

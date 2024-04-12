@@ -16,19 +16,19 @@ public class GameManager {
     /**
      * creates a new game
      * @author Giuseppe Lagurdia
-     * @param numOfPlayer the number of player that can join the game, if there is already a game waiting for player this parameter is ignored
+     * @param numOfPlayers the number of player that can join the game, if there is already a game waiting for player this parameter is ignored
      * @param playerName the unique nickname of the player joining/creating the game
-     * @throws LessThanTwoPlayersException if numOfPlayer less than 2
+     * @throws UnacceptableNumberOfPlayersException if numOfPlayer less than 2
      * @throws PlayerNameNotUniqueException if any Players's name in gameWaiting matches with playerName
      */
-    public void bootGame(int numOfPlayer, String playerName) throws LessThanTwoPlayersException, PlayerNameNotUniqueException {
+    public void bootGame(int numOfPlayers, String playerName) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException {
         Player player= new Player(playerName);
 
         if(gameWaiting==null){
             GameBox gamebox = new GameBox();
-            if(numOfPlayer<2)
-                throw new LessThanTwoPlayersException();
-            gameWaiting = new Game(player,numOfPlayer,gamebox);
+            if(numOfPlayers<2 || numOfPlayers>4)
+                throw new UnacceptableNumberOfPlayersException();
+            gameWaiting = new Game(player,numOfPlayers,gamebox);
         }
         else{
             if(!isPlayerNameUnique(playerName))
@@ -36,6 +36,9 @@ public class GameManager {
             gameWaiting.addPlayer(player);
         }
         playerToGame.put(playerName,gameWaiting.hashCode());
+        if(gameWaiting.getPlayers().size()==gameWaiting.getNumOfPlayers()){
+            gameInProcess.put(String.valueOf(gameWaiting.hashCode()),gameWaiting);
+        }
     }
 
     private boolean isPlayerNameUnique(String playerName) {
