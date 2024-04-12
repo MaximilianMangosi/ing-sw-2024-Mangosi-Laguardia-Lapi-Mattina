@@ -39,5 +39,24 @@ public class StarterCard extends Card{
     public List<Resource> getCentralResource() {
         return new ArrayList<>(centralResources);
     }
-    //TODO override getCardResources()
+
+    /**
+     * Returns a  list of resources, when starter card is played back
+     * @author Giorgio Mattina
+     * @return
+     */
+    public List<Resource> getBackResources(){
+        //cycle through the card angles and return a list with all the resources in the card
+        List<Resource> cardResources;
+        cardResources=new ArrayList<>();
+
+        String[] angles ={"NW","SW","NE","SE"};
+
+        for (String angle: angles)
+            if(getResourceBack(angle)!=null && !getResourceBack(angle).isEmpty())
+                cardResources.add(getResourceBack(angle));
+
+        return cardResources;
+    }
+
 }

@@ -365,11 +365,11 @@ public class Game{
      * @param selectedCard the card selected by the user
      * @param position the coordinates in witch th user wants the card to be positioned
      */
-    public void playCardBack(StarterCard selectedCard, Coordinates position){ //TODO overload for StarterCard
+    public void playCardBack(StarterCard selectedCard, Coordinates position){
         selectedCard.setIsFront(false);
         currentPlayer.addCardToMap(selectedCard, position);
 
-        //TODO aggiungere il getBackResources come lista in starter card
+
         //add counter resources
         currentPlayer.updateResourceCounter(selectedCard.getBackResources());
 
