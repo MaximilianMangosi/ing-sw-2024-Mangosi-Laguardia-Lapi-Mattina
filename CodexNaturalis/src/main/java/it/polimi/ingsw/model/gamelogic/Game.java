@@ -32,8 +32,7 @@ public class Game{
      * @throws LessThanTwoPlayersException if numOfPlayer less than 2
      */
     public Game(Player firstPlayer, int numOfPlayers,GameBox gamebox) throws LessThanTwoPlayersException {
-        if(numOfPlayers<2)
-            throw new LessThanTwoPlayersException();
+
         listOfPlayers.add(firstPlayer);
         this.numOfPlayers = numOfPlayers;
         this.currentPlayer=firstPlayer;
@@ -42,14 +41,10 @@ public class Game{
         this.resourceCardDeck = new ArrayList<>();
         this.goldCardDeck = new ArrayList<>();
         //adds from gamebox
-        try {
-            this.resourceCardDeck.addAll(gamebox.getResourceCardSet());
-            this.goldCardDeck.addAll(gamebox.getGoldCardSet());
-            this.listOfGoal.addAll(gamebox.getGoalSet());
 
-        }catch (NullPointerException e){
-            System.out.println("one of the sets in gamebox is empty");
-        }
+        this.resourceCardDeck.addAll(gamebox.getResourceCardSet());
+        this.goldCardDeck.addAll(gamebox.getGoldCardSet());
+        this.listOfGoal.addAll(gamebox.getGoalSet());
 
         //create a new List for visible cards
         this.visibleCards = new ArrayList<Card>();
