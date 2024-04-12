@@ -32,8 +32,7 @@ public class Game{
      * @throws LessThanTwoPlayersException if numOfPlayer less than 2
      */
     public Game(Player firstPlayer, int numOfPlayers,GameBox gamebox) throws LessThanTwoPlayersException {
-        if(numOfPlayers<2)
-            throw new LessThanTwoPlayersException();
+
         listOfPlayers.add(firstPlayer);
         this.numOfPlayers = numOfPlayers;
         this.currentPlayer=firstPlayer;
@@ -42,14 +41,10 @@ public class Game{
         this.resourceCardDeck = new ArrayList<>();
         this.goldCardDeck = new ArrayList<>();
         //adds from gamebox
-        try {
-            this.resourceCardDeck.addAll(gamebox.getResourceCardSet());
-            this.goldCardDeck.addAll(gamebox.getGoldCardSet());
-            this.listOfGoal.addAll(gamebox.getGoalSet());
 
-        }catch (NullPointerException e){
-            System.out.println("one of the sets in gamebox is empty");
-        }
+        this.resourceCardDeck.addAll(gamebox.getResourceCardSet());
+        this.goldCardDeck.addAll(gamebox.getGoldCardSet());
+        this.listOfGoal.addAll(gamebox.getGoalSet());
 
         //create a new List for visible cards
         this.visibleCards = new ArrayList<Card>();
@@ -324,16 +319,18 @@ public class Game{
 
     /**
      * @author Maximilan Mangosi
-     * playing the card in the back position on the field
+     * playing the Resource card in the back position on the field
      * @param selectedCard the card selected by the user
      * @param position the coordinates in witch th user wants the card to be positioned
      */
-    public void playCardBack(Card selectedCard, Coordinates position){ //TODO overload for StarterCard
+    public void playCardBack(ResourceCard selectedCard, Coordinates position){ //TODO overload for StarterCard
         selectedCard.setIsFront(false);
         currentPlayer.addCardToMap(selectedCard, position);
 
+        List<Resource> newResource = new ArrayList<>();
+        newResource.add(selectedCard.getReign());
         //add counter resources
-        currentPlayer.updateResourceCounter(selectedCard.getCardResources());
+        currentPlayer.updateResourceCounter(newResource);
 
         //covering all the angles the new card is covering
         coverAngle(position);
@@ -341,7 +338,47 @@ public class Game{
         //update availablePosition list
         currentPlayer.checkAvailablePositions(position, selectedCard);
     }
+    /**
+     * @author Maximilan Mangosi
+     * playing the Gold card in the back position on the field
+     * @param selectedCard the card selected by the user
+     * @param position the coordinates in witch th user wants the card to be positioned
+     */
+    public void playCardBack(GoldCard selectedCard, Coordinates position){ //TODO overload for StarterCard
+        selectedCard.setIsFront(false);
+        currentPlayer.addCardToMap(selectedCard, position);
 
+        List<Resource> newResource = new ArrayList<>();
+        newResource.add(selectedCard.getReign());
+        //add counter resources
+        currentPlayer.updateResourceCounter(newResource);
+
+        //covering all the angles the new card is covering
+        coverAngle(position);
+
+        //update availablePosition list
+        currentPlayer.checkAvailablePositions(position, selectedCard);
+    }
+    /**
+     * @author Maximilan Mangosi
+     * playing the Starter card in the back position on the field
+     * @param selectedCard the card selected by the user
+     * @param position the coordinates in witch th user wants the card to be positioned
+     */
+    public void playCardBack(StarterCard selectedCard, Coordinates position){
+        selectedCard.setIsFront(false);
+        currentPlayer.addCardToMap(selectedCard, position);
+
+
+        //add counter resources
+        currentPlayer.updateResourceCounter(selectedCard.getBackResources());
+
+        //covering all the angles the new card is covering
+        coverAngle(position);
+
+        //update availablePosition list
+        currentPlayer.checkAvailablePositions(position, selectedCard);
+    }
     /**
      * @author Maximilian Mangosi
      * counts the elements needed for the gold card requirements

@@ -193,16 +193,16 @@ public class Player {
         int x = position.x;
         int y = position.y;
         if(look(x-1, y+1)){
-            points+=2;
+            points+=playedCard.getPoints();
         }
         if(look(x+1, y+1)){
-            points+=2;
+            points+=playedCard.getPoints();
         }
         if(look(x-1, y-1)){
-            points+=2;
+            points+=playedCard.getPoints();
         }
         if(look(x+1, y-1)){
-            points+=2;
+            points+=playedCard.getPoints();
         }
     }
 
