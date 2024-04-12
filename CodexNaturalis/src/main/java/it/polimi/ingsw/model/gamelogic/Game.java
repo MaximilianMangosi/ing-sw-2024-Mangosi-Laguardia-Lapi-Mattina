@@ -29,9 +29,8 @@ public class Game{
      * @author Giuseppe Laguardia
      * @param firstPlayer the player who creates the game
      * @param numOfPlayers the number of player that can join the game, must be bigger than 1
-     * @throws LessThanTwoPlayersException if numOfPlayer less than 2
      */
-    public Game(Player firstPlayer, int numOfPlayers,GameBox gamebox) throws LessThanTwoPlayersException {
+    public Game(Player firstPlayer, int numOfPlayers,GameBox gamebox){
 
         listOfPlayers.add(firstPlayer);
         this.numOfPlayers = numOfPlayers;
@@ -369,12 +368,8 @@ public class Game{
         selectedCard.setIsFront(false);
         currentPlayer.addCardToMap(selectedCard, position);
 
-
         //add counter resources
         currentPlayer.updateResourceCounter(selectedCard.getBackResources());
-
-        //covering all the angles the new card is covering
-        coverAngle(position);
 
         //update availablePosition list
         currentPlayer.checkAvailablePositions(position, selectedCard);

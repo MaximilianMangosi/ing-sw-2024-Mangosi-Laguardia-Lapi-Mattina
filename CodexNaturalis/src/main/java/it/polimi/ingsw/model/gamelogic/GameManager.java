@@ -38,6 +38,7 @@ public class GameManager {
         playerToGame.put(playerName,gameWaiting.hashCode());
         if(gameWaiting.getPlayers().size()==gameWaiting.getNumOfPlayers()){
             gameInProcess.put(String.valueOf(gameWaiting.hashCode()),gameWaiting);
+            gameWaiting=null;
         }
     }
 
