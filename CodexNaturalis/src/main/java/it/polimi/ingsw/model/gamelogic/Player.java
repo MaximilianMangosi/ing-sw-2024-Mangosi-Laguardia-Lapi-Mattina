@@ -6,6 +6,9 @@ import java.util.*;
 
 public class Player {
     private List<Card> hand;
+
+
+
     private Goal[] goalOptions=new Goal[2];
     private Goal goal;
     private Map<Coordinates,Card> field;
@@ -66,7 +69,13 @@ public class Player {
     public void setAvailablePositions(List<Coordinates> availablePositions) {
         this.availablePositions = availablePositions;
     }
+    public Goal[] getGoalOptions() {
+        return goalOptions;
+    }
 
+    public void setGoalOptions(Goal[] goalOptions) {
+        this.goalOptions = goalOptions;
+    }
     /**
      * @author Maximilian Mangosi
      * updates available positions for the player

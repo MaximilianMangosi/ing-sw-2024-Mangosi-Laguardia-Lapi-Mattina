@@ -23,7 +23,9 @@ public class Game{
     private List<Card> visibleCards;
     private final List<Goal> listOfGoal= new ArrayList<>();
     private Player currentPlayer;
-    //TODO add listOfStarterCard
+
+    private List<StarterCard> starterCards;
+
 
     /**
      * constructor of class Game
@@ -45,6 +47,7 @@ public class Game{
         this.resourceCardDeck.addAll(gamebox.getResourceCardSet());
         this.goldCardDeck.addAll(gamebox.getGoldCardSet());
         this.listOfGoal.addAll(gamebox.getGoalSet());
+        this.starterCards.addAll(gamebox.getStarterCardSet());
 
         //create a new List for visible cards
         this.visibleCards = new ArrayList<Card>();
@@ -148,7 +151,7 @@ public class Game{
         shuffle(resourceCardDeck);
         shuffle(goldCardDeck);
         shuffle(listOfGoal);
-
+        shuffle(starterCards);
 
         for (i = 0; i < numOfPlayers; i++) {
 
@@ -162,15 +165,18 @@ public class Game{
                 player.addCardToHand(resourceCardDeck.removeFirst());
 
             }
-
+            //sets the player's starter card
+            player.setStarterCard(starterCards.removeFirst());
             //one gold card
             player.addCardToHand(goldCardDeck.removeFirst());
 
 
-            //one starter card
-            //player.setStarterCard();
-            player.setGoal(listOfGoal.removeFirst());
 
+            Goal[] goalOptions=new Goal[2];
+            for (i = 0; i<2; i++){
+                goalOptions[i]=listOfGoal.removeFirst();
+            }
+            player.setGoalOptions(goalOptions);
 
 
             //aggiungere posizione della starter card
