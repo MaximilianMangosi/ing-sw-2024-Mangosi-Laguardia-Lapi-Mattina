@@ -7,7 +7,7 @@ public class TurnState extends GameState{
     TurnState(Game game, GameManager gameManager) {
         super(game, gameManager);
     }
-    //TODO playCards
-    //todo drawCards
-    //todo
+    //TODO playCards Giorgio
+    //todo drawCards Giorgio
+    //isFinalTurn() return
 }

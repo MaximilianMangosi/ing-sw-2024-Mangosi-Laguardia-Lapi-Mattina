@@ -17,6 +17,7 @@ import static java.util.Collections.shuffle;
 public class Game{
     private List<Player> listOfPlayers=new ArrayList<>();
     private final int numOfPlayers;
+    private boolean AreBothDeckEmpty;
     private List<ResourceCard> resourceCardDeck ;
     private List<GoldCard> goldCardDeck ;
     private List<Card> visibleCards;
@@ -113,7 +114,7 @@ public class Game{
                         get().getPoints();
         // don't know if a check for maxPoints >=20 is needed
         return listOfPlayers.stream().
-                filter(p->p.getPoints() == maxPoints).
+                filter(p->p.getPoints()== maxPoints).
                 max(Comparator.comparing((Player::getGoalPoints))).get();
 
     }
@@ -215,6 +216,7 @@ public class Game{
             Card drawCard = goldCardDeck.removeFirst();
             currentPlayer.addCardToHand(drawCard);
         }
+        AreBothDeckEmpty=goldCardDeck.isEmpty() && resourceCardDeck.isEmpty();
     }
 
     /**
@@ -240,15 +242,14 @@ public class Game{
                     visibleCards.add(resourceCardDeck.removeFirst());
                 }
             } else {
-                try{
+                try {
                     visibleCards.add(resourceCardDeck.removeFirst());
-                }catch (NoSuchElementException e){
+                } catch (NoSuchElementException e) {
                     visibleCards.add(goldCardDeck.removeFirst());
                 }
             }
-        } else{
-            throw new AllDeckEmptyExeption();
         }
+        AreBothDeckEmpty=goldCardDeck.isEmpty() && resourceCardDeck.isEmpty();
 
     }
     /**

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class Player {
     private List<Card> hand;
+    private Goal[] goalOptions=new Goal[2];
     private Goal goal;
     private Map<Coordinates,Card> field;
     private HashMap<Resource,Integer> resourceCounters = new HashMap<>();
@@ -192,6 +193,7 @@ public class Player {
 
         int x = position.x;
         int y = position.y;
+
         if(look(x-1, y+1)){
             points+=playedCard.getPoints();
         }
