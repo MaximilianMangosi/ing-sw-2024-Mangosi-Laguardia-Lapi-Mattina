@@ -1,7 +1,9 @@
-package it.polimi.ingsw.model.gamecards;
+package it.polimi.ingsw.model.gamecards.goals;
 
-public class LGoal extends Goal{
+import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.resources.Reign;
 
+public class LGoal extends Goal {
     public enum  PrimaryPosition {
         TOPRIGHT,
         TOPLEFT,
@@ -25,6 +27,4 @@ public class LGoal extends Goal{
     }
 
     private PrimaryPosition primaryPosition;
-
-
 }

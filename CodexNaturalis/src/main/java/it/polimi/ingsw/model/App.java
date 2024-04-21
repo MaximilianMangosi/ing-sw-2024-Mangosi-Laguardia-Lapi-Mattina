@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.gamecards.Goal;
-import it.polimi.ingsw.model.gamecards.GoldCard;
-import it.polimi.ingsw.model.gamecards.ResourceCard;
-import it.polimi.ingsw.model.gamecards.StarterCard;
+import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.cards.GoldCard;
+import it.polimi.ingsw.model.gamecards.cards.ResourceCard;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 
 import java.util.HashSet;
 import java.util.Set;

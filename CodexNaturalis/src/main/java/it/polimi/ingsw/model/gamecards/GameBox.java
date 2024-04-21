@@ -2,12 +2,16 @@ package it.polimi.ingsw.model.gamecards;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import it.polimi.ingsw.model.gamecards.cards.GoldCard;
+import it.polimi.ingsw.model.gamecards.cards.GoldCardAngles;
+import it.polimi.ingsw.model.gamecards.cards.ResourceCard;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
+import it.polimi.ingsw.model.gamecards.goals.*;
+import it.polimi.ingsw.model.gamecards.resources.Reign;
+import it.polimi.ingsw.model.gamecards.resources.Resource;
+import it.polimi.ingsw.model.gamecards.resources.Tool;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -95,7 +99,7 @@ public class GameBox {
      */
     public void addGoldCardAngles(List<String> jsons){
         for(String json :jsons){
-            goldCardSet.add(gson.fromJson(json,GoldCardAngles.class));
+            goldCardSet.add(gson.fromJson(json, GoldCardAngles.class));
         }
     }
     /**

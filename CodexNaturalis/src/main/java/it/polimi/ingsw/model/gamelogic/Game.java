@@ -1,12 +1,18 @@
 package it.polimi.ingsw.model.gamelogic;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.*;
+import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.cards.GoldCard;
+import it.polimi.ingsw.model.gamecards.cards.ResourceCard;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
+import it.polimi.ingsw.model.gamecards.goals.*;
+import it.polimi.ingsw.model.gamecards.resources.Reign;
+import it.polimi.ingsw.model.gamecards.resources.Resource;
+import it.polimi.ingsw.model.gamecards.resources.Tool;
 
 import java.util.*;
-import java.lang.reflect.Field;
 import java.util.List;
 
-import static java.util.Collections.list;
 import static java.util.Collections.shuffle;
 
 /**

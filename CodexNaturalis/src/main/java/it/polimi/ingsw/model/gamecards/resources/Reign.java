@@ -1,8 +1,8 @@
-package it.polimi.ingsw.model.gamecards;
+package it.polimi.ingsw.model.gamecards.resources;
 
 import com.google.gson.annotations.SerializedName;
 
-public enum Reign implements Resource{
+public enum Reign implements Resource {
     @SerializedName("a")
     ANIMAL,
     @SerializedName("m")

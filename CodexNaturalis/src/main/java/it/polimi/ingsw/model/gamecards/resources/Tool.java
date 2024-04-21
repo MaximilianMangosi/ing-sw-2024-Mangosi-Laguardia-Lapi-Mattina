@@ -1,8 +1,8 @@
-package it.polimi.ingsw.model.gamecards;
+package it.polimi.ingsw.model.gamecards.resources;
 
 import com.google.gson.annotations.SerializedName;
 
-public enum Tool implements Resource{
+public enum Tool implements Resource {
     @SerializedName("f")
     FEATHER,
     @SerializedName("s")

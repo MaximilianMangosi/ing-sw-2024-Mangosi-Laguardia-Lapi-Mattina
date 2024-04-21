@@ -1,9 +1,12 @@
-package it.polimi.ingsw.model.gamecards;
+package it.polimi.ingsw.model.gamecards.cards;
+
+import it.polimi.ingsw.model.gamecards.resources.Reign;
+import it.polimi.ingsw.model.gamecards.resources.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StarterCard extends Card{
+public class StarterCard extends Card {
     private final Reign BackNW;
     private final Reign BackNE;
     private final Reign BackSW;
