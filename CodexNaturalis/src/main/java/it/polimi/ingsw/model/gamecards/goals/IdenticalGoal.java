@@ -1,6 +1,9 @@
-package it.polimi.ingsw.model.gamecards;
+package it.polimi.ingsw.model.gamecards.goals;
 
-public class IdenticalGoal extends Goal{
+import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.resources.Resource;
+
+public class IdenticalGoal extends Goal {
     private Resource resource;
     private int numOfResource;
 

@@ -1,4 +1,7 @@
-package it.polimi.ingsw.model.gamecards;
+package it.polimi.ingsw.model.gamecards.cards;
+
+import it.polimi.ingsw.model.gamecards.resources.Reign;
+import it.polimi.ingsw.model.gamecards.resources.Resource;
 
 import java.util.HashMap;
 

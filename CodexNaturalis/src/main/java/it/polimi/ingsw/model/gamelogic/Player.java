@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.gamelogic;
-import it.polimi.ingsw.model.gamecards.*;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.gamecards.cards.*;
+import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.resources.Resource;
 
 import java.util.*;
 
