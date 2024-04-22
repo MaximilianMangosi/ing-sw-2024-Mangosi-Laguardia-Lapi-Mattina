@@ -179,8 +179,8 @@ public class Game{
 
 
             Goal[] goalOptions=new Goal[2];
-            for (i = 0; i<2; i++){
-                goalOptions[i]=listOfGoal.removeFirst();
+            for (int k = 0; k<2; k++){
+                goalOptions[k]=listOfGoal.removeFirst();
             }
             player.setGoalOptions(goalOptions);
 
