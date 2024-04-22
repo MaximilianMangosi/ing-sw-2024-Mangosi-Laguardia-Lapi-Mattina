@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gamecards.cards;
 
+import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 
 import java.util.ArrayList;
@@ -94,6 +95,10 @@ public abstract class Card {
 
     public boolean IsFront() {
         return isFront;
+    }
+
+    public Reign getReign() {
+        return null;
     }
 
 

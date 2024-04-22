@@ -30,7 +30,7 @@ public class Game{
     private final List<Goal> listOfGoal= new ArrayList<>();
     private Player currentPlayer;
 
-    private List<StarterCard> starterCards;
+    private List<StarterCard> starterCards=new ArrayList<>();
 
 
     /**
