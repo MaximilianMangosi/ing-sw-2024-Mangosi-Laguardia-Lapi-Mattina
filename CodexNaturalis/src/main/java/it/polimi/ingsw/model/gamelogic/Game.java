@@ -517,7 +517,13 @@ public class Game{
 
         return numOfStairs * pointPerNum;
     }
-
+    /**
+     * @author Riccardo Lapi
+     * calculate the points for the goal of 3 cards in a "L" position
+     * @param goal the player goal
+     * @param player player
+     * @return the points for the given goal
+     */
     public int calculateGoal(LGoal goal, Player player){
         int pointPerNum = 3;
 
