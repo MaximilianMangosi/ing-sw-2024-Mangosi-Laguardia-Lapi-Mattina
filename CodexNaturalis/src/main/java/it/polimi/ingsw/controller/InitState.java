@@ -8,6 +8,8 @@ public class InitState extends GameState{
     InitState(Game game, GameManager gameManager) {
         super(game, gameManager);
     }
+
+
     //TODO BootGame Giorgio
     //TODO StartGame
     //todo ChooseGoal(UserId,Goal) Ric
