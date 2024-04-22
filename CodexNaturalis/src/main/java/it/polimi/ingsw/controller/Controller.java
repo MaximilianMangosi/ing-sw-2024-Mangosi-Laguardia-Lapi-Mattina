@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 public class Controller {
-    private GameState currentState;
+    GameState currentState;
 
 
     //TODO ChangeState
