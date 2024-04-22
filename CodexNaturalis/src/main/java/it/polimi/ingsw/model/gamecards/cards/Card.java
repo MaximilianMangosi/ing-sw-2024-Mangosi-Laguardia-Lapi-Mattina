@@ -1,8 +1,10 @@
-package it.polimi.ingsw.model.gamecards;
+package it.polimi.ingsw.model.gamecards.cards;
+
+import it.polimi.ingsw.model.gamecards.resources.Reign;
+import it.polimi.ingsw.model.gamecards.resources.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public abstract class Card {
     private final Resource NW;
@@ -93,6 +95,10 @@ public abstract class Card {
 
     public boolean IsFront() {
         return isFront;
+    }
+
+    public Reign getReign() {
+        return null;
     }
 
 

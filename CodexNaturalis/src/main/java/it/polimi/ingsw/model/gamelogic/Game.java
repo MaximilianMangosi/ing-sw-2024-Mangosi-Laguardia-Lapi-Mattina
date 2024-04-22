@@ -1,12 +1,18 @@
 package it.polimi.ingsw.model.gamelogic;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.*;
+import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.cards.GoldCard;
+import it.polimi.ingsw.model.gamecards.cards.ResourceCard;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
+import it.polimi.ingsw.model.gamecards.goals.*;
+import it.polimi.ingsw.model.gamecards.resources.Reign;
+import it.polimi.ingsw.model.gamecards.resources.Resource;
+import it.polimi.ingsw.model.gamecards.resources.Tool;
 
 import java.util.*;
-import java.lang.reflect.Field;
 import java.util.List;
 
-import static java.util.Collections.list;
 import static java.util.Collections.shuffle;
 
 /**
@@ -24,7 +30,7 @@ public class Game{
     private final List<Goal> listOfGoal= new ArrayList<>();
     private Player currentPlayer;
 
-    private List<StarterCard> starterCards;
+    private List<StarterCard> starterCards=new ArrayList<>();
 
 
     /**
@@ -433,23 +439,140 @@ public class Game{
         }
     }
 
+    /**
+     * @author Riccardo Lapi
+     * calculate the points for the goal "tris of resources"
+     * @param goal goal of player
+     * @param player player
+     * @return the points for the goal
+     */
     public int calculateGoal(IdenticalGoal goal, Player player){
-        return player.getResourceCounter(goal.getResource()) / 3;
+        int pointPerNum = 2;
+        int totNum = player.getResourceCounter(goal.getResource()) / goal.getNumOfResource();
+        return  totNum * pointPerNum;
     }
 
-
+    /**
+     * @author Riccardo Lapi
+     * calculate the points for the goal "3 different resources"
+     * @param goal goal of player
+     * @param player player
+     * @return the points for the goal
+     */
     public int calculateGoal(DistinctGoal goal, Player player){
         List<Resource> validResources = new ArrayList<Resource>();
         validResources.add(Tool.FEATHER);
         validResources.add(Tool.SCROLL);
         validResources.add(Tool.PHIAL);
 
-        return player.getResourceCounters().entrySet()
+        int pointPerNum = 3;
+        int totNum = player.getResourceCounters().entrySet()
                 .stream()
                 .filter(entry -> validResources.contains(entry.getKey()))
                 .map(Map.Entry::getValue)
                 .min(Integer::compareTo)
                 .orElse(0);
+
+        return  totNum * pointPerNum;
+    }
+
+    /**
+     * @author Riccardo Lapi
+     * calculate the points for the goal of 3 cards in a "stair" position
+     * @param goal the player goal
+     * @param player player
+     * @return the points for the given goal
+     */
+    public int calculateGoal(StairGoal goal, Player player){
+
+        int pointPerNum = 2;
+
+        Map<Coordinates,Card> field = player.getField();
+        List<Coordinates> usedCards = new ArrayList<>();
+        int numOfStairs = 0;
+
+        int modY = goal.isToLowerRight() ? -1 : 1;
+
+        Reign goalReign = goal.getReign();
+
+        for(Map.Entry<Coordinates, Card> card : field.entrySet()){
+            Reign currentReign = (card.getValue() instanceof GoldCard) ? ((GoldCard) card.getValue()).getReign() : ((ResourceCard)card.getValue()).getReign();
+            if(!currentReign.equals(goalReign)) continue;
+
+            Coordinates current = card.getKey();
+
+            if(usedCards.contains(current)) continue;
+
+            Coordinates right = new Coordinates(current.x + 1, current.y + modY);
+            Coordinates left = new Coordinates(current.x - 1, current.y - modY);
+
+            boolean isStairs = field.containsKey(right) && field.containsKey(left);
+            if(isStairs){
+                usedCards.add(current);
+                usedCards.add(right);
+                usedCards.add(left);
+                numOfStairs++;
+            }
+        }
+
+        return numOfStairs * pointPerNum;
+    }
+
+    public int calculateGoal(LGoal goal, Player player){
+        int pointPerNum = 3;
+
+        Map<Coordinates,Card> field = player.getField();
+        List<Coordinates> usedCards = new ArrayList<>();
+        int numOfLs = 0;
+
+        int modY, modX;
+        if(goal.getPrimaryPosition() == LGoal.PrimaryPosition.BOTTOMRIGHT){
+            modX = -1;
+            modY = 1;
+        }else if(goal.getPrimaryPosition() == LGoal.PrimaryPosition.BOTTOMLEFT){
+            modX = 1;
+            modY = 1;
+        }else if(goal.getPrimaryPosition() == LGoal.PrimaryPosition.TOPRIGHT){
+            modX = -1;
+            modY = -1;
+        }else{
+            modX = 1;
+            modY = -1;
+        }
+
+        Reign goalPrimaryReign = goal.getPrimaryReign();
+        Reign goalSecondaryReign = goal.getSecondaryReign();
+        for(Map.Entry<Coordinates, Card> card : field.entrySet()){
+            Reign currentReign = (card.getValue() instanceof GoldCard) ? ((GoldCard) card.getValue()).getReign() : ((ResourceCard)card.getValue()).getReign();
+            if(!currentReign.equals(goalPrimaryReign)) continue;
+
+            Coordinates current = card.getKey();
+
+            if(usedCards.contains(current)) continue;
+
+            Coordinates secondaryA = new Coordinates(current.x + modX, current.y + modY);
+            Coordinates secondaryB = new Coordinates(current.x + modX, current.y + modY*2);
+
+            Card cardA = field.get(secondaryA);
+            Reign AReign = (cardA instanceof GoldCard) ? ((GoldCard) cardA).getReign() : ((ResourceCard)cardA).getReign();
+
+            Card cardB = field.get(secondaryB);
+            Reign BReign = (cardB instanceof GoldCard) ? ((GoldCard) cardB).getReign() : ((ResourceCard)cardB).getReign();
+
+            boolean isL = field.containsKey(secondaryA)
+                        && AReign.equals(goalSecondaryReign)
+                        && field.containsKey(secondaryB)
+                        && BReign.equals(goalSecondaryReign);
+
+            if(isL){
+                usedCards.add(current);
+                usedCards.add(secondaryA);
+                usedCards.add(secondaryB);
+                numOfLs++;
+            }
+        }
+
+        return numOfLs * pointPerNum;
     }
 
 }

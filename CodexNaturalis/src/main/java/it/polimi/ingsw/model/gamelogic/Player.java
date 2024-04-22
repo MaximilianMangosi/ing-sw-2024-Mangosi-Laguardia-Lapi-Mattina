@@ -1,17 +1,16 @@
 package it.polimi.ingsw.model.gamelogic;
-import it.polimi.ingsw.model.gamecards.*;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.gamecards.cards.*;
+import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.resources.Resource;
 
 import java.util.*;
 
 public class Player {
-    private List<Card> hand;
-
-
-
+    private List<Card> hand=new ArrayList<>();
     private Goal[] goalOptions=new Goal[2];
     private Goal goal;
-    private Map<Coordinates,Card> field;
+    private Map<Coordinates,Card> field=new HashMap<>();
     private HashMap<Resource,Integer> resourceCounters = new HashMap<>();
     private StarterCard starterCard;
     private List<Coordinates> availablePositions;

@@ -2,7 +2,7 @@
     "NW" :"p",
     "NE" :"m",
     "SW" :"null",
-    "SE" :"w",
+    "SE" :"a",
     "isFront": false,
     "points": 0,
     "reign":"m"
