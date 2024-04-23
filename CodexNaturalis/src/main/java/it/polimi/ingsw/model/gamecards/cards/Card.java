@@ -146,6 +146,7 @@ public abstract class Card {
             player.updateUnavailablePositions(x+1, y-1);
         }
     }
-
-
+    public int getPoints() {
+        return 0;
+    }
 }

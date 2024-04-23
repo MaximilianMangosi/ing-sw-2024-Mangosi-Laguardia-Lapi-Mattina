@@ -14,7 +14,7 @@ public class Player {
     private HashMap<Resource,Integer> resourceCounters = new HashMap<>();
     private StarterCard starterCard;
     private List<Coordinates> availablePositions;
-    private List<Coordinates> unavailablePositions;
+    private List<Coordinates> unavailablePositions=new ArrayList<>();
     private String name;
     private String check;
     private int points;
@@ -172,19 +172,81 @@ public class Player {
     public int getResourceCounter(Resource resource){
         return resourceCounters.get(resource);
     }
+
+    /**
+     * @author Maximilian Mangosi, Giorgio Mattina
+     * @param playedCard
+     * adds points to the player,
+     */
+    public void addPoints(GoldCardTool playedCard) {
+        points += getResourceCounter(playedCard.getTool());
+    }
+
+    /**
+     * @author Giorgio Mattina
+     * @param playedCard
+     * adds point to the player, has to check for covered angles around the played card
+     */
+    public void addPoints(GoldCardAngles playedCard){
+        Coordinates position = new Coordinates(0,0);
+
+        //for loop that finds the coordinates of a given card in the field Map
+        for (Map.Entry<Coordinates, Card> instance : field.entrySet()) {
+
+            if (instance.getValue().equals(playedCard)) {
+                position = instance.getKey();
+                break;
+            }
+        }
+
+        int x = position.x;
+        int y = position.y;
+
+        if(look(x-1, y+1)){
+            points+=playedCard.getPoints();
+        }
+        if(look(x+1, y+1)){
+            points+=playedCard.getPoints();
+        }
+        if(look(x-1, y-1)){
+            points+=playedCard.getPoints();
+        }
+        if(look(x+1, y-1)){
+            points+=playedCard.getPoints();
+        }
+    }
+
     /**
      * @author Giorgio Mattina
      * @param x
      * @param y
      * @return true if there is a card at (x,y), otherwise returns false
      */
-    public boolean look (int x, int y){
+    public boolean look(int x, int y){
         if (getCardAtPosition(x,y)!=null){
             return true;
         }else{
             return false;
         }
     }
+    /**
+     * @author Giorgio Mattina
+     * @param playedCard
+     * adds points to the player, it takes a normal gold card that isn't of type Angle or Tool
+     */
+    public void addPoints(GoldCard playedCard){
+        points += playedCard.getPoints();
+    }
+
+    /**
+     * @author Giorgio Mattina
+     * @param playedCard
+     * adds points to player, takes a normal resource card
+     */
+    public void addPoints(ResourceCard playedCard){
+        points += playedCard.getPoints();
+    }
+
     /**
      * @author Maximilian Mangosi
      * adds a drawn card to the hand of the player
@@ -235,8 +297,8 @@ public class Player {
      */
     public void updateResourceCounter(List <Resource> resourceList){
         for (Resource r : resourceList){
-            int temp = resourceCounters.get(r);
-            resourceCounters.replace(r, temp+1);
+            int temp = resourceCounters.getOrDefault(r,0);
+            resourceCounters.put(r, temp+1);
         }
     }
 

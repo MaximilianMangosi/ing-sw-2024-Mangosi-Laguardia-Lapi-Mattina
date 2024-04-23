@@ -1,8 +1,6 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Coordinates;
-import it.polimi.ingsw.model.gamecards.HandFullException;
-import it.polimi.ingsw.model.gamecards.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.*;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
