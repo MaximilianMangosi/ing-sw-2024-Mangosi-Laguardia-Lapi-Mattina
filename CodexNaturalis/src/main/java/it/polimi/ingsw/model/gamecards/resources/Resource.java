@@ -4,5 +4,6 @@ public interface Resource {
     public Resource getResource();
 
     public boolean isEmpty();
+
 }
 

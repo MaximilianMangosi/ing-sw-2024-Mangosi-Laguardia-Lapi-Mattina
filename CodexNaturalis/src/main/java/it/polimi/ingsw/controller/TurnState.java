@@ -9,10 +9,11 @@ public class TurnState extends GameState{
     TurnState(Game game, GameManager gameManager) {
         super(game, gameManager);
     }
+    /*
     public void playCardFront(ResourceCard selectedCard, Coordinates position, Integer userId){
         //checks if it's the player's turn
         if(!userIDs.get(userID).equals(game.getCurrentPlayer()){
-            throw new IsNotYourTurnException;
+            throw new IsNotYourTurnException();
         }
 
     }
@@ -28,7 +29,7 @@ public class TurnState extends GameState{
     public void playCardFront(StarterCard selectedCard, Coordinates position, Integer userId){
 
     }
-
+*/
     //TODO playCards Giorgio
     //todo drawCards Giorgio
     //isFinalTurn() return
