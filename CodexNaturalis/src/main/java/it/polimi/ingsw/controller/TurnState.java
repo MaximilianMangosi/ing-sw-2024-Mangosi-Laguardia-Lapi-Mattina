@@ -9,25 +9,20 @@ public class TurnState extends GameState{
     TurnState(Game game, GameManager gameManager) {
         super(game, gameManager);
     }
-    public void playCardFront(ResourceCard selectedCard, Coordinates position, Integer userId){
+    public void playCardFront(Card selectedCard, Coordinates position, Integer userId) throws IsNotYourTurnException, RequirementsNotMetException {
         //checks if it's the player's turn
-        if(!userIDs.get(userID).equals(game.getCurrentPlayer()){
-            throw new IsNotYourTurnException;
+        if (!userIDs.get(userId).equals(game.getCurrentPlayer())){
+            throw new IsNotYourTurnException();
         }
 
-    }
-    public void playCardFront(GoldCard selectedCard, Coordinates position, Integer userId){
+        //checks if the player's hand is full
+        game.playCardFront(selectedCard,position);
 
     }
-    public void playCardFront(GoldCardAngles selectedCard, Coordinates position, Integer userId){
 
-    }
-    public void playCardFront(GoldCardTool selectedCard, Coordinates position, Integer userId){
 
-    }
-    public void playCardFront(StarterCard selectedCard, Coordinates position, Integer userId){
 
-    }
+
 
     //TODO playCards Giorgio
     //todo drawCards Giorgio

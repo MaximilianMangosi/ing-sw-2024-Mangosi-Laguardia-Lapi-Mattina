@@ -81,7 +81,7 @@ public class Player {
      * @param x coordinate x
      * @param y coordinate y
      */
-    private void updateAvailablePositions(int x, int y){
+    public void updateAvailablePositions(int x, int y){
         Coordinates coordinates = new Coordinates(x, y);
         if (!unavailablePositions.contains(coordinates))
             if (!availablePositions.contains(coordinates))
@@ -94,7 +94,7 @@ public class Player {
      * @param x coordinate x
      * @param y coordinate y
      */
-    private void updateUnavailablePositions(int x, int y){
+    public void updateUnavailablePositions(int x, int y){
         Coordinates coordinates = new Coordinates(x, y);
         if (!unavailablePositions.contains(coordinates))
             unavailablePositions.add(coordinates);
@@ -222,7 +222,7 @@ public class Player {
      * @param y
      * @return true if there is a card at (x,y), otherwise returns false
      */
-    private boolean look (int x, int y){
+    public boolean look(int x, int y){
         if (getCardAtPosition(x,y)!=null){
             return true;
         }else{
@@ -297,8 +297,8 @@ public class Player {
      */
     public void updateResourceCounter(List <Resource> resourceList){
         for (Resource r : resourceList){
-            int temp = resourceCounters.get(r);
-            resourceCounters.replace(r, temp+1);
+            int temp = resourceCounters.getOrDefault(r,0);
+            resourceCounters.put(r, temp+1);
         }
     }
 
