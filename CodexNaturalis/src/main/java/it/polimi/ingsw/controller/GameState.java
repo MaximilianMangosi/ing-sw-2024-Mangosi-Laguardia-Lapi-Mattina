@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public abstract class GameState{
     private Game game;
-    private HashMap<Integer, Player> userIDs;
+    protected HashMap<Integer, Player> userIDs;
     private GameManager gameManager;
     GameState(Game game,GameManager gameManager){
         this.game=game;

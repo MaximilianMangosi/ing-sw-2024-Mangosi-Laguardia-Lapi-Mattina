@@ -14,7 +14,7 @@ public class Player {
     private HashMap<Resource,Integer> resourceCounters = new HashMap<>();
     private StarterCard starterCard;
     private List<Coordinates> availablePositions;
-    private List<Coordinates> unavailablePositions;
+    private List<Coordinates> unavailablePositions=new ArrayList<>();
     private String name;
     private String check;
     private int points;
@@ -246,7 +246,6 @@ public class Player {
     public void addPoints(ResourceCard playedCard){
         points += playedCard.getPoints();
     }
-
     /**
      * @author Maximilian Mangosi
      * adds a drawn card to the hand of the player
@@ -297,7 +296,7 @@ public class Player {
      */
     public void updateResourceCounter(List <Resource> resourceList){
         for (Resource r : resourceList){
-            int temp = resourceCounters.get(r);
+            int temp = resourceCounters.getOrDefault(r,0);
             resourceCounters.replace(r, temp+1);
         }
     }

@@ -221,11 +221,11 @@ public class Game{
         }
         if (choice == 0) {
             //normal cards
-            Card drawCard = resourceCardDeck.removeFirst();
+            ResourceCard drawCard = resourceCardDeck.removeFirst();
             currentPlayer.addCardToHand(drawCard);
         } else {
             //gold cards
-            Card drawCard = goldCardDeck.removeFirst();
+            GoldCard drawCard = goldCardDeck.removeFirst();
             currentPlayer.addCardToHand(drawCard);
         }
         AreBothDeckEmpty=goldCardDeck.isEmpty() && resourceCardDeck.isEmpty();
@@ -244,7 +244,7 @@ public class Game{
             throw new HandFullException();
         }
 
-        Card drawCard = visibleCards.remove(choice);
+        var drawCard = visibleCards.remove(choice);
         currentPlayer.addCardToHand(drawCard);
         if (!(goldCardDeck.isEmpty() && resourceCardDeck.isEmpty())) {
             if (drawCard instanceof GoldCard) {
@@ -434,7 +434,6 @@ public class Game{
         if (cardToBeCovered != null){
             try {
                 currentPlayer.decrementResourceCounter(cardToBeCovered.getResource(angleToBeCovered));
-                //cardToBeCovered.decrementCardResourceCounter(angleToBeCovered);
             }catch (NoSuchElementException ignore){}
         }
     }
