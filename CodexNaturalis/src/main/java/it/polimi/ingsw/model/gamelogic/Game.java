@@ -281,19 +281,19 @@ public class Game{
         currentPlayer.checkAvailablePositions(position, selectedCard);
     }
     /**
-     * @author Maximilian Mangosi
-     * playing the card in the front position on the field for the gold card
+     * @author Maximilian Mangosi,Giorgio Mattina
+     * playing the card in the front position on the field
      * @param selectedCard the card selected by the user
      * @param position the coordinates in witch th user wants the card to be positioned
-     * @throws RequirementsNotMetException catches the exception when the requirements for the gold card are not met
+     * @throws RequirementsNotMetException catches the exception when the requirements are not met(if there are any)
      */
-    public void playCardFront(GoldCard selectedCard, Coordinates position) throws RequirementsNotMetException {
+    public void playCardFront(Card selectedCard, Coordinates position) throws RequirementsNotMetException {
         //check the requirements for the gold card
         selectedCard.setIsFront(true);
-        if(!elementCounter(selectedCard)){
+        if(!selectedCard.checkRequirements(currentPlayer.getResourceCounters())){
             throw new RequirementsNotMetException();
         }
-        int selectedCardPoints = selectedCard.getPoints();
+
 
         currentPlayer.addCardToMap(selectedCard, position);
 
@@ -302,40 +302,21 @@ public class Game{
 
         //covering all the angles the new card is covering
         coverAngle(position);
-        currentPlayer.addPoints(selectedCard);
+        selectedCard.addPoints(currentPlayer);
         //update availablePosition list
-        currentPlayer.checkAvailablePositions(position, selectedCard);
-    }
-
-    /**
-     * @author Maximilian Mangosi
-     * playing the card in the front position on the field for the nortmal card
-     * @param selectedCard the card selected by the user
-     * @param position the coordinates in witch th user wants the card to be positioned
-     */
-    public void playCardFront(ResourceCard selectedCard, Coordinates position){
-        selectedCard.setIsFront(true);
-
-        currentPlayer.addCardToMap(selectedCard, position);
-
-        //add counter of resources
-        currentPlayer.updateResourceCounter(selectedCard.getCardResources());
-
-        //covering all the angles the new card is covering
-        coverAngle(position);
-        currentPlayer.addPoints(selectedCard);
-        //update availablePosition list
-        currentPlayer.checkAvailablePositions(position, selectedCard);
+        selectedCard.checkAvailablePositions(currentPlayer,position);
     }
 
 
+
+
     /**
-     * @author Maximilan Mangosi
+     * @author Maximilan Mangosi, Giorgio Mattina
      * playing the Resource card in the back position on the field
      * @param selectedCard the card selected by the user
      * @param position the coordinates in witch th user wants the card to be positioned
      */
-    public void playCardBack(ResourceCard selectedCard, Coordinates position){ //TODO overload for StarterCard
+    public void playCardBack(Card selectedCard, Coordinates position){
         selectedCard.setIsFront(false);
         currentPlayer.addCardToMap(selectedCard, position);
 
@@ -348,62 +329,7 @@ public class Game{
         coverAngle(position);
 
         //update availablePosition list
-        currentPlayer.checkAvailablePositions(position, selectedCard);
-    }
-    /**
-     * @author Maximilan Mangosi
-     * playing the Gold card in the back position on the field
-     * @param selectedCard the card selected by the user
-     * @param position the coordinates in witch th user wants the card to be positioned
-     */
-    public void playCardBack(GoldCard selectedCard, Coordinates position){ //TODO overload for StarterCard
-        selectedCard.setIsFront(false);
-        currentPlayer.addCardToMap(selectedCard, position);
-
-        List<Resource> newResource = new ArrayList<>();
-        newResource.add(selectedCard.getReign());
-        //add counter resources
-        currentPlayer.updateResourceCounter(newResource);
-
-        //covering all the angles the new card is covering
-        coverAngle(position);
-
-        //update availablePosition list
-        currentPlayer.checkAvailablePositions(position, selectedCard);
-    }
-    /**
-     * @author Maximilan Mangosi
-     * playing the Starter card in the back position on the field
-     * @param selectedCard the card selected by the user
-     * @param position the coordinates in witch th user wants the card to be positioned
-     */
-    public void playCardBack(StarterCard selectedCard, Coordinates position){
-        selectedCard.setIsFront(false);
-        currentPlayer.addCardToMap(selectedCard, position);
-
-        //add counter resources
-        currentPlayer.updateResourceCounter(selectedCard.getBackResources());
-
-        //update availablePosition list
-        currentPlayer.checkAvailablePositions(position, selectedCard);
-    }
-    /**
-     * @author Maximilian Mangosi
-     * counts the elements needed for the gold card requirements
-     * @param selectedCard selected gold card
-     * @return returns the value true or false to give an answer for the requirements
-     */
-    private boolean elementCounter(GoldCard selectedCard){
-        //receive map with all resources in the field of the current player
-        HashMap <Resource, Integer> allResourcesOnField = currentPlayer.getResourceCounters();
-        //compare the hashmap with the requirements of the card
-        HashMap <Reign, Integer> selectedCardRequirements = selectedCard.getRequirements();
-        for (Reign reign : selectedCardRequirements.keySet()) {
-            if(selectedCardRequirements.get(reign) >= allResourcesOnField.get(reign)){
-                return false;
-            }
-        }
-        return true;
+        selectedCard.checkAvailablePositions(currentPlayer,position);
     }
 
     /**
@@ -433,6 +359,7 @@ public class Game{
         Card cardToBeCovered = currentPlayer.getCardAtPosition(x, y);
         if (cardToBeCovered != null){
             try {
+                cardToBeCovered.setAngle(Reign.EMPTY, angleToBeCovered);
                 currentPlayer.decrementResourceCounter(cardToBeCovered.getResource(angleToBeCovered));
                 //cardToBeCovered.decrementCardResourceCounter(angleToBeCovered);
             }catch (NoSuchElementException ignore){}

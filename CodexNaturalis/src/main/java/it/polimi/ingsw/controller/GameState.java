@@ -7,9 +7,9 @@ import it.polimi.ingsw.model.gamelogic.Player;
 import java.util.HashMap;
 
 public abstract class GameState{
-    private Game game;
-    private HashMap<Integer, Player> userIDs;
-    private GameManager gameManager;
+    protected Game game;
+    protected HashMap<Integer, Player> userIDs= new HashMap<>();
+    protected GameManager gameManager;
     GameState(Game game,GameManager gameManager){
         this.game=game;
         this.gameManager=gameManager;

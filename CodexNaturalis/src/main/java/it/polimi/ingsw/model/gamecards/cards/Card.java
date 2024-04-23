@@ -1,16 +1,19 @@
 package it.polimi.ingsw.model.gamecards.cards;
 
+import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
+import it.polimi.ingsw.model.gamelogic.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class Card {
-    private final Resource NW;
-    private final Resource NE;
-    private final Resource SW;
-    private final Resource SE;
+    private Resource NW;
+    private Resource NE;
+    private Resource SW;
+    private Resource SE;
 
     private boolean isFront;
 
@@ -101,18 +104,48 @@ public abstract class Card {
         return null;
     }
 
-
-    /**
-     * @author Maximilian Mangosi
-     * @param angleToBeCovered sets selected angle to covered.
-     *        In other terms, the selected resource at that angle is removed
-     */
-    /*
-    public void decrementCardResourceCounter(String angleToBeCovered) {
-        //setting the angle covered by eliminating the resource in that angle
-        getResource(angleToBeCovered);
+    public boolean checkRequirements(HashMap<Resource, Integer> resourceCounters) {
+        return true;
     }
-    */
+
+    public void addPoints(Player currentPlayer) {
+
+    }
+    public void setAngle(Reign reign, String angle){
+        if(angle.equals("NW"))
+            this.NW = reign;
+        if(angle.equals("SW"))
+            this.SW=reign;
+        if (angle.equals("NE"))
+            this.NE = reign;
+        if(angle.equals("SE"))
+            this.SE=reign;
+    }
+    public void checkAvailablePositions(Player player, Coordinates position){
+        int x = position.x;
+        int y = position.y;
+        //Verify that the angles are not nonexistent
+        if (this.getResource("NW") != null){ //NW
+            player.updateAvailablePositions(x - 1, y + 1);
+        }else{
+            player.updateUnavailablePositions(x-1, y+1);
+        }
+        if (this.getResource("SW") != null) { //SW
+            player.updateAvailablePositions(x - 1, y - 1);
+        }else{
+            player.updateUnavailablePositions(x-1, y-1);
+        }
+        if (this.getResource("NE") != null) { //NE
+            player.updateAvailablePositions(x + 1, y + 1);
+        }else{
+            player.updateUnavailablePositions(x+1, y+1);
+        }
+        if (this.getResource("SE") != null) { //SE
+            player.updateAvailablePositions(x + 1, y - 1);
+        }else{
+            player.updateUnavailablePositions(x+1, y-1);
+        }
+    }
 
 
 }

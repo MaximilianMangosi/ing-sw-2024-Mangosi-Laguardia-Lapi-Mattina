@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.gamecards.cards;
 
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
+import it.polimi.ingsw.model.gamelogic.Player;
 
 public class ResourceCard extends Card {
     Reign reign;
@@ -18,5 +19,9 @@ public class ResourceCard extends Card {
 
     public Reign getReign() {
         return reign;
+    }
+
+    public void addPoints(Player player){
+        player.setPoints(player.getPoints() + this.getPoints());
     }
 }
