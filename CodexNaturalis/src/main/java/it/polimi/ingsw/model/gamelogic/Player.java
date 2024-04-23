@@ -246,6 +246,7 @@ public class Player {
     public void addPoints(ResourceCard playedCard){
         points += playedCard.getPoints();
     }
+
     /**
      * @author Maximilian Mangosi
      * adds a drawn card to the hand of the player
@@ -296,7 +297,7 @@ public class Player {
      */
     public void updateResourceCounter(List <Resource> resourceList){
         for (Resource r : resourceList){
-            int temp = resourceCounters.getOrDefault(r,0);
+            int temp = resourceCounters.get(r);
             resourceCounters.replace(r, temp+1);
         }
     }
