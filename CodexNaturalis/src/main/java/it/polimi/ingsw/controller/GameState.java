@@ -8,13 +8,23 @@ import java.util.HashMap;
 
 public abstract class GameState{
     protected Game game;
+
     protected HashMap<Integer, Player> userIDs= new HashMap<>();
     protected GameManager gameManager;
+
+    /**
+     * @author Giuseppe Laguardia
+     * constructor of GameState
+     * @param game
+     * @param gameManager
+     */
     GameState(Game game,GameManager gameManager){
         this.game=game;
         this.gameManager=gameManager;
 
     }
-
+    public HashMap<Integer, Player> getUserIDs() {
+        return userIDs;
+    }
 
 }

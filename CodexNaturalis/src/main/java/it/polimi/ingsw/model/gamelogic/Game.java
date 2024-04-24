@@ -23,7 +23,7 @@ import static java.util.Collections.shuffle;
 public class Game{
     private List<Player> listOfPlayers=new ArrayList<>();
     private final int numOfPlayers;
-    private boolean AreBothDeckEmpty;
+    private boolean AreBothDeckEmpty = false;
     private List<ResourceCard> resourceCardDeck ;
     private List<GoldCard> goldCardDeck ;
     private List<Card> visibleCards;
@@ -102,6 +102,14 @@ public class Game{
         return currentPlayer;
     }
 
+    /**
+     * @author Giorgio  Mattina
+     * getter of attribute AreBothDeckEmpty
+     * @return attribute AreBothDeckEmpty
+     */
+    public boolean isAreBothDeckEmpty() {
+        return AreBothDeckEmpty;
+    }
     /**
      * set the next player to play, according to the order of ListOfPlayers
      * @author Giuseppe Laguardia
@@ -212,6 +220,7 @@ public class Game{
      * @author Maximilian Mangosi
      * draw a card from one of the two decks
      * @param choice it's the input given from the player to decide witch deck to draw from
+     *               if 0 draws from resourceCardDeck, otherwise from goldCardDeck
      * @throws HandFullException catches the exception when the hand is already full
      */
     public void drawFromDeck(int choice) throws HandFullException {
@@ -364,6 +373,7 @@ public class Game{
             }catch (NoSuchElementException ignore){}
         }
     }
+
 
 }
 
