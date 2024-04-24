@@ -17,25 +17,25 @@ public class GameManager {
      * creates a new game
      * @author Giuseppe Lagurdia
      * @param numOfPlayers the number of player that can join the game, if there is already a game waiting for player this parameter is ignored
-     * @param playerName the unique nickname of the player joining/creating the game
+     * @param newPlayer the Player object joining/creating a game
      * @throws UnacceptableNumberOfPlayersException if numOfPlayer less than 2
      * @throws PlayerNameNotUniqueException if any Players's name in gameWaiting matches with playerName
      */
-    public void bootGame(int numOfPlayers, String playerName) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException {
-        Player player= new Player(playerName);
+    public void bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException {
+
 
         if(gameWaiting==null){
             GameBox gamebox = new GameBox();
             if(numOfPlayers<2 || numOfPlayers>4)
                 throw new UnacceptableNumberOfPlayersException();
-            gameWaiting = new Game(player,numOfPlayers,gamebox);
+            gameWaiting = new Game(newPlayer,numOfPlayers,gamebox);
         }
         else{
-            if(!isPlayerNameUnique(playerName))
+            if(!isPlayerNameUnique(newPlayer.getName()))
                 throw new PlayerNameNotUniqueException();
-            gameWaiting.addPlayer(player);
+            gameWaiting.addPlayer(newPlayer);
         }
-        playerToGame.put(playerName,gameWaiting.hashCode());
+        playerToGame.put(newPlayer.getName(),gameWaiting.hashCode());
         if(gameWaiting.getPlayers().size()==gameWaiting.getNumOfPlayers()){
             gameInProcess.put(String.valueOf(gameWaiting.hashCode()),gameWaiting);
             gameWaiting=null;

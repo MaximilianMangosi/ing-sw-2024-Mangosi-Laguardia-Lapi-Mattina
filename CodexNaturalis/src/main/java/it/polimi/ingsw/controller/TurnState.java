@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
 
+import java.util.UUID;
+
 public class TurnState extends GameState{
     TurnState(Game game, GameManager gameManager) {
         super(game, gameManager);
@@ -22,7 +24,7 @@ public class TurnState extends GameState{
      * @throws IsNotYourTurnException
      * @throws RequirementsNotMetException
      */
-    public void playCardFront(Card selectedCard, Coordinates position, Integer userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException {
+    public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException {
         
         //checks if it's the player's turn, if the card is legal and if the position is legal
         CheckTurnCardPosition(selectedCard, position, userId);
@@ -30,29 +32,7 @@ public class TurnState extends GameState{
         game.playCardFront(selectedCard,position);
     }
 
-    /**
-     * checks if it's the player's turn, if the card is legal and if the position is legal
-     * @author Giorgio Mattina
-     * @param selectedCard
-     * @param position
-     * @param userId
-     * @throws IsNotYourTurnException
-     * @throws InvalidCardException
-     * @throws IllegalPositionException
-     */
-    private void CheckTurnCardPosition(Card selectedCard, Coordinates position, Integer userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException {
-        if (!userIDs.get(userId).equals(game.getCurrentPlayer())){
-            throw new IsNotYourTurnException();
-        }
-        //checks if selectedCard is in player's hand
-        if(!game.getCurrentPlayer().getHand().contains(selectedCard)){
-            throw new InvalidCardException();
-        }
-        //cheks if given position is in the availablePosition list
-        if(!game.getCurrentPlayer().getAvailablePositions().contains(position)){
-            throw new IllegalPositionException();
-        }
-    }
+
 
     /**
      * checks for Turn Rights and calls PlayCardBack
@@ -64,7 +44,7 @@ public class TurnState extends GameState{
      * @throws InvalidCardException
      * @throws IllegalPositionException
      */
-    public void playCardBack(Card selectedCard, Coordinates position, Integer userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException {
+    public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException {
         //checks if it's the player's turn, if the card is legal and if the position is legal
         CheckTurnCardPosition(selectedCard,position,userId);
 
@@ -79,7 +59,7 @@ public class TurnState extends GameState{
      * @throws IsNotYourTurnException
      * @throws HandFullException
      */
-    public void drawFromDeck(Integer userId,int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException {
+    public void drawFromDeck(UUID userId,int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException {
         if (!userIDs.get(userId).equals(game.getCurrentPlayer())){
             throw new IsNotYourTurnException();
         }
@@ -102,7 +82,7 @@ public class TurnState extends GameState{
      * @throws DeckEmptyException
      * @throws HandFullException
      */
-    public void drawVisibleCard (Integer userId,int choice) throws IsNotYourTurnException, HandFullException {
+    public void drawVisibleCard (UUID userId,int choice) throws IsNotYourTurnException, HandFullException {
         if (!userIDs.get(userId).equals(game.getCurrentPlayer())){
             throw new IsNotYourTurnException();
         }

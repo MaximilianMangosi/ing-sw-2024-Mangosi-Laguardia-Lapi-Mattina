@@ -4,6 +4,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+
+import java.util.UUID;
+
 /**
  * Unit test for simple App.
  */
@@ -33,6 +36,7 @@ public class AppTest
      */
     public void testApp()
     {
-        assertTrue( true );
+        UUID pepo =UUID.randomUUID();
+        System.out.println(pepo);
     }
 }

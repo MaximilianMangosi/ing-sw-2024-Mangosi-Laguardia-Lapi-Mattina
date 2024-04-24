@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Coordinates;
-import it.polimi.ingsw.model.gamecards.AllDeckEmptyExeption;
+import it.polimi.ingsw.controller.DeckEmptyException;
 import it.polimi.ingsw.model.gamecards.GameBox;
 import it.polimi.ingsw.model.gamecards.HandFullException;
 import it.polimi.ingsw.model.gamecards.RequirementsNotMetException;
@@ -125,7 +125,7 @@ public class GameTest {
         assertEquals(game.getCurrentPlayer(),game.getPlayers().getFirst());
     }
    @Test
-    public void playCardFrontFromHandTest() throws AllDeckEmptyExeption, HandFullException, RequirementsNotMetException {
+    public void playCardFrontFromHandTest() throws DeckEmptyException, HandFullException, RequirementsNotMetException {
         game.startGame();
         int oldPoints=game.getCurrentPlayer().getPoints();
         Card cardPlayed=game.getCurrentPlayer().getHand().removeFirst();

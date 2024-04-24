@@ -1,28 +1,49 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.gamecards.goals.Goal;
-import it.polimi.ingsw.model.gamelogic.Game;
-import it.polimi.ingsw.model.gamelogic.GameManager;
-import it.polimi.ingsw.model.gamelogic.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.UnacceptableNumberOfPlayersException;
+import it.polimi.ingsw.model.gamelogic.*;
+
+import java.util.UUID;
 
 public class InitState extends GameState{
 
     InitState(Game game, GameManager gameManager) {
         super(game, gameManager);
     }
-    public void BootGame(int numOfPlayers, String playerName) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException{
 
-
-        gameManager.bootGame(numOfPlayers,playerName);
-    }
     /**
-     * @author Riccardo Lapu
+     * generates a unique UUID object for the new plauer, calls bootGame
+     * @author Giorgio Mattina
+     * @param numOfPlayers number of players
+     * @param playerName the nickname chosen by the player
+     * @return the userId for identification
+     * @throws UnacceptableNumberOfPlayersException
+     * @throws PlayerNameNotUniqueException
+     */
+    public synchronized UUID  BootGame(int numOfPlayers, String playerName) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException{
+
+        UUID identity = UUID.randomUUID();
+        //
+        Player newPlayer = new Player(playerName);
+
+        gameManager.bootGame(numOfPlayers,newPlayer);
+
+        userIDs.put(identity,newPlayer);
+
+        return identity;
+
+    }
+
+
+    /**
+     * @author Riccardo Lapi
      * get the player from userId and set his goal
      * @param userId int that identifies the unique player
      * @param newGoal the chosen goal
      */
-    public void ChooseGoal(int userId, Goal newGoal) throws InvalidGoalException, InvalidUserId {
+
+    public void ChooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId {
+
         Player player = getUserIDs().get(userId);
 
         if(player == null) throw new InvalidUserId();
@@ -31,7 +52,6 @@ public class InitState extends GameState{
 
         player.setGoal(newGoal);
     }
-    //TODO BootGame Giorgio
     //TODO StartGame
     //todo ChooseGoal(UserId,Goal) Ric
     //todo ChooseStarterCardSide(boolean) Ric
