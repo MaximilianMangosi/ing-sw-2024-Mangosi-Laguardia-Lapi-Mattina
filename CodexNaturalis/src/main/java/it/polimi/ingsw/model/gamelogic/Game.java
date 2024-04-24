@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.gamelogic;
+import it.polimi.ingsw.controller.DeckEmptyException;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.*;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -8,7 +9,6 @@ import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.*;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
-import it.polimi.ingsw.model.gamecards.resources.Tool;
 
 import java.util.*;
 import java.util.List;
@@ -245,9 +245,9 @@ public class Game{
      * drawing from the visible cards on the field
      * @param choice it's the input given from the player to decide witch card to draw
      * @throws HandFullException catches the exception when the hand is already full
-     * @throws AllDeckEmptyExeption catches the exception when the decks are all empty
+     * @throws DeckEmptyException catches the exception when the decks are all empty
      */
-    public void drawVisibleCard(int choice) throws HandFullException, AllDeckEmptyExeption {
+    public void drawVisibleCard(int choice) throws HandFullException {
         List<Card> hand = currentPlayer.getHand();
         if (hand.size() > 2) {
             throw new HandFullException();

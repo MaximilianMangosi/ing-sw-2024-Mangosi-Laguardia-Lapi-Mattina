@@ -3,13 +3,19 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
+import it.polimi.ingsw.model.gamelogic.PlayerNameNotUniqueException;
+import it.polimi.ingsw.model.gamelogic.UnacceptableNumberOfPlayersException;
 
 public class InitState extends GameState{
 
     InitState(Game game, GameManager gameManager) {
         super(game, gameManager);
     }
+    public void BootGame(int numOfPlayers, String playerName) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException{
 
+
+        gameManager.bootGame(numOfPlayers,playerName);
+    }
     /**
      * @author Riccardo Lapu
      * get the player from userId and set his goal
