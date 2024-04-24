@@ -21,7 +21,7 @@ public class GameManager {
      * @throws UnacceptableNumberOfPlayersException if numOfPlayer less than 2
      * @throws PlayerNameNotUniqueException if any Players's name in gameWaiting matches with playerName
      */
-    public void bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException {
+    public boolean bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException {
 
 
         if(gameWaiting==null){
@@ -29,17 +29,20 @@ public class GameManager {
             if(numOfPlayers<2 || numOfPlayers>4)
                 throw new UnacceptableNumberOfPlayersException();
             gameWaiting = new Game(newPlayer,numOfPlayers,gamebox);
+
         }
         else{
             if(!isPlayerNameUnique(newPlayer.getName()))
                 throw new PlayerNameNotUniqueException();
             gameWaiting.addPlayer(newPlayer);
+
         }
         playerToGame.put(newPlayer.getName(),gameWaiting.hashCode());
         if(gameWaiting.getPlayers().size()==gameWaiting.getNumOfPlayers()){
             gameInProcess.put(String.valueOf(gameWaiting.hashCode()),gameWaiting);
-            gameWaiting=null;
+            return true;
         }
+        return false;
     }
 
     private boolean isPlayerNameUnique(String playerName) {

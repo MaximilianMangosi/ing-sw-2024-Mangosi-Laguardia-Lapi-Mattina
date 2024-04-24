@@ -21,8 +21,7 @@ public abstract class GameState{
      * @param game
      * @param gameManager
      */
-    GameState(Game game,GameManager gameManager){
-        this.game=game;
+    GameState(GameManager gameManager){
         this.gameManager=gameManager;
 
     }
