@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
@@ -67,5 +68,16 @@ public abstract class GameState{
     public  void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
         throw new IllegalOperationException();
     }
+    public  void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
+        throw new IllegalOperationException();
+    }
     protected abstract GameState nextState();
+
+    public void chooseStarterCardSide(boolean isFront, UUID userId) throws IllegalOperationException {
+        throw new IllegalOperationException();
+    }
+
+    public void chooseGoal(UUID userId, Goal newGoal) throws IllegalOperationException {
+       throw new IllegalOperationException();
+    }
 }

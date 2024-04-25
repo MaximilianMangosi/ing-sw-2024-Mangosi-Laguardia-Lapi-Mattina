@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.exceptions.InvalidGoalException;
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.*;
 
@@ -79,8 +80,13 @@ public class InitState extends GameState{
         Player player = getPlayerFromUid(userId);
         if(player == null) throw new InvalidUserId();
 
-        player.getStarterCard().setIsFront(isFront);
+        StarterCard starterCard=player.getStarterCard();
+        starterCard.setIsFront(isFront);
+        game.playStarterCardFront(isFront);
 
+    }
+
+    private void playStarterCard(UUID userId) {
     }
 
 }
