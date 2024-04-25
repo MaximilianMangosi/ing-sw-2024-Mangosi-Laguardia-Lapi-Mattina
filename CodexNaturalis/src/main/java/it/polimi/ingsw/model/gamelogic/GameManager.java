@@ -29,7 +29,7 @@ public class GameManager {
     }
 
     /**
-     * creates a new game
+     * creates a new game if there aren't any pending otherwise joins the pending one
      * @author Giuseppe Lagurdia
      * @param numOfPlayers the number of player that can join the game, if there is already a game waiting for player this parameter is ignored
      * @param newPlayer the Player object joining/creating a game

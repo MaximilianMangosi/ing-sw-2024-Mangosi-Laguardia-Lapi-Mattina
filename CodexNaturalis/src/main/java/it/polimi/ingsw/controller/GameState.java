@@ -71,31 +71,65 @@ public abstract class GameState {
             throw new IllegalPositionException();
         }
     }
+
+    /**
+     * Default implementation for bootGame throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * @author Giuseppe Laguardia
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
     public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException {
         throw new IllegalOperationException();
     }
-
+    /**
+     * Default implementation for playCardFront throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * @author Giuseppe Laguardia
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
         throw new IllegalOperationException();
     }
-
+    /**
+     * Default implementation for playCardBack throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * @author Giuseppe Laguardia
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
     public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
         throw new IllegalOperationException();
     }
-
+    /**
+     * Abstract implementation for nextState, must be overrided by the subclasses
+     * @author Giuseppe Laguardia
+     */
     protected abstract GameState nextState();
-
+    /**
+     * Default implementation for chooseStarterCardSide throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * @author Giuseppe Laguardia
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
     public void chooseStarterCardSide(boolean isFront, UUID userId) throws IllegalOperationException,InvalidUserId {
         throw new IllegalOperationException();
     }
-
+    /**
+     * Default implementation for chooseGoal throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * @author Giuseppe Laguardia
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
     public void chooseGoal(UUID userId, Goal newGoal) throws IllegalOperationException, InvalidGoalException, InvalidUserId {
         throw new IllegalOperationException();
     }
-
-    public void drawFromDeck(UUID userId, int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException {
+    /**
+     * Default implementation for drawFromDeck throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * @author Giuseppe Laguardia
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
+    public void drawFromDeck(UUID userId, int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException {
         throw new IllegalOperationException();
     }
+    /**
+     * Default implementation for drawVisibleCard throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * @author Giuseppe Laguardia
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
     public void drawVisibleCard (UUID userId,int choice) throws IsNotYourTurnException, HandFullException, IllegalOperationException {
         throw new IllegalOperationException();
     }

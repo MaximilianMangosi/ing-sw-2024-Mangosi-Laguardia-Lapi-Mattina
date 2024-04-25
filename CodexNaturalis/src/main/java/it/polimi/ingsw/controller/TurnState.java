@@ -63,10 +63,12 @@ public class TurnState extends GameState{
      * @throws IsNotYourTurnException
      * @throws HandFullException
      */
-    public void drawFromDeck(UUID userId,int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException {
+    public void drawFromDeck(UUID userId,int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException, InvalidChoiceException {
         if (!userIDs.get(userId).equals(game.getCurrentPlayer())){
             throw new IsNotYourTurnException();
         }
+        if(choice!=0 && choice!=1)
+            throw new InvalidChoiceException();
         if(choice == 0 && game.getResourceCardDeck().isEmpty()){
             throw new DeckEmptyException();
         } 

@@ -37,6 +37,8 @@ public class Controller {
     }
 
     /**
+     * call the BootGame method on currentState to create a new game if there aren't any pending otherwise joins the pending one.
+     * After that updates the view
      * @author Giuseppe Laguardia
      * @param numOfPlayers the number of players wanted for the game, if there is another game pending thi parameter is ignored
      * @param playerName the name chosen by the user for the game
@@ -51,15 +53,43 @@ public class Controller {
         changeState();
         return userID;
     }
+
+    /**
+     * Calls playCardFront on currentState to play a Card on front side.
+     * After that updates the view.
+     * @author Giuseppe Laguardia
+     * @param selectedCard the card to be played
+     * @param position the position on the field where to play the card
+     * @param userId the user's identifier, needed to check if is user's turn
+     * @throws IsNotYourTurnException if currentPlayer's userID doesn't match with userID passed as parameter
+     * @throws RequirementsNotMetException if card is a GoldCard and the player doesn't meet the requirements to play the Card
+     * @throws IllegalPositionException if the user choose an invalid position according to the rule
+     * @throws InvalidCardException if the card chosen is not in user's hand
+     * @throws HandNotFullException if the user already played a card this turn
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
     public synchronized void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
         currentState.playCardFront(selectedCard,position,userId);
-        //TODO update view
         view.updatePlayersHands();
         view.updatePlayersField();
         view.updatePlayersPoints();
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
     }
+    /**
+     * Calls playCardBack on currentState to play a Card on back side.
+     * After that updates the view.
+     * @author Giuseppe Laguardia
+     * @param selectedCard the card to be played
+     * @param position the position on the field where to play the card
+     * @param userId the user's identifier, needed to check if is user's turn
+     * @throws IsNotYourTurnException if currentPlayer's userID doesn't match with userID passed as parameter
+     * @throws RequirementsNotMetException if card is a GoldCard and the player doesn't meet the requirements to play the Card
+     * @throws IllegalPositionException if the user choose an invalid position according to the rule
+     * @throws InvalidCardException if the card chosen is not in user's hand
+     * @throws HandNotFullException if the user already played a card this turn
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
     public synchronized void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException {
         currentState.playCardBack(selectedCard,position,userId);
         view.updatePlayersHands();
@@ -67,23 +97,67 @@ public class Controller {
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
     }
-    public synchronized void ChooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId, IllegalOperationException {
+
+    /**
+     * Calls chooseStarterCardSide on currentState, to play StarterCard on the side chosen by the user.
+     * After that updates the view.
+     * @author Giuseppe Laguardia
+     * @param isFront true if the user decides to play StarterCard on front side, false if the user decides to play StarterCard on front side
+     * @param userId the user's identifier, needed to check if is user's turn
+     * @throws InvalidUserId if the given userId isn't associate to any Player
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
+    public synchronized void chooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId, IllegalOperationException {
         currentState.chooseStarterCardSide(isFront,userId);
         view.updatePlayersField();
         view.updatePlayersLegalPosition();
     }
+
+    /**
+     * Calls chooseGoal on currentState,so that the player can choose his private Goal.
+     * After that updates the view.
+     * @author Giuseppe Laguardia
+     * @param userId the user's identifier, needed to check if is user's turn
+     * @param newGoal the Goal chosen by the player as private Goal
+     * @throws InvalidGoalException the Goal given is not in GoalOption of the player
+     * @throws InvalidUserId if the given userId isn't associate to any Player
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
+
     public synchronized void ChooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId, IllegalOperationException {
         currentState.chooseGoal(userId,newGoal);
         view.updatePrivateGoals();
     }
-    public synchronized void drawFromDeck(UUID userId,int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException {
+
+    /**
+     * Calls drawFromDeck on the currentState to draw a card from the deck.
+     * After that updates the view.
+     * @param userId the user's identifier, needed to check if is user's turn
+     * @param choice the int representing the two decks. O for ResourceDeck, 1 for GoldDeck
+     * @throws IsNotYourTurnException if currentPlayer's userID doesn't match with userID passed as parameter
+     * @throws HandFullException if the user's hand is full, meaning that he haven't played a card this turn yet
+     * @throws DeckEmptyException if the chosen Deck is empty
+     * @throws InvalidChoiceException if choice it's neither 0 nor 1
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
+    public synchronized void drawFromDeck(UUID userId,int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException {
         currentState.drawFromDeck(userId, choice);
         view.updatePlayersHands();
 
         if(choice==0){ view.updateNumOfResourceCards();}
         else {view.updateNumOfGoldCards();}
     }
-    public synchronized void drawVisibleCard (UUID userId,int choice) throws IsNotYourTurnException, HandFullException, IllegalOperationException {
+    /**
+     * Calls drawVisibleCards on the currentState to draw one of the Card visible on the table.
+     * After that updates the view.
+     * @param userId the user's identifier, needed to check if is user's turn
+     * @param choice the int representing the two decks. O for ResourceDeck, 1 for GoldDeck
+     * @throws IsNotYourTurnException if currentPlayer's userID doesn't match with userID passed as parameter
+     * @throws HandFullException if the user's hand is full, meaning that he haven't played a card this turn yet
+     * @throws InvalidChoiceException if choice it's not in range [0:3]
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
+    public synchronized void drawVisibleCard (UUID userId,int choice) throws IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException {
         currentState.drawVisibleCard(userId,choice);
         view.updatePlayersHands();
         view.updateVisibleCards();
