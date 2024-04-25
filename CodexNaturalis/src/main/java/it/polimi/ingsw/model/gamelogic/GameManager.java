@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.gamelogic;
 import it.polimi.ingsw.model.gamecards.GameBox;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumberOfPlayersException;
+import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,14 +25,14 @@ public class GameManager {
      * @author Giuseppe Lagurdia
      * @param numOfPlayers the number of player that can join the game, if there is already a game waiting for player this parameter is ignored
      * @param newPlayer the Player object joining/creating a game
-     * @throws UnacceptableNumberOfPlayersException if numOfPlayer less than 2
+     * @throws UnacceptableNumOfPlayersException if numOfPlayer less than 2
      * @throws PlayerNameNotUniqueException if any Players's name in gameWaiting matches with playerName
      */
-    public boolean bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException {
+    public boolean bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException {
         if(gameWaiting==null){
             GameBox gamebox = new GameBox();
             if(numOfPlayers<2 || numOfPlayers>4)
-                throw new UnacceptableNumberOfPlayersException();
+                throw new UnacceptableNumOfPlayersException();
             gameWaiting = new Game(newPlayer,numOfPlayers,gamebox);
 
         }
