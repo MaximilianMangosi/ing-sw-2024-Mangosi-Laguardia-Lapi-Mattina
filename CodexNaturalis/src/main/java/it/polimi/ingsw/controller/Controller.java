@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
 
@@ -34,7 +35,27 @@ public class Controller {
         currentState.playCardFront(selectedCard,position,userId);
         //TODO update view
         view.updatePlayersHands();
+        view.updatePlayersField();
         view.updatePlayersPoints();
+        view.updateCurrentPlayer();
+        view.updatePlayersLegalPosition();
+    }
+    public synchronized void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException {
+        currentState.playCardBack(selectedCard,position,userId);
+        view.updatePlayersHands();
+        view.updatePlayersField();
+        view.updateCurrentPlayer();
+        view.updatePlayersLegalPosition();
+    }
+    public synchronized void ChooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId, IllegalOperationException {
+        currentState.chooseStarterCardSide(isFront,userId);
+        view.updatePlayersField();
+        view.updatePlayersLegalPosition();
+    }
+    public void ChooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId, IllegalOperationException {
+        currentState.chooseGoal(userId,newGoal);
+        //TODO update goals
+
     }
 
     /**

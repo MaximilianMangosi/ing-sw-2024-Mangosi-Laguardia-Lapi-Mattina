@@ -282,21 +282,25 @@ public class Game{
     }
     /**
      * @author Maximilian Mangosi
-     * play card front for starter card
-     * @param selectedCard it's the starter card
-     * @param position position 0,0
+     * play card for starter card
+     * @param isFront determines the side on which the card is played
      */
-    public void playCardFront(StarterCard selectedCard, Coordinates position){
-        currentPlayer.addCardToMap(selectedCard, position);
-
+    public void playStarterCardFront(boolean isFront){
         //add counter of resources
-        currentPlayer.updateResourceCounter(selectedCard.getCardResources());
-        currentPlayer.updateResourceCounter(selectedCard.getCentralResource());
-
+        StarterCard starterCard = currentPlayer.getStarterCard();
+        currentPlayer.addCardToMap(starterCard, new Coordinates(0,0));
+        if(isFront) {
+            currentPlayer.updateResourceCounter(starterCard.getCardResources());
+            currentPlayer.updateResourceCounter(starterCard.getCentralResource());
+        }
+        else{
+            currentPlayer.updateResourceCounter(starterCard.getBackResources());
+        }
         //update availablePosition list
-        currentPlayer.checkAvailablePositions(position, selectedCard);
+        currentPlayer.checkAvailablePositions(new Coordinates(0,0), starterCard);
 
     }
+
     /**
      * @author Maximilian Mangosi,Giorgio Mattina
      * playing the card in the front position on the field
