@@ -73,16 +73,21 @@ public class Controller {
     }
     public synchronized void ChooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId, IllegalOperationException {
         currentState.chooseGoal(userId,newGoal);
-        //TODO update goals
+        view.updatePrivateGoals();
     }
     public synchronized void drawFromDeck(UUID userId,int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException {
         currentState.drawFromDeck(userId, choice);
         view.updatePlayersHands();
+
+        if(choice==0){ view.updateNumOfResourceCards();}
+        else {view.updateNumOfGoldCards();}
     }
     public synchronized void drawVisibleCard (UUID userId,int choice) throws IsNotYourTurnException, HandFullException, IllegalOperationException {
         currentState.drawVisibleCard(userId,choice);
         view.updatePlayersHands();
-        //TODO update visible cards
+        view.updateVisibleCards();
+        view.updateNumOfGoldCards();
+        view.updateNumOfResourceCards();
     }
 
     /**

@@ -314,8 +314,6 @@ public class Game{
         if(!selectedCard.checkRequirements(currentPlayer.getResourceCounters())){
             throw new RequirementsNotMetException();
         }
-
-
         currentPlayer.addCardToMap(selectedCard, position);
 
         //add counter of resources
