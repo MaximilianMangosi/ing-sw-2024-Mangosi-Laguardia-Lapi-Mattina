@@ -7,8 +7,10 @@ import it.polimi.ingsw.controller.exceptions.IsNotYourTurnException;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
+import it.polimi.ingsw.model.gamelogic.Player;
 
 import java.util.UUID;
 
@@ -19,7 +21,8 @@ public class FinalTurnState extends GameState{
     }
     /**
      * checks for Turn rights, and calls playCardFront
-     * @author Giorgio Mattina
+     * if the player is the last one, calculate the goal points, and set it in player.goalPoints
+     * @author Riccardo Lapi and Giorgio Mattina
      * @param selectedCard
      * @param position
      * @param userId
@@ -31,8 +34,23 @@ public class FinalTurnState extends GameState{
         //checks if it's the player's turn, if the card is legal and if the position is legal
         CheckTurnCardPosition(selectedCard, position, userId);
         game.playCardFront(selectedCard,position);
-        //TODO check if curr player is last of the list and if so compute goalPoints for each player after that call getWinner()
 
+        Player player = getPlayerFromUid(userId);
+
+        if(game.getPlayers().getLast().equals(player)){
+            for(Player p : game.getPlayers()){
+
+                Goal privateGoal = p.getGoal();
+                Goal[] publicGoals = game.getPublicGoals();
+
+                int totGoalsPoint = privateGoal.calculateGoal(p);
+                totGoalsPoint += publicGoals[0].calculateGoal(p);
+                totGoalsPoint += publicGoals[1].calculateGoal(p);
+
+                p.setGoalPoints(totGoalsPoint);
+            }
+            Player winnerPlayer = game.getWinner();
+        }
     }
 
     @Override

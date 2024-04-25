@@ -104,6 +104,10 @@ public class Game{
         return currentPlayer;
     }
 
+    public Goal[] getPublicGoals() {
+        return publicGoals;
+    }
+
     /**
      * @author Giorgio  Mattina
      * getter of attribute AreBothDeckEmpty
