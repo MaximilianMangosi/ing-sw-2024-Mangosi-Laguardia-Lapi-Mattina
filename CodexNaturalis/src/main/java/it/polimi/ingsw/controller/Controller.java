@@ -34,6 +34,7 @@ public class Controller {
         currentState.playCardFront(selectedCard,position,userId);
         //TODO update view
         view.updatePlayersHands();
+        view.updatePlayersPoints();
     }
 
     /**
