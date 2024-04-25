@@ -33,6 +33,7 @@ public class Controller {
      */
     private synchronized void changeState(){
         currentState=currentState.nextState();
+        view.updateAll();
     }
 
     /**
