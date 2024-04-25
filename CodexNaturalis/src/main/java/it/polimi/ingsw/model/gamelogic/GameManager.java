@@ -12,6 +12,12 @@ public class GameManager {
 
     public GameManager() {
     }
+    public Game getGameWaiting(){
+        return gameWaiting;
+    }
+    public void setGameWaiting(Game game){
+        gameWaiting=game;
+    }
 
     /**
      * creates a new game
@@ -22,8 +28,6 @@ public class GameManager {
      * @throws PlayerNameNotUniqueException if any Players's name in gameWaiting matches with playerName
      */
     public boolean bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException {
-
-
         if(gameWaiting==null){
             GameBox gamebox = new GameBox();
             if(numOfPlayers<2 || numOfPlayers>4)

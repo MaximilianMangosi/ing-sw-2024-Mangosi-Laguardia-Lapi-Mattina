@@ -12,7 +12,13 @@ import java.util.UUID;
 
 public class TurnState extends GameState{
     TurnState(Game game, GameManager gameManager) {
-        super(game, gameManager);
+        super( gameManager);
+        this.game=game;
+    }
+    public GameState nextState(){
+        if((game.someoneHas20Points() || game.AreBothDeckEmpty()) && game.getCurrentPlayer().equals(game.getPlayers().getFirst()))
+            return new FinalTurnState(game,gameManager);
+        return this;
     }
 
     /**
@@ -24,15 +30,13 @@ public class TurnState extends GameState{
      * @throws IsNotYourTurnException
      * @throws RequirementsNotMetException
      */
-    public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException {
+    public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException {
         
         //checks if it's the player's turn, if the card is legal and if the position is legal
         CheckTurnCardPosition(selectedCard, position, userId);
 
         game.playCardFront(selectedCard,position);
     }
-
-
 
     /**
      * checks for Turn Rights and calls PlayCardBack
@@ -44,7 +48,7 @@ public class TurnState extends GameState{
      * @throws InvalidCardException
      * @throws IllegalPositionException
      */
-    public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException {
+    public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException, HandNotFullException {
         //checks if it's the player's turn, if the card is legal and if the position is legal
         CheckTurnCardPosition(selectedCard,position,userId);
 
@@ -65,12 +69,12 @@ public class TurnState extends GameState{
         }
         if(choice == 0 && game.getResourceCardDeck().isEmpty()){
             throw new DeckEmptyException();
-            //Da capire come fare per notificare che un solo mazzo è vuoto
         } 
         if (choice!=0 && game.getGoldCardDeck().isEmpty()) {
             throw new DeckEmptyException();
         }
         game.drawFromDeck(choice);
+        game.nextTurn();
     }
 
     /**
@@ -87,11 +91,11 @@ public class TurnState extends GameState{
             throw new IsNotYourTurnException();
         }
         game.drawVisibleCard(choice);
+        game.nextTurn();
     }
 
 
 
 
 
-    //isFinalTurn() return
 }

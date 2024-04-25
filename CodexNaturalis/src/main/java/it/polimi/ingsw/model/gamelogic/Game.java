@@ -107,7 +107,7 @@ public class Game{
      * getter of attribute AreBothDeckEmpty
      * @return attribute AreBothDeckEmpty
      */
-    public boolean isAreBothDeckEmpty() {
+    public boolean AreBothDeckEmpty() {
         return AreBothDeckEmpty;
     }
     /**

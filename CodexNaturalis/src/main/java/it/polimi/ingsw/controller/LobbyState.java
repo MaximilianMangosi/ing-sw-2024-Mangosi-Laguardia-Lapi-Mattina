@@ -8,6 +8,10 @@ import it.polimi.ingsw.model.gamelogic.UnacceptableNumberOfPlayersException;
 import java.util.UUID;
 
 public class LobbyState extends GameState{
+    /**
+     * InitState's constructor
+     * @param gameManager collection of all the games started but not yet finished, containing the method for boot a game
+     */
     public LobbyState(GameManager gameManager){
         super(gameManager);
     }
@@ -20,18 +24,33 @@ public class LobbyState extends GameState{
      * @throws UnacceptableNumberOfPlayersException
      * @throws PlayerNameNotUniqueException
      */
-    public synchronized UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException{
+    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException{
 
         UUID identity = UUID.randomUUID();
-        //
         Player newPlayer = new Player(playerName);
 
-        gameManager.bootGame(numOfPlayers,newPlayer);
+        boolean isGameFull=gameManager.bootGame(numOfPlayers,newPlayer);
 
         userIDs.put(identity,newPlayer);
-
+        if(isGameFull){
+            game=gameManager.getGameWaiting();
+            gameManager.setGameWaiting(null);
+            game.startGame();
+        }
         return identity;
 
     }
+
+    /**
+     * If a game is not null, meaning is ready to start , returns to the controller the new state otherwise returns this
+     * @author Giuseppe Laguardia
+     * @return the next GameState
+     */
+    public GameState nextState(){
+       if(game!=null)
+           return new InitState( game, gameManager);
+       return this;
+    }
+
 
 }

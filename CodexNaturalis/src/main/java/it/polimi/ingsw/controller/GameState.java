@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Coordinates;
+import it.polimi.ingsw.model.gamecards.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
@@ -18,7 +19,6 @@ public abstract class GameState{
     /**
      * @author Giuseppe Laguardia
      * constructor of GameState
-     * @param game
      * @param gameManager
      */
     GameState(GameManager gameManager){
@@ -38,7 +38,7 @@ public abstract class GameState{
      * @throws InvalidCardException
      * @throws IllegalPositionException
      */
-    protected void CheckTurnCardPosition(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException {
+    protected void CheckTurnCardPosition(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException, HandNotFullException {
         if (!userIDs.get(userId).equals(game.getCurrentPlayer())){
             throw new IsNotYourTurnException();
         }
@@ -46,9 +46,16 @@ public abstract class GameState{
         if(!game.getCurrentPlayer().getHand().contains(selectedCard)){
             throw new InvalidCardException();
         }
+        if(game.getCurrentPlayer().getHand().size()<3){
+            throw new HandNotFullException();
+        }
         //cheks if given position is in the availablePosition list
         if(!game.getCurrentPlayer().getAvailablePositions().contains(position)){
             throw new IllegalPositionException();
         }
     }
+    public  void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
+        throw new IllegalOperationException();
+    }
+    protected abstract GameState nextState();
 }

@@ -10,7 +10,8 @@ import java.util.UUID;
 
 public class FinalTurnState extends GameState{
     FinalTurnState(Game game, GameManager gameManager) {
-        super(game, gameManager);
+        super(gameManager);
+        this.game=game;
     }
     /**
      * checks for Turn rights, and calls playCardFront
@@ -21,7 +22,7 @@ public class FinalTurnState extends GameState{
      * @throws IsNotYourTurnException
      * @throws RequirementsNotMetException
      */
-    public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException {
+    public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException {
 
         //checks if it's the player's turn, if the card is legal and if the position is legal
         CheckTurnCardPosition(selectedCard, position, userId);
@@ -29,7 +30,12 @@ public class FinalTurnState extends GameState{
         game.playCardFront(selectedCard,position);
     }
 
+    @Override
+    protected GameState nextState() {
+        return null;
+    }
 
-    //TODO playCards
+
+    //TODO setWinner
 
 }
