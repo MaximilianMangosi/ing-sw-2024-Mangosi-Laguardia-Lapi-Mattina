@@ -54,4 +54,22 @@ public class GameManager {
         return gameWaiting.getPlayers().stream().anyMatch(p -> p.getName().equals(playerName));
     }
 
+    /**
+     * @author Riccardo Lapi
+     * remove the given game from the gameInProcess
+     * @param gameId the gameId
+     */
+    public void deleteGame(String gameId){
+        gameInProcess.remove(gameId);
+    }
+
+    /**
+     * @author Riccardo Lapi
+     * remove the given player from the PlayersToGame
+     * @param nickName String that identifies the Player
+     */
+    public void deletePlayerFromPlayersToGame(String nickName){
+        playerToGame.remove(nickName);
+    }
+
 }
