@@ -9,6 +9,7 @@ import java.util.Map;
 public class GameManager {
     private Map<String,Game> gameInProcess= new HashMap<>();
     private Game gameWaiting;
+    private GameBox gameBox;
     private Map<String,Integer> playerToGame=new HashMap<>();
 
     public GameManager() {
@@ -18,6 +19,13 @@ public class GameManager {
     }
     public void setGameWaiting(Game game){
         gameWaiting=game;
+    }
+    public GameBox getGameBox() {
+        return gameBox;
+    }
+
+    public void setGameBox(GameBox gameBox) {
+        this.gameBox = gameBox;
     }
 
     /**

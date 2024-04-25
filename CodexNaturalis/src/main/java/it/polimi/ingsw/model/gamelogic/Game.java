@@ -129,11 +129,12 @@ public class Game{
      */
     public Player getWinner(){
 
-        int maxPoints = listOfPlayers.stream().max(Comparator.comparing((Player::getPoints))).
-                        get().getPoints();
+        int maxPoints = listOfPlayers.stream().map(p->p.getPoints()+p.getGoalPoints()).
+                                                max(Integer::compareTo).
+                                                get();
         // don't know if a check for maxPoints >=20 is needed
         return listOfPlayers.stream().
-                filter(p->p.getPoints()== maxPoints).
+                filter(p->p.getPoints()+p.getGoalPoints()== maxPoints).
                 max(Comparator.comparing((Player::getGoalPoints))).get();
 
     }
