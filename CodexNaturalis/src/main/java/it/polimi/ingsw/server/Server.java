@@ -17,7 +17,7 @@ public class Server {
     public static void main(String[] argv){
         //View = new View()
         GameBox gb= new GameBox();
-
+        //GameBox setup
         ArrayList<String> resourceCardJsons=new ArrayList<>();
         String resourceCardPath="src/jsons/ResourceCard/ResourceCard_";
         int numOfResourceCard=40;
@@ -58,13 +58,27 @@ public class Server {
             fillList(identicalGoalJsons, numOfIdenticalGoal, identicalGoalPath);
             fillList(LGoalJsons, numOfLGoal, LGoalPath);
             fillList(stairGoalJsons, numOfStairGoal, stairGoalPath);
-        }catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-        try {
+
+            gb.addToResourceCardSet(resourceCardJsons);
+            gb.addGoldCards(goldCardJsons);
+            gb.addGoldCardAngles(goldCardAnglesJsons);
+            gb.addGoldCardTools(goldCardToolJsons);
+            gb.addToStarterCardSet(starterCardJsons);
+            gb.addIdenticalGoals(identicalGoalJsons);
+            gb.addLGoals(LGoalJsons);
+            gb.addStairGoals(stairGoalJsons);
+            gb.addDistinctGoals();
+
+            // GameManager setup
+            GameManager gameManager = new GameManager();
+            gameManager.setGameBox(gb);
+
+
             Registry registry= LocateRegistry.createRegistry(23);
         }catch (RemoteException e){
-            System.out.println("Connection error unable to export object"+e.getMessage());
+            System.out.println("Connection error unable to export object:\n"+e.getMessage());
+        }catch(IOException e){
+            System.out.println("Error occurred during json files' read:\n"+e.getMessage());
         }
 
 

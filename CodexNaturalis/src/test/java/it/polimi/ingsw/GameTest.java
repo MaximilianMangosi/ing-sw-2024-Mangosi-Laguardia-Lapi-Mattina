@@ -28,6 +28,7 @@ public class GameTest {
     @Before
     public void GameSetup() throws IOException {
         GameBox gb= new GameBox();
+
         ArrayList<String> resourceCardJsons=new ArrayList<>();
         String resourceCardPath="src/jsons/ResourceCard/ResourceCard_";
         int numOfResourceCard=40;
@@ -69,7 +70,7 @@ public class GameTest {
         fillList(LGoalJsons,numOfLGoal,LGoalPath);
         fillList(stairGoalJsons,numOfStairGoal,stairGoalPath);}
     catch (IOException e){
-        System.out.println(e.getMessage());
+        System.out.println("Error during json file reading:\n"+e.getMessage());
     }
 
         gb.addToResourceCardSet(resourceCardJsons);
