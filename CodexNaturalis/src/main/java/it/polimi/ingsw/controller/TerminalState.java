@@ -5,7 +5,8 @@ import it.polimi.ingsw.model.gamelogic.GameManager;
 
 public class TerminalState extends GameState{
     TerminalState(Game game, GameManager gameManager) {
-        super(game, gameManager);
+        super( gameManager);
+        this.game=game;
     }
 
     @Override

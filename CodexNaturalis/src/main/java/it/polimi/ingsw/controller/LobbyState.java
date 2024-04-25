@@ -3,7 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumberOfPlayersException;
+import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
 import java.util.UUID;
 
@@ -21,10 +21,10 @@ public class LobbyState extends GameState{
      * @param numOfPlayers number of players
      * @param playerName the nickname chosen by the player
      * @return the userId for identification
-     * @throws UnacceptableNumberOfPlayersException
+     * @throws UnacceptableNumOfPlayersException
      * @throws PlayerNameNotUniqueException
      */
-    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumberOfPlayersException, PlayerNameNotUniqueException{
+    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException{
 
         UUID identity = UUID.randomUUID();
         Player newPlayer = new Player(playerName);
