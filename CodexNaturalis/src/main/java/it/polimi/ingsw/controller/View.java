@@ -235,7 +235,20 @@ public class View {
     public List<Card> getVisibleCards(){
         return visibleCards;
     }
-
+    public void updateAll(){
+        updatePlayersPoints();
+        updateNumOfResourceCards();
+        updateNumOfGoldCards();
+        updatePlayersHands();
+        updatePlayersField();
+        updatePlayersList();
+        updateCurrentPlayer();
+        updatePlayersLegalPosition();
+        updatePublicGoals();
+        updatePlayersGoalOptions();
+        updatePrivateGoals();
+        updateVisibleCards();
+    }
     //lista di giocatori
     //tabellone
     //currentPlayer
