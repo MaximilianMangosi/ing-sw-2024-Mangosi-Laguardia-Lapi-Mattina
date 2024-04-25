@@ -156,7 +156,9 @@ public class Player {
     public void setPoints(int points) {
         this.points = points;
     }
-
+    public void removeFromHand(Card  selectedCard){
+        hand.remove(selectedCard);
+    }
     /**
      * @author Maximilian Mangosi
      * @return returns the number of all the resources the player has on the field

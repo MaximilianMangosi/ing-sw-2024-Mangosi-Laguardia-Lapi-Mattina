@@ -290,6 +290,7 @@ public class Game{
 
         //update availablePosition list
         currentPlayer.checkAvailablePositions(position, selectedCard);
+
     }
     /**
      * @author Maximilian Mangosi,Giorgio Mattina
@@ -316,6 +317,7 @@ public class Game{
         selectedCard.addPoints(currentPlayer);
         //update availablePosition list
         selectedCard.checkAvailablePositions(currentPlayer,position);
+        currentPlayer.removeFromHand(selectedCard);
     }
 
 
@@ -341,6 +343,7 @@ public class Game{
 
         //update availablePosition list
         selectedCard.checkAvailablePositions(currentPlayer,position);
+        currentPlayer.removeFromHand(selectedCard);
     }
 
     /**
