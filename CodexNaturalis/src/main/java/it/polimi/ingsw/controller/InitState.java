@@ -60,8 +60,8 @@ public class InitState extends GameState{
      * @param userId int that identifies the unique player
      * @param newGoal the chosen goal
      */
-
-    public void ChooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId {
+    @Override
+    public void chooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId {
 
         Player player = getPlayerFromUid(userId);
 
@@ -76,17 +76,15 @@ public class InitState extends GameState{
      * set the start card side
      * @param isFront boolean that indicate if the card is placed with the front facing upwards
      */
-    public void ChooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId {
+    @Override
+    public void chooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId {
         Player player = getPlayerFromUid(userId);
         if(player == null) throw new InvalidUserId();
-
         StarterCard starterCard=player.getStarterCard();
         starterCard.setIsFront(isFront);
         game.playStarterCardFront(isFront);
 
     }
 
-    private void playStarterCard(UUID userId) {
-    }
 
 }

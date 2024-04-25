@@ -2,11 +2,14 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
+import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
+import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
+import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
 import java.util.*;
 
@@ -31,6 +34,22 @@ public class Controller {
     private synchronized void changeState(){
         currentState=currentState.nextState();
     }
+
+    /**
+     * @author Giuseppe Laguardia
+     * @param numOfPlayers the number of players wanted for the game, if there is another game pending thi parameter is ignored
+     * @param playerName the name chosen by the user for the game
+     * @return the user's identifier
+     * @throws UnacceptableNumOfPlayersException if numOfPlayers is out of range [2,4]
+     * @throws PlayerNameNotUniqueException if playerName is already taken by another user
+     * @throws IllegalOperationException if in this state this action cannot be performed
+     */
+    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException {
+        UUID userID= currentState.BootGame(numOfPlayers,playerName);
+        view.updatePlayersList();
+        changeState();
+        return userID;
+    }
     public synchronized void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
         currentState.playCardFront(selectedCard,position,userId);
         //TODO update view
@@ -52,10 +71,18 @@ public class Controller {
         view.updatePlayersField();
         view.updatePlayersLegalPosition();
     }
-    public void ChooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId, IllegalOperationException {
+    public synchronized void ChooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId, IllegalOperationException {
         currentState.chooseGoal(userId,newGoal);
         //TODO update goals
-
+    }
+    public synchronized void drawFromDeck(UUID userId,int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException {
+        currentState.drawFromDeck(userId, choice);
+        view.updatePlayersHands();
+    }
+    public synchronized void drawVisibleCard (UUID userId,int choice) throws IsNotYourTurnException, HandFullException, IllegalOperationException {
+        currentState.drawVisibleCard(userId,choice);
+        view.updatePlayersHands();
+        //TODO update visible cards
     }
 
     /**
