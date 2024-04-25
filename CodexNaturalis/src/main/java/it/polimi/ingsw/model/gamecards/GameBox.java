@@ -72,12 +72,16 @@ public class GameBox {
     /**
      * Add a list of ResourceCard to resourceCardSet, parsing a list of json
      * @author Giuseppe Laguardia
-     * @param jsons a list of String representing a ResourceCard in json format
-     * @throws JsonSyntaxException if the string is badly formatted
+     * @param jsons a list of String representing a ResourceCard in json format, if the string is badly formatted the program exit
      */
     public void addToResourceCardSet(List<String> jsons){
         for(String json :jsons){
-            resourceCardSet.add(gson.fromJson(json,ResourceCard.class));
+            try{
+                resourceCardSet.add(gson.fromJson(json,ResourceCard.class));
+            }catch (JsonSyntaxException e){
+                System.out.printf("Parsing error in file ResourceCard_%d.json",jsons.indexOf(json)+1);
+                System.exit(0);
+            }
         }
     }
     /**
@@ -88,7 +92,12 @@ public class GameBox {
      */
     public void addGoldCards(List<String> jsons){
         for(String json :jsons){
-            goldCardSet.add(gson.fromJson(json,GoldCard.class));
+            try {
+                goldCardSet.add(gson.fromJson(json,GoldCard.class));
+            }catch (JsonSyntaxException e){
+                System.out.printf("Parsing error in file GoldCard_%d.json",jsons.indexOf(json)+1);
+                System.exit(0);
+            }
         }
     }
     /**
@@ -99,62 +108,89 @@ public class GameBox {
      */
     public void addGoldCardAngles(List<String> jsons){
         for(String json :jsons){
-            goldCardSet.add(gson.fromJson(json, GoldCardAngles.class));
+            try {
+                goldCardSet.add(gson.fromJson(json,GoldCard.class));
+            }catch (JsonSyntaxException e){
+                System.out.printf("Parsing error in file GoldCardAngles_%d.json",jsons.indexOf(json)+1);
+                System.exit(0);
+            }
         }
     }
     /**
      * Add a list of GoldCardTool to goldCardSet, parsing a list of json
      * @author Giuseppe Laguardia
-     * @param jsons a list of String representing a GoldCardTool in json format
-     * @throws JsonSyntaxException if the string is badly formatted
+     * @param jsons a list of String representing a GoldCardTool in json format,if the string is badly formatted the program exit
      */
     public void addGoldCardTools(List<String> jsons){
         for(String json :jsons){
-            goldCardSet.add(gson.fromJson(json,GoldCard.class));
+            try {
+                goldCardSet.add(gson.fromJson(json,GoldCard.class));
+            }catch (JsonSyntaxException e){
+                System.out.printf("Parsing error in file GoldCardTool_%d.json",jsons.indexOf(json)+1);
+                System.exit(0);
+            }
         }
     }
     /**
      * Add a list of StarterCard to starterCardSet, parsing a list of json
      * @author Giuseppe Laguardia
-     * @param jsons a list of String representing a StarterCard in json format
-     * @throws JsonSyntaxException if the string is badly formatted
+     * @param jsons a list of String representing a StarterCard in json format,if the string is badly formatted the program exit
      */
     public void addToStarterCardSet(List<String> jsons){
         for(String json :jsons){
-            starterCardSet.add(gson.fromJson(json,StarterCard.class));
+            try {
+                starterCardSet.add(gson.fromJson(json,StarterCard.class));
+            }catch (JsonSyntaxException e){
+                System.out.printf("Parsing error in file StarterCard_%d",jsons.indexOf(json));
+                System.exit(0);
+            }
+
         }
+
     }
     /**
      * Add a list of StairGoal to goalSet, parsing a list of json
      * @author Giuseppe Laguardia
-     * @param jsons a list of String representing a StairGoal in json format
-     * @throws JsonSyntaxException if the string is badly formatted
+     * @param jsons a list of String representing a StairGoal in json format,if the string is badly formatted the program exit
      */
     public void addStairGoals(List<String> jsons){
         for(String json :jsons){
-            goalSet.add(gson.fromJson(json, StairGoal.class));
+            try {
+                goalSet.add(gson.fromJson(json, StairGoal.class));
+            }catch (JsonSyntaxException e){
+                System.out.printf("Parsing error in file StairGoal_%d",jsons.indexOf(json));
+                System.exit(0);
+            }
         }
     }
     /**
      * Add a list of LGoal to goalSet, parsing a list of json
      * @author Giuseppe Laguardia
-     * @param jsons a list of String representing a LGoal in json format
-     * @throws JsonSyntaxException if the string is badly formatted
+     * @param jsons a list of String representing a LGoal in json format,if the string is badly formatted the program exit
      */
     public void addLGoals(List<String> jsons){
         for(String json :jsons){
-            goalSet.add(gson.fromJson(json, LGoal.class));
+            try {
+                goalSet.add(gson.fromJson(json, LGoal.class));
+            }catch (JsonSyntaxException e){
+                System.out.printf("Parsing error in file LGoal_%d",jsons.indexOf(json));
+                System.exit(0);
+            }
         }
     }
     /**
      * Add a list of IdenticalGoal to goalSet, parsing a list of json
      * @author Giuseppe Laguardia
-     * @param jsons a list of String representing a IdenticalGoal in json format
-     * @throws JsonSyntaxException if the string is badly formatted
+     * @param jsons a list of String representing a IdenticalGoal in json format,if the string is badly formatted the program exit
      */
     public void addIdenticalGoals(List<String> jsons){
         for(String json :jsons){
-            goalSet.add(gson.fromJson(json, IdenticalGoal.class));
+            try {
+                goalSet.add(gson.fromJson(json, IdenticalGoal.class));
+            }catch (JsonSyntaxException e){
+                System.out.printf("Parsing error in file IdenticalGoal_%d",jsons.indexOf(json));
+                System.exit(0);
+            }
         }
     }
     /**

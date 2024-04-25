@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.controller.exceptions.DeckEmptyException;
 import it.polimi.ingsw.model.gamecards.GameBox;
@@ -27,6 +28,7 @@ public class GameTest {
     @Before
     public void GameSetup() throws IOException {
         GameBox gb= new GameBox();
+
         ArrayList<String> resourceCardJsons=new ArrayList<>();
         String resourceCardPath="src/jsons/ResourceCard/ResourceCard_";
         int numOfResourceCard=40;
@@ -58,7 +60,7 @@ public class GameTest {
         ArrayList<String> stairGoalJsons=new ArrayList<>();
         String stairGoalPath="src/jsons/Goal/StairGoal/StairGoal_";
         int numOfStairGoal=4;
-
+    try{
         fillList(resourceCardJsons,numOfResourceCard,resourceCardPath);
         fillList(goldCardJsons,numOfGoldCard,goldCardPath);
         fillList(goldCardAnglesJsons,numOfGoldCardAngles,goldCardAnglesPath);
@@ -66,7 +68,10 @@ public class GameTest {
         fillList(starterCardJsons,numOfStarterCard,starterCardPath);
         fillList(identicalGoalJsons,numOfIdenticalGoal,identicalGoalPath);
         fillList(LGoalJsons,numOfLGoal,LGoalPath);
-        fillList(stairGoalJsons,numOfStairGoal,stairGoalPath);
+        fillList(stairGoalJsons,numOfStairGoal,stairGoalPath);}
+    catch (IOException e){
+        System.out.println("Error during json file reading:\n"+e.getMessage());
+    }
 
         gb.addToResourceCardSet(resourceCardJsons);
         gb.addGoldCards(goldCardJsons);

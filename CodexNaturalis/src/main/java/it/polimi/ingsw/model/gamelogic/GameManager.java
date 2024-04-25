@@ -9,6 +9,7 @@ import java.util.Map;
 public class GameManager {
     private Map<String,Game> gameInProcess= new HashMap<>();
     private Game gameWaiting;
+    private GameBox gameBox;
     private Map<String,Integer> playerToGame=new HashMap<>();
 
     public GameManager() {
@@ -18,6 +19,13 @@ public class GameManager {
     }
     public void setGameWaiting(Game game){
         gameWaiting=game;
+    }
+    public GameBox getGameBox() {
+        return gameBox;
+    }
+
+    public void setGameBox(GameBox gameBox) {
+        this.gameBox = gameBox;
     }
 
     /**
@@ -52,6 +60,24 @@ public class GameManager {
 
     private boolean isPlayerNameUnique(String playerName) {
         return gameWaiting.getPlayers().stream().anyMatch(p -> p.getName().equals(playerName));
+    }
+
+    /**
+     * @author Riccardo Lapi
+     * remove the given game from the gameInProcess
+     * @param gameId the gameId
+     */
+    public void deleteGame(String gameId){
+        gameInProcess.remove(gameId);
+    }
+
+    /**
+     * @author Riccardo Lapi
+     * remove the given player from the PlayersToGame
+     * @param nickName String that identifies the Player
+     */
+    public void deletePlayerFromPlayersToGame(String nickName){
+        playerToGame.remove(nickName);
     }
 
 }
