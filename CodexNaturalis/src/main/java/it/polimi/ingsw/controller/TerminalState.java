@@ -8,4 +8,8 @@ public class TerminalState extends GameState{
         super(game, gameManager);
     }
 
+    @Override
+    protected GameState nextState() {
+        return null;
+    }
 }

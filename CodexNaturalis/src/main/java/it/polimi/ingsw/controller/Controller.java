@@ -1,16 +1,15 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
-import it.polimi.ingsw.model.gamecards.RequirementsNotMetException;
+import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
-import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 
 import java.util.UUID;
 
 public class Controller {
     GameState currentState;
-
     /**
      * constructor of Controller, creates a new GameState
      * @author Giorgio Mattina

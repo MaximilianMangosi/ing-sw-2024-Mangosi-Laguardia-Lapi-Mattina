@@ -1,15 +1,14 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Coordinates;
-import it.polimi.ingsw.controller.DeckEmptyException;
+import it.polimi.ingsw.controller.exceptions.DeckEmptyException;
 import it.polimi.ingsw.model.gamecards.GameBox;
-import it.polimi.ingsw.model.gamecards.HandFullException;
-import it.polimi.ingsw.model.gamecards.RequirementsNotMetException;
+import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
+import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.cards.GoldCard;
 import it.polimi.ingsw.model.gamecards.cards.ResourceCard;
-import it.polimi.ingsw.model.gamecards.resources.Resource;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.Player;
 import org.junit.Before;
@@ -19,9 +18,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
