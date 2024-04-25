@@ -11,6 +11,7 @@ import java.util.*;
 
 public class Controller {
     GameState currentState;
+    View view;
     /**
      * constructor of Controller, creates a new GameState
      * @author Giorgio Mattina
@@ -18,7 +19,9 @@ public class Controller {
      */
     public Controller( GameManager gameManager){
         currentState=new LobbyState(gameManager);
+        view = new View(this);
     }
+
 
     /**
      * Makes the transition to nextState
@@ -30,7 +33,7 @@ public class Controller {
     public synchronized void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
         currentState.playCardFront(selectedCard,position,userId);
         //TODO update view
-
+        view.updatePlayersHands();
     }
 
     /**

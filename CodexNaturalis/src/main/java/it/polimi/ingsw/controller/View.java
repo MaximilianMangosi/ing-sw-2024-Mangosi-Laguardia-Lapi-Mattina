@@ -17,6 +17,12 @@ public class View {
     private String currentPlayer;
     private Map<UUID,List<Coordinates>> playersLegalPositions;
 
+    public View (Controller controller){
+        this.controller=controller;
+    }
+
+
+
   /*  public void insertCommand (){
         Scanner scannerCommand = new Scanner(System.in);
         System.out.println("Insert an action:\n");
@@ -38,65 +44,90 @@ public class View {
         scannerCommand.close();
     }
     */
+
+    /**
+     * updates PlaeyrsPoints, calling the controller
+     * @author Giorgio Mattina, Maximilian Mangosi
+     */
     public void updatePlayersPoints(){
         playersPoints=controller.getPlayersPoints();
     }
     public Map<String, Integer> getPlayersPoints(){
         return playersPoints;
     }
+    /**
+     * updates NumOfResourceCards, calling the controller
+     * @author Giorgio Mattina, Maximilian Mangosi
+     */
     public void updateNumOfResourceCards(){
         numOfResourceCards=controller.getNumOfResourceCards();
     }
     public int getNumOfResourceCards(){
         return numOfResourceCards;
     }
+    /**
+     * updates NumOfGoldCards, calling the controller
+     * @author Giorgio Mattina, Maximilian Mangosi
+     */
     public void updateNumOfGoldCards(){
         numOfGoldCards=controller.getNumOfGoldCards();
     }
     public int getNumOfGoldCards(){
         return numOfGoldCards;
     }
+    /**
+     * updates playersHands, calling the controller
+     * @author Giorgio Mattina, Maximilian Mangosi
+     */
     public void updatePlayersHands(){
         playersHands=controller.getPlayersHands();
     }
     public Map<UUID, List<Card>> getPlayersHands(){
         return  playersHands;
     }
+    /**
+     * updates PlayersField, calling the controller
+     * @author Giorgio Mattina, Maximilian Mangosi
+     */
     public void updatePlayersField(){
         playersField=controller.getPlayersField();
     }
     public Map<UUID,Map<Coordinates,Card>> getPlayersField(){
         return playersField;
     }
+    /**
+     * updates PlayersList, calling the controller
+     * @author Giorgio Mattina, Maximilian Mangosi
+     */
     public void updatePlayersList(){
         playersList=controller.getPlayersList();
     }
     public List<String> getPlayersList(){
         return playersList;
     }
+    /**
+     * updates currentPlayer, calling the controller
+     * @author Giorgio Mattina, Maximilian Mangosi
+     */
     public void updateCurrentPlayer(){
         currentPlayer=controller.getCurrentPlayer();
     }
     public String getCurrentPlayer(){
         return currentPlayer;
     }
+    /**
+     * updates PlayesLegalPositions, calling the controller
+     * @author Giorgio Mattina, Maximilian Mangosi
+     */
     public void updatePlayersLegalPosition(){
         playersLegalPositions=controller.getPlayersLegalPositions();
     }
     public Map<UUID,List<Coordinates>> getPlayersLegalPositions(){
         return playersLegalPositions;
     }
-    public void update (){
-
-    }
-    /*public void startGame (){
-
-    }*/
 
 
-    public View (Controller controller){
-        this.controller=controller;
-    }
+
 
 
     //lista di giocatori
