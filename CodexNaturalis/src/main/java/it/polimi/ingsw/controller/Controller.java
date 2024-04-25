@@ -175,7 +175,49 @@ public class Controller {
         return legal;
     }
 
+    /**
+     *
+     * @author Giorgio Mattina
+     * @return the list of public goals to the view
+     */
+    public List<Goal> getPublicGoals(){
+        return currentState.game.getListOfGoal();
+    }
 
+    /**
+     *
+     * @author Giorgio Mattina
+     * @return the map plauerId-ArrayOfGoalOptions to the view
+     */
+    public Map<UUID,Goal[]> getGoalOptions(){
+        Map<UUID,Goal[]> options = new HashMap<>();
+        Set<UUID> set = currentState.userIDs.keySet();
+        for (UUID id:set){
+            options.put(id,currentState.getPlayerFromUid(id).getGoalOptions());
+        }
+        return options;
+    }
+
+    /**
+     * @author Giorgio Mattina
+     * @return the map playerId-privateGoal
+     */
+    public Map<UUID,Goal> getPrivateGoals(){
+        Map<UUID,Goal> privateGoals = new HashMap<>();
+        Set<UUID> set = currentState.userIDs.keySet();
+        for(UUID id:set){
+            privateGoals.put(id,currentState.getPlayerFromUid(id).getGoal());
+        }
+        return privateGoals;
+    }
+
+    /**
+     * @author Giorgio Mattina, Maximilian Mangosi
+     * @return list of visible cards
+     */
+    public List<Card> getVisibleCards(){
+        return currentState.game.getVisibleCards();
+    }
     //turn->final dopo drawCard check (areBothEmpty or hasSomeone20points) and  current player is first of the list
     //pepo,giorgio,max,ric
     //final->Terminal compute public goal and getWinner
