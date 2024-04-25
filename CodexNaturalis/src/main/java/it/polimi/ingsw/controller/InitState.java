@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.*;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -59,7 +60,7 @@ public class InitState extends GameState{
 
     public void ChooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId {
 
-        Player player = getUserIDs().get(userId);
+        Player player = getPlayerFromUid(userId);
 
         if(player == null) throw new InvalidUserId();
 
@@ -67,8 +68,17 @@ public class InitState extends GameState{
 
         player.setGoal(newGoal);
     }
+    /**
+     * @author Riccardo Lapi
+     * set the start card side
+     * @param isFront boolean that indicate if the card is placed with the front facing upwards
+     */
+    public void ChooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId {
+        Player player = getPlayerFromUid(userId);
+        if(player == null) throw new InvalidUserId();
 
-    //todo ChooseGoal(UserId,Goal) Ric
-    //todo ChooseStarterCardSide(boolean) Ric
+        player.getStarterCard().setIsFront(isFront);
+
+    }
 
 }

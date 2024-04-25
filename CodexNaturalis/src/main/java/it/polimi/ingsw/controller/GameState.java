@@ -28,6 +28,15 @@ public abstract class GameState{
     public HashMap<UUID, Player> getUserIDs() {
         return userIDs;
     }
+
+    /**
+     * @author Riccardo Lapi
+     * @param userId the user unique id
+     * @return the Player associated to the userId
+     */
+    public Player getPlayerFromUid(UUID userId){
+        return getUserIDs().get(userId);
+    }
     /**
      * checks if it's the player's turn, if the card is legal and if the position is legal
      * @author Giorgio Mattina
