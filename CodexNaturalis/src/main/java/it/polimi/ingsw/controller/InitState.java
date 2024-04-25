@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.exceptions.InvalidGoalException;
+import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.*;
 

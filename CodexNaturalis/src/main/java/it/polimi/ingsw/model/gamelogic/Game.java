@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.gamelogic;
-import it.polimi.ingsw.controller.DeckEmptyException;
+import it.polimi.ingsw.controller.exceptions.DeckEmptyException;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.*;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.GoldCard;
 import it.polimi.ingsw.model.gamecards.cards.ResourceCard;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
+import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
+import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.*;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
@@ -27,9 +29,9 @@ public class Game{
     private List<ResourceCard> resourceCardDeck ;
     private List<GoldCard> goldCardDeck ;
     private List<Card> visibleCards;
+    private Goal[] publicGoals=new Goal[2];// TODO setup in startGame
     private final List<Goal> listOfGoal= new ArrayList<>();
     private Player currentPlayer;
-
     private List<StarterCard> starterCards=new ArrayList<>();
 
 

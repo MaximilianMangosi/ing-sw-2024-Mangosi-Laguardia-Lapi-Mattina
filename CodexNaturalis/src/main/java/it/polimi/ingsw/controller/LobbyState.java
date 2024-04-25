@@ -2,8 +2,8 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
-import it.polimi.ingsw.model.gamelogic.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.UnacceptableNumberOfPlayersException;
+import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
+import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumberOfPlayersException;
 
 import java.util.UUID;
 
@@ -34,7 +34,7 @@ public class LobbyState extends GameState{
         userIDs.put(identity,newPlayer);
         if(isGameFull){
             game=gameManager.getGameWaiting();
-            gameManager.setGameWaiting(null);
+            gameManager.setGameWaiting(null);// gameWaiting must be null to host multiple game on the server
             game.startGame();
         }
         return identity;

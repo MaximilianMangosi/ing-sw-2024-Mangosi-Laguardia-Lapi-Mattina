@@ -1,12 +1,12 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
-import it.polimi.ingsw.model.gamecards.HandFullException;
-import it.polimi.ingsw.model.gamecards.RequirementsNotMetException;
+import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
+import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.*;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
-import it.polimi.ingsw.model.gamelogic.Player;
 
 import java.util.UUID;
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gamelogic;
-import it.polimi.ingsw.model.App;
 import it.polimi.ingsw.model.gamecards.GameBox;
+import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
+import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumberOfPlayersException;
 
 import java.util.HashMap;
 import java.util.Map;
