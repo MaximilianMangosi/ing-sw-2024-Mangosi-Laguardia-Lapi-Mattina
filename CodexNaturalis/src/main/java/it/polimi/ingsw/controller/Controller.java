@@ -169,6 +169,7 @@ public class Controller {
 
     /**
      * Calls CloseGame on currentState to remove the user from the game
+     * @authore Giuseppe Laguardia
      * @param userID the users' identifier who's closing the game
      */
     public synchronized void closeGame(UUID userID){
@@ -180,7 +181,7 @@ public class Controller {
         view.updateCurrentPlayer();
         view.updatePlayersPoints();
     }
-    public void deleteGameFromGameManager() throws RemoteException {
+    public synchronized void deleteGameFromGameManager() throws RemoteException {
         currentState.deleteGameFromGameManager();
         view= new View(this);
     }
