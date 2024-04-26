@@ -6,11 +6,13 @@ import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class Controller {
@@ -21,7 +23,7 @@ public class Controller {
      * @author Giorgio Mattina
      * @param gameManager
      */
-    public Controller( GameManager gameManager){
+    public Controller( GameManager gameManager) throws RemoteException {
         currentState=new LobbyState(gameManager);
         view = new View(this);
     }
@@ -166,6 +168,24 @@ public class Controller {
     }
 
     /**
+     * Calls CloseGame on currentState to remove the user from the game
+     * @param userID the users' identifier who's closing the game
+     */
+    public synchronized void closeGame(UUID userID){
+        currentState.closeGame(userID);
+        view.updatePlayersList();
+        view.updatePlayersHands();
+        view.updatePrivateGoals();
+        view.updatePlayersField();
+        view.updateCurrentPlayer();
+        view.updatePlayersPoints();
+    }
+    public void deleteGameFromGameManager() throws RemoteException {
+        currentState.deleteGameFromGameManager();
+        view= new View(this);
+    }
+
+    /**
      * @author Giorgio Mattina, Maximilian Mangosi
      * @return Map of each player's score
      */
@@ -297,6 +317,22 @@ public class Controller {
      */
     public List<Card> getVisibleCards(){
         return currentState.game.getVisibleCards();
+    }
+
+    public  Map<UUID,Player> getUserIDs(){
+        return currentState.userIDs;
+    }
+
+    public GameState getCurrentState() {
+        return currentState;
+    }
+
+    public boolean isGameEnded() {
+        return currentState.isGameEnded();
+    }
+
+    public Game getGame() {
+        return currentState.game;
     }
     //turn->final dopo drawCard check (areBothEmpty or hasSomeone20points) and  current player is first of the list
     //pepo,giorgio,max,ric

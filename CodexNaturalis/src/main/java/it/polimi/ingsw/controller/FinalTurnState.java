@@ -50,6 +50,7 @@ public class FinalTurnState extends GameState{
                 p.setGoalPoints(totGoalsPoint);
             }
             Player winnerPlayer = game.getWinner();
+            //TODO updateWinnerPlayer
             nextState();
         }
     }

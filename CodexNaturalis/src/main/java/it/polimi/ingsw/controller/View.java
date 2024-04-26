@@ -4,9 +4,11 @@ import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class View {
+public class View extends UnicastRemoteObject {
     private Controller controller;
     private Map<String, Integer > playersPoints;
     private String winner;
@@ -24,7 +26,7 @@ public class View {
 
 
 
-    public View (Controller controller){
+    public View (Controller controller) throws RemoteException {
         this.controller=controller;
     }
 

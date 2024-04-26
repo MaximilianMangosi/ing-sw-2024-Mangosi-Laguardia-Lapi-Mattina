@@ -1,9 +1,10 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.View;
 import it.polimi.ingsw.model.gamecards.GameBox;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 
-import javax.swing.text.View;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -72,14 +73,24 @@ public class Server {
             // GameManager setup
             GameManager gameManager = new GameManager();
             gameManager.setGameBox(gb);
-
-
+            //Controller and View setup
+            Controller controller= new Controller(gameManager);
+            View view= new View(controller);
+            // export View
             Registry registry= LocateRegistry.createRegistry(23);
+            registry.rebind("ViewRMI",view);
+
+            CloseGameRMI  t1= new CloseGameRMI(controller);
+            t1.start();
+            //TODO DisconnectionHandler
+
+
         }catch (RemoteException e){
             System.out.println("Connection error unable to export object:\n"+e.getMessage());
         }catch(IOException e){
             System.out.println("Error occurred during json files' read:\n"+e.getMessage());
         }
+
 
 
     }
@@ -88,5 +99,6 @@ public class Server {
             jsonsList.add(Files.readString(Path.of(path+i+".json")));
         }
     }
+
 
 }

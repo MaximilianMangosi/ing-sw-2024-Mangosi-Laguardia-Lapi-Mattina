@@ -73,7 +73,7 @@ public abstract class GameState {
     }
 
     /**
-     * Default implementation for bootGame throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * Default implementation for bootGame throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
      * @author Giuseppe Laguardia
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
@@ -81,7 +81,7 @@ public abstract class GameState {
         throw new IllegalOperationException();
     }
     /**
-     * Default implementation for playCardFront throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * Default implementation for playCardFront throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
      * @author Giuseppe Laguardia
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
@@ -89,7 +89,7 @@ public abstract class GameState {
         throw new IllegalOperationException();
     }
     /**
-     * Default implementation for playCardBack throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * Default implementation for playCardBack throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
      * @author Giuseppe Laguardia
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
@@ -97,12 +97,12 @@ public abstract class GameState {
         throw new IllegalOperationException();
     }
     /**
-     * Abstract implementation for nextState, must be overrided by the subclasses
+     * Abstract implementation for nextState, must be overridden by the subclasses
      * @author Giuseppe Laguardia
      */
     protected abstract GameState nextState();
     /**
-     * Default implementation for chooseStarterCardSide throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * Default implementation for chooseStarterCardSide throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
      * @author Giuseppe Laguardia
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
@@ -110,7 +110,7 @@ public abstract class GameState {
         throw new IllegalOperationException();
     }
     /**
-     * Default implementation for chooseGoal throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * Default implementation for chooseGoal throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
      * @author Giuseppe Laguardia
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
@@ -118,7 +118,7 @@ public abstract class GameState {
         throw new IllegalOperationException();
     }
     /**
-     * Default implementation for drawFromDeck throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * Default implementation for drawFromDeck throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
      * @author Giuseppe Laguardia
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
@@ -126,12 +126,43 @@ public abstract class GameState {
         throw new IllegalOperationException();
     }
     /**
-     * Default implementation for drawVisibleCard throws always IllegalOperationException, must be overrided by the subclasses if this method is legal in that state
+     * Default implementation for drawVisibleCard throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
      * @author Giuseppe Laguardia
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
     public void drawVisibleCard (UUID userId,int choice) throws IsNotYourTurnException, HandFullException, IllegalOperationException {
         throw new IllegalOperationException();
     }
+    /**
+     * Default implementation for closeGame that delete the Player from listOfPlayers and UserIds.From now on the user cannot play this game, can be overridden by the subclasses
+     * @author Giuseppe Laguardia
+     */
+    public void closeGame(UUID userID) {
+       game.removePlayer(userIDs.get(userID));
+       userIDs.remove(userID);
+    }
+    /**
+     * @author Riccardo Lapi
+     * remove the current game from the GameManager gameInProcess Map,
+     * and remove ecah player in the current game from the GameManager playerToGame Map
+     */
+    public void deleteGameFromGameManager(){
 
+        String gameHash = String.valueOf(game.hashCode());
+        gameManager.deleteGame(gameHash);
+
+        for(Player player : game.getPlayers()){
+            gameManager.deletePlayerFromPlayersToGame(player.getName());
+        }
+        game=null;
+    }
+
+    /**
+     *  Default implementation for isGameEnded, returns always false
+     * @author Giuseppe Laguardia
+     * @return false
+     */
+    public boolean isGameEnded() {
+        return false;
+    }
 }

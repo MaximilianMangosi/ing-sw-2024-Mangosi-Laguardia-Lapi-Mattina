@@ -16,17 +16,11 @@ public class TerminalState extends GameState{
     }
 
     /**
-     * @author Riccardo Lapi
-     * remove the current game from the GameManager gameInProcess Map,
-     * and remove ecah player in the current game from the GameManager playerToGame Map
+     * In TerminalState the game is ended (i.e. there is a winner ) so return true
+     * @return true
      */
-    public void deleteGameFromGameManager(){
-        String gameHash = String.valueOf(game.hashCode());
-        gameManager.deleteGame(gameHash);
-
-        for(Player player : game.getPlayers()){
-            gameManager.deletePlayerFromPlayersToGame(player.getName());
-        }
-
+    @Override
+    public boolean isGameEnded() {
+        return true;
     }
 }

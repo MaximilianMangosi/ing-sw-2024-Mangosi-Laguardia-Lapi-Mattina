@@ -386,7 +386,17 @@ public class Game{
         }
     }
 
+    /**
+     * Removes the player from the ListOfPlayers, if player equals currentPlayer the turn passes to next player in the list
+     * @author Giuseppe Laguardia
+     * @param player
+     */
 
+    public void removePlayer(Player player) {
+        if(currentPlayer.equals(player))
+            nextTurn();
+        listOfPlayers.remove(player);
+    }
 }
 
 
