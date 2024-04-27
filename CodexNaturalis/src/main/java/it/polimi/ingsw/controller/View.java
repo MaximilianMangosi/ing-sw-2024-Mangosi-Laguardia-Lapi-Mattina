@@ -251,14 +251,4 @@ public class View extends UnicastRemoteObject {
         updatePrivateGoals();
         updateVisibleCards();
     }
-    //lista di giocatori
-    //tabellone
-    //currentPlayer
-    //mazzi
-    //Mappa di mappe per la mano
-    //Vincitore
-
-
-
-
 }
