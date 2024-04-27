@@ -31,7 +31,7 @@ public class Server {
             gameManager.setGameBox(gb);
             //Controller and View setup
             Controller controller = new Controller(gameManager);
-            View view = new View(controller);
+            View view = controller.getView();
             // export View
             Registry registry = LocateRegistry.createRegistry(23);
             registry.rebind("ViewRMI", view);

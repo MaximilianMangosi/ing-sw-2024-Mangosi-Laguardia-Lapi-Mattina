@@ -13,8 +13,8 @@ public class CloseGameRMI extends Thread{
     public void run() {
        boolean wait=false;
         while(true){
-            if(controller.getGame()!=null) {
-                if (controller.getUserIDs().isEmpty()) {
+            if(controller.getGame()!=null) {  //
+                if (controller.getUserIDs().size()<2) {
                     try {
                         controller.deleteGameFromGameManager();
                     } catch (RemoteException e) {
@@ -27,6 +27,7 @@ public class CloseGameRMI extends Thread{
                         try {
                             controller.deleteGameFromGameManager();
                         } catch (RemoteException e) {
+                            System.out.println("dis");
                             break;
                         }
                     }

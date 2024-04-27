@@ -169,7 +169,7 @@ public class Controller {
 
     /**
      * Calls CloseGame on currentState to remove the user from the game
-     * @authore Giuseppe Laguardia
+     * @author Giuseppe Laguardia
      * @param userID the users' identifier who's closing the game
      */
     public synchronized void closeGame(UUID userID){
