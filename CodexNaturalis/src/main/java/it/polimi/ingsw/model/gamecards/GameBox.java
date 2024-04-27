@@ -21,10 +21,10 @@ import java.util.*;
  */
 public class GameBox {
     private final Gson gson;
-    private final Set<ResourceCard> resourceCardSet = new HashSet<>();
-    private final Set<GoldCard> goldCardSet = new HashSet<>();
-    private final Set<StarterCard> starterCardSet = new HashSet<>();
-    private final Set<Goal> goalSet = new HashSet<>();
+    private final Set<ResourceCard> resourceCardSet = new LinkedHashSet<>();
+    private final Set<GoldCard> goldCardSet =new LinkedHashSet<>();
+    private final Set<StarterCard> starterCardSet = new LinkedHashSet<>();
+    private final Set<Goal> goalSet = new LinkedHashSet<>();
 
     /**
      * resourceCardSet getter

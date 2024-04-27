@@ -4,12 +4,16 @@ import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.controller.exceptions.DeckEmptyException;
 import it.polimi.ingsw.model.gamecards.GameBox;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.cards.GoldCard;
 import it.polimi.ingsw.model.gamecards.cards.ResourceCard;
+import it.polimi.ingsw.model.gamecards.resources.Reign;
+import it.polimi.ingsw.model.gamecards.resources.Resource;
+import it.polimi.ingsw.model.gamecards.resources.Tool;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.Player;
 import org.junit.Before;
@@ -19,15 +23,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class GameTest {
     public Game game;
-
+    public GameBox gb= new GameBox();
     @Before
     public void GameSetup() throws IOException {
-        GameBox gb= new GameBox();
+
 
         ArrayList<String> resourceCardJsons=new ArrayList<>();
         String resourceCardPath="src/jsons/ResourceCard/ResourceCard_";
@@ -134,7 +139,57 @@ public class GameTest {
         assertEquals(oldPoints+cardPlayed.getPoints(),game.getCurrentPlayer().getPoints());
         assertTrue(game.getCurrentPlayer().getField().containsValue(cardPlayed));
     }
+    @Test
+    public void playCardResourceCounterTest() throws RequirementsNotMetException {
+        Player p = new Player("pepo");
+        game.setCurrentPlayer(p);
+        p.setAvailablePositions(new ArrayList<>());
 
+        List<Card> gcset=new ArrayList<>(gb.getGoldCardSet());
+        List<Card> rset=new ArrayList<>(gb.getResourceCardSet());
+        List<Card> stset=new ArrayList<>(gb.getStarterCardSet());
+
+        p.addCardToHand(rset.get(0));
+        p.addCardToHand(rset.get(1));
+        p.addCardToHand(rset.get(24));
+        p.setStarterCard((StarterCard) stset.getFirst());
+        Resource[] resourceArray={Reign.ANIMAL,Reign.MUSHROOM,Reign.BUG,Reign.PLANTS, Tool.PHIAL,Tool.FEATHER,Tool.SCROLL};
+        for (Resource resource: resourceArray){
+            p.setResourceCounter(resource,0);
+        }
+        game.playStarterCardFront(true);
+        assertEquals(1,p.getResourceCounter(Reign.PLANTS));
+        assertEquals(2,p.getResourceCounter(Reign.BUG));
+        assertEquals(0,p.getResourceCounter(Reign.ANIMAL));
+        assertEquals(0,p.getResourceCounter(Reign.MUSHROOM));
+        assertEquals(0,p.getResourceCounter(Tool.FEATHER));
+        assertEquals(0,p.getResourceCounter(Tool.PHIAL));
+        assertEquals(0,p.getResourceCounter(Tool.SCROLL));
+        game.playCardFront(p.getHand().getFirst(),new Coordinates(1,1));
+        assertEquals(0,p.getResourceCounter(Reign.PLANTS));
+        assertEquals(2,p.getResourceCounter(Reign.BUG));
+        assertEquals(0,p.getResourceCounter(Reign.ANIMAL));
+        assertEquals(2,p.getResourceCounter(Reign.MUSHROOM));
+        assertEquals(0,p.getResourceCounter(Tool.FEATHER));
+        assertEquals(0,p.getResourceCounter(Tool.PHIAL));
+        assertEquals(0,p.getResourceCounter(Tool.SCROLL));
+        game.playCardFront(p.getHand().get(1),new Coordinates(-1,1));
+        assertEquals(0,p.getResourceCounter(Reign.PLANTS));
+        assertEquals(2,p.getResourceCounter(Reign.BUG));
+        assertEquals(0,p.getResourceCounter(Reign.ANIMAL));
+        assertEquals(4,p.getResourceCounter(Reign.MUSHROOM));
+        assertEquals(0,p.getResourceCounter(Tool.FEATHER));
+        assertEquals(0,p.getResourceCounter(Tool.PHIAL));
+        assertEquals(0,p.getResourceCounter(Tool.SCROLL));
+        game.playCardFront(p.getHand().get(2),new Coordinates(-1,-1));
+        assertEquals(0,p.getResourceCounter(Reign.PLANTS));
+        assertEquals(2,p.getResourceCounter(Reign.BUG));
+        assertEquals(1,p.getResourceCounter(Reign.ANIMAL));
+        assertEquals(4,p.getResourceCounter(Reign.MUSHROOM));
+        assertEquals(0,p.getResourceCounter(Tool.FEATHER));
+        assertEquals(1,p.getResourceCounter(Tool.PHIAL));
+        assertEquals(0,p.getResourceCounter(Tool.SCROLL));
+    }
     private void fillList(ArrayList<String> jsonsList,int numOfJson,String path) throws IOException {
         for (int i = 1; i <=numOfJson; i++) {
             jsonsList.add(Files.readString(Path.of(path+i+".json")));

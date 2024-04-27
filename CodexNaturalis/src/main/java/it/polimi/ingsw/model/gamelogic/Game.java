@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.*;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
+import it.polimi.ingsw.model.gamecards.resources.Tool;
 
 import java.util.*;
 import java.util.List;
@@ -173,6 +174,8 @@ public class Game{
         shuffle(goldCardDeck);
         shuffle(listOfGoal);
         shuffle(starterCards);
+        Resource[] resourceArray={Reign.ANIMAL,Reign.MUSHROOM,Reign.BUG,Reign.PLANTS, Tool.PHIAL,Tool.FEATHER,Tool.SCROLL};
+
 
         for (i = 0; i < numOfPlayers; i++) {
 
@@ -180,7 +183,10 @@ public class Game{
             player.setColor(Colors.get(i));
             player.setPoints(0);
             player.setAvailablePositions(start_position);
-
+            //initialize the player's resource counter to 0
+            for (Resource resource: resourceArray){
+                player.setResourceCounter(resource,0);
+            }
             //two resource cards
             for (j = 0; j < 2; j++) {
                 player.addCardToHand(resourceCardDeck.removeFirst());

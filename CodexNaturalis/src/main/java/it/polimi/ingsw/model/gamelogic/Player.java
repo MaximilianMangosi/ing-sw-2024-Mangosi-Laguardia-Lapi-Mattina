@@ -161,7 +161,7 @@ public class Player {
     }
     /**
      * @author Maximilian Mangosi
-     * @return returns the number of all the resources the player has on the field
+     * @return returns a map of player's Resources with relative quantity on the field
      */
     public HashMap<Resource, Integer> getResourceCounters() {
         return resourceCounters;
@@ -172,7 +172,7 @@ public class Player {
      * @return returns the number of all the selected resource on the field
      */
     public int getResourceCounter(Resource resource){
-        return resourceCounters.get(resource);
+        return resourceCounters.getOrDefault(resource,0);
     }
 
     /**
@@ -314,6 +314,16 @@ public class Player {
         if(Arrays.asList(colorArray).contains(s)){
             check=s;
         }
+    }
+
+    /**
+     * sets the player's resource counter to value "i"
+     * @author Giorgio Mattina
+     * @param resource
+     * @param i
+     */
+    public void setResourceCounter(Resource resource,Integer i){
+        resourceCounters.put(resource,i);
     }
 }
 
