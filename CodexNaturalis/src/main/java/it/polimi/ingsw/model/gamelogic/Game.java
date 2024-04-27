@@ -386,8 +386,11 @@ public class Game{
         Card cardToBeCovered = currentPlayer.getCardAtPosition(x, y);
         if (cardToBeCovered != null){
             try {
-                cardToBeCovered.setAngle(Reign.EMPTY, angleToBeCovered);
-                currentPlayer.decrementResourceCounter(cardToBeCovered.getResource(angleToBeCovered));
+                Resource decrementedResource=cardToBeCovered.getResource(angleToBeCovered);
+                if(!decrementedResource.isEmpty()) {
+                    currentPlayer.decrementResourceCounter(decrementedResource);
+                    cardToBeCovered.setAngle(Reign.EMPTY, angleToBeCovered);
+                }
             }catch (NoSuchElementException ignore){}
         }
     }

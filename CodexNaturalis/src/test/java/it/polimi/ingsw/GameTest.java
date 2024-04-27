@@ -145,15 +145,14 @@ public class GameTest {
         game.setCurrentPlayer(p);
         p.setAvailablePositions(new ArrayList<>());
 
-        List<Card> gcset=new ArrayList<>(gb.getGoldCardSet());
-        List<Card> rset=new ArrayList<>(gb.getResourceCardSet());
-        List<Card> stset=new ArrayList<>(gb.getStarterCardSet());
 
-        p.addCardToHand(rset.get(0));
-        p.addCardToHand(rset.get(1));
-        p.addCardToHand(rset.get(24));
-        p.setStarterCard((StarterCard) stset.getFirst());
+        p.addCardToHand(new ResourceCard(Reign.MUSHROOM,Reign.EMPTY,Reign.MUSHROOM,null,0,Reign.MUSHROOM));
+        p.addCardToHand(new ResourceCard(Reign.MUSHROOM,Reign.MUSHROOM,null,Reign.EMPTY,0,Reign.MUSHROOM));
+        p.addCardToHand(new ResourceCard(null,Reign.BUG,Tool.PHIAL,Reign.ANIMAL,0,Reign.ANIMAL));
+        Reign[] arr= {Reign.BUG};
+        p.setStarterCard(new StarterCard(Reign.EMPTY,Reign.PLANTS,Reign.BUG,Reign.EMPTY,Reign.MUSHROOM,Reign.PLANTS,Reign.BUG,Reign.ANIMAL,new ArrayList<>(List.of(arr))));
         Resource[] resourceArray={Reign.ANIMAL,Reign.MUSHROOM,Reign.BUG,Reign.PLANTS, Tool.PHIAL,Tool.FEATHER,Tool.SCROLL};
+
         for (Resource resource: resourceArray){
             p.setResourceCounter(resource,0);
         }
@@ -173,7 +172,7 @@ public class GameTest {
         assertEquals(0,p.getResourceCounter(Tool.FEATHER));
         assertEquals(0,p.getResourceCounter(Tool.PHIAL));
         assertEquals(0,p.getResourceCounter(Tool.SCROLL));
-        game.playCardFront(p.getHand().get(1),new Coordinates(-1,1));
+        game.playCardFront(p.getHand().getFirst(),new Coordinates(-1,1));
         assertEquals(0,p.getResourceCounter(Reign.PLANTS));
         assertEquals(2,p.getResourceCounter(Reign.BUG));
         assertEquals(0,p.getResourceCounter(Reign.ANIMAL));
@@ -181,7 +180,7 @@ public class GameTest {
         assertEquals(0,p.getResourceCounter(Tool.FEATHER));
         assertEquals(0,p.getResourceCounter(Tool.PHIAL));
         assertEquals(0,p.getResourceCounter(Tool.SCROLL));
-        game.playCardFront(p.getHand().get(2),new Coordinates(-1,-1));
+        game.playCardFront(p.getHand().getFirst(),new Coordinates(-1,-1));
         assertEquals(0,p.getResourceCounter(Reign.PLANTS));
         assertEquals(2,p.getResourceCounter(Reign.BUG));
         assertEquals(1,p.getResourceCounter(Reign.ANIMAL));
