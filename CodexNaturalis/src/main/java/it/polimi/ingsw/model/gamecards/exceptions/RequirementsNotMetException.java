@@ -1,5 +1,5 @@
 package it.polimi.ingsw.model.gamecards.exceptions;
 
 public class RequirementsNotMetException extends Exception{
-    public RequirementsNotMetException(){super();}
+    public RequirementsNotMetException(){super("You don't met the requirements needed to play this card, play another one or play this on back side");}
 }
