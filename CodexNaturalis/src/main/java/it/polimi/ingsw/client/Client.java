@@ -10,9 +10,9 @@ public class Client {
 
     public static void main(String[] args) {
         try{
-
             Registry registry = LocateRegistry.getRegistry();
             ViewInterface view = (ViewInterface) registry.lookup("ViewRMI");
+            System.out.println("Connected to the server");
 
         }catch (Exception error){
             System.out.println(error.toString());

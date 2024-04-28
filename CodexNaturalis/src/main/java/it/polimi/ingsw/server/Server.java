@@ -34,7 +34,7 @@ public class Server {
             Controller controller = new Controller(gameManager);
             View view = controller.getView();
             // export View
-            Registry registry = LocateRegistry.createRegistry(23);
+            Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("ViewRMI", view);
             System.out.println("Remote View has been correctly exported");
 
