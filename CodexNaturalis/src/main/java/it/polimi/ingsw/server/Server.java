@@ -29,12 +29,14 @@ public class Server {
             // GameManager setup
             GameManager gameManager = new GameManager();
             gameManager.setGameBox(gb);
+            System.out.println("GameBox ready");
             //Controller and View setup
             Controller controller = new Controller(gameManager);
             View view = controller.getView();
             // export View
             Registry registry = LocateRegistry.createRegistry(23);
             registry.rebind("ViewRMI", view);
+            System.out.println("Remote View has been correctly exported");
 
             CloseGame t1 = new CloseGame(controller);
             t1.start();

@@ -4,13 +4,18 @@ import it.polimi.ingsw.controller.Controller;
 
 import java.rmi.RemoteException;
 
+/**
+ * @author Giuseppe Laguardia
+ * CloseGame thread handles the case when the game is finished but some users didn't close the game. It deletes the game from GameManager opportunely communicating to the users
+ */
 public class CloseGame extends Thread{
-    Controller controller;
+    private Controller controller;
    CloseGame(Controller controller){
        this.controller=controller;
    }
     @Override
     public void run() {
+       System.out.println("CloseGame thread is running");
        boolean shouldWait=true;
         while(true){
             if (controller.isGameEnded()) {
