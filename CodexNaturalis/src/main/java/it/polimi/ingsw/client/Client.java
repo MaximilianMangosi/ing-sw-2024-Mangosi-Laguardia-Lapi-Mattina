@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.ViewInterface;
 
+import java.io.IOException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -39,17 +41,21 @@ public class Client {
             System.out.println("Welcome to Codex, press any key to start");
             s.nextLine();
 
-            while (true){
+            OutStreamWriter outWriter=new OutStreamWriter();
+            TextUserInterface tui= new TextUserInterface(view);
+            UpdateTUI UpdaterTUI=new UpdateTUI(outWriter,tui);
+
+            while (true) {
                 System.out.println("Write command");
-                String cmd = s.nextLine();
             }
-
-        }catch (Exception error){
-            System.out.println(error.toString());
+        }catch (RemoteException | NotBoundException e){
+            System.out.println("Connection error");
         }
-
+        catch (RuntimeException e){
+            System.out.println("Generic error");
+        }
     }
-    private void checkCmd(String cmd, ViewInterface view) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, RemoteException, IllegalOperationException, InvalidUserId, InvalidGoalException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException {
+    private void execCmd(String cmd, ViewInterface view) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, RemoteException, IllegalOperationException, InvalidUserId, InvalidGoalException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException {
         Scanner s=new Scanner(System.in);
         switch (cmd){
             case "start-game":
@@ -85,5 +91,13 @@ public class Client {
                 break;
 
         }
+    }
+    private static void clearScreen () {
+        try {
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                Runtime.getRuntime().exec("clear");
+        }catch (IOException | InterruptedException ignored) {}
     }
 }

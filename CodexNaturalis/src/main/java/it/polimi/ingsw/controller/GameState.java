@@ -17,7 +17,6 @@ import java.util.UUID;
 
 public abstract class GameState {
     protected Game game;
-
     protected HashMap<UUID, Player> userIDs = new HashMap<>();
     protected GameManager gameManager;
 
@@ -166,4 +165,6 @@ public abstract class GameState {
     public boolean isGameEnded() {
         return false;
     }
+
+
 }

@@ -284,10 +284,10 @@ public class Controller {
     /**
      *
      * @author Giorgio Mattina
-     * @return the list of public goals to the view
+     * @return the array of public goals to the view
      */
-    public List<Goal> getPublicGoals(){
-        return currentState.game.getListOfGoal();
+    public Goal[] getPublicGoals(){
+        return currentState.game.getPublicGoals();
     }
 
     /**

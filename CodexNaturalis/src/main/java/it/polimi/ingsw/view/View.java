@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -25,7 +26,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     private List<String> playersList;
     private String currentPlayer;
     private Map<UUID,List<Coordinates>> playersLegalPositions;
-    private List<Goal> publicGoals;
+    private Goal[] publicGoals;
     private Map<UUID,Goal[]> playersGoalOptions;
     private Map<UUID,Goal> privateGoals;
     private List<Card> visibleCards;
@@ -37,7 +38,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     }
 
     /**
-     * updates PlaeyrsPoints, calling the controller
+     * updates PlayersPoints, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
     public void updatePlayersPoints(){
@@ -174,9 +175,9 @@ public class View extends UnicastRemoteObject implements ViewInterface {
 
     /**
      * @author Giorgio Mattina
-     * @return list of public Goals
+     * @return array of public Goals
      */
-    public List<Goal> getPublicGoals(){
+    public Goal[] getPublicGoals(){
         return publicGoals;
     }
 

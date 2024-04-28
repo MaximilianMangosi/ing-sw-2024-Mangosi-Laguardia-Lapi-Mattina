@@ -32,7 +32,7 @@ public interface ViewInterface extends Remote {
 
     public List<Coordinates> showPlayersLegalPositions(UUID uid) throws RemoteException, InvalidUserId;
 
-    public List<Goal> getPublicGoals() throws RemoteException;
+    public Goal[] getPublicGoals() throws RemoteException;
 
     public Goal[] showPlayerGoalOptions(UUID uid) throws RemoteException, InvalidUserId;
 

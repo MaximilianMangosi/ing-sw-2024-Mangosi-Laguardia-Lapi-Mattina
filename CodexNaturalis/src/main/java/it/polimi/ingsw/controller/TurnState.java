@@ -25,7 +25,7 @@ public class TurnState extends GameState{
     /**
      * checks the right circumstances to change the state and then returns a new FinalState object
      * @author Giuseppe Laguardia
-     * @return
+     * @return the next state
      */
     public GameState nextState(){
         if((game.someoneHas20Points() || game.AreBothDeckEmpty()) && game.getCurrentPlayer().equals(game.getPlayers().getFirst()))
