@@ -11,10 +11,22 @@ import it.polimi.ingsw.model.gamelogic.GameManager;
 import java.util.UUID;
 
 public class TurnState extends GameState{
+    /**
+     * constructor of object TurnState
+     * @author Giuseppe Laguardia
+     * @param game
+     * @param gameManager
+     */
     TurnState(Game game, GameManager gameManager) {
         super( gameManager);
         this.game=game;
     }
+
+    /**
+     * checks the right circumstances to change the state and then returns a new FinalState object
+     * @author Giuseppe Laguardia
+     * @return
+     */
     public GameState nextState(){
         if((game.someoneHas20Points() || game.AreBothDeckEmpty()) && game.getCurrentPlayer().equals(game.getPlayers().getFirst()))
             return new FinalTurnState(game,gameManager);
