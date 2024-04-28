@@ -9,14 +9,14 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class View extends UnicastRemoteObject {
+public class View extends UnicastRemoteObject implements ViewInterface {
     private Controller controller;
     private Map<String, Integer > playersPoints;
     private String winner;
     private int numOfResourceCards;
     private int numOfGoldCards;
     private Map<UUID, List<Card>> playersHands;
-    private Map<UUID,Map<Coordinates,Card>> playersField;
+    private Map<String,Map<Coordinates,Card>> playersField;
     private List<String> playersList;
     private String currentPlayer;
     private Map<UUID,List<Coordinates>> playersLegalPositions;
@@ -127,7 +127,8 @@ public class View extends UnicastRemoteObject {
      * @author Giorgio Mattina, Maximilian Mangosi
      * @return map playerId-playerField ( cards on the table with relative position)
      */
-    public Map<UUID,Map<Coordinates,Card>> getPlayersField(){
+    public Map<String,Map<Coordinates,Card>> getPlayersField(){
+
         return playersField;
     }
     /**
