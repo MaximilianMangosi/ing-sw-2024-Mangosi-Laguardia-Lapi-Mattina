@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.view.View;
 
 import java.rmi.RemoteException;
 import java.util.*;
@@ -237,11 +238,11 @@ public class Controller {
      * @author Giorgio Mattina, Maximilian Mangosi
      * @return a map of all player's fields (cards on the table)
      */
-    public Map<UUID,Map<Coordinates,Card>> getPlayersField(){
-        Map<UUID,Map<Coordinates,Card>> fields = new HashMap<>();
+    public Map<String,Map<Coordinates,Card>> getPlayersField(){
+        Map<String,Map<Coordinates,Card>> fields = new HashMap<>();
         Set<UUID> set=currentState.userIDs.keySet();
         for (UUID id: set){
-            fields.put(id,currentState.getPlayerFromUid(id).getField());
+            fields.put(currentState.getPlayerFromUid(id).getName(),currentState.getPlayerFromUid(id).getField());
         }
         return fields;
     }

@@ -10,6 +10,10 @@ public class TerminalState extends GameState{
         this.game=game;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return null, there is no nextState after TerminalState
+     */
     @Override
     protected GameState nextState() {
         return null;
