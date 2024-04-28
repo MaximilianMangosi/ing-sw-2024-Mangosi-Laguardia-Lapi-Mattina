@@ -31,6 +31,11 @@ public class StairGoal extends Goal {
 
     private final boolean isToLowerRight;
 
+    @Override
+    public String getUIDescription() {
+        return "Stair Goal: " + points + " points every Stair with Reign " + reign.toString();
+    }
+
     /**
      * @author Riccardo Lapi
      * calculate the points for the goal of 3 cards in a "stair" position

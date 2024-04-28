@@ -28,6 +28,11 @@ public class IdenticalGoal extends Goal {
         return resource;
     }
 
+    @Override
+    public String getUIDescription() {
+        return "Identical Goal: " + points + " points every " + numOfResource +" identical Resources visible on the Field";
+    }
+
     /**
      * @author Riccardo Lapi
      * calculate the points for the goal "tris of resources"

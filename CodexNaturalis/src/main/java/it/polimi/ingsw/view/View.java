@@ -253,7 +253,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     }
 
     @Override
-    public void ChooseGoal(UUID userId, Goal newGoal) throws RemoteException, InvalidGoalException, InvalidUserId, IllegalOperationException, InvalidUserId {
+    public void chooseGoal(UUID userId, Goal newGoal) throws RemoteException, InvalidGoalException, InvalidUserId, IllegalOperationException, InvalidUserId {
         controller.ChooseGoal(userId, newGoal);
     }
 

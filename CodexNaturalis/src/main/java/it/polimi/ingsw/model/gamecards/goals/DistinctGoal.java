@@ -10,6 +10,10 @@ import java.util.Map;
 
 public class DistinctGoal extends Goal {
 
+    @Override
+    public String getUIDescription() {
+        return "Distinct Goal: " + points + " points every 3 distinct Tool visible on the Field";
+    }
 
     public DistinctGoal(int points) {
         super(points);

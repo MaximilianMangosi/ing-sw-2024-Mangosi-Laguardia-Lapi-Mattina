@@ -31,6 +31,11 @@ public class LGoal extends Goal {
     }
 
 
+    @Override
+    public String getUIDescription() {
+        return "L Goal: " + points + " points every L with 1" + primaryReign.toString() + " dx or sx and 2 " + secondaryReign.toString();
+    }
+
     /**
      * @author Riccardo Lapi
      * calculate the points for the goal of 3 cards in a "L" position
