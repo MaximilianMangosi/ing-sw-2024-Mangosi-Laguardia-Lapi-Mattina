@@ -1,16 +1,21 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
+import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
+import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 public class View extends UnicastRemoteObject implements ViewInterface {
-    private Controller controller;
+    private final Controller controller;
     private Map<String, Integer > playersPoints;
     private String winner;
     private int numOfResourceCards;
@@ -30,30 +35,6 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     public View (Controller controller) throws RemoteException {
         this.controller=controller;
     }
-
-
-
-  /*  public void insertCommand (){
-        Scanner scannerCommand = new Scanner(System.in);
-        System.out.println("Insert an action:\n");
-        command = scannerCommand.nextLine();
-
-
-        switch (command){
-
-            case "bootGame":
-
-
-            case "playCardFront":
-                System.out.println("insert a card ID:\n");
-                String card = scannerCommand.nextLine();
-                System.out.println("insert a :\n");
-
-        }
-
-        scannerCommand.close();
-    }
-    */
 
     /**
      * updates PlaeyrsPoints, calling the controller
@@ -161,6 +142,12 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     public String getCurrentPlayer(){
         return currentPlayer;
     }
+
+    @Override
+    public List<Coordinates> showPlayersLegalPositions(UUID uid) throws RemoteException, InvalidUserId {
+        return null;
+    }
+
     /**
      * updates PlayesLegalPositions, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
@@ -239,6 +226,52 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     public List<Card> getVisibleCards(){
         return visibleCards;
     }
+
+    @Override
+    public String getWinner() throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException {
+        return controller.BootGame(numOfPlayers, playerName);
+    }
+
+    @Override
+    public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId {
+        controller.playCardFront(selectedCard, position, userId);
+    }
+
+    @Override
+    public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId {
+        controller.playCardBack(selectedCard, position, userId);
+    }
+
+    @Override
+    public void chooseStarterCardSide(boolean isFront, UUID userId) throws RemoteException, InvalidUserId, IllegalOperationException, InvalidUserId {
+        controller.chooseStarterCardSide(isFront, userId);
+    }
+
+    @Override
+    public void ChooseGoal(UUID userId, Goal newGoal) throws RemoteException, InvalidGoalException, InvalidUserId, IllegalOperationException, InvalidUserId {
+        controller.ChooseGoal(userId, newGoal);
+    }
+
+    @Override
+    public void drawFromDeck(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException, InvalidUserId {
+        controller.drawFromDeck(userId, choice);
+    }
+
+    @Override
+    public void drawVisibleCard(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException, InvalidUserId {
+        controller.drawVisibleCard(userId, choice);
+    }
+
+    @Override
+    public void closeGame(UUID userID) throws RemoteException, InvalidUserId {
+        controller.closeGame(userID);
+    }
+
     public void updateAll(){
         updatePlayersPoints();
         updateNumOfResourceCards();
