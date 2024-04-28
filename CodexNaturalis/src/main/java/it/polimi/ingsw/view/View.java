@@ -252,4 +252,20 @@ public class View extends UnicastRemoteObject {
         updatePrivateGoals();
         updateVisibleCards();
     }
+
+    public List<Card> showPlayerHand(UUID id){
+        //updatePlayersHands();
+        return playersHands.get(id);
+    }
+    public List<Coordinates> showPlayersLegalPosition(UUID id){
+        //updatePlayersLegalPosition();
+        return playersLegalPositions.get(id);
+    }
+    public Goal[] showPlayerGoalOptions(UUID uid){
+        return playersGoalOptions.get(uid);
+    }
+    public Goal showPrivateGoal(UUID uid){
+        return privateGoals.get(uid);
+    }
+
 }
