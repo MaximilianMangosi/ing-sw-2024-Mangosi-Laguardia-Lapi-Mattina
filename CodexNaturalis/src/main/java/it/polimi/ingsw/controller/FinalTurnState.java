@@ -15,6 +15,12 @@ import it.polimi.ingsw.model.gamelogic.Player;
 import java.util.UUID;
 
 public class FinalTurnState extends GameState{
+    /**
+     * constructor of FinalState class
+     * @author Giuseppe Laguardia
+     * @param game
+     * @param gameManager
+     */
     FinalTurnState(Game game, GameManager gameManager) {
         super(gameManager);
         this.game=game;
@@ -29,7 +35,7 @@ public class FinalTurnState extends GameState{
      * @throws IsNotYourTurnException
      * @throws RequirementsNotMetException
      */
-    public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException {
+    public boolean playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException {
 
         //checks if it's the player's turn, if the card is legal and if the position is legal
         CheckTurnCardPosition(selectedCard, position, userId);
@@ -49,18 +55,58 @@ public class FinalTurnState extends GameState{
 
                 p.setGoalPoints(totGoalsPoint);
             }
-            Player winnerPlayer = game.getWinner();
-            //TODO updateWinnerPlayer
-            nextState();
+
+            return true;
         }
+        return false;
     }
 
+    /**
+     * Checks for turn rights, then calls playCardBack on the model . If it's the last player who is playing
+     * it calculates the goalPoints of each player and returns true
+     * @author Riccardo Lapi
+     * @param selectedCard
+     * @param position
+     * @param userId
+     * @return true if it's the last player's turn
+     * @throws IsNotYourTurnException
+     * @throws InvalidCardException
+     * @throws IllegalPositionException
+     * @throws HandNotFullException
+     */
+    public boolean playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException, HandNotFullException {
+        CheckTurnCardPosition(selectedCard,position,userId);
+        game.playCardBack(selectedCard,position);
+        Player player = getPlayerFromUid(userId);
+        if(game.getPlayers().getLast().equals(player)){
+            for(Player p : game.getPlayers()){
+
+                Goal privateGoal = p.getGoal();
+                Goal[] publicGoals = game.getPublicGoals();
+
+                int totGoalsPoint = privateGoal.calculateGoal(p);
+                totGoalsPoint += publicGoals[0].calculateGoal(p);
+                totGoalsPoint += publicGoals[1].calculateGoal(p);
+
+                p.setGoalPoints(totGoalsPoint);
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Override of nextState
+     * @author Giuseppe Laguardia
+     * @return a new TerminalState object
+     */
     @Override
     protected GameState nextState() {
         return new TerminalState(game,gameManager);
     }
 
 
-    //TODO setWinner
+
 
 }

@@ -84,7 +84,7 @@ public abstract class GameState {
      * @author Giuseppe Laguardia
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
-    public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
+    public boolean playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
         throw new IllegalOperationException();
     }
     /**
@@ -92,7 +92,7 @@ public abstract class GameState {
      * @author Giuseppe Laguardia
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
-    public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
+    public boolean playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
         throw new IllegalOperationException();
     }
     /**
