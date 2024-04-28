@@ -42,12 +42,13 @@ public class TurnState extends GameState{
      * @throws IsNotYourTurnException
      * @throws RequirementsNotMetException
      */
-    public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException {
+    public boolean playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException {
         
         //checks if it's the player's turn, if the card is legal and if the position is legal
         CheckTurnCardPosition(selectedCard, position, userId);
 
         game.playCardFront(selectedCard,position);
+        return false;
     }
 
     /**
@@ -60,11 +61,12 @@ public class TurnState extends GameState{
      * @throws InvalidCardException
      * @throws IllegalPositionException
      */
-    public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException, HandNotFullException {
+    public boolean playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException, HandNotFullException {
         //checks if it's the player's turn, if the card is legal and if the position is legal
         CheckTurnCardPosition(selectedCard,position,userId);
 
         game.playCardBack(selectedCard,position);
+        return false;
     }   
     
     /**

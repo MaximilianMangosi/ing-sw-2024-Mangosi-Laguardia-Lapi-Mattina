@@ -301,5 +301,8 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     public Goal showPrivateGoal(UUID uid){
         return privateGoals.get(uid);
     }
+    public void setWinner(String w){
+        this.winner=w;
+    }
 
 }

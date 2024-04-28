@@ -72,7 +72,10 @@ public class Controller {
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
     public synchronized void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
-        currentState.playCardFront(selectedCard,position,userId);
+        if(currentState.playCardFront(selectedCard, position, userId)){
+            view.setWinner(currentState.game.getWinner().getName());
+            currentState.nextState();
+        }
         view.updatePlayersHands();
         view.updatePlayersField();
         view.updatePlayersPoints();
@@ -82,6 +85,7 @@ public class Controller {
     /**
      * Calls playCardBack on currentState to play a Card on back side.
      * After that updates the view.
+     * If playCardBack from controller returns true, calls nextState and sets the game's winner
      * @author Giuseppe Laguardia
      * @param selectedCard the card to be played
      * @param position the position on the field where to play the card
@@ -94,7 +98,10 @@ public class Controller {
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
     public synchronized void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException {
-        currentState.playCardBack(selectedCard,position,userId);
+        if(currentState.playCardBack(selectedCard,position,userId)){
+            view.setWinner(currentState.game.getWinner().getName());
+            currentState.nextState();
+        }
         view.updatePlayersHands();
         view.updatePlayersField();
         view.updateCurrentPlayer();
@@ -177,6 +184,8 @@ public class Controller {
         currentState.closeGame(userID);
         if(getUserIDs().size()<2){
             //TODO update winner
+            List<UUID> id = new ArrayList<>(currentState.userIDs.keySet());
+            view.setWinner(currentState.getPlayerFromUid(id.getFirst()).getName());
             deleteGameFromGameManager();
         }
         view.updatePlayersList();
