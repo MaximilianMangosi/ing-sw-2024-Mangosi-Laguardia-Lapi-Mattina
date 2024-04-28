@@ -172,8 +172,12 @@ public class Controller {
      * @author Giuseppe Laguardia
      * @param userID the users' identifier who's closing the game
      */
-    public synchronized void closeGame(UUID userID){
+    public synchronized void closeGame(UUID userID) throws RemoteException {
         currentState.closeGame(userID);
+        if(getUserIDs().size()<2){
+            //TODO update winner
+            deleteGameFromGameManager();
+        }
         view.updatePlayersList();
         view.updatePlayersHands();
         view.updatePrivateGoals();

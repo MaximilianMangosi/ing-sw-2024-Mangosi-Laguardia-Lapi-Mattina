@@ -25,7 +25,7 @@ import static java.util.Collections.shuffle;
  */
 public class Game{
     private List<Player> listOfPlayers=new ArrayList<>();
-    private final int numOfPlayers;
+    private int numOfPlayers;
     private boolean AreBothDeckEmpty = false;
     private List<ResourceCard> resourceCardDeck ;
     private List<GoldCard> goldCardDeck ;
@@ -396,16 +396,20 @@ public class Game{
     }
 
     /**
-     * Removes the player from the ListOfPlayers, if player equals currentPlayer the turn passes to next player in the list
+     * Removes the player from the listOfPlayers and updates NumOfPlayers.
+     * If listOfPlayers doesn't contain player nothing changes.
+     * If player equals currentPlayer the turn passes to next player in the list
      * @author Giuseppe Laguardia
-     * @param player
+     * @param player the player to remove
      */
 
     public void removePlayer(Player player) {
         if(currentPlayer.equals(player))
             nextTurn();
         listOfPlayers.remove(player);
+        numOfPlayers--;
     }
+
 }
 
 

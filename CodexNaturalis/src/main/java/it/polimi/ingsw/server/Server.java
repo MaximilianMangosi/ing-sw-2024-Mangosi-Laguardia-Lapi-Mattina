@@ -36,7 +36,7 @@ public class Server {
             Registry registry = LocateRegistry.createRegistry(23);
             registry.rebind("ViewRMI", view);
 
-            CloseGameRMI t1 = new CloseGameRMI(controller);
+            CloseGame t1 = new CloseGame(controller);
             t1.start();
             //TODO DisconnectionHandler
         } catch (RemoteException ex) {
