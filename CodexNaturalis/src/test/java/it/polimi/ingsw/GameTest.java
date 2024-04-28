@@ -114,7 +114,7 @@ public class GameTest {
             //check if the goal is null
             assertNull(p.getGoal());
             for (int cnt: p.getResourceCounters().values()){
-                assertNotEquals(0,cnt);
+                assertEquals(0,cnt);
             }
             //check if the starterCard is not null
             assertNotNull(p.getStarterCard());

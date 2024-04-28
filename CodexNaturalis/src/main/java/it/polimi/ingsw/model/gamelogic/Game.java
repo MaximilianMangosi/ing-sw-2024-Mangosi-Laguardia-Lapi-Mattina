@@ -29,7 +29,7 @@ public class Game{
     private boolean AreBothDeckEmpty = false;
     private List<ResourceCard> resourceCardDeck ;
     private List<GoldCard> goldCardDeck ;
-    private List<Card> visibleCards;
+    private List<Card> visibleCards=new ArrayList<>();
     private Goal[] publicGoals=new Goal[2];// TODO setup in startGame
     private final List<Goal> listOfGoal= new ArrayList<>();
     private Player currentPlayer;
@@ -58,15 +58,7 @@ public class Game{
         this.listOfGoal.addAll(gamebox.getGoalSet());
         this.starterCards.addAll(gamebox.getStarterCardSet());
 
-        //create a new List for visible cards
-        this.visibleCards = new ArrayList<Card>();
-        //adds them from this class
-        for (int i = 0; i<2; i++){
-            this.visibleCards.add(resourceCardDeck.removeFirst());
-        }
-        for (int i = 0; i<2; i++){
-            this.visibleCards.add(goldCardDeck.removeFirst());
-        }
+
     }
 
     public List<Player> getPlayers() {

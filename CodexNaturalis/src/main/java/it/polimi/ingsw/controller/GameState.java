@@ -77,7 +77,7 @@ public abstract class GameState {
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
     public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException {
-        throw new IllegalOperationException();
+        throw new IllegalOperationException("boot-game");
     }
     /**
      * Default implementation for playCardFront throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
@@ -85,7 +85,7 @@ public abstract class GameState {
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
     public boolean playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
-        throw new IllegalOperationException();
+        throw new IllegalOperationException("play-card");
     }
     /**
      * Default implementation for playCardBack throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
@@ -93,7 +93,7 @@ public abstract class GameState {
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
     public boolean playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
-        throw new IllegalOperationException();
+        throw new IllegalOperationException("play-card");
     }
     /**
      * Abstract implementation for nextState, must be overridden by the subclasses
@@ -106,7 +106,7 @@ public abstract class GameState {
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
     public void chooseStarterCardSide(boolean isFront, UUID userId) throws IllegalOperationException,InvalidUserId {
-        throw new IllegalOperationException();
+        throw new IllegalOperationException("choose-starter-card-side");
     }
     /**
      * Default implementation for chooseGoal throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
@@ -114,7 +114,7 @@ public abstract class GameState {
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
     public void chooseGoal(UUID userId, Goal newGoal) throws IllegalOperationException, InvalidGoalException, InvalidUserId {
-        throw new IllegalOperationException();
+        throw new IllegalOperationException("choose-goal");
     }
     /**
      * Default implementation for drawFromDeck throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
@@ -122,7 +122,7 @@ public abstract class GameState {
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
     public void drawFromDeck(UUID userId, int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException {
-        throw new IllegalOperationException();
+        throw new IllegalOperationException("draw");
     }
     /**
      * Default implementation for drawVisibleCard throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
@@ -130,7 +130,7 @@ public abstract class GameState {
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
     public void drawVisibleCard (UUID userId,int choice) throws IsNotYourTurnException, HandFullException, IllegalOperationException {
-        throw new IllegalOperationException();
+        throw new IllegalOperationException("draw");
     }
     /**
      * Default implementation for closeGame that delete the Player from listOfPlayers and UserIds.From now on the user cannot play this game, can be overridden by the subclasses

@@ -14,7 +14,7 @@ public class TextUserInterface {
         this.view = view;
     }
 
-    private StringBuilder idleUI;
+    private StringBuilder idleUI=new StringBuilder();
 
     public void updateIdleUI() throws RemoteException {
         Map<String,Integer> scoreboard=view.getPlayersPoints();

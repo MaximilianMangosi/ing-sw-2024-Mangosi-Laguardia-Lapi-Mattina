@@ -37,11 +37,10 @@ public class GameManager {
      * @throws PlayerNameNotUniqueException if any Players's name in gameWaiting matches with playerName
      */
     public boolean bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException {
-        if(gameWaiting==null){
-            GameBox gamebox = new GameBox();
+        if(gameWaiting==null){;
             if(numOfPlayers<2 || numOfPlayers>4)
                 throw new UnacceptableNumOfPlayersException();
-            gameWaiting = new Game(newPlayer,numOfPlayers,gamebox);
+            gameWaiting = new Game(newPlayer,numOfPlayers,gameBox);
 
         }
         else{
@@ -59,7 +58,7 @@ public class GameManager {
     }
 
     private boolean isPlayerNameUnique(String playerName) {
-        return gameWaiting.getPlayers().stream().anyMatch(p -> p.getName().equals(playerName));
+        return gameWaiting.getPlayers().stream().noneMatch(p -> p.getName().equals(playerName));
     }
 
     /**

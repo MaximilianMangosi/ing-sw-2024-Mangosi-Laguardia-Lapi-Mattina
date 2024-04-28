@@ -19,7 +19,7 @@ public class UpdateTUI extends Thread{
                 synchronized (writer){
                     writer.print(tui.getIdleUI());
                 }
-                wait(30000);
+                sleep(30000);
 
             } catch (RemoteException | InterruptedException e) {
                 throw new RuntimeException(e);

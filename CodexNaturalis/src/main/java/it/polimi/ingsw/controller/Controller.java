@@ -36,7 +36,8 @@ public class Controller {
      */
     private synchronized void changeState(){
         currentState=currentState.nextState();
-        view.updateAll();
+        if(getGame()!=null)
+            view.updateAll();
     }
 
     /**
@@ -52,7 +53,8 @@ public class Controller {
      */
     public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException {
         UUID userID= currentState.BootGame(numOfPlayers,playerName);
-        view.updatePlayersList();
+        if(getGame()!=null)
+            view.updatePlayersList();
         changeState();
         return userID;
     }

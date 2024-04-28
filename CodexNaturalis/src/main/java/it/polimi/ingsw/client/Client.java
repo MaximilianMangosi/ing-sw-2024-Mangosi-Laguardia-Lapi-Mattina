@@ -14,15 +14,13 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 public class Client {
     private final String[] commands = {"start-game", "play-card", "choose-goal","choose-starter-card-side", "draw-card-from-deck", "draw-card-visible", "disconnect" };
     private UUID myUid;
     public static void main(String[] args) {
+        Client client=new Client();
         /*
         * startGame
         * playCard
@@ -43,17 +41,22 @@ public class Client {
 
             OutStreamWriter outWriter=new OutStreamWriter();
             TextUserInterface tui= new TextUserInterface(view);
-            UpdateTUI UpdaterTUI=new UpdateTUI(outWriter,tui);
+            UpdateTUI updaterTUI=new UpdateTUI(outWriter,tui);
+            updaterTUI.start();
 
             while (true) {
-                System.out.println("Write command");
+                    try {
+                        client.execCmd(s.nextLine().toLowerCase(Locale.ROOT),view);
+                    } catch (UnacceptableNumOfPlayersException | InvalidUserId | InvalidGoalException |
+                             PlayerNameNotUniqueException | IllegalOperationException | HandNotFullException |
+                             IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException | InvalidCardException e) {
+                        System.out.println(e.getMessage());
+                    }
             }
         }catch (RemoteException | NotBoundException e){
             System.out.println("Connection error");
         }
-        catch (RuntimeException e){
-            System.out.println("Generic error");
-        }
+
     }
     private void execCmd(String cmd, ViewInterface view) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, RemoteException, IllegalOperationException, InvalidUserId, InvalidGoalException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException {
         Scanner s=new Scanner(System.in);
@@ -87,7 +90,6 @@ public class Client {
 
                 if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myUid );
                 else view.playCardBack(chosenCard, chosenPosition, myUid);
-
                 break;
 
         }
