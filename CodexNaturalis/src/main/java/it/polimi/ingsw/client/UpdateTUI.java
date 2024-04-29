@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 import it.polimi.ingsw.view.ViewInterface;
 
 import java.rmi.RemoteException;
@@ -21,7 +22,7 @@ public class UpdateTUI extends Thread{
                 }
                 sleep(30000);
 
-            } catch (RemoteException | InterruptedException e) {
+            } catch (RemoteException | InterruptedException | InvalidUserId e) {
                 throw new RuntimeException(e);
             }
         }

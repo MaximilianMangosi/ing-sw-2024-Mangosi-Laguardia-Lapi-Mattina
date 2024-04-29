@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -34,10 +35,12 @@ public class Controller {
      * Makes the transition to nextState
      * @author Giuseppe Laguardia
      */
-    private synchronized void changeState(){
+    private synchronized void changeState()  {
         currentState=currentState.nextState();
-        if(getGame()!=null)
+        if(currentState.isGameStarted()){
             view.updateAll();
+        }
+
     }
 
     /**
@@ -53,8 +56,7 @@ public class Controller {
      */
     public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException {
         UUID userID= currentState.BootGame(numOfPlayers,playerName);
-        if(getGame()!=null)
-            view.updatePlayersList();
+        view.updatePlayersList();
         changeState();
         return userID;
     }
@@ -76,6 +78,7 @@ public class Controller {
     public synchronized void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
         if(currentState.playCardFront(selectedCard, position, userId)){
             view.setWinner(currentState.game.getWinner().getName());
+            view.setIsGameEnded();
             currentState.nextState();
         }
         view.updatePlayersHands();
@@ -119,8 +122,9 @@ public class Controller {
      * @throws InvalidUserId if the given userId isn't associate to any Player
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
-    public synchronized void chooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId, IllegalOperationException {
+    public synchronized void chooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId, IllegalOperationException, RemoteException {
         currentState.chooseStarterCardSide(isFront,userId);
+
         view.updatePlayersField();
         view.updatePlayersLegalPosition();
     }
@@ -359,4 +363,13 @@ public class Controller {
     public View getView(){
         return  view;
     }
+    public HashMap<UUID, StarterCard> getPlayersStarterCards(){
+        HashMap<UUID, StarterCard> starterCardMap = new HashMap<>();
+        Set<UUID> set=currentState.userIDs.keySet();
+        for (UUID id: set){
+            starterCardMap.put(id,currentState.getPlayerFromUid(id).getStarterCard());
+        }
+        return starterCardMap;
+    }
+
 }

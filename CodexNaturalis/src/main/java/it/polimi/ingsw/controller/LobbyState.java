@@ -13,7 +13,7 @@ public class LobbyState extends GameState{
      * @param gameManager collection of all the games started but not yet finished, containing the method for boot a game
      */
     public LobbyState(GameManager gameManager){
-        super(gameManager);
+        super(gameManager) ;
     }
     /**
      * generates a unique UUID object for the new plauer, calls bootGame
@@ -28,14 +28,13 @@ public class LobbyState extends GameState{
 
         UUID identity = UUID.randomUUID();
         Player newPlayer = new Player(playerName);
-
         boolean isGameFull=gameManager.bootGame(numOfPlayers,newPlayer);
-
         userIDs.put(identity,newPlayer);
         if(isGameFull){
             game=gameManager.getGameWaiting();
             gameManager.setGameWaiting(null);// gameWaiting must be null to host multiple game on the server
             game.startGame();
+
         }
         return identity;
 
@@ -47,8 +46,9 @@ public class LobbyState extends GameState{
      * @return the next GameState
      */
     public GameState nextState(){
+        //if game is null means that not enough users joined the game
        if(game!=null)
-           return new InitState( game, gameManager);
+           return new InitState( game, gameManager,userIDs);
        return this;
     }
 

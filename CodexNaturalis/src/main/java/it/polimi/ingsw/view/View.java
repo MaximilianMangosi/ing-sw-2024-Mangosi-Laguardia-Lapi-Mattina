@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
@@ -17,7 +18,9 @@ import java.util.*;
 
 public class View extends UnicastRemoteObject implements ViewInterface {
     private final Controller controller;
-    private Map<String, Integer > playersPoints;
+    private boolean isGameStarted;
+    private boolean isGameEnded;
+    private Map<String, Integer> playersPoints;
     private String winner;
     private int numOfResourceCards;
     private int numOfGoldCards;
@@ -30,6 +33,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     private Map<UUID,Goal[]> playersGoalOptions;
     private Map<UUID,Goal> privateGoals;
     private List<Card> visibleCards;
+    private HashMap<UUID,StarterCard> starterCardMap;
 
 
 
@@ -41,7 +45,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates PlayersPoints, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
-    public void updatePlayersPoints(){
+    public synchronized void updatePlayersPoints(){
         playersPoints=controller.getPlayersPoints();
     }
 
@@ -56,7 +60,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates NumOfResourceCards, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
-    public void updateNumOfResourceCards(){
+    public synchronized void updateNumOfResourceCards(){
         numOfResourceCards=controller.getNumOfResourceCards();
     }
 
@@ -71,7 +75,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates NumOfGoldCards, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
-    public void updateNumOfGoldCards(){
+    public synchronized void updateNumOfGoldCards(){
         numOfGoldCards=controller.getNumOfGoldCards();
     }
 
@@ -86,13 +90,13 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates playersHands, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
-    public void updatePlayersHands(){
+    public  synchronized void updatePlayersHands(){
         playersHands=controller.getPlayersHands();
     }
 
     /**
      * @author Giorgio Mattina,Maximilian Mangosi
-     * @return Map of playeId-list of card in player's hand
+     * @return Map of playerId-list of card in player's hand
      */
     public Map<UUID, List<Card>> getPlayersHands(){
         return  playersHands;
@@ -101,7 +105,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates PlayersField, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
-    public void updatePlayersField(){
+    public synchronized void updatePlayersField(){
         playersField=controller.getPlayersField();
     }
 
@@ -117,7 +121,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates PlayersList, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
-    public void updatePlayersList(){
+    public synchronized void updatePlayersList(){
         playersList=controller.getPlayersList();
     }
 
@@ -132,7 +136,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates currentPlayer, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
-    public void updateCurrentPlayer(){
+    public synchronized void updateCurrentPlayer(){
         currentPlayer=controller.getCurrentPlayer();
     }
 
@@ -153,7 +157,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates PlayesLegalPositions, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
-    public void updatePlayersLegalPosition(){
+    public synchronized void updatePlayersLegalPosition(){
         playersLegalPositions=controller.getPlayersLegalPositions();
     }
 
@@ -169,7 +173,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates public goals
      * @author Giorgio Mattina
      */
-    public void updatePublicGoals(){
+    public synchronized void updatePublicGoals(){
         publicGoals=controller.getPublicGoals();
     }
 
@@ -185,7 +189,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates all the player's initial goal options
      * @author Giorgio Mattina
      */
-    public void updatePlayersGoalOptions(){
+    public synchronized void updatePlayersGoalOptions(){
         playersGoalOptions=controller.getGoalOptions();
     }
     /**
@@ -200,7 +204,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates the map player-goal
      * @author Giorgio Mattina
      */
-    public void updatePrivateGoals(){
+    public synchronized void updatePrivateGoals(){
         privateGoals=controller.getPrivateGoals();
     }
 
@@ -216,8 +220,14 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates the list of visibleCards
      * @author Giorgio Mattina, Maximilian Mangosi
      */
-    public void updateVisibleCards(){
+    public synchronized void updateVisibleCards(){
         visibleCards=controller.getVisibleCards();
+    }
+    public void setIsGameEnded(){
+        isGameEnded=false;
+    }
+    public void setIsGameStarted(){
+        isGameStarted=true;
     }
 
     /**
@@ -230,7 +240,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
 
     @Override
     public String getWinner() throws RemoteException {
-        return null;
+        return winner;
     }
 
     @Override
@@ -273,7 +283,17 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         controller.closeGame(userID);
     }
 
-    public void updateAll(){
+    @Override
+    public boolean isGameEnded() throws RemoteException {
+        return isGameEnded;
+    }
+
+    @Override
+    public boolean isGameStarted() throws RemoteException {
+        return isGameStarted;
+    }
+
+    public synchronized void updateAll() {
         updatePlayersPoints();
         updateNumOfResourceCards();
         updateNumOfGoldCards();
@@ -286,6 +306,8 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         updatePlayersGoalOptions();
         updatePrivateGoals();
         updateVisibleCards();
+        updateStarterCardMap();
+        setIsGameStarted();
     }
 
     public List<Card> showPlayerHand(UUID id){
@@ -304,6 +326,13 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     }
     public void setWinner(String w){
         this.winner=w;
+    }
+
+    public StarterCard getStarterCard(UUID userId) throws RemoteException{
+        return starterCardMap.get(userId);
+    }
+    public void updateStarterCardMap() {
+        starterCardMap=controller.getPlayersStarterCards();
     }
 
 }

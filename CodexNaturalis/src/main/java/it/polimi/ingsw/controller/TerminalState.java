@@ -4,10 +4,14 @@ import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class TerminalState extends GameState{
-    TerminalState(Game game, GameManager gameManager) {
+    TerminalState(Game game, GameManager gameManager, HashMap<UUID,Player> userIds) {
         super( gameManager);
         this.game=game;
+        this.userIDs=userIds;
     }
 
     /**
@@ -25,6 +29,10 @@ public class TerminalState extends GameState{
      */
     @Override
     public boolean isGameEnded() {
+        return true;
+    }
+    @Override
+    public boolean isGameStarted() {
         return true;
     }
 }

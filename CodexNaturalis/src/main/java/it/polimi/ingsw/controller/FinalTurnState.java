@@ -103,7 +103,7 @@ public class FinalTurnState extends GameState{
      */
     @Override
     protected GameState nextState() {
-        return new TerminalState(game,gameManager);
+        return new TerminalState(game,gameManager,userIDs);
     }
 
 

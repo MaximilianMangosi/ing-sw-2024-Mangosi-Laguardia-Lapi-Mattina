@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -18,9 +20,10 @@ public class InitState extends GameState{
      * @param game the game which is being played by the users
      * @param gameManager collection of all the games started but not yet finished
      */
-    InitState(Game game, GameManager gameManager) {
+    InitState(Game game, GameManager gameManager, HashMap<UUID, Player> userIds) {
         super(gameManager);
         this.game=game;
+        this.userIDs=userIds;
     }
     /**
      * If all players have chosen their private goal and have played their StarterCard the Turn phase can start, otherwise controller must wait
@@ -30,7 +33,7 @@ public class InitState extends GameState{
     protected GameState nextState(){
         if(game.getPlayers().stream().
                 allMatch(p->(HasChosenGoal(p) && HasPlayedStarterCard(p))))
-            return new TurnState(game,gameManager);
+            return new TurnState(game,gameManager,userIDs);
         return this;
     }
 
@@ -86,5 +89,8 @@ public class InitState extends GameState{
 
     }
 
-
+    @Override
+    public boolean isGameStarted() {
+        return true;
+    }
 }

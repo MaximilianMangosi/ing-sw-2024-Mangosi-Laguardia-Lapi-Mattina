@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public abstract class GameState {
     protected Game game;
-    protected HashMap<UUID, Player> userIDs = new HashMap<>();
+    protected HashMap<UUID, Player> userIDs=new HashMap<>() ;
     protected GameManager gameManager;
 
     /**
@@ -165,6 +165,12 @@ public abstract class GameState {
     public boolean isGameEnded() {
         return false;
     }
+    /**
+     *  Default implementation for isGameStarted, returns always false
+     * @author Giuseppe Laguardia
+     * @return false
+     */
+    public boolean isGameStarted(){return false;}
 
 
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
@@ -41,6 +42,7 @@ public interface ViewInterface extends Remote {
     public List<Card> getVisibleCards() throws RemoteException;
 
     public String getWinner() throws RemoteException;
+    public StarterCard getStarterCard(UUID userId) throws RemoteException;
 
     //CONTROLLER
     public  UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException;
@@ -53,4 +55,9 @@ public interface ViewInterface extends Remote {
     public void closeGame(UUID userID) throws RemoteException, InvalidUserId;
 
 
-    }
+    public boolean isGameEnded() throws RemoteException;
+
+    boolean isGameStarted() throws RemoteException;
+
+
+}

@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.ViewInterface;
 
 import java.io.IOException;
@@ -36,22 +37,27 @@ public class Client {
             ViewInterface view = (ViewInterface) registry.lookup("ViewRMI");
 
             Scanner s=new Scanner(System.in);
-            System.out.println("Welcome to Codex, press any key to start");
+            System.out.println("Welcome to Codex Naturalis\n press any key to start");
             s.nextLine();
-
             OutStreamWriter outWriter=new OutStreamWriter();
             TextUserInterface tui= new TextUserInterface(view);
             UpdateTUI updaterTUI=new UpdateTUI(outWriter,tui);
-            updaterTUI.start();
 
+            try {
+                client.execCmd(s.nextLine().toLowerCase(Locale.ROOT), view);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+            updaterTUI.start();
             while (true) {
-                    try {
-                        client.execCmd(s.nextLine().toLowerCase(Locale.ROOT),view);
-                    } catch (UnacceptableNumOfPlayersException | InvalidUserId | InvalidGoalException |
-                             PlayerNameNotUniqueException | IllegalOperationException | HandNotFullException |
-                             IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException | InvalidCardException e) {
-                        System.out.println(e.getMessage());
-                    }
+                try {
+                    client.execCmd(s.nextLine().toLowerCase(Locale.ROOT), view);
+                } catch (UnacceptableNumOfPlayersException | InvalidUserId | InvalidGoalException |
+                         PlayerNameNotUniqueException | IllegalOperationException | HandNotFullException |
+                         IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException |
+                         InvalidCardException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }catch (RemoteException | NotBoundException e){
             System.out.println("Connection error");
@@ -64,7 +70,7 @@ public class Client {
             case "start-game":
                 System.out.println("Insert username");
                 String username = s.nextLine();
-                System.out.println("Insert numbers of players");
+                System.out.println("Insert number of players");
                 int numPlayers = s.nextInt();
                 myUid = view.BootGame(numPlayers, username);
                 break;

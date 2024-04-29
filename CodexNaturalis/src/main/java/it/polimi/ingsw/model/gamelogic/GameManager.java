@@ -37,7 +37,7 @@ public class GameManager {
      * @throws PlayerNameNotUniqueException if any Players's name in gameWaiting matches with playerName
      */
     public boolean bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException {
-        if(gameWaiting==null){;
+        if(gameWaiting==null){
             if(numOfPlayers<2 || numOfPlayers>4)
                 throw new UnacceptableNumOfPlayersException();
             gameWaiting = new Game(newPlayer,numOfPlayers,gameBox);
