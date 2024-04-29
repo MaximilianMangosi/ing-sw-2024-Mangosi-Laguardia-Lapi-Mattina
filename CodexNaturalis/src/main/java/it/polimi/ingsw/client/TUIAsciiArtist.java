@@ -20,11 +20,11 @@ public class TUIAsciiArtist implements CardDisplay {
     @Override
     public void show(Card card) {
 
-        strbuilder.append(card.getReign().getColor());
+        strbuilder.append(card.getReign().getColor()); //
 
         strbuilder.append(card.getCardResources().removeFirst().toString());
         strbuilder.append("##" + card.getPoints() + "##\n");
-        strbuilder.append("##" + card.get);
+        //strbuilder.append("##" + card.get);
 
     }
 }
