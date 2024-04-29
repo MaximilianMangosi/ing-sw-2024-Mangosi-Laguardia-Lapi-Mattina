@@ -35,7 +35,7 @@ public class TextUserInterface {
 
     private StringBuilder idleUI;
 
-    public synchronized void updateIdleUI() throws RemoteException, InvalidUserId {
+    public synchronized void updateIdleUI() throws RemoteException, InvalidUserId, InvalidUserId {
         idleUI=new StringBuilder();
         String winner=view.getWinner();
         List<String> players=view.getPlayersList();

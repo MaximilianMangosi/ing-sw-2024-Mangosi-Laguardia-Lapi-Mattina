@@ -238,46 +238,139 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         return visibleCards;
     }
 
+    /**
+     * @author Riccardo Lapi
+     * @return the winner
+     * @throws RemoteException
+     */
     @Override
     public String getWinner() throws RemoteException {
         return winner;
     }
 
+    /**
+     * @author Riccardo Lapi
+     * @param numOfPlayers the numbers of player for the new created game
+     * @param playerName the username of the caller user
+     * @return the uid of the caller user
+     * @throws RemoteException
+     * @throws UnacceptableNumOfPlayersException
+     * @throws PlayerNameNotUniqueException
+     * @throws IllegalOperationException
+     */
     @Override
     public UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException {
         return controller.BootGame(numOfPlayers, playerName);
     }
 
+    /**
+     * @author Riccardo Lapi
+     * Place the selectedCard facing up
+     * @param selectedCard the card to play
+     * @param position the position where to place the card
+     * @param userId the caller user id (given by BootGame)
+     * @throws RemoteException
+     * @throws IsNotYourTurnException
+     * @throws RequirementsNotMetException
+     * @throws IllegalPositionException
+     * @throws InvalidCardException
+     * @throws HandNotFullException
+     * @throws IllegalOperationException
+     * @throws InvalidUserId
+     */
     @Override
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId {
         controller.playCardFront(selectedCard, position, userId);
     }
 
+    /**
+     * @author Riccardo Lapi
+     * Place the selectedCard facing down
+     * @param selectedCard the card to play
+     * @param position the position where to place the card
+     * @param userId the caller user id (given by BootGame)
+     * @throws RemoteException
+     * @throws HandNotFullException
+     * @throws IsNotYourTurnException
+     * @throws RequirementsNotMetException
+     * @throws IllegalPositionException
+     * @throws IllegalOperationException
+     * @throws InvalidCardException
+     * @throws InvalidUserId
+     */
     @Override
     public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId {
         controller.playCardBack(selectedCard, position, userId);
     }
 
+    /**
+     * @author Riccardo Lapi
+     * @param isFront boolean that indicate if the starter card should be facing up (true) or down (false)
+     * @param userId the caller user id (given by BootGame)
+     * @throws RemoteException
+     * @throws InvalidUserId
+     * @throws IllegalOperationException
+     * @throws InvalidUserId
+     */
     @Override
     public void chooseStarterCardSide(boolean isFront, UUID userId) throws RemoteException, InvalidUserId, IllegalOperationException, InvalidUserId {
         controller.chooseStarterCardSide(isFront, userId);
     }
 
+    /**
+     * @author Riccardo Lapi
+     * @param userId the caller user id (given by BootGame)
+     * @param newGoal the chosen goal
+     * @throws RemoteException
+     * @throws InvalidGoalException
+     * @throws InvalidUserId
+     * @throws IllegalOperationException
+     * @throws InvalidUserId
+     */
     @Override
     public void chooseGoal(UUID userId, Goal newGoal) throws RemoteException, InvalidGoalException, InvalidUserId, IllegalOperationException, InvalidUserId {
         controller.ChooseGoal(userId, newGoal);
     }
 
+    /**
+     * @author Riccardo Lapi
+     * @param userId the caller user id (given by BootGame)
+     * @param choice the chosen deck 0 or 1
+     * @throws RemoteException
+     * @throws IsNotYourTurnException
+     * @throws HandFullException
+     * @throws DeckEmptyException
+     * @throws IllegalOperationException
+     * @throws InvalidChoiceException
+     * @throws InvalidUserId
+     */
     @Override
     public void drawFromDeck(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException, InvalidUserId {
         controller.drawFromDeck(userId, choice);
     }
 
+    /**
+     * @author Riccardo Lapi
+     * @param userId the caller user id (given by BootGame)
+     * @param choice the chosen card to draw int 0,1,2 or 3
+     * @throws RemoteException
+     * @throws IsNotYourTurnException
+     * @throws HandFullException
+     * @throws IllegalOperationException
+     * @throws InvalidChoiceException
+     * @throws InvalidUserId
+     */
     @Override
     public void drawVisibleCard(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException, InvalidUserId {
         controller.drawVisibleCard(userId, choice);
     }
 
+    /**
+     * @author Riccardo Lapi
+     * @param userID the caller user id (given by BootGame)
+     * @throws RemoteException
+     * @throws InvalidUserId
+     */
     @Override
     public void closeGame(UUID userID) throws RemoteException, InvalidUserId {
         controller.closeGame(userID);
@@ -319,6 +412,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         return playersLegalPositions.get(id);
     }
     public Goal[] showPlayerGoalOptions(UUID uid){
+        updatePlayersGoalOptions();
         return playersGoalOptions.get(uid);
     }
     public Goal showPrivateGoal(UUID uid){

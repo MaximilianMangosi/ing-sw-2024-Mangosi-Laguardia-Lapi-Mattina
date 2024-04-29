@@ -4,17 +4,23 @@ import com.google.gson.annotations.SerializedName;
 
 public enum Reign implements Resource {
     @SerializedName("a")
-    ANIMAL,
+    ANIMAL("\u001B[36m"),
     @SerializedName("m")
-    MUSHROOM,
+    MUSHROOM("\u001B[31m"),
     @SerializedName("b")
-    BUG,
+    BUG("\u001B[35m"),
     @SerializedName("pl")
-    PLANTS,
+    PLANTS("\u001B[32m"),
     @SerializedName("e")
-    EMPTY,
+    EMPTY("\u001B[37m"),
     ;
-
+    Reign(String s){
+        this.color=s;
+    }
+    private String color;
+    public String getColor (){
+        return color;
+    }
     @Override
     public Resource getResource() {
         return this;

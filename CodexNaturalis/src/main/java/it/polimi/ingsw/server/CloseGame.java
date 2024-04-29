@@ -19,7 +19,7 @@ public class CloseGame extends Thread{
        boolean shouldWait=true;
         while(true){
             if (controller.isGameEnded()) {
-                // if the game is ended but some players didn't close the game, the thread waits for 2 minutes then deletes the game
+                // if the game has ended but some players didn't close the game, the thread waits for 2 minutes then deletes the game
                 if (shouldWait) {
                     try {
                         wait(120000);
