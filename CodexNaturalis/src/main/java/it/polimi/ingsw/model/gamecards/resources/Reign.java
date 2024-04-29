@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.gamecards.resources;
 
 import com.google.gson.annotations.SerializedName;
 
-public enum Reign implements Resource {
+import java.io.Serializable;
+
+public enum Reign implements Resource, Serializable {
     @SerializedName("a")
     ANIMAL("\u001B[36m"),
     @SerializedName("m")

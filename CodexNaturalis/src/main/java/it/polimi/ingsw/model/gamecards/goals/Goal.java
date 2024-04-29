@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.gamecards.goals;
 
 import it.polimi.ingsw.model.gamelogic.Player;
 
-public abstract class Goal {
+import java.io.Serializable;
+
+public abstract class Goal implements Serializable {
     protected int points;
 
     /**

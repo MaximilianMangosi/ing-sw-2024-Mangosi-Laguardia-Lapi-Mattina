@@ -5,11 +5,12 @@ import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 import it.polimi.ingsw.model.gamelogic.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class Card {
+public abstract class Card implements Serializable {
     private Resource NW;
     private Resource NE;
     private Resource SW;
