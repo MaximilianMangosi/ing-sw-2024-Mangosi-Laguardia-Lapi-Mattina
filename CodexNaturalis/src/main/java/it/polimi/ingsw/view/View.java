@@ -297,6 +297,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         return playersLegalPositions.get(id);
     }
     public Goal[] showPlayerGoalOptions(UUID uid){
+        updatePlayersGoalOptions();
         return playersGoalOptions.get(uid);
     }
     public Goal showPrivateGoal(UUID uid){

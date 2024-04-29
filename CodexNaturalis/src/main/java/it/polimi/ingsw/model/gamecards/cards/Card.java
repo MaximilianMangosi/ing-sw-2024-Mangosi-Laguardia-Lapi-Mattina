@@ -83,7 +83,7 @@ public abstract class Card {
     public List<Resource> getCardResources() {
         //cycle through the card angles and return a list with all the resources in the card
         List<Resource> cardResources = new ArrayList<>();
-        String[] angles ={"NW","SW","NE","SE"};
+        String[] angles ={"NW","NE","SW","SE"};
 
         for (String angle: angles)
             if(getResource(angle)!=null && !getResource(angle).isEmpty())

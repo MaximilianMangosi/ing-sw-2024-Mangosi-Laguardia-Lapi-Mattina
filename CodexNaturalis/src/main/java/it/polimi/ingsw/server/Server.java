@@ -33,6 +33,7 @@ public class Server {
             //Controller and View setup
             Controller controller = new Controller(gameManager);
             View view = controller.getView();
+
             // export View
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("ViewRMI", view);
