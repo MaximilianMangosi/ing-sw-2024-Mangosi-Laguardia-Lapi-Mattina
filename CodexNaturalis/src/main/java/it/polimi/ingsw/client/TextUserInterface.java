@@ -10,6 +10,11 @@ import java.util.Map;
 public class TextUserInterface {
     private ViewInterface view;
 
+    /**
+     * constructor of TextUserInterface class
+     * @author Giuseppe Laguardia
+     * @param view
+     */
     public TextUserInterface(ViewInterface view) {
         this.view = view;
     }
