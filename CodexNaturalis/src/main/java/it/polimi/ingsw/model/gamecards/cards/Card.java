@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.gamecards.cards;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
+import it.polimi.ingsw.model.gamecards.resources.Tool;
 import it.polimi.ingsw.model.gamelogic.Player;
 
 import java.io.Serializable;
@@ -149,5 +150,17 @@ public abstract class Card implements Serializable {
     }
     public int getPoints() {
         return 0;
+    }
+
+    /**
+     * default implementation of getRequirements
+     * @author Giorgio Mattina
+     * @return an empty hash map
+     */
+    public HashMap<Reign, Integer> getRequirements() {
+        return new HashMap<>();
+    }
+    public Tool getTool() {
+        return null;
     }
 }

@@ -4,15 +4,16 @@ import com.google.gson.annotations.SerializedName;
 
 public enum Tool implements Resource {
     @SerializedName("f")
-    FEATHER,
+    FEATHER("F"),
     @SerializedName("s")
-    SCROLL,
+    SCROLL("S"),
     @SerializedName("p")
-    PHIAL,
+    PHIAL("P"),
     @SerializedName("e")
-    EMPTY,
+    EMPTY("E"),
     ;
 
+    public String symbol;
     @Override
     public Resource getResource() {
         return this;
@@ -21,5 +22,13 @@ public enum Tool implements Resource {
     @Override
     public boolean isEmpty() {
         return this == Tool.EMPTY;
+    }
+
+    @Override
+    public String getSymbol() {
+        return symbol;
+    }
+     Tool(String s){
+        this.symbol=s;
     }
 }

@@ -6,6 +6,7 @@ public interface Resource extends Serializable {
     public Resource getResource();
 
     public boolean isEmpty();
+    public String  getSymbol();
 
 }
 

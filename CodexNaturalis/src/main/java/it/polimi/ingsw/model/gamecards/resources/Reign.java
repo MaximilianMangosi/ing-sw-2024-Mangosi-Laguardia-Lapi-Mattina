@@ -6,22 +6,27 @@ import java.io.Serializable;
 
 public enum Reign implements Resource, Serializable {
     @SerializedName("a")
-    ANIMAL("\u001B[36m"),
+    ANIMAL("\u001B[36m","a"),
     @SerializedName("m")
-    MUSHROOM("\u001B[31m"),
+    MUSHROOM("\u001B[31m","m"),
     @SerializedName("b")
-    BUG("\u001B[35m"),
+    BUG("\u001B[35m","b"),
     @SerializedName("pl")
-    PLANTS("\u001B[32m"),
+    PLANTS("\u001B[32m","p"),
     @SerializedName("e")
-    EMPTY("\u001B[37m"),
+    EMPTY("\u001B[37m","E"),
     ;
-    Reign(String s){
+    Reign(String s,String symb){
         this.color=s;
+        this.symbol=symb;
     }
     private String color;
+    private String symbol;
     public String getColor (){
         return color;
+    }
+    public String getSymbol(){
+        return symbol;
     }
     @Override
     public Resource getResource() {

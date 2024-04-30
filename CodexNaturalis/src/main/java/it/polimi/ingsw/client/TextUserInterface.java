@@ -18,7 +18,8 @@ import java.util.*;
  * Class that handles the displaying of the TUI and communicate with the server
  * @author Giuseppe Laguardia
  */
-public class TextUserInterface {
+public class TextUserInterface  {
+    private TUIAsciiArtist artist = new TUIAsciiArtist();
     private final ViewInterface view;
     private final UpdateTUI tuiUpdater;
     private final OutStreamWriter outWriter = new OutStreamWriter();
@@ -178,7 +179,11 @@ public class TextUserInterface {
                     int chosenDrawCard = s.nextInt();
                     view.drawVisibleCard(myID,chosenDrawCard);
                     break;
-
+                case "show-hand":
+                    for(int i=0;i<3;i++){
+                        artist.show(view.showPlayerHand(myID).get(i));
+                    }
+                    break;
                 case "disconnect":
                     view.closeGame(myID);
                     tuiUpdater.interrupt();
