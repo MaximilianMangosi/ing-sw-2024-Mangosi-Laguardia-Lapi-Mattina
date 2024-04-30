@@ -14,6 +14,11 @@ public class GoldCardTool extends GoldCard{
         this.tool=tool;
     }
 
+    /**
+     * getter of attribute Tool
+     * @author Giuseppe Laguardia
+     * @return
+     */
     public Tool getTool() {
         return tool;
     }

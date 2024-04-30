@@ -23,29 +23,35 @@ public class TUIAsciiArtist implements CardDisplay {
     public static final String PURPLE = "\u001B[35m";
     public static final String CYAN = "\u001B[36m";
     public static final String WHITE = "\u001B[37m";
+
+    /**
+     * uses object StringBuiler to build a string in ASCII art representing parameter Card, then prints the string on System.Out
+     * @author Giorgio Mattina
+     * @param card
+     */
     @Override
     public void show(Card card) {
         strbuilder = new StringBuilder();
             String reignColor = card.getReign().getColor();
-            char point = card.getPoints()>0? Character.forDigit(card.getPoints(),10):'#';
-            String angleNW = card.getResource("NW") !=null? card.getResource("NW").getSymbol() : "#";
-            String angleNE = card.getResource("NE") !=null? card.getResource("NE").getSymbol() : "#";
-            String angleSW = card.getResource("SW") !=null? card.getResource("SW").getSymbol() : "#";
-            String angleSE = card.getResource("SE") !=null? card.getResource("SE").getSymbol() : "#";
+            char point = card.getPoints()>0? Character.forDigit(card.getPoints(),10):'■';
+            String angleNW = card.getResource("NW") !=null? card.getResource("NW").getSymbol() : "■";
+            String angleNE = card.getResource("NE") !=null? card.getResource("NE").getSymbol() : "■";
+            String angleSW = card.getResource("SW") !=null? card.getResource("SW").getSymbol() : "■";
+            String angleSE = card.getResource("SE") !=null? card.getResource("SE").getSymbol() : "■";
 
             if(card.getRequirements().isEmpty()){
-                strbuilder.append(String.format(reignColor+"%s ####%c#### %s\n" +
-                                                  reignColor+ "# ######### #\n" +
-                                                 reignColor+  "# ######### #\n" +
-                                                 reignColor+   "# ######### #\n" +
-                                                 reignColor +"%s ######### %s\n"+RESET,angleNW,point, angleNE,angleSW,angleSE));
+                strbuilder.append(String.format(reignColor+"%s ----%c---- %s\n" +
+                                                  reignColor+ "| ■■■■■■■■■ |\n" +
+                                                 reignColor+  "| ■■■■■■■■■ |\n" +
+                                                 reignColor+   "| ■■■■■■■■■ |\n" +
+                                                 reignColor +"%s --------- %s\n"+RESET,angleNW,point, angleNE,angleSW,angleSE));
 
             }else{
-                strbuilder.append(String.format(YELLOW+"%s ####%c#### %s\n#"+
-                                 reignColor+" ######### "+YELLOW+"#\n#"+
-                                  reignColor+" ######### "+YELLOW+"#\n#"+
-                                  reignColor+" ######### "+YELLOW+"#\n"+
-                                       "%s ######### %s\n"+RESET,angleNW,point, angleNE,angleSW,angleSE));
+                strbuilder.append(String.format(YELLOW+"%s ----%c---- %s\n|"+
+                                 reignColor+" ■■■■■■■■■ "+YELLOW+"|\n|"+
+                                  reignColor+" ■■■■■■■■■ "+YELLOW+"|\n|"+
+                                  reignColor+" ■■■■■■■■■ "+YELLOW+"|\n"+
+                                       "%s --------- %s\n"+RESET,angleNW,point, angleNE,angleSW,angleSE));
                 int sum=0;
                 List<Resource> req=new ArrayList<>();
                 for(Resource s : card.getRequirements().keySet()){
