@@ -231,28 +231,7 @@ public class Player {
             return false;
         }
     }
-    /**
-     * @author Giorgio Mattina
-     * @param playedCard
-     * adds points to the player, it takes a normal gold card that isn't of type Angle or Tool
-     */
-    public void addPoints(GoldCard playedCard){
-        points += playedCard.getPoints();
-    }
 
-    /**
-     * @author Giorgio Mattina
-     * @param playedCard
-     * adds points to player, takes a normal resource card
-     */
-    public void addPoints(ResourceCard playedCard){
-        points += playedCard.getPoints();
-    }
-
-    /**
-     * @author Maximilian Mangosi
-     * adds a drawn card to the hand of the player
-     */
     public void addCardToHand(Card drawCard) {
         hand.add(drawCard);
     }
