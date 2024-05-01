@@ -40,4 +40,19 @@ public class DistinctGoal extends Goal {
 
         return  totNum * points;
     }
+    /**
+     * Overrides Object.equals() , two DistinctGoal are equal if they have the same points
+     * @author Giuseppe Laguardia
+     * @param other the Object with which to compare
+     * @return true if this equals other, otherwise returns false
+     */
+    @Override
+    public boolean equals(Object other){
+        if(other==this)
+            return true;
+        if(other instanceof DistinctGoal temp)
+            return this.points==temp.points;
+        return false;
+
+    }
 }

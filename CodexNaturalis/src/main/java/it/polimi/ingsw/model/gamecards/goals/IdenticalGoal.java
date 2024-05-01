@@ -62,4 +62,19 @@ public class IdenticalGoal extends Goal {
 
         return  totIdentical * points;
     }
+    /**
+     * Overrides Object.equals() , two IdenticalGoal are equal if they have the same resource
+     * @author Giuseppe Laguardia
+     * @param other the Object to compare with this
+     * @return true if this equals other, otherwise returns false
+     */
+    @Override
+    public boolean equals(Object other){
+        if(other==this)
+            return true;
+        if(other instanceof IdenticalGoal temp)
+            return this.resource==temp.resource;
+        return false;
+
+    }
 }

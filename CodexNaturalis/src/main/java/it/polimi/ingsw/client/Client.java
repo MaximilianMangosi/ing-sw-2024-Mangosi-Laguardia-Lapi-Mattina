@@ -47,12 +47,14 @@ public class Client {
             System.out.println("Welcome to Codex Naturalis\n press any key to start");
             s.nextLine();
 
+
             TextUserInterface tui= new TextUserInterface(view);
 
 
             while (true) {
                     try {
                         tui.execCmd(s.nextLine().toLowerCase(Locale.ROOT));
+                        tui.printIdleUI();
                     } catch (UnacceptableNumOfPlayersException | InvalidUserId | InvalidGoalException |
                              PlayerNameNotUniqueException | IllegalOperationException | HandNotFullException |
                              IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException |
@@ -67,12 +69,5 @@ public class Client {
     }
 
 
-    private static void clearScreen () {
-        try {
-            if (System.getProperty("os.name").contains("Windows"))
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            else
-                Runtime.getRuntime().exec("clear");
-        }catch (IOException | InterruptedException ignored) {}
-    }
+
 }

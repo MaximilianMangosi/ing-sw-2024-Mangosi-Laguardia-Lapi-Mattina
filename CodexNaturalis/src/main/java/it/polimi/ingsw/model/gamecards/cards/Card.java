@@ -163,4 +163,19 @@ public abstract class Card implements Serializable {
     public Tool getTool() {
         return null;
     }
+    /**
+     * Overrides Object.equals(), two Card are equal if they each angle have the same Resource
+     * @author Giuseppe Laguardia
+     * @param other the Object to compare with
+     * @return true if this equals other, otherwise returns false
+     */
+    @Override
+    public boolean equals(Object other){
+        if(other==this)
+            return true;
+        if(other instanceof Card temp)
+            return this.NW==temp.NW && this.NE==temp.NE && this.SW==temp.SW && this.SE== temp.SE;
+        return false;
+
+    }
 }

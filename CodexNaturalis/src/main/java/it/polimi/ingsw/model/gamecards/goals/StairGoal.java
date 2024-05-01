@@ -74,4 +74,19 @@ public class StairGoal extends Goal {
 
         return numOfStairs * points;
     }
+    /**
+     * Overrides Object.equals() , two StairGoal are equal if they have the same reign
+     * @author Giuseppe Laguardia
+     * @param other the Object to compare with this
+     * @return true if this equals other, otherwise returns false
+     */
+    @Override
+    public boolean equals(Object other){
+        if(other==this)
+            return true;
+        if(other instanceof StairGoal temp)
+            return this.reign==temp.reign;
+        return false;
+
+    }
 }

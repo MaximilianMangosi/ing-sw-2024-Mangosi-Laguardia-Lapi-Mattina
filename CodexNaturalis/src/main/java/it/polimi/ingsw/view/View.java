@@ -150,11 +150,11 @@ public class View extends UnicastRemoteObject implements ViewInterface {
 
     @Override
     public List<Coordinates> showPlayersLegalPositions(UUID uid) throws RemoteException, InvalidUserId {
-        return null;
+        return playersLegalPositions.get(uid);
     }
 
     /**
-     * updates PlayesLegalPositions, calling the controller
+     * updates PlayersLegalPositions, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
     public synchronized void updatePlayersLegalPosition(){

@@ -283,19 +283,19 @@ public class Game{
      * play card for starter card
      * @param isFront determines the side on which the card is played
      */
-    public void playStarterCardFront(boolean isFront){
+    public void playStarterCardFront(Player player,boolean isFront){
         //add counter of resources
-        StarterCard starterCard = currentPlayer.getStarterCard();
-        currentPlayer.addCardToMap(starterCard, new Coordinates(0,0));
+        StarterCard starterCard = player.getStarterCard();
+        player.addCardToMap(starterCard, new Coordinates(0,0));
         if(isFront) {
-            currentPlayer.updateResourceCounter(starterCard.getCardResources());
-            currentPlayer.updateResourceCounter(starterCard.getCentralResource());
+            player.updateResourceCounter(starterCard.getCardResources());
+            player.updateResourceCounter(starterCard.getCentralResource());
         }
         else{
-            currentPlayer.updateResourceCounter(starterCard.getBackResources());
+            player.updateResourceCounter(starterCard.getBackResources());
         }
         //update availablePosition list
-        currentPlayer.checkAvailablePositions(new Coordinates(0,0), starterCard);
+        player.checkAvailablePositions(new Coordinates(0,0), starterCard);
 
     }
 

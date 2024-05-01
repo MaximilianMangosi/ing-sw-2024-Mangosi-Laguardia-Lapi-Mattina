@@ -85,7 +85,7 @@ public class InitState extends GameState{
         if(player == null) throw new InvalidUserId();
         StarterCard starterCard=player.getStarterCard();
         starterCard.setIsFront(isFront);
-        game.playStarterCardFront(isFront);
+        game.playStarterCardFront(player,isFront);
 
     }
 

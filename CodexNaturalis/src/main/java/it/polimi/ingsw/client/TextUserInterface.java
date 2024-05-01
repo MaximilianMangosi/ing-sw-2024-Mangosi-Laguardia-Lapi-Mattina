@@ -146,15 +146,18 @@ public class TextUserInterface  {
                     String myGoal = s.nextLine();
                     Goal goal = Objects.equals(myGoal, "1") ? myGoals[0] : myGoals[1];
                     view.chooseGoal(myID, goal);
+                    outWriter.print("Goal chosen");
                     break;
                 case "play-card":
                     outWriter.print("Which card do you want to play? (1,2,3)");
                     int chosenCardI = s.nextInt();
+                    s.nextLine();
                     Card chosenCard = view.showPlayerHand(myID).get(chosenCardI - 1);
                     outWriter.print("Which side? (f for front, b or any for back)");
                     boolean isChosenFront = s.nextLine().equals("f");
                     outWriter.print("Where do you want to place the selected card [" + chosenCardI + "]? (int)");
                     int chosenPositionI = s.nextInt();
+                    s.nextLine();
                     List<Coordinates> availableCoordinates = view.showPlayersLegalPositions(myID);
                     Coordinates chosenPosition = availableCoordinates.get(chosenPositionI);
 
@@ -166,6 +169,7 @@ public class TextUserInterface  {
                     outWriter.print("Which side for the starter card? (f for front, b or any for back)");
                     boolean isChosenFrontStart = s.nextLine().equals("f");
                     view.chooseStarterCardSide(isChosenFrontStart, myID);
+                    outWriter.print("Starter card chosen");
                     break;
 
                 case "draw-card-from-deck":
@@ -229,4 +233,10 @@ public class TextUserInterface  {
         return myID;
     }
 
+
+    public void printIdleUI() throws InvalidUserId, RemoteException {
+        updateIdleUI();
+        outWriter.clearScreen();
+        outWriter.print(String.valueOf(idleUI));
+    }
 }

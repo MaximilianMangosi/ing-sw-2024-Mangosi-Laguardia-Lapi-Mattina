@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
+
 /**
  * @author Giuseppe Laguardia
  *  A couple of signed integer representing a position on a Cartesian plane
  */
-public class Coordinates {
+public class Coordinates implements Serializable {
 
     public int x;
     public int y;
@@ -14,9 +16,9 @@ public class Coordinates {
         this.y = y;
     }
     /**
-     * Overrides equals() for Coordinates, two Coordinates are equal if they have the same x and same y
+     * Overrides Object.equals(), two Coordinates are equal if they have the same x and same y
      * @author Giuseppe Laguardia
-     * @param other the Coordinates with which to compare
+     * @param other the Object to compare with
      * @return true if this equals other, otherwise returns false
      */
     @Override

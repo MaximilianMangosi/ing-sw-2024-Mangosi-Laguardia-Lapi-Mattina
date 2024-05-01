@@ -65,5 +65,20 @@ public class StarterCard extends Card implements Serializable {
 
         return cardResources;
     }
+    /**
+     * Overrides Object.equals(), two Card are equal if they each angle have the same Resource
+     * @author Giuseppe Laguardia
+     * @param other the Object to compare with
+     * @return true if this equals other, otherwise returns false
+     */
+    @Override
+    public boolean equals(Object other){
+        if(other==this)
+            return true;
+        if(other instanceof StarterCard temp)
+            return super.equals(temp) && BackNW==temp.BackNW && BackNE==temp.BackNE && BackSW==temp.BackSW && BackSE==temp.BackSE;
+        return false;
+
+    }
 
 }

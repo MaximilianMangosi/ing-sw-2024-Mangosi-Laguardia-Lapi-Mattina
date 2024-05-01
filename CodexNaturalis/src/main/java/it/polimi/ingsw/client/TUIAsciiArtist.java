@@ -58,29 +58,30 @@ public class TUIAsciiArtist implements CardDisplay {
                    for(int j = 0; j<card.getRequirements().get(s);j++)
                        req.add(s);
                 }
+                int bottomCenter=95;
                 //regardless of the size
-                strbuilder.replace(96,97,req.removeFirst().getSymbol());
-                strbuilder.replace(98,99,req.removeFirst().getSymbol());
+                strbuilder.replace(bottomCenter,bottomCenter+1,req.removeFirst().getSymbol());
+                strbuilder.replace(bottomCenter+2,bottomCenter+3,req.removeFirst().getSymbol());
                 if(req.size()==2){
-                    strbuilder.replace(95,96,req.removeFirst().getSymbol());
-                    strbuilder.replace(99,100,req.removeFirst().getSymbol());
+                    strbuilder.replace(bottomCenter-1,bottomCenter,req.removeFirst().getSymbol());
+                    strbuilder.replace(bottomCenter+3,bottomCenter+4,req.removeFirst().getSymbol());
                 }else if (req.size()==3){
-                    strbuilder.replace(95,96,req.removeFirst().getSymbol());
-                    strbuilder.replace(99,100,req.removeFirst().getSymbol());
-                    strbuilder.replace(97,98,req.removeFirst().getSymbol());
+                    strbuilder.replace(bottomCenter-1,bottomCenter,req.removeFirst().getSymbol());
+                    strbuilder.replace(bottomCenter+3,bottomCenter+4,req.removeFirst().getSymbol());
+                    strbuilder.replace(bottomCenter+1,bottomCenter+2,req.removeFirst().getSymbol());
 
                 }else{
-                    strbuilder.replace(97,98,req.removeFirst().getSymbol());
+                    strbuilder.replace(bottomCenter+1,bottomCenter+2,req.removeFirst().getSymbol());
                 }
             }
+            int center=30;
             if (card.getPoints()==2){
-                strbuilder.replace(30,31,"A");
+                strbuilder.replace(center,center+1,"A");
             }
             if(card.getTool()!=null){
-                strbuilder.replace(30,31,"T");
+                strbuilder.replace(center,center+1,card.getTool().getSymbol());
             }
 
         System.out.println(strbuilder.toString());
-        System.out.println("\n");
     }
 }

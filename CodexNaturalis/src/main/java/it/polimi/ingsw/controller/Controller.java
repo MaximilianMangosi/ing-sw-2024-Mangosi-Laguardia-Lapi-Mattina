@@ -124,9 +124,10 @@ public class Controller {
      */
     public synchronized void chooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId, IllegalOperationException, RemoteException {
         currentState.chooseStarterCardSide(isFront,userId);
-
+        view.updateStarterCardMap();
         view.updatePlayersField();
         view.updatePlayersLegalPosition();
+        currentState=currentState.nextState();
     }
 
     /**
@@ -143,6 +144,7 @@ public class Controller {
     public synchronized void ChooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId, IllegalOperationException {
         currentState.chooseGoal(userId,newGoal);
         view.updatePrivateGoals();
+        currentState.nextState();
     }
 
     /**

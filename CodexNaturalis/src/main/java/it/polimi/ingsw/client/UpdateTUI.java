@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 import it.polimi.ingsw.view.ViewInterface;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class UpdateTUI extends Thread{
@@ -18,12 +19,16 @@ public class UpdateTUI extends Thread{
             try {
                 tui.updateIdleUI();
                 synchronized (writer){
+                    writer.clearScreen();
                     writer.print(tui.getIdleUI());
                 }
-                sleep(30000);
+                sleep(60000);
 
-            } catch (RemoteException | InterruptedException | InvalidUserId e) {
+            } catch (RemoteException | InterruptedException e) {
                 throw new RuntimeException(e);
+            }
+            catch ( InvalidUserId e){
+                System.out.println(e.getMessage());
             }
         }
     }

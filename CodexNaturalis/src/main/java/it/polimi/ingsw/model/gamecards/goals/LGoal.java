@@ -95,4 +95,19 @@ public class LGoal extends Goal {
 
         return numOfLs * points;
     }
+    /**
+     * Overrides Object.equals() , two LGoal are equal if they have the same primaryReign
+     * @author Giuseppe Laguardia
+     * @param other the Object to compare with this
+     * @return true if this equals other, otherwise returns false
+     */
+    @Override
+    public boolean equals(Object other){
+        if(other==this)
+            return true;
+        if(other instanceof LGoal temp)
+            return this.primaryReign==temp.primaryReign;
+        return false;
+
+    }
 }
