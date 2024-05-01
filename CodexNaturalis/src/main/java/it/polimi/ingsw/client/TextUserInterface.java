@@ -19,7 +19,7 @@ import java.util.*;
  * @author Giuseppe Laguardia
  */
 public class TextUserInterface  {
-    private TUIAsciiArtist artist = new TUIAsciiArtist();
+    private final TUIAsciiArtist artist = new TUIAsciiArtist();
     private final ViewInterface view;
     private final UpdateTUI tuiUpdater;
     private final OutStreamWriter outWriter = new OutStreamWriter();
@@ -88,6 +88,7 @@ public class TextUserInterface  {
                 idleUI.append(currentPlayer);
                 idleUI.append(" is playing.\n");
             }
+            idleUI.append("Scoreboard:\n");
             for (Map.Entry<String,Integer> entry: sortedScoreboard(scoreboard)){
                 idleUI.append(entry.getKey());
                 idleUI.append(": ");
@@ -97,8 +98,7 @@ public class TextUserInterface  {
             idleUI.append("\n\n");
             if(view.showPrivateGoal(myID)==null){
                 idleUI.append("To start the game you have to choose your private goal from your goal options, try choose-goal\n");
-            }
-            if(!didIPlayStarterCard()){
+            }if(!didIPlayStarterCard()){
                 idleUI.append("To start the game you have to choose the side of your starter card, try choose-starter-card-side\n");
             }
         } else{
@@ -184,9 +184,12 @@ public class TextUserInterface  {
                     view.drawVisibleCard(myID,chosenDrawCard);
                     break;
                 case "show-hand":
-                    for(int i=0;i<3;i++){
-                        artist.show(view.showPlayerHand(myID).get(i));
+                    List<Card> hand =view.showPlayerHand(myID);
+                    for(Card card:hand){
+                        artist.show(card);
                     }
+                    System.out.println("Press any key to continue");
+                    s.next();
                     break;
                 case "disconnect":
                     view.closeGame(myID);
@@ -212,7 +215,6 @@ public class TextUserInterface  {
      * @return a List of Entry <Username,Points>
 
      */
-
     private List<Map.Entry<String, Integer>> sortedScoreboard(Map<String, Integer> scoreboard) {
         return scoreboard.entrySet().stream().sorted(Map.Entry.comparingByValue()).toList();
     }

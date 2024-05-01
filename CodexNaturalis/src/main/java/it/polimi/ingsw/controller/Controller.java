@@ -86,6 +86,8 @@ public class Controller {
         view.updatePlayersPoints();
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
+
+        currentState=currentState.nextState();
     }
     /**
      * Calls playCardBack on currentState to play a Card on back side.
@@ -111,6 +113,8 @@ public class Controller {
         view.updatePlayersField();
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
+
+        currentState=currentState.nextState();
     }
 
     /**
@@ -127,6 +131,7 @@ public class Controller {
         view.updateStarterCardMap();
         view.updatePlayersField();
         view.updatePlayersLegalPosition();
+
         currentState=currentState.nextState();
     }
 
@@ -144,7 +149,8 @@ public class Controller {
     public synchronized void ChooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId, IllegalOperationException {
         currentState.chooseGoal(userId,newGoal);
         view.updatePrivateGoals();
-        currentState.nextState();
+
+        currentState=currentState.nextState();
     }
 
     /**
@@ -160,10 +166,13 @@ public class Controller {
      */
     public synchronized void drawFromDeck(UUID userId,int choice) throws IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException {
         currentState.drawFromDeck(userId, choice);
-        view.updatePlayersHands();
 
-        if(choice==0){ view.updateNumOfResourceCards();}
-        else {view.updateNumOfGoldCards();}
+        view.updatePlayersHands();
+        view.updateCurrentPlayer();
+        if(choice==0){ view.updateNumOfResourceCards(); }
+        else {view.updateNumOfGoldCards(); }
+
+        currentState=currentState.nextState();
     }
     /**
      * Calls drawVisibleCards on the currentState to draw one of the Card visible on the table.
@@ -177,10 +186,14 @@ public class Controller {
      */
     public synchronized void drawVisibleCard (UUID userId,int choice) throws IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException {
         currentState.drawVisibleCard(userId,choice);
+
+        view.updateCurrentPlayer();
         view.updatePlayersHands();
         view.updateVisibleCards();
         view.updateNumOfGoldCards();
         view.updateNumOfResourceCards();
+
+        currentState=currentState.nextState();
     }
 
     /**

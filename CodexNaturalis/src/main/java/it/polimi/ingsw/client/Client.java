@@ -40,10 +40,11 @@ public class Client {
         * */
 
         try{
-            Registry registry = LocateRegistry.getRegistry();
+            Registry registry = LocateRegistry.getRegistry( "192.168.1.136",1099);
             ViewInterface view = (ViewInterface) registry.lookup("ViewRMI");
 
             Scanner s=new Scanner(System.in);
+            System.out.println("\033c");
             System.out.println("Welcome to Codex Naturalis\n press any key to start");
             s.nextLine();
 

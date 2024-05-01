@@ -33,11 +33,11 @@ public class TUIAsciiArtist implements CardDisplay {
     public void show(Card card) {
         strbuilder = new StringBuilder();
             String reignColor = card.getReign().getColor();
-            char point = card.getPoints()>0? Character.forDigit(card.getPoints(),10):'■';
-            String angleNW = card.getResource("NW") !=null? card.getResource("NW").getSymbol() : "■";
-            String angleNE = card.getResource("NE") !=null? card.getResource("NE").getSymbol() : "■";
-            String angleSW = card.getResource("SW") !=null? card.getResource("SW").getSymbol() : "■";
-            String angleSE = card.getResource("SE") !=null? card.getResource("SE").getSymbol() : "■";
+            char point = card.getPoints()>0? Character.forDigit(card.getPoints(),10):'-';
+            String angleNW = card.getResource("NW") !=null? card.getResource("NW").getSymbol() : "×";
+            String angleNE = card.getResource("NE") !=null? card.getResource("NE").getSymbol() : "×";
+            String angleSW = card.getResource("SW") !=null? card.getResource("SW").getSymbol() : "×";
+            String angleSE = card.getResource("SE") !=null? card.getResource("SE").getSymbol() : "×";
 
             if(card.getRequirements().isEmpty()){
                 strbuilder.append(String.format(reignColor+"%s ----%c---- %s\n" +
@@ -54,11 +54,11 @@ public class TUIAsciiArtist implements CardDisplay {
                                        "%s --------- %s\n"+RESET,angleNW,point, angleNE,angleSW,angleSE));
                 int sum=0;
                 List<Resource> req=new ArrayList<>();
-                for(Resource s : card.getRequirements().keySet()){
+                for(Resource s : card.getRequirements().keySet().stream().sorted().toList()){
                    for(int j = 0; j<card.getRequirements().get(s);j++)
                        req.add(s);
                 }
-                int bottomCenter=95;
+                int bottomCenter=96;
                 //regardless of the size
                 strbuilder.replace(bottomCenter,bottomCenter+1,req.removeFirst().getSymbol());
                 strbuilder.replace(bottomCenter+2,bottomCenter+3,req.removeFirst().getSymbol());
