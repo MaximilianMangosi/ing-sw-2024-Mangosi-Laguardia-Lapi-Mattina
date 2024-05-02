@@ -2,6 +2,8 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
+import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
+import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
@@ -24,18 +26,13 @@ public class LobbyState extends GameState{
      * @throws UnacceptableNumOfPlayersException
      * @throws PlayerNameNotUniqueException
      */
-    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException{
+    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, OnlyOneGameException {
 
         UUID identity = UUID.randomUUID();
         Player newPlayer = new Player(playerName);
-        boolean isGameFull=gameManager.bootGame(numOfPlayers,newPlayer);
+        gameManager.bootGame(numOfPlayers,newPlayer);
         userIDs.put(identity,newPlayer);
-        if(isGameFull){
-            game=gameManager.getGameWaiting();
-            gameManager.setGameWaiting(null);// gameWaiting must be null to host multiple game on the server
-            game.startGame();
 
-        }
         return identity;
 
     }
@@ -52,5 +49,16 @@ public class LobbyState extends GameState{
        return this;
     }
 
-
+    public UUID joinGame(String playerName) throws NoGameExistsException, PlayerNameNotUniqueException {
+        UUID identity = UUID.randomUUID();
+        Player newPlayer = new Player(playerName);
+        boolean isGameFull=gameManager.joinGame(newPlayer);
+        userIDs.put(identity,newPlayer);
+        if(isGameFull){
+            game=gameManager.getGameWaiting();
+            gameManager.setGameWaiting(null);// gameWaiting must be null to host multiple game on the server
+            game.startGame();
+        }
+        return identity;
+    }
 }

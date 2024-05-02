@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gamecards.goals;
 
 import it.polimi.ingsw.model.Coordinates;
+import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamelogic.Player;
 
 import java.io.Serializable;
@@ -43,5 +44,14 @@ public abstract class Goal implements Serializable {
             return this.points==temp.points;
         return false;
 
+    }
+    public int getNumOfResource(){
+        return 0;
+    }
+    public Reign getPrimaryReign(){
+        return null;
+    }
+    public int getPoints(){
+        return points;
     }
 }

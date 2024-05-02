@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
+import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
@@ -259,10 +261,12 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * @throws IllegalOperationException
      */
     @Override
-    public UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException {
+    public synchronized UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException, OnlyOneGameException {
         return controller.BootGame(numOfPlayers, playerName);
     }
-
+    public synchronized UUID joinGame(String playerName) throws NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException {
+        return controller.joinGame(playerName);
+    }
     /**
      * @author Riccardo Lapi
      * Place the selectedCard facing up

@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
+import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
+import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
@@ -76,7 +78,7 @@ public abstract class GameState {
      * @author Giuseppe Laguardia
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
-    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException {
+    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException, OnlyOneGameException {
         throw new IllegalOperationException("boot-game");
     }
     /**
@@ -171,6 +173,8 @@ public abstract class GameState {
      * @return false
      */
     public boolean isGameStarted(){return false;}
-
+    public UUID joinGame(String playerName) throws IllegalOperationException, NoGameExistsException,PlayerNameNotUniqueException {
+        throw new IllegalOperationException("joinGame");
+    }
 
 }
