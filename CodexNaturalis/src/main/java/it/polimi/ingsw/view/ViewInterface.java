@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
+import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
@@ -45,7 +47,8 @@ public interface ViewInterface extends Remote {
     public StarterCard getStarterCard(UUID userId) throws RemoteException;
 
     //CONTROLLER
-    public  UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException;
+    public  UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException, OnlyOneGameException;
+    public UUID joinGame(String playerName) throws RemoteException, NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException;
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId;
     public void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId;
     public void chooseStarterCardSide(boolean isFront, UUID userId) throws RemoteException, InvalidUserId, IllegalOperationException,InvalidUserId;

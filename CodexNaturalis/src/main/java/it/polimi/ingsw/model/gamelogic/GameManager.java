@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.gamelogic;
 import it.polimi.ingsw.model.gamecards.GameBox;
+import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
+import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
@@ -36,25 +38,14 @@ public class GameManager {
      * @throws UnacceptableNumOfPlayersException if numOfPlayer less than 2
      * @throws PlayerNameNotUniqueException if any Players's name in gameWaiting matches with playerName
      */
-    public boolean bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException {
-        if(gameWaiting==null){
+    public void bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, OnlyOneGameException {
+        if(gameWaiting == null){
             if(numOfPlayers<2 || numOfPlayers>4)
                 throw new UnacceptableNumOfPlayersException();
             gameWaiting = new Game(newPlayer,numOfPlayers,gameBox);
-
+        }else{
+            throw new OnlyOneGameException();
         }
-        else{
-            if(!isPlayerNameUnique(newPlayer.getName()))
-                throw new PlayerNameNotUniqueException();
-            gameWaiting.addPlayer(newPlayer);
-
-        }
-        playerToGame.put(newPlayer.getName(),gameWaiting.hashCode());
-        if(gameWaiting.getPlayers().size()==gameWaiting.getNumOfPlayers()){
-            gameInProcess.put(String.valueOf(gameWaiting.hashCode()),gameWaiting);
-            return true;
-        }
-        return false;
     }
 
     private boolean isPlayerNameUnique(String playerName) {
@@ -79,4 +70,21 @@ public class GameManager {
         playerToGame.remove(nickName);
     }
 
+    public boolean joinGame(Player newPlayer) throws NoGameExistsException, PlayerNameNotUniqueException {
+        if(gameWaiting==null){
+            throw new NoGameExistsException();
+        }
+
+        if(!isPlayerNameUnique(newPlayer.getName()))
+            throw new PlayerNameNotUniqueException();
+
+        gameWaiting.addPlayer(newPlayer);
+        playerToGame.put(newPlayer.getName(),gameWaiting.hashCode());
+
+        if(gameWaiting.getPlayers().size()==gameWaiting.getNumOfPlayers()){
+            gameInProcess.put(String.valueOf(gameWaiting.hashCode()),gameWaiting);
+            return true;
+        }
+        return false;
+    }
 }

@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
+import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.ViewInterface;
@@ -128,14 +130,64 @@ public class TextUserInterface  {
 
     public void execCmd(String cmd) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, RemoteException, IllegalOperationException, InvalidUserId, InvalidGoalException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandFullException, InvalidChoiceException, DeckEmptyException {
         Scanner s=new Scanner(System.in);
+        boolean error = true;
         synchronized (outWriter) {
             switch (cmd){
                 case "start-game":
-                    outWriter.print("Insert username");
-                    myName = s.nextLine();
-                    outWriter.print("Insert number of players");
-                    int numPlayers = s.nextInt();
-                    myID = view.BootGame(numPlayers, myName);
+                    int numPlayers=0;
+                    try {
+                        outWriter.print("Insert username");
+                        myName = s.nextLine();
+                        myID=view.joinGame(myName);
+
+                    }catch (PlayerNameNotUniqueException e) {
+                        outWriter.print(e.getMessage());
+                        while (error){
+                            try {
+                                outWriter.print("Insert username");
+                                myName = s.nextLine();
+                                myID = view.joinGame(myName);
+                                error=false;
+                            } catch (PlayerNameNotUniqueException ex) {
+                                outWriter.print(e.getMessage());
+                            } catch (NoGameExistsException ignore) {
+                            }
+                        }
+                    }catch (NoGameExistsException e){
+                        outWriter.print(e.getMessage());
+                        while (error) {
+                            try {
+                                outWriter.print("Insert number of players");
+                                numPlayers = s.nextInt();
+                                s.nextLine();
+                                myID = view.BootGame(numPlayers, myName);
+                                error = false;
+                            } catch (UnacceptableNumOfPlayersException ex) {
+                                outWriter.print(e.getMessage());
+                            } catch (OnlyOneGameException ex) {
+
+                                outWriter.print(ex.getMessage());
+                                try{
+                                    view.joinGame(myName);
+                                }catch (PlayerNameNotUniqueException e1){
+                                    outWriter.print(e1.getMessage());
+                                    while (error){
+                                        try {
+                                            outWriter.print("Insert username");
+                                            myName = s.nextLine();
+                                            myID = view.joinGame(myName);
+                                            error=false;
+                                        } catch (PlayerNameNotUniqueException e2) {
+                                            outWriter.print(e2.getMessage());
+                                        } catch (NoGameExistsException ignore) {
+                                        }
+                                    }
+                                }catch (NoGameExistsException ignore){
+
+                                }
+                            }
+                        }
+                    }
                     tuiUpdater.start();
                     break;
                 case "choose-goal":

@@ -10,6 +10,8 @@ import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
+import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
+import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.View;
@@ -54,8 +56,14 @@ public class Controller {
      * @throws PlayerNameNotUniqueException if playerName is already taken by another user
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
-    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException {
+    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException, OnlyOneGameException {
         UUID userID= currentState.BootGame(numOfPlayers,playerName);
+        view.updatePlayersList();
+        changeState();
+        return userID;
+    }
+    public UUID joinGame(String playerName) throws NoGameExistsException, IllegalOperationException,PlayerNameNotUniqueException {
+        UUID userID= currentState.joinGame(playerName);
         view.updatePlayersList();
         changeState();
         return userID;

@@ -58,7 +58,7 @@ public class TUIAsciiArtist implements CardDisplay {
                    for(int j = 0; j<card.getRequirements().get(s);j++)
                        req.add(s);
                 }
-                int bottomCenter=95;
+                int bottomCenter=96;
                 //regardless of the size
                 strbuilder.replace(bottomCenter,bottomCenter+1,req.removeFirst().getSymbol());
                 strbuilder.replace(bottomCenter+2,bottomCenter+3,req.removeFirst().getSymbol());
