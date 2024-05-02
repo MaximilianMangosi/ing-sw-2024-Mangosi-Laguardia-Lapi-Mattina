@@ -3,6 +3,8 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.GoldCard;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
+import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.goals.IdenticalGoal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 
@@ -13,7 +15,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class TUIAsciiArtist implements CardDisplay {
-    private StringBuilder strbuilder ;
+    String[][] matrix = new String[5][42];
+    private StringBuilder strbuilder;
     public static final String RESET = "\u001B[0m";
     public static final String BLACK = "\u001B[30m";
     public static final String RED = "\u001B[31m";
@@ -83,5 +86,33 @@ public class TUIAsciiArtist implements CardDisplay {
             }
 
         System.out.println(strbuilder.toString());
+            //TODO invece di stampare aggiungi alla matrice
+    }
+    public void show(Goal goal){
+        int k=0;
+        for( k=0;k<42;k++){
+           if( !matrix[0][k].equals(" ")){
+               break;
+           }
+        }
+
+        if(goal.getNumOfResource()==2){
+           //identicalTool
+          for(int i=0;i<5;i++){
+              for(int j=k+1;j<k+14;j++){
+                  matrix[i][j]=YELLOW;
+              }
+          }
+        }else if(goal.getNumOfResource()==3){
+            //Identical Reign
+        }else if(goal.getPrimaryReign()!=null){
+           //Lgoal
+        }else if(goal.getPoints()==2){
+            //stair
+        }else{
+           //distinct
+        }
+
+
     }
 }
