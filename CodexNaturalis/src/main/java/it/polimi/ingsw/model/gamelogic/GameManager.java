@@ -36,9 +36,8 @@ public class GameManager {
      * @param numOfPlayers the number of player that can join the game, if there is already a game waiting for player this parameter is ignored
      * @param newPlayer the Player object joining/creating a game
      * @throws UnacceptableNumOfPlayersException if numOfPlayer less than 2
-     * @throws PlayerNameNotUniqueException if any Players's name in gameWaiting matches with playerName
      */
-    public void bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, OnlyOneGameException {
+    public void bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumOfPlayersException, OnlyOneGameException {
         if(gameWaiting == null){
             if(numOfPlayers<2 || numOfPlayers>4)
                 throw new UnacceptableNumOfPlayersException();

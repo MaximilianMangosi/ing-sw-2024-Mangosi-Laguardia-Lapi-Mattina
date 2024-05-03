@@ -90,7 +90,7 @@ public class TUIAsciiArtistTest {
 
     @Test
     public void showTest (){
-        List<Card> deck =new ArrayList<>(gb.getGoldCardSet());
+        List<Card> deck =new ArrayList<>(gb.getResourceCardSet());
         for (int i =0 ; i< 10;i++){
             artist.show(deck.get(i));
         }

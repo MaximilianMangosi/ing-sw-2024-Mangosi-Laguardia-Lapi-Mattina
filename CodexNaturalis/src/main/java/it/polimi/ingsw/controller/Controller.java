@@ -56,7 +56,7 @@ public class Controller {
      * @throws PlayerNameNotUniqueException if playerName is already taken by another user
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
-    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException, OnlyOneGameException {
+    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException,  IllegalOperationException, OnlyOneGameException {
         UUID userID= currentState.BootGame(numOfPlayers,playerName);
         view.updatePlayersList();
         changeState();

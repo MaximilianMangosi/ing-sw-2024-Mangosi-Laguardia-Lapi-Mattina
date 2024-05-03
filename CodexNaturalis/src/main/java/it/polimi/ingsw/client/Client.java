@@ -56,8 +56,8 @@ public class Client {
                     try {
                         tui.execCmd(s.nextLine().toLowerCase(Locale.ROOT));
                         tui.printIdleUI();
-                    } catch (UnacceptableNumOfPlayersException | InvalidUserId | InvalidGoalException |
-                             PlayerNameNotUniqueException | IllegalOperationException | HandNotFullException |
+                    } catch (InvalidUserId | InvalidGoalException |
+                             IllegalOperationException | HandNotFullException |
                              IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException |
                              InvalidCardException | HandFullException | InvalidChoiceException | DeckEmptyException e) {
                         System.out.println(e.getMessage());

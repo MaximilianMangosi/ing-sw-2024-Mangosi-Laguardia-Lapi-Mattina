@@ -47,7 +47,7 @@ public interface ViewInterface extends Remote {
     public StarterCard getStarterCard(UUID userId) throws RemoteException;
 
     //CONTROLLER
-    public  UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException, OnlyOneGameException;
+    public  UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException;
     public UUID joinGame(String playerName) throws RemoteException, NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException;
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId;
     public void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId;

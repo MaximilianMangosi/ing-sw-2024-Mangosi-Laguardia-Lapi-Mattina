@@ -261,7 +261,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * @throws IllegalOperationException
      */
     @Override
-    public synchronized UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, IllegalOperationException, OnlyOneGameException {
+    public synchronized UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException {
         return controller.BootGame(numOfPlayers, playerName);
     }
     public synchronized UUID joinGame(String playerName) throws NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException {

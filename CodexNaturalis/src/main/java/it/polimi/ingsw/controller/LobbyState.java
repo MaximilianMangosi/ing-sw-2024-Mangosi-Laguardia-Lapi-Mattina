@@ -24,9 +24,8 @@ public class LobbyState extends GameState{
      * @param playerName the nickname chosen by the player
      * @return the userId for identification
      * @throws UnacceptableNumOfPlayersException
-     * @throws PlayerNameNotUniqueException
      */
-    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, OnlyOneGameException {
+    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, OnlyOneGameException {
 
         UUID identity = UUID.randomUUID();
         Player newPlayer = new Player(playerName);

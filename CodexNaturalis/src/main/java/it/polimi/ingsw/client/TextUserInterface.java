@@ -112,8 +112,6 @@ public class TextUserInterface  {
      * @author Riccardo Lapi
      * given the command the user want to execute, it asks the user for the parameters it needs to perform that operation
      * @param cmd string that represent the command to use
-     * @throws UnacceptableNumOfPlayersException
-     * @throws PlayerNameNotUniqueException
      * @throws RemoteException
      * @throws IllegalOperationException
      * @throws InvalidUserId
@@ -128,13 +126,12 @@ public class TextUserInterface  {
      * @throws DeckEmptyException
      */
 
-    public void execCmd(String cmd) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException, RemoteException, IllegalOperationException, InvalidUserId, InvalidGoalException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandFullException, InvalidChoiceException, DeckEmptyException {
+    public void execCmd(String cmd) throws RemoteException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, DeckEmptyException, HandNotFullException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, InvalidGoalException {
         Scanner s=new Scanner(System.in);
         boolean error = true;
         synchronized (outWriter) {
             switch (cmd){
                 case "start-game":
-                    int numPlayers=0;
                     try {
                         outWriter.print("Insert username");
                         myName = s.nextLine();
@@ -149,7 +146,7 @@ public class TextUserInterface  {
                                 myID = view.joinGame(myName);
                                 error=false;
                             } catch (PlayerNameNotUniqueException ex) {
-                                outWriter.print(e.getMessage());
+                                outWriter.print(ex.getMessage());
                             } catch (NoGameExistsException ignore) {
                             }
                         }
@@ -158,14 +155,13 @@ public class TextUserInterface  {
                         while (error) {
                             try {
                                 outWriter.print("Insert number of players");
-                                numPlayers = s.nextInt();
+                                int numPlayers = s.nextInt();
                                 s.nextLine();
                                 myID = view.BootGame(numPlayers, myName);
                                 error = false;
                             } catch (UnacceptableNumOfPlayersException ex) {
                                 outWriter.print(e.getMessage());
                             } catch (OnlyOneGameException ex) {
-
                                 outWriter.print(ex.getMessage());
                                 try{
                                     view.joinGame(myName);
