@@ -23,7 +23,9 @@ public enum Tool implements Resource {
     public boolean isEmpty() {
         return this == Tool.EMPTY;
     }
-
+    public String getColor(){
+        return null;
+    }
     @Override
     public String getSymbol() {
         return symbol;

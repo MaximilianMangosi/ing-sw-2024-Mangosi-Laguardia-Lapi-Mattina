@@ -27,7 +27,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     private int numOfResourceCards;
     private int numOfGoldCards;
     private Map<UUID, List<Card>> playersHands;
-    private Map<String,Map<Coordinates,Card>> playersField;
+    private Map<String, Map<Coordinates, Card>> playersField;
     private List<String> playersList;
     private String currentPlayer;
     private Map<UUID,List<Coordinates>> playersLegalPositions;
@@ -36,7 +36,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     private Map<UUID,Goal> privateGoals;
     private List<Card> visibleCards;
     private HashMap<UUID,StarterCard> starterCardMap;
-
+    private HashMap<String, List<Coordinates>> fieldBuildingHelper;
 
 
     public View (Controller controller) throws RemoteException {
@@ -115,9 +115,9 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * @author Giorgio Mattina, Maximilian Mangosi
      * @return map playerId-playerField ( cards on the table with relative position)
      */
-    public Map<String,Map<Coordinates,Card>> getPlayersField(){
+    public HashMap<Coordinates,Card> getPlayersField(String name){
 
-        return playersField;
+        return (HashMap<Coordinates, Card>) playersField.get(name);
     }
     /**
      * updates PlayersList, calling the controller
@@ -269,7 +269,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     }
     /**
      * @author Riccardo Lapi
-     * Place the selectedCard facing up
+     * Place the selectedCard facing up and adds it to the fieldBuildingHelper
      * @param selectedCard the card to play
      * @param position the position where to place the card
      * @param userId the caller user id (given by BootGame)
@@ -285,11 +285,13 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     @Override
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId {
         controller.playCardFront(selectedCard, position, userId);
+
+        fieldBuildingHelper.get(controller.getUserIDs().get(userId).getName()).add(position);
     }
 
     /**
      * @author Riccardo Lapi
-     * Place the selectedCard facing down
+     * Place the selectedCard facing down and adds it to the fieldBuildingHelper
      * @param selectedCard the card to play
      * @param position the position where to place the card
      * @param userId the caller user id (given by BootGame)
@@ -305,6 +307,8 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     @Override
     public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId {
         controller.playCardBack(selectedCard, position, userId);
+
+        fieldBuildingHelper.get(controller.getUserIDs().get(userId).getName()).add(position);
     }
 
     /**
@@ -388,6 +392,11 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     @Override
     public boolean isGameStarted() throws RemoteException {
         return isGameStarted;
+    }
+
+    @Override
+    public List<Coordinates> getfieldBuildingHelper(String name) throws RemoteException {
+        return fieldBuildingHelper.get(name);
     }
 
     public synchronized void updateAll() {

@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersExcept
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,7 +28,7 @@ public interface ViewInterface extends Remote {
 
     public List<Card> showPlayerHand(UUID uid) throws RemoteException, InvalidUserId;
 
-    public Map<String,Map<Coordinates,Card>> getPlayersField() throws RemoteException;
+    public HashMap<Coordinates,Card>getPlayersField(String name) throws RemoteException;
 
     public List<String> getPlayersList() throws RemoteException;
 
@@ -63,4 +64,5 @@ public interface ViewInterface extends Remote {
     boolean isGameStarted() throws RemoteException;
 
 
+    List<Coordinates> getfieldBuildingHelper(String name) throws RemoteException;
 }
