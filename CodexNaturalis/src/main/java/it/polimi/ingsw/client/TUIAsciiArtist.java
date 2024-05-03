@@ -3,8 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.GoldCard;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
-import it.polimi.ingsw.model.gamecards.goals.Goal;
-import it.polimi.ingsw.model.gamecards.goals.IdenticalGoal;
+import it.polimi.ingsw.model.gamecards.goals.*;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 
@@ -27,6 +26,9 @@ public class TUIAsciiArtist implements CardDisplay {
     public static final String CYAN = "\u001B[36m";
     public static final String WHITE = "\u001B[37m";
 
+    public TUIAsciiArtist(){
+        matrix[0][0] =" ";
+    }
     /**
      * uses object StringBuiler to build a string in ASCII art representing parameter Card, then prints the string on System.Out
      * @author Giorgio Mattina
@@ -88,31 +90,100 @@ public class TUIAsciiArtist implements CardDisplay {
         System.out.println(strbuilder.toString());
             //TODO invece di stampare aggiungi alla matrice
     }
-    public void show(Goal goal){
+
+    /**
+     *
+     * @param goal
+     */
+    public void writeGoalMatrix(Goal goal){
         int k=0;
         for( k=0;k<42;k++){
            if( !matrix[0][k].equals(" ")){
                break;
            }
         }
-
-        if(goal.getNumOfResource()==2){
-           //identicalTool
-          for(int i=0;i<5;i++){
-              for(int j=k+1;j<k+14;j++){
-                  matrix[i][j]=YELLOW;
-              }
-          }
-        }else if(goal.getNumOfResource()==3){
-            //Identical Reign
-        }else if(goal.getPrimaryReign()!=null){
-           //Lgoal
-        }else if(goal.getPoints()==2){
-            //stair
-        }else{
-           //distinct
+        if(k!= 0){
+            k++;
         }
 
 
+        if(goal instanceof IdenticalGoal){
+          if(goal.getNumOfResource()==3){
+              //identicalTool
+              String symbol=((IdenticalGoal) goal).getResource().getSymbol();
+              buildGoalCardStructure(k,goal,((IdenticalGoal) goal).getResource().getColor());
+              matrix[2][k+6]=symbol;
+              matrix[3][k+4]=symbol;
+              matrix[3][k+8]=symbol;
+          }else{
+              String symbol=((IdenticalGoal) goal).getResource().getSymbol();
+              buildGoalCardStructure(k,goal,((IdenticalGoal) goal).getResource().getColor());
+              matrix[3][k+4]=symbol;
+              matrix[3][k+8]=symbol;
+          }
+
+
+        }else if(goal instanceof LGoal){
+           //Lgoal
+            buildGoalCardStructure(k,goal,((LGoal) goal).getSecondaryReign().getColor());
+            
+        }else if(goal instanceof StairGoal){
+            //stair
+        }else{
+           //distinct
+            buildGoalCardStructure(k,goal,"\u001B[103m");
+            matrix[3][k+4]="F";
+            matrix[3][k+6]="P";
+            matrix[3][k+8]="S";
+        }
+
+
+    }
+
+    /**
+     * builds the backround of a goalCard in the matrix
+     * @author Giorgio Mattina,Riccardo Lapi
+     * @param columnStart inclusive index where the methods starts to build the matrix
+     * @param goal
+     */
+    private void buildGoalCardStructure (int columnStart, Goal goal,String bgColor){
+        for (int i=0;i<5;i++){
+            for (int j=columnStart;j<14;j++){
+                if(i==0){
+                    if(j==columnStart){
+                        matrix[i][j]=YELLOW+"╔";
+                    } else if (j==columnStart+13) {
+                        matrix[i][j]="╗"+RESET;
+                    }else{
+                        matrix[i][j]="═";
+                    }
+                }
+                if(i==1){
+                    if(j==columnStart || j==columnStart+13){
+                        matrix[i][j]=YELLOW+ "║"+RESET;
+                    }else if(j==columnStart+5){
+                        matrix[i][j]= String.valueOf(goal.getPoints());
+                    }else{
+                        matrix[i][j]=bgColor+" ";
+                    }
+                }
+                if(i==2 || i==3){
+                    if(j==columnStart || j==columnStart+13){
+                        matrix[i][j]=YELLOW+ "║"+RESET;
+                    }else{
+                        matrix[i][j]=bgColor+" ";
+                    }
+                }
+                if(i==4){
+                    if(j==columnStart){
+                        matrix[i][j]=YELLOW+"╚";
+                    } else if (j==columnStart+13) {
+                        matrix[i][j]="╝"+RESET;
+                    }else{
+                        matrix[i][j]="═";
+                    }
+                }
+            }
+        }
     }
 }
