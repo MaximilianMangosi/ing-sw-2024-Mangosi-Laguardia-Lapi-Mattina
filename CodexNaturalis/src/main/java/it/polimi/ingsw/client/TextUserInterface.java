@@ -215,6 +215,8 @@ public class TextUserInterface  {
 
                     if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myID );
                     else view.playCardBack(chosenCard, chosenPosition, myID);
+                    artist.show(view.getPlayersField(myName), view.getfieldBuildingHelper(myName));
+                    outWriter.print(artist.getAsciiField());
                     break;
 
                 case "choose-starter-card-side":
@@ -258,7 +260,7 @@ public class TextUserInterface  {
      */
     private boolean didIPlayStarterCard() throws RemoteException {
         StarterCard myStarterCard=view.getStarterCard(myID);
-        return view.getPlayersField().get(myName).containsValue(myStarterCard);
+        return view.getPlayersField(myName).containsValue(myStarterCard);
     }
 
     /**

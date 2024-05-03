@@ -3,7 +3,8 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.GoldCard;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
-import it.polimi.ingsw.model.gamecards.goals.*;
+import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.goals.IdenticalGoal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 
@@ -25,6 +26,7 @@ public class TUIAsciiArtist implements CardDisplay {
     public static final String PURPLE = "\u001B[35m";
     public static final String CYAN = "\u001B[36m";
     public static final String WHITE = "\u001B[37m";
+    private String[][] asciiField = new String[240][400];
 
     public TUIAsciiArtist(){
         matrix[0][0] =" ";
@@ -90,20 +92,12 @@ public class TUIAsciiArtist implements CardDisplay {
         System.out.println(strbuilder.toString());
             //TODO invece di stampare aggiungi alla matrice
     }
-
-    /**
-     *
-     * @param goal
-     */
-    public void writeGoalMatrix(Goal goal){
+    public void show(Goal goal){
         int k=0;
         for( k=0;k<42;k++){
            if( !matrix[0][k].equals(" ")){
                break;
            }
-        }
-        if(k!= 0){
-            k++;
         }
 
 
@@ -126,7 +120,7 @@ public class TUIAsciiArtist implements CardDisplay {
         }else if(goal instanceof LGoal){
            //Lgoal
             buildGoalCardStructure(k,goal,((LGoal) goal).getSecondaryReign().getColor());
-            
+
         }else if(goal instanceof StairGoal){
             //stair
         }else{
