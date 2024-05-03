@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.GoldCard;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
@@ -9,10 +10,8 @@ import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class TUIAsciiArtist implements CardDisplay {
     String[][] matrix = new String[5][42];
@@ -179,5 +178,27 @@ public class TUIAsciiArtist implements CardDisplay {
                 }
             }
         }
+    }
+    public String[][] getAsciiField(){
+        return asciiField;
+    }
+    public void show (HashMap<Coordinates, Card> field, List<Coordinates> fieldBuildingHelper){
+        int i,j;
+        asciiField = new String[240][400];
+        for (Coordinates coordinate : fieldBuildingHelper){
+            Card card = field.get(coordinate);
+            String color = card.getReign()!=null? card.getReign().getColor():YELLOW;
+            int x = coordinate.x;
+            int y = coordinate.y;
+            j = 200 + 4*(x);
+            i = 120 - 2*(y);
+            for (int k = i-1; k<=i+1; k++){
+                for (int h = j-2 ; h<=j+2; h++){
+                    asciiField[k][h] = color;
+                }
+            }
+            asciiField[i][j] += fieldBuildingHelper.indexOf(coordinate);
+        }
+
     }
 }
