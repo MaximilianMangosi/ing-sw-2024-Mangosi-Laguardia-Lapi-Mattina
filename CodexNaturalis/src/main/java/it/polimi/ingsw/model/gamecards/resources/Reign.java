@@ -6,15 +6,15 @@ import java.io.Serializable;
 
 public enum Reign implements Resource, Serializable {
     @SerializedName("a")
-    ANIMAL("\u001B[36m","a"),
+    ANIMAL("\u001B[46m","a"),
     @SerializedName("m")
-    MUSHROOM("\u001B[31m","m"),
+    MUSHROOM("\u001B[41m","m"),
     @SerializedName("b")
-    BUG("\u001B[35m","b"),
+    BUG("\u001B[45m","b"),
     @SerializedName("pl")
-    PLANTS("\u001B[32m","p"),
+    PLANTS("\u001B[42m","p"),
     @SerializedName("e")
-    EMPTY("\u001B[37m","■"),
+    EMPTY("\u001B[47m","■"),
     ;
     Reign(String s,String symb){
         this.color=s;
