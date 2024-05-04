@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.gamecards.cards.GoldCard;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.goals.IdenticalGoal;
+import it.polimi.ingsw.model.gamecards.goals.LGoal;
+import it.polimi.ingsw.model.gamecards.goals.StairGoal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 
@@ -119,9 +121,30 @@ public class TUIAsciiArtist implements CardDisplay {
         }else if(goal instanceof LGoal){
            //Lgoal
             buildGoalCardStructure(k,goal,((LGoal) goal).getSecondaryReign().getColor());
-
+            if(goal.getPrimaryReign() == Reign.PLANTS){
+                matrix[2][k+6] = ((LGoal) goal).getSecondaryReign().getColor() + "█" + RESET;
+                matrix[3][k+7] = goal.getPrimaryReign().getColor() + "■" + RESET;
+            }else if(goal.getPrimaryReign() == Reign.BUG){
+                matrix[2][k+6] = ((LGoal) goal).getSecondaryReign().getColor() + "█" + RESET;
+                matrix[3][k+5] = goal.getPrimaryReign().getColor() + "■" + RESET;
+            }else if(goal.getPrimaryReign() == Reign.MUSHROOM){
+                matrix[3][k+6] = ((LGoal) goal).getSecondaryReign().getColor() + "█" + RESET;
+                matrix[2][k+7] = goal.getPrimaryReign().getColor() + "■" + RESET;
+            }else{
+                matrix[3][k+6] = ((LGoal) goal).getSecondaryReign().getColor() + "█" + RESET;
+                matrix[2][k+5] = goal.getPrimaryReign().getColor() + "■" + RESET;
+            }
         }else if(goal instanceof StairGoal){
             //stair
+            if(((StairGoal) goal).isToLowerRight()){
+                matrix[1][k+4] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
+                matrix[2][k+6] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
+                matrix[3][k+8] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
+            }else{
+                matrix[1][k+8] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
+                matrix[2][k+6] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
+                matrix[3][k+4] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
+            }
         }else{
            //distinct
             buildGoalCardStructure(k,goal,"\u001B[103m");
@@ -129,7 +152,6 @@ public class TUIAsciiArtist implements CardDisplay {
             matrix[3][k+6]="P";
             matrix[3][k+8]="S";
         }
-
 
     }
 
