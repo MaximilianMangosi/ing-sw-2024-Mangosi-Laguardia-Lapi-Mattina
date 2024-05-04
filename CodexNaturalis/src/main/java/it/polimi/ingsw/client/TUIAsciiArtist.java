@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.gamecards.cards.GoldCard;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.goals.IdenticalGoal;
+import it.polimi.ingsw.model.gamecards.goals.LGoal;
+import it.polimi.ingsw.model.gamecards.goals.StairGoal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 
@@ -15,23 +17,24 @@ import java.util.List;
 
 public class TUIAsciiArtist implements CardDisplay {
     String[][] matrix = new String[5][42];
+    private String[][] asciiField ;
     private StringBuilder strbuilder;
     public static final String RESET = "\u001B[0m";
     public static final String BLACK = "\u001B[30m";
     public static final String RED = "\u001B[31m";
     public static final String GREEN = "\u001B[32m";
-    public static final String YELLOW = "\u001B[33m";
+    public static final String YELLOW = "\u001B[43m";
     public static final String BLUE = "\u001B[34m";
     public static final String PURPLE = "\u001B[35m";
     public static final String CYAN = "\u001B[36m";
     public static final String WHITE = "\u001B[37m";
-    private String[][] asciiField = new String[240][400];
+
 
     public TUIAsciiArtist(){
         matrix[0][0] =" ";
     }
     /**
-     * uses object StringBuiler to build a string in ASCII art representing parameter Card, then prints the string on System.Out
+     * uses object StringBuilder to build a string in ASCII art representing parameter Card, then prints the string on System.Out
      * @author Giorgio Mattina
      * @param card
      */
@@ -134,9 +137,9 @@ public class TUIAsciiArtist implements CardDisplay {
     }
 
     /**
-     * builds the backround of a goalCard in the matrix
+     * builds the background of a goalCard in the matrix
      * @author Giorgio Mattina,Riccardo Lapi
-     * @param columnStart inclusive index where the methods starts to build the matrix
+     * @param columnStart inclusive index where the methods start to build the matrix
      * @param goal
      */
     private void buildGoalCardStructure (int columnStart, Goal goal,String bgColor){
@@ -184,20 +187,20 @@ public class TUIAsciiArtist implements CardDisplay {
     }
     public void show (HashMap<Coordinates, Card> field, List<Coordinates> fieldBuildingHelper){
         int i,j;
-        asciiField = new String[240][400];
+        asciiField = new String[240][880];
         for (Coordinates coordinate : fieldBuildingHelper){
             Card card = field.get(coordinate);
             String color = card.getReign()!=null? card.getReign().getColor():YELLOW;
             int x = coordinate.x;
             int y = coordinate.y;
-            j = 200 + 4*(x);
+            j = 440 + 10*(x);
             i = 120 - 2*(y);
             for (int k = i-1; k<=i+1; k++){
-                for (int h = j-2 ; h<=j+2; h++){
-                    asciiField[k][h] = color;
+                for (int h = j-6 ; h<=j+4; h++){ //h is off-center for Ansi escape sequence reasons
+                    asciiField[k][h] = " "+color;
                 }
             }
-            asciiField[i][j] += fieldBuildingHelper.indexOf(coordinate);
+            asciiField[i][j] = color+fieldBuildingHelper.indexOf(coordinate);
         }
 
     }

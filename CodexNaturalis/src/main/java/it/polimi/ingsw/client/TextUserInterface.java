@@ -159,8 +159,8 @@ public class TextUserInterface  {
                                 s.nextLine();
                                 myID = view.BootGame(numPlayers, myName);
                                 error = false;
-                            } catch (UnacceptableNumOfPlayersException ex) {
-                                outWriter.print(e.getMessage());
+                            } catch (UnacceptableNumOfPlayersException ex1) {
+                                outWriter.print(ex1.getMessage());
                             } catch (OnlyOneGameException ex) {
                                 outWriter.print(ex.getMessage());
                                 try{
@@ -184,6 +184,7 @@ public class TextUserInterface  {
                             }
                         }
                     }
+                    view.initializeFieldBuildingHelper( myName);
                     tuiUpdater.start();
                     break;
                 case "choose-goal":
@@ -211,8 +212,15 @@ public class TextUserInterface  {
 
                     if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myID );
                     else view.playCardBack(chosenCard, chosenPosition, myID);
-                    artist.show(view.getPlayersField(myName), view.getfieldBuildingHelper(myName));
-                    outWriter.print(artist.getAsciiField());
+
+                    HashMap<Coordinates, Card> myField=view.getPlayersField(myName);
+                    List<Coordinates> myFieldBuildingHelper=view.getFieldBuildingHelper(myName);
+                    artist.show(myField,myFieldBuildingHelper);
+
+
+                    outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
+                    System.out.println("Press any key to continue");
+                    s.next();
                     break;
 
                 case "choose-starter-card-side":
@@ -239,7 +247,7 @@ public class TextUserInterface  {
                         artist.show(card);
                     }
                     System.out.println("Press any key to continue");
-                    s.next();
+                    s.nextLine();
                     break;
                 case "disconnect":
                     view.closeGame(myID);

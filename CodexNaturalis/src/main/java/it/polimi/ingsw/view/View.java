@@ -36,7 +36,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     private Map<UUID,Goal> privateGoals;
     private List<Card> visibleCards;
     private HashMap<UUID,StarterCard> starterCardMap;
-    private HashMap<String, List<Coordinates>> fieldBuildingHelper;
+    private HashMap<String, List<Coordinates>> fieldBuildingHelper=new HashMap<>();
 
 
     public View (Controller controller) throws RemoteException {
@@ -285,8 +285,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     @Override
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId {
         controller.playCardFront(selectedCard, position, userId);
-
-        fieldBuildingHelper.get(controller.getUserIDs().get(userId).getName()).add(position);
+        updateFieldBuildingHelper(position, userId);
     }
 
     /**
@@ -307,8 +306,12 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     @Override
     public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId {
         controller.playCardBack(selectedCard, position, userId);
+        updateFieldBuildingHelper(position, userId);
+    }
 
-        fieldBuildingHelper.get(controller.getUserIDs().get(userId).getName()).add(position);
+    private void updateFieldBuildingHelper(Coordinates position, UUID userId)  {
+        String username=controller.getUserIDs().get(userId).getName();
+        fieldBuildingHelper.get(username).add(position);
     }
 
     /**
@@ -323,6 +326,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     @Override
     public void chooseStarterCardSide(boolean isFront, UUID userId) throws RemoteException, InvalidUserId, IllegalOperationException, InvalidUserId {
         controller.chooseStarterCardSide(isFront, userId);
+        updateFieldBuildingHelper(new Coordinates(0,0),userId);
     }
 
     /**
@@ -395,8 +399,13 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     }
 
     @Override
-    public List<Coordinates> getfieldBuildingHelper(String name) throws RemoteException {
+    public List<Coordinates> getFieldBuildingHelper(String name) throws RemoteException {
         return fieldBuildingHelper.get(name);
+    }
+
+    @Override
+    public void initializeFieldBuildingHelper(String myName) throws RemoteException {
+        fieldBuildingHelper.put(myName,new ArrayList<>());
     }
 
     public synchronized void updateAll() {
@@ -441,5 +450,6 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     public void updateStarterCardMap() {
         starterCardMap=controller.getPlayersStarterCards();
     }
+   
 
 }

@@ -22,7 +22,7 @@ public class UpdateTUI extends Thread{
                     writer.clearScreen();
                     writer.print(tui.getIdleUI());
                 }
-                sleep(60000);
+                sleep(30000);
 
             } catch (RemoteException | InterruptedException e) {
                 throw new RuntimeException(e);

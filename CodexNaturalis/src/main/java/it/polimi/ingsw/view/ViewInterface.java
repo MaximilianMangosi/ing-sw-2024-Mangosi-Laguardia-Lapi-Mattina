@@ -64,5 +64,7 @@ public interface ViewInterface extends Remote {
     boolean isGameStarted() throws RemoteException;
 
 
-    List<Coordinates> getfieldBuildingHelper(String name) throws RemoteException;
+    List<Coordinates> getFieldBuildingHelper(String name) throws RemoteException;
+
+    void initializeFieldBuildingHelper(String myName) throws RemoteException;
 }
