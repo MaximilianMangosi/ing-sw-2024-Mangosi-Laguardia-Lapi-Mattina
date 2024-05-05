@@ -123,31 +123,7 @@ public abstract class Card implements Serializable {
         if(angle.equals("SE"))
             this.SE=reign;
     }
-    public void checkAvailablePositions(Player player, Coordinates position){
-        int x = position.x;
-        int y = position.y;
-        //Verify that the angles are not nonexistent
-        if (this.getResource("NW") != null){ //NW
-            player.updateAvailablePositions(x - 1, y + 1);
-        }else{
-            player.updateUnavailablePositions(x-1, y+1);
-        }
-        if (this.getResource("SW") != null) { //SW
-            player.updateAvailablePositions(x - 1, y - 1);
-        }else{
-            player.updateUnavailablePositions(x-1, y-1);
-        }
-        if (this.getResource("NE") != null) { //NE
-            player.updateAvailablePositions(x + 1, y + 1);
-        }else{
-            player.updateUnavailablePositions(x+1, y+1);
-        }
-        if (this.getResource("SE") != null) { //SE
-            player.updateAvailablePositions(x + 1, y - 1);
-        }else{
-            player.updateUnavailablePositions(x+1, y-1);
-        }
-    }
+
     public int getPoints() {
         return 0;
     }

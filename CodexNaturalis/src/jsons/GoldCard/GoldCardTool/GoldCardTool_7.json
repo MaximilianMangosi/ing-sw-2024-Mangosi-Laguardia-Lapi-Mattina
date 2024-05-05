@@ -6,6 +6,7 @@
   "isFront": false,
   "points": 1,
   "reign":"a",
+  "tool":"p",
   "requirements":{
     "a":2,
     "m":0,

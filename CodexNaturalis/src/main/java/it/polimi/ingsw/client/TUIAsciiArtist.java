@@ -318,6 +318,15 @@ public class TUIAsciiArtist implements CardDisplay {
 
     }
 
+    public void addAvailablePosToField(List<Coordinates> availablePositions ){
+
+        for(Coordinates coordinates : availablePositions){
+            int j = 440 + 10*(coordinates.x);
+            int i = 120 - 2*(coordinates.y);
+            asciiField[i][j] = String.valueOf(availablePositions.indexOf(coordinates));
+        }
+    }
+
 
     public String[][] getMatrix() {
         return matrix;

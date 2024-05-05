@@ -4,13 +4,10 @@ import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.controller.exceptions.DeckEmptyException;
 import it.polimi.ingsw.model.gamecards.GameBox;
-import it.polimi.ingsw.model.gamecards.cards.StarterCard;
+import it.polimi.ingsw.model.gamecards.cards.*;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
-import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
-import it.polimi.ingsw.model.gamecards.cards.GoldCard;
-import it.polimi.ingsw.model.gamecards.cards.ResourceCard;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 import it.polimi.ingsw.model.gamecards.resources.Tool;
@@ -118,9 +115,6 @@ public class GameTest {
             }
             //check if the starterCard is not null
             assertNotNull(p.getStarterCard());
-            //check if available position list contains only the (0,0) position
-            assertTrue(p.getAvailablePositions().contains(new Coordinates(0,0)));
-            assertEquals(1,p.getAvailablePositions().size());
             //check if unavailable position is empty
             assertTrue(p.getUnavailablePositions().isEmpty());
             //check if points are 0

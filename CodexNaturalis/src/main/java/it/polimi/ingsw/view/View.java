@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
@@ -406,6 +407,11 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     @Override
     public void initializeFieldBuildingHelper(String myName) throws RemoteException {
         fieldBuildingHelper.put(myName,new ArrayList<>());
+    }
+
+    @Override
+    public Reign getTopOfResourceCardDeck() throws RemoteException {
+        return controller.getTopOfResourceCardDeck();
     }
 
     public synchronized void updateAll() {

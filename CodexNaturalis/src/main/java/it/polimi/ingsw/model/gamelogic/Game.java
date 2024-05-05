@@ -153,9 +153,8 @@ public class Game{
         //building players' hands
         int i = 0;
         int j = 0;
-        Coordinates origin = new Coordinates(0,0);
+
         List<Coordinates> start_position = new ArrayList<>();
-        start_position.add(origin);
         Player player;
         //Mi manca un attimo come funziona APP ,cioè devo fare una copia dei mazzi da APP e poi fare lo shuffle
         String[] colorArray={"Red","Blue","Yellow","Green"};
@@ -321,7 +320,7 @@ public class Game{
         coverAngle(position);
         selectedCard.addPoints(currentPlayer);
         //update availablePosition list
-        selectedCard.checkAvailablePositions(currentPlayer,position);
+        currentPlayer.checkAvailablePositions(position,selectedCard);
         currentPlayer.removeFromHand(selectedCard);
     }
 
@@ -347,7 +346,7 @@ public class Game{
         coverAngle(position);
 
         //update availablePosition list
-        selectedCard.checkAvailablePositions(currentPlayer,position);
+        currentPlayer.checkAvailablePositions(position,selectedCard);
         currentPlayer.removeFromHand(selectedCard);
     }
 
