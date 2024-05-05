@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
@@ -201,25 +202,38 @@ public class TextUserInterface  {
                     printIdleUI();
                     break;
                 case "play-card":
-                    outWriter.print("Which card do you want to play? (1,2,3)");
-                    int chosenCardI = s.nextInt();
-                    s.nextLine();
-                    Card chosenCard = view.showPlayerHand(myID).get(chosenCardI - 1);
-                    outWriter.print("Which side? (f for front, b or any for back)");
-                    boolean isChosenFront = s.nextLine().equals("f");
-                    outWriter.print("Where do you want to place the selected card [" + chosenCardI + "]? (int)");
-                    int chosenPositionI = s.nextInt();
-                    s.nextLine();
-                    List<Coordinates> availableCoordinates = view.showPlayersLegalPositions(myID);
-                    Coordinates chosenPosition = availableCoordinates.get(chosenPositionI);
+                    Card chosenCard = null;
+                    Coordinates chosenPosition=null;
+                    try {
+                        outWriter.print("Which card do you want to play? (1,2,3)");
+                        int chosenCardI = s.nextInt();
+                        s.nextLine();
+                        chosenCard = view.showPlayerHand(myID).get(chosenCardI - 1);
+                        outWriter.print("Which side? (f for front, b or any for back)");
+                        boolean isChosenFront = s.nextLine().equals("f");
+                        outWriter.print("Where do you want to place the selected card [" + chosenCardI + "]? (int)");
+                        int chosenPositionI = s.nextInt();
+                        s.nextLine();
+                        List<Coordinates> availableCoordinates = view.showPlayersLegalPositions(myID);
+                        chosenPosition = availableCoordinates.get(chosenPositionI);
 
-                    if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myID );
-                    else view.playCardBack(chosenCard, chosenPosition, myID);
+                        if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myID );
+                        else view.playCardBack(chosenCard, chosenPosition, myID);
+
+
+                    } catch (RequirementsNotMetException e) {
+                        outWriter.print(e.getMessage());
+                        outWriter.print("Do you want play this card on back? Y/N");
+
+                        boolean playBack= s.nextLine().toUpperCase(Locale.ROOT).equals("Y");
+                        if(playBack) view.playCardBack(chosenCard,chosenPosition,myID);
+                        else execCmd("play-card");
+
+                    }
 
                     HashMap<Coordinates, Card> myField=view.getPlayersField(myName);
-                    List<Coordinates> myFieldBuildingHelper=view.getFieldBuildingHelper(myName);
+                    List<Coordinates> myFieldBuildingHelper = view.getFieldBuildingHelper(myName);
                     artist.show(myField,myFieldBuildingHelper);
-
                     outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
                     outWriter.print("Press enter to continue");
                     s.nextLine();
@@ -237,15 +251,21 @@ public class TextUserInterface  {
                     break;
 
                 case "draw-card-from-deck":
-                    outWriter.print("What deck do you want to draw from? (0,1)");
+                    outWriter.print("From which deck do you want to draw? (0,1)");
+                    Reign topResourceCard=view.getTopOfResourceCardDeck();
+                    outWriter.print("The card on top of Resource Card deck is:"+topResourceCard.getColorFG()+ topResourceCard.getSymbol());
                     int chosenDeck = s.nextInt();
                     view.drawFromDeck(myID, chosenDeck);
+                    execCmd("show-hand");
                     outWriter.print("Press enter to continue");
                     s.nextLine();
                     printIdleUI();
                     break;
-
                 case "draw-card-visible":
+                    List<Card> visibleCard= view.getVisibleCards();
+                    for(Card card:visibleCard){
+                        artist.show(card);
+                    }
                     outWriter.print("Which card do you want to draw? (0, 1, 2, 3)");
                     int chosenDrawCard = s.nextInt();
                     view.drawVisibleCard(myID,chosenDrawCard);

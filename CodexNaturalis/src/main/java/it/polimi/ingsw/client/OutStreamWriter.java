@@ -11,7 +11,7 @@ public class OutStreamWriter {
     }
     public void print(String[][] matrix, List<Coordinates> helper){
         //getMin (getMax) returns the center of the card express in Cartesian coordinates then I have to express it  in matrix index notation and shift by 2 or 3 to print the whole card
-        int startRow= 120 - 2*getMinY(helper) - 4;
+        int startRow = 120 - 2*getMinY(helper) - 4;
         int endRow= 120 - 2*getMaxY(helper) + 4;
         int startCol= 440 + 10*getMinX(helper) - 7;
         int endCol= 440 + 10*getMaxX(helper) + 7;

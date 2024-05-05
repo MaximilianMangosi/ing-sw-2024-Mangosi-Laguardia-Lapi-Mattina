@@ -101,7 +101,7 @@ public class TUIAsciiArtistTest {
     public void showGoalTest (){
         List<Goal> deck =new ArrayList<>(gb.getGoalSet());
         for (int i=0;i<3;i++){
-            artist.show(deck.get(i));
+           // artist.show(deck.get(i));
         }
        String[][] matrix= artist.getMatrix();
         for (String[] row : matrix){

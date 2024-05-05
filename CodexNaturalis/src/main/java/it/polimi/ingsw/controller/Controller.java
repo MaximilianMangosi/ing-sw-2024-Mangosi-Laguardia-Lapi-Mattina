@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
@@ -395,4 +396,7 @@ public class Controller {
         return starterCardMap;
     }
 
+    public Reign getTopOfResourceCardDeck() {
+        return getGame().getResourceCardDeck().getFirst().getReign();
+    }
 }
