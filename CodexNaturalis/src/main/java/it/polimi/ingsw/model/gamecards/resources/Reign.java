@@ -6,27 +6,29 @@ import java.io.Serializable;
 
 public enum Reign implements Resource, Serializable {
     @SerializedName("a")
-    ANIMAL("\u001B[46m","a"),
+    ANIMAL("\u001B[104m","\u001B[36m","a"),
     @SerializedName("m")
-    MUSHROOM("\u001B[41m","m"),
+    MUSHROOM("\u001B[101m","\u001B[31m","m"),
     @SerializedName("b")
-    BUG("\u001B[45m","b"),
+    BUG("\u001B[105m","\u001B[35m","b"),
     @SerializedName("pl")
-    PLANTS("\u001B[42m","p"),
+    PLANTS("\u001B[102m","\u001B[32m","p"),
     @SerializedName("e")
-    EMPTY("\u001B[47m","■"),
+    EMPTY("\u001B[107m","\u001B[37m","■"),
     ;
-    Reign(String s,String symb){
-        this.color=s;
+    Reign(String BG,String FG,String symb){
+        this.colorBG=BG;
+        this.colorFG=FG;
         this.symbol=symb;
     }
-    private String color;
+    private String colorBG;
+    private String colorFG;
     private String symbol;
-    public String getColor (){
-        return color;
+    public String getColorBG (){
+        return colorBG;
     }
-    public String getSymbol(){
-        return symbol;
+    public String getColorFG(){
+        return colorFG;
     }
     @Override
     public Resource getResource() {
@@ -36,5 +38,10 @@ public enum Reign implements Resource, Serializable {
     @Override
     public boolean isEmpty() {
         return this==Reign.EMPTY;
+    }
+
+    @Override
+    public String getSymbol() {
+        return symbol;
     }
 }

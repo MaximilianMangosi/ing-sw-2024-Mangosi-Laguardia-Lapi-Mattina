@@ -186,16 +186,20 @@ public class TextUserInterface  {
                     }
                     view.initializeFieldBuildingHelper( myName);
                     tuiUpdater.start();
+                    printIdleUI();
                     break;
                 case "choose-goal":
                     outWriter.print("Here are your goals, choose one (1,2)");
                     Goal[] myGoals = view.showPlayerGoalOptions(myID);
-                    outWriter.print(myGoals[0].getUIDescription());
-                    outWriter.print(myGoals[1].getUIDescription());
+                    artist.show(myGoals[0]);
+                    artist.show(myGoals[1]);
+                    outWriter.print(artist.getMatrix());
                     String myGoal = s.nextLine();
                     Goal goal = Objects.equals(myGoal, "1") ? myGoals[0] : myGoals[1];
                     view.chooseGoal(myID, goal);
-                    outWriter.print("Goal chosen");
+                    outWriter.print("Goal chosen,press enter to continue");
+                    s.nextLine();
+                    printIdleUI();
                     break;
                 case "play-card":
                     outWriter.print("Which card do you want to play? (1,2,3)");
@@ -217,10 +221,10 @@ public class TextUserInterface  {
                     List<Coordinates> myFieldBuildingHelper=view.getFieldBuildingHelper(myName);
                     artist.show(myField,myFieldBuildingHelper);
 
-
                     outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
-                    System.out.println("Press any key to continue");
-                    s.next();
+                    outWriter.print("Press enter to continue");
+                    s.nextLine();
+                    printIdleUI();
                     break;
 
                 case "choose-starter-card-side":
@@ -228,12 +232,18 @@ public class TextUserInterface  {
                     boolean isChosenFrontStart = s.nextLine().equals("f");
                     view.chooseStarterCardSide(isChosenFrontStart, myID);
                     outWriter.print("Starter card chosen");
+                    outWriter.print("Press enter to continue");
+                    s.nextLine();
+                    printIdleUI();
                     break;
 
                 case "draw-card-from-deck":
                     outWriter.print("What deck do you want to draw from? (0,1)");
                     int chosenDeck = s.nextInt();
                     view.drawFromDeck(myID, chosenDeck);
+                    outWriter.print("Press enter to continue");
+                    s.nextLine();
+                    printIdleUI();
                     break;
 
                 case "draw-card-visible":
@@ -246,14 +256,18 @@ public class TextUserInterface  {
                     for(Card card:hand){
                         artist.show(card);
                     }
-                    System.out.println("Press any key to continue");
+                    outWriter.print("Press enter to continue");
                     s.nextLine();
+                    printIdleUI();
                     break;
                 case "disconnect":
                     view.closeGame(myID);
                     tuiUpdater.interrupt();
                     break;
+                default:
+                    outWriter.print("Unknown command");
             }
+
         }
     }
 

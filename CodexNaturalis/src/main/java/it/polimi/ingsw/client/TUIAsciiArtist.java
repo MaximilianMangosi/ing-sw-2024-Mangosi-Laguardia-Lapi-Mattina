@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.List;
 
 public class TUIAsciiArtist implements CardDisplay {
-    String[][] matrix = new String[5][42];
+    String[][] matrix = new String[5][46];
     private String[][] asciiField ;
     private StringBuilder strbuilder;
     public static final String RESET = "\u001B[0m";
@@ -30,9 +30,7 @@ public class TUIAsciiArtist implements CardDisplay {
     public static final String WHITE = "\u001B[37m";
 
 
-    public TUIAsciiArtist(){
-        matrix[0][0] =" ";
-    }
+
     /**
      * uses object StringBuilder to build a string in ASCII art representing parameter Card, then prints the string on System.Out
      * @author Giorgio Mattina
@@ -97,12 +95,10 @@ public class TUIAsciiArtist implements CardDisplay {
     public void show(Goal goal){
         int k=0;
         for( k=0;k<42;k++){
-           if( !matrix[0][k].equals(" ")){
+           if(matrix[0][k]==null){
                break;
            }
         }
-
-
         if(goal instanceof IdenticalGoal){
           if(goal.getNumOfResource()==3){
               //identicalTool
@@ -137,6 +133,7 @@ public class TUIAsciiArtist implements CardDisplay {
             }
         }else if(goal instanceof StairGoal){
             //stair
+            buildGoalCardStructure(k,goal,YELLOW);
             if(((StairGoal) goal).isToLowerRight()){
                 matrix[1][k+4] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
                 matrix[2][k+6] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
@@ -164,7 +161,8 @@ public class TUIAsciiArtist implements CardDisplay {
      */
     private void buildGoalCardStructure (int columnStart, Goal goal,String bgColor){
         for (int i=0;i<5;i++){
-            for (int j=columnStart;j<14;j++){
+            matrix[i][columnStart+14]=" "+RESET;
+            for (int j=columnStart;j<columnStart+14;j++){
                 if(i==0){
                     if(j==columnStart){
                         matrix[i][j]=YELLOW+"╔";
@@ -190,13 +188,13 @@ public class TUIAsciiArtist implements CardDisplay {
                         matrix[i][j]=bgColor+" ";
                     }
                 }
-                if(i==4){
-                    if(j==columnStart){
-                        matrix[i][j]=YELLOW+"╚";
-                    } else if (j==columnStart+13) {
-                        matrix[i][j]="╝"+RESET;
-                    }else{
-                        matrix[i][j]="═";
+                if(i==4) {
+                    if (j == columnStart) {
+                        matrix[i][j] = YELLOW + "╚";
+                    } else if (j == columnStart + 13) {
+                        matrix[i][j] = "╝" + RESET;
+                    } else {
+                        matrix[i][j] = "═";
                     }
                 }
             }
@@ -223,5 +221,10 @@ public class TUIAsciiArtist implements CardDisplay {
             asciiField[i][j] = color+fieldBuildingHelper.indexOf(coordinate);
         }
 
+    }
+
+
+    public String[][] getMatrix() {
+        return matrix;
     }
 }

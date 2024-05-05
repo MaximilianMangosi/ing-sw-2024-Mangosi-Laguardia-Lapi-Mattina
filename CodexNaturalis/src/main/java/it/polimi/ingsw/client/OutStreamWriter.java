@@ -48,4 +48,18 @@ public class OutStreamWriter {
     public void clearScreen() {
         System.out.println("\033c");
     }
+
+    public void print(String[][] matrix) {
+        for (String[] row : matrix){
+            for(String cell: row) {
+                if(cell != null)
+                    System.out.print(cell);
+                else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println(" \u001B[0m");
+        }
+
+    }
 }

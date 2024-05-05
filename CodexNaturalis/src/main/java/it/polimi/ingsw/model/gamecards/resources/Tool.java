@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gamecards.resources;
 
 import com.google.gson.annotations.SerializedName;
+import it.polimi.ingsw.client.TUIAsciiArtist;
 
 public enum Tool implements Resource {
     @SerializedName("f")
@@ -20,11 +21,21 @@ public enum Tool implements Resource {
     }
 
     @Override
+    public String getColorBG() {
+        return "\u001B[103m";
+    }
+
+    @Override
+    public String getColorFG() {
+        return "\u001B[33m";
+    }
+
+    @Override
     public boolean isEmpty() {
         return this == Tool.EMPTY;
     }
     public String getColor(){
-        return null;
+        return TUIAsciiArtist.YELLOW;
     }
     @Override
     public String getSymbol() {

@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.TUIAsciiArtist;
 import it.polimi.ingsw.model.gamecards.GameBox;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.GoldCard;
+import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 import it.polimi.ingsw.model.gamelogic.Game;
@@ -93,6 +94,25 @@ public class TUIAsciiArtistTest {
         List<Card> deck =new ArrayList<>(gb.getResourceCardSet());
         for (int i =0 ; i< 10;i++){
             artist.show(deck.get(i));
+        }
+
+    }
+    @Test
+    public void showGoalTest (){
+        List<Goal> deck =new ArrayList<>(gb.getGoalSet());
+        for (int i=0;i<3;i++){
+            artist.show(deck.get(i));
+        }
+       String[][] matrix= artist.getMatrix();
+        for (String[] row : matrix){
+            for(String cell: row) {
+                if(cell != null)
+                    System.out.print(cell);
+                else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println(" \u001B[0m");
         }
 
     }
