@@ -266,6 +266,8 @@ public class TextUserInterface  {
 
                 case "choose-starter-card-side":
                     outWriter.print("Which side for the starter card? (f for front, b or any for back)");
+                    artist.show(view.getStarterCard(myID));
+                    outWriter.print(artist.getMatrix());
                     boolean isChosenFrontStart = s.nextLine().equals("f");
                     view.chooseStarterCardSide(isChosenFrontStart, myID);
                     outWriter.print("Starter card chosen");

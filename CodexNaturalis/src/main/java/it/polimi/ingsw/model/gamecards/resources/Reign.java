@@ -14,7 +14,7 @@ public enum Reign implements Resource, Serializable {
     @SerializedName("pl")
     PLANTS("\u001B[102m","\u001B[32m","p"),
     @SerializedName("e")
-    EMPTY("\u001B[107m","\u001B[37m","■"),
+    EMPTY("\u001B[107m","\u001B[97m","■"),
     ;
     Reign(String BG,String FG,String symb){
         this.colorBG=BG;

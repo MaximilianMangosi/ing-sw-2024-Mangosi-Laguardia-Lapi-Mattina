@@ -165,11 +165,11 @@ public class TUIAsciiArtist implements CardDisplay {
         buildStarterCardStructure();
         if(numOfCentralResources== 1 ){
 
-            matrix[0][0]= YELLOW+starterCard.getResourceBack("NW").getColorFG() + starterCard.getResource("NW").getSymbol()+RESET+YELLOW;
-            matrix[0][12]= YELLOW+starterCard.getResourceBack("NE").getColorFG() + starterCard.getResource("NE").getSymbol()+RESET+YELLOW;
-            matrix[4][0]= YELLOW+starterCard.getResourceBack("SW").getColorFG() + starterCard.getResource("SW").getSymbol()+RESET+YELLOW;
-            matrix[4][12]= YELLOW+starterCard.getResourceBack("SE").getColorFG() + starterCard.getResource("SE").getSymbol()+RESET+YELLOW;
-            matrix[2][6]= BLACK+ centralResources.getFirst().getSymbol();
+            matrix[0][0]= YELLOW+starterCard.getResource("NW").getColorFG() + starterCard.getResource("NW").getSymbol()+RESET+YELLOW;
+            matrix[0][12]= YELLOW+starterCard.getResource("NE").getColorFG() + starterCard.getResource("NE").getSymbol()+RESET+YELLOW;
+            matrix[4][0]= YELLOW+starterCard.getResource("SW").getColorFG() + starterCard.getResource("SW").getSymbol()+RESET+YELLOW;
+            matrix[4][12]= YELLOW+starterCard.getResource("SE").getColorFG() + starterCard.getResource("SE").getSymbol()+RESET+YELLOW;
+            matrix[2][6]= centralResources.get(0).getColorFG()+ centralResources.getFirst().getSymbol();
 
         }else if(numOfCentralResources == 2){
 
@@ -177,8 +177,8 @@ public class TUIAsciiArtist implements CardDisplay {
             matrix[0][12]= YELLOW+starterCard.getResource("NE").getColorFG() + starterCard.getResource("NE").getSymbol()+RESET+YELLOW;
             matrix[4][0]= YELLOW+starterCard.getResource("SW").getColorFG() + starterCard.getResource("SW").getSymbol()+RESET+YELLOW;
             matrix[4][12]= YELLOW+starterCard.getResource("SE").getColorFG() + starterCard.getResource("SE").getSymbol()+RESET+YELLOW;
-            matrix[1][6]= BLACK + centralResources.get(0).getSymbol();
-            matrix[3][6]= BLACK+ centralResources.get(1).getSymbol();
+            matrix[1][6]= centralResources.get(0).getColorFG() + centralResources.get(0).getSymbol();
+            matrix[3][6]=centralResources.get(0).getColorFG()+ centralResources.get(1).getSymbol();
 
         }else if(numOfCentralResources == 3 ){
 
