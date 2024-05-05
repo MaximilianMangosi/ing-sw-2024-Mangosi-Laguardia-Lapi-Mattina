@@ -3,10 +3,7 @@ package it.polimi.ingsw.model.gamecards;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import it.polimi.ingsw.model.gamecards.cards.GoldCard;
-import it.polimi.ingsw.model.gamecards.cards.GoldCardAngles;
-import it.polimi.ingsw.model.gamecards.cards.ResourceCard;
-import it.polimi.ingsw.model.gamecards.cards.StarterCard;
+import it.polimi.ingsw.model.gamecards.cards.*;
 import it.polimi.ingsw.model.gamecards.goals.*;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
@@ -17,7 +14,21 @@ import java.util.*;
 
 /**
  * GameBox contains a Set for each type of card of the game: ResourceCard,GoldCard,StarterCard,Goal
- * and a Gson object used for adding cards to sets using jsons files
+ * and a Gson object used for adding cards to sets using jsons files.
+ * Each Resource enumeration is associated to a string, used as reference in a json file
+ * REIGN:
+ *      ANIMAL : a,
+ *      BUG : b,
+ *      PLANT : pl,
+ *      MUSHROOMS : m,
+ *TOOL:
+ *      SCROLL: s,
+ *      PHIAL: p,
+ *      FEATHER: f,
+ *
+ *      EMPTY: e,
+ *
+ * When representing an angle of a Card the Resource can be null , meaning that thus angle can't be covered
  */
 public class GameBox {
     private final Gson gson;
@@ -70,7 +81,18 @@ public class GameBox {
     }
 
     /**
-     * Add a list of ResourceCard to resourceCardSet, parsing a list of json
+     * Add a list of ResourceCard to resourceCardSet, parsing a list of json.
+     *
+     * JSON Template:
+     * {
+     *     "NW": Resource,
+     *     "NE" :Resource,
+     *     "SW" :Resource,
+     *     "SE" :Resource,
+     *     "isFront": boolean,
+     *     "points": int,
+     *     "reign": Reign,
+     * }
      * @author Giuseppe Laguardia
      * @param jsons a list of String representing a ResourceCard in json format, if the string is badly formatted the program exit
      */
@@ -85,7 +107,24 @@ public class GameBox {
         }
     }
     /**
-     * Add a list of GoldCard to goldCardSet, parsing a list of json
+     * Add a list of GoldCard to goldCardSet, parsing a list of json.
+     * JSON template:
+     *
+     * {
+     *   "NW" :Resource,
+     *   "NE" :Resource,
+     *   "SW" :Resource,
+     *   "SE" :Resource,
+     *   "isFront": boolean,
+     *   "points": int,
+     *   "reign":Reign,
+     *   "requirements":{
+     *     "a":int,
+     *     "m":int,
+     *     "pl":int,
+     *     "b":int
+     *   }
+     * }
      * @author Giuseppe Laguardia
      * @param jsons a list of String representing a GoldCard in json format
      * @throws JsonSyntaxException if the string is badly formatted
@@ -101,7 +140,24 @@ public class GameBox {
         }
     }
     /**
-     * Add a list of GoldCardAngle to goldCardSet, parsing a list of json
+     * Add a list of GoldCardAngle to goldCardSet, parsing a list of json.
+     * JSON template:
+     *
+     *  {
+     *      "NW" :Resource,
+     *      "NE" :Resource,
+     *      "SW" :Resource,
+     *      "SE" :Resource,
+     *      "isFront": boolean,
+     *      "points": int,
+     *      "reign":Reign,
+     *      "requirements":{
+     *          "a":int,
+     *          "m":int,
+     *          "pl":int,
+     *          "b":int
+     *       }
+     *    }
      * @author Giuseppe Laguardia
      * @param jsons a list of String representing a GoldCardAngle in json format
      * @throws JsonSyntaxException if the string is badly formatted
@@ -109,7 +165,7 @@ public class GameBox {
     public void addGoldCardAngles(List<String> jsons){
         for(String json :jsons){
             try {
-                goldCardSet.add(gson.fromJson(json,GoldCard.class));
+                goldCardSet.add(gson.fromJson(json,GoldCardAngles.class));
             }catch (JsonSyntaxException e){
                 System.out.printf("Parsing error in file GoldCardAngles_%d.json",jsons.indexOf(json)+1);
                 System.exit(0);
@@ -118,13 +174,29 @@ public class GameBox {
     }
     /**
      * Add a list of GoldCardTool to goldCardSet, parsing a list of json
+     *  {
+     *      "NW" :Resource,
+     *      "NE" :Resource,
+     *      "SW" :Resource,
+     *      "SE" :Resource,
+     *      "isFront": boolean,
+     *      "points": int,
+     *      "reign":Reign,
+     *      "tool": Tool,
+     *      "requirements":{
+     *          "a":int,
+     *          "m":int,
+     *          "pl":int,
+     *          "b":int
+     *       }
+     *   }
      * @author Giuseppe Laguardia
      * @param jsons a list of String representing a GoldCardTool in json format,if the string is badly formatted the program exit
      */
     public void addGoldCardTools(List<String> jsons){
         for(String json :jsons){
             try {
-                goldCardSet.add(gson.fromJson(json,GoldCard.class));
+                goldCardSet.add(gson.fromJson(json, GoldCardTool.class));
             }catch (JsonSyntaxException e){
                 System.out.printf("Parsing error in file GoldCardTool_%d.json",jsons.indexOf(json)+1);
                 System.exit(0);
@@ -132,7 +204,20 @@ public class GameBox {
         }
     }
     /**
-     * Add a list of StarterCard to starterCardSet, parsing a list of json
+     * Add a list of StarterCard to starterCardSet, parsing a list of json.
+     * JSON templates
+     *  {
+     *      "NW" : Resource,
+     *      "NE" : Resource,
+     *      "SW" : Resource,
+     *      "SE" : Resource,
+     *      "isFront": boolean,
+     *      "BackNW" : Resource,
+     *      "BackNE" : Resource,
+     *      "BackSW" : Resource,
+     *      "BackSE" : Resource,
+     *      "centralResources":[Resource ...]
+     *  }
      * @author Giuseppe Laguardia
      * @param jsons a list of String representing a StarterCard in json format,if the string is badly formatted the program exit
      */
@@ -149,7 +234,13 @@ public class GameBox {
 
     }
     /**
-     * Add a list of StairGoal to goalSet, parsing a list of json
+     * Add a list of StairGoal to goalSet, parsing a list of json.
+     * JSON templates.
+     * {
+     *   "points": int,
+     *   "reign": Reign,
+     *   "isToLowerRight": boolean
+     * }
      * @author Giuseppe Laguardia
      * @param jsons a list of String representing a StairGoal in json format,if the string is badly formatted the program exit
      */
@@ -164,7 +255,13 @@ public class GameBox {
         }
     }
     /**
-     * Add a list of LGoal to goalSet, parsing a list of json
+     * Add a list of LGoal to goalSet, parsing a list of json.
+     * JSON TEMPLATES
+     * {
+     *   "points": int,
+     *   "primaryReign": Reign,
+     *   "secondaryReign": Reign
+     * }
      * @author Giuseppe Laguardia
      * @param jsons a list of String representing a LGoal in json format,if the string is badly formatted the program exit
      */
@@ -180,6 +277,12 @@ public class GameBox {
     }
     /**
      * Add a list of IdenticalGoal to goalSet, parsing a list of json
+     * JSON TEMPLATE
+     * {
+     *   "points": int,
+     *   "resource": Resource,
+     *   "numOfResource": 3
+     * }
      * @author Giuseppe Laguardia
      * @param jsons a list of String representing a IdenticalGoal in json format,if the string is badly formatted the program exit
      */

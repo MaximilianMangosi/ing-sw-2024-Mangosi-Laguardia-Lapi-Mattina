@@ -70,4 +70,6 @@ public interface ViewInterface extends Remote {
     void initializeFieldBuildingHelper(String myName) throws RemoteException;
 
     Reign getTopOfResourceCardDeck() throws  RemoteException;
+
+    Reign getTopOfGoldCardDeck() throws RemoteException;
 }
