@@ -191,8 +191,7 @@ public class TextUserInterface  {
                 case "choose-goal":
                     outWriter.print("Here are your goals, choose one (1,2)");
                     Goal[] myGoals = view.showPlayerGoalOptions(myID);
-                    artist.show(myGoals[0]);
-                    artist.show(myGoals[1]);
+                    artist.show(myGoals);
                     outWriter.print(artist.getMatrix());
                     String myGoal = s.nextLine();
                     Goal goal = Objects.equals(myGoal, "1") ? myGoals[0] : myGoals[1];

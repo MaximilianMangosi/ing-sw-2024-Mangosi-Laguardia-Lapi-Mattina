@@ -39,7 +39,7 @@ public class TUIAsciiArtist implements CardDisplay {
     @Override
     public void show(Card card) {
         strbuilder = new StringBuilder();
-            String reignColor = card.getReign().getColor();
+            String reignColor = card.getReign().getColorBG();
             char point = card.getPoints()>0? Character.forDigit(card.getPoints(),10):'-';
             String angleNW = card.getResource("NW") !=null? card.getResource("NW").getSymbol() : "×";
             String angleNE = card.getResource("NE") !=null? card.getResource("NE").getSymbol() : "×";
@@ -92,63 +92,62 @@ public class TUIAsciiArtist implements CardDisplay {
         System.out.println(strbuilder.toString());
             //TODO invece di stampare aggiungi alla matrice
     }
-    public void show(Goal goal){
+    public void show(Goal[] goals){
         int k=0;
-        for( k=0;k<42;k++){
-           if(matrix[0][k]==null){
-               break;
-           }
-        }
-        if(goal instanceof IdenticalGoal){
-          if(goal.getNumOfResource()==3){
-              //identicalTool
-              String symbol=((IdenticalGoal) goal).getResource().getSymbol();
-              buildGoalCardStructure(k,goal,((IdenticalGoal) goal).getResource().getColor());
-              matrix[2][k+6]=symbol;
-              matrix[3][k+4]=symbol;
-              matrix[3][k+8]=symbol;
-          }else{
-              String symbol=((IdenticalGoal) goal).getResource().getSymbol();
-              buildGoalCardStructure(k,goal,((IdenticalGoal) goal).getResource().getColor());
-              matrix[3][k+4]=symbol;
-              matrix[3][k+8]=symbol;
-          }
+        matrix=new String[5][46];
+        for (Goal goal:goals) {
+            if (goal instanceof IdenticalGoal) {
+                if (goal.getNumOfResource() == 3) {
+                    //identicalTool
+                    String symbol = BLACK + ((IdenticalGoal) goal).getResource().getSymbol() + RESET;
+                    buildGoalCardStructure(k, goal, ((IdenticalGoal) goal).getResource().getColorBG());
+                    matrix[2][k + 6] = symbol;
+                    matrix[3][k + 4] = symbol;
+                    matrix[3][k + 8] = symbol;
+                } else {
+                    String symbol = BLACK + ((IdenticalGoal) goal).getResource().getSymbol() + RESET;
+                    buildGoalCardStructure(k, goal, ((IdenticalGoal) goal).getResource().getColorBG());
+                    matrix[3][k + 4] = symbol;
+                    matrix[3][k + 8] = symbol;
+                }
 
 
-        }else if(goal instanceof LGoal){
-           //Lgoal
-            buildGoalCardStructure(k,goal,((LGoal) goal).getSecondaryReign().getColor());
-            if(goal.getPrimaryReign() == Reign.PLANTS){
-                matrix[2][k+6] = ((LGoal) goal).getSecondaryReign().getColor() + "█" + RESET;
-                matrix[3][k+7] = goal.getPrimaryReign().getColor() + "■" + RESET;
-            }else if(goal.getPrimaryReign() == Reign.BUG){
-                matrix[2][k+6] = ((LGoal) goal).getSecondaryReign().getColor() + "█" + RESET;
-                matrix[3][k+5] = goal.getPrimaryReign().getColor() + "■" + RESET;
-            }else if(goal.getPrimaryReign() == Reign.MUSHROOM){
-                matrix[3][k+6] = ((LGoal) goal).getSecondaryReign().getColor() + "█" + RESET;
-                matrix[2][k+7] = goal.getPrimaryReign().getColor() + "■" + RESET;
-            }else{
-                matrix[3][k+6] = ((LGoal) goal).getSecondaryReign().getColor() + "█" + RESET;
-                matrix[2][k+5] = goal.getPrimaryReign().getColor() + "■" + RESET;
+            } else if (goal instanceof LGoal) {
+                //Lgoal
+                buildGoalCardStructure(k, goal, ((LGoal) goal).getSecondaryReign().getColorBG());
+                if (goal.getPrimaryReign() == Reign.PLANTS) {
+                    matrix[2][k + 6] = ((LGoal) goal).getSecondaryReign().getColorFG() + "█" + RESET;
+                    matrix[3][k + 7] = goal.getPrimaryReign().getColorFG() + "■" + RESET;
+                } else if (goal.getPrimaryReign() == Reign.BUG) {
+                    matrix[2][k + 6] = ((LGoal) goal).getSecondaryReign().getColorFG() + "█" + RESET;
+                    matrix[3][k + 5] = goal.getPrimaryReign().getColorFG() + "■" + RESET;
+                } else if (goal.getPrimaryReign() == Reign.MUSHROOM) {
+                    matrix[3][k + 6] = ((LGoal) goal).getSecondaryReign().getColorFG() + "█" + RESET;
+                    matrix[2][k + 7] = goal.getPrimaryReign().getColorFG() + "■" + RESET;
+                } else {
+                    matrix[3][k + 6] = ((LGoal) goal).getSecondaryReign().getColorFG() + "█" + RESET;
+                    matrix[2][k + 5] = goal.getPrimaryReign().getColorFG() + "■" + RESET;
+                }
+            } else if (goal instanceof StairGoal) {
+                //stair
+                buildGoalCardStructure(k, goal, ((StairGoal) goal).getReign().getColorBG());
+                if (((StairGoal) goal).isToLowerRight()) {
+                    matrix[1][k + 4] = ((StairGoal) goal).getReign().getColorFG() + "■" + RESET;
+                    matrix[2][k + 6] = ((StairGoal) goal).getReign().getColorFG() + "■" + RESET;
+                    matrix[3][k + 8] = ((StairGoal) goal).getReign().getColorFG() + "■" + RESET;
+                } else {
+                    matrix[1][k + 8] = ((StairGoal) goal).getReign().getColorFG() + "■" + RESET;
+                    matrix[2][k + 6] = ((StairGoal) goal).getReign().getColorFG() + "■" + RESET;
+                    matrix[3][k + 4] = ((StairGoal) goal).getReign().getColorFG() + "■" + RESET;
+                }
+            } else {
+                //distinct
+                buildGoalCardStructure(k, goal, "\u001B[103m");
+                matrix[3][k + 4] = BLACK + "F" + RESET;
+                matrix[3][k + 6] = BLACK + "P" + RESET;
+                matrix[3][k + 8] = BLACK + "S" + RESET;
             }
-        }else if(goal instanceof StairGoal){
-            //stair
-            buildGoalCardStructure(k,goal,YELLOW);
-            if(((StairGoal) goal).isToLowerRight()){
-                matrix[1][k+4] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
-                matrix[2][k+6] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
-                matrix[3][k+8] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
-            }else{
-                matrix[1][k+8] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
-                matrix[2][k+6] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
-                matrix[3][k+4] = ((StairGoal) goal).getReign().getColor() + "■" + RESET;
-            }
-        }else{
-           //distinct
-            buildGoalCardStructure(k,goal,"\u001B[103m");
-            matrix[3][k+4]="F";
-            matrix[3][k+6]="P";
-            matrix[3][k+8]="S";
+            k+=15;
         }
 
     }
@@ -175,8 +174,8 @@ public class TUIAsciiArtist implements CardDisplay {
                 if(i==1){
                     if(j==columnStart || j==columnStart+13){
                         matrix[i][j]=YELLOW+ "║"+RESET;
-                    }else if(j==columnStart+5){
-                        matrix[i][j]= String.valueOf(goal.getPoints());
+                    }else if(j==columnStart+6){
+                        matrix[i][j]= BLACK+String.valueOf(goal.getPoints())+RESET;
                     }else{
                         matrix[i][j]=bgColor+" ";
                     }
@@ -208,7 +207,7 @@ public class TUIAsciiArtist implements CardDisplay {
         asciiField = new String[240][880];
         for (Coordinates coordinate : fieldBuildingHelper){
             Card card = field.get(coordinate);
-            String color = card.getReign()!=null? card.getReign().getColor():YELLOW;
+            String color = card.getReign()!=null? card.getReign().getColorBG():YELLOW;
             int x = coordinate.x;
             int y = coordinate.y;
             j = 440 + 10*(x);
