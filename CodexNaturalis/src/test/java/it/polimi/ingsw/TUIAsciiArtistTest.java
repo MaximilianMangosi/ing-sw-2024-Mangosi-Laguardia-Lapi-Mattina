@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.TUIAsciiArtist;
 import it.polimi.ingsw.model.gamecards.GameBox;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.GoldCard;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.Collections.shuffle;
 
 
 public class TUIAsciiArtistTest {
@@ -100,8 +103,12 @@ public class TUIAsciiArtistTest {
     @Test
     public void showGoalTest (){
         List<Goal> deck =new ArrayList<>(gb.getGoalSet());
+        shuffle(deck);
+        Goal[] options = new Goal[2];
+        options[0] = deck.removeFirst();
+        options[1] = deck.removeFirst();
         for (int i=0;i<3;i++){
-            artist.show(deck.get(i));
+            artist.show(options);
         }
        String[][] matrix= artist.getMatrix();
         for (String[] row : matrix){
@@ -113,6 +120,26 @@ public class TUIAsciiArtistTest {
                 }
             }
             System.out.println(" \u001B[0m");
+        }
+
+    }
+    @Test
+    public void showStarterCardTest(){
+        List<StarterCard> deck = new ArrayList<>(gb.getStarterCardSet());
+        //shuffle(deck);
+        for (StarterCard s : deck) {
+            artist.show(s);
+            String[][] matrix= artist.getMatrix();
+            for (String[] row : matrix){
+                for(String cell: row) {
+                    if(cell != null)
+                        System.out.print(cell);
+                    else {
+                        System.out.print(" ");
+                    }
+                }
+                System.out.println(" \u001B[0m");
+            }
         }
 
     }
