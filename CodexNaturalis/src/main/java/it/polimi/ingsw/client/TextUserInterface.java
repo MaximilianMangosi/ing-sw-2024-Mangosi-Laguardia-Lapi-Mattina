@@ -218,7 +218,7 @@ public class TextUserInterface  {
 
                     HashMap<Coordinates, Card> myField=view.getPlayersField(myName);
                     List<Coordinates> myFieldBuildingHelper=view.getFieldBuildingHelper(myName);
-                    artist.show(myField,myFieldBuildingHelper);
+                    artist.show(myField,myFieldBuildingHelper, view.showPlayersLegalPositions(myID));
 
                     outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
                     outWriter.print("Press enter to continue");
