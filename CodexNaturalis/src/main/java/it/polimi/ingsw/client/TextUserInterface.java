@@ -204,13 +204,15 @@ public class TextUserInterface  {
                 case "play-card":
                     Card chosenCard = null;
                     Coordinates chosenPosition=null;
+                    boolean isChosenFront=false;
                     try {
                         outWriter.print("Which card do you want to play? (1,2,3)");
+                        execCmd("show-hand");
                         int chosenCardI = s.nextInt();
                         s.nextLine();
                         chosenCard = view.showPlayerHand(myID).get(chosenCardI - 1);
                         outWriter.print("Which side? (f for front, b or any for back)");
-                        boolean isChosenFront = s.nextLine().equals("f");
+                        isChosenFront = s.nextLine().equals("f");
                         outWriter.print("Where do you want to place the selected card [" + chosenCardI + "]? (int)");
                         int chosenPositionI = s.nextInt();
                         s.nextLine();
@@ -220,27 +222,46 @@ public class TextUserInterface  {
                         if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myID );
                         else view.playCardBack(chosenCard, chosenPosition, myID);
 
-                        //print field
-                        HashMap<Coordinates, Card> myField=view.getPlayersField(myName);
-                        List<Coordinates> myFieldBuildingHelper = view.getFieldBuildingHelper(myName);
-                        artist.show(myField,myFieldBuildingHelper);
-                        artist.addAvailablePosToField(view.showPlayersLegalPositions(myID));
-
-                        outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
-                        outWriter.print("Press enter to continue");
-                        s.nextLine();
-                        printIdleUI();
-
 
                     } catch (RequirementsNotMetException e) {
                         outWriter.print(e.getMessage());
-                        outWriter.print("Do you want play this card on back? Y/N");
+                        while (error) {
+                            try {
+                                outWriter.print("Do you want play this card on back? Y/N");
+                                boolean playBack = s.nextLine().toUpperCase(Locale.ROOT).equals("Y");
+                                if (playBack) view.playCardBack(chosenCard, chosenPosition, myID);
+                                else {
+                                    outWriter.print("Do you want to play another card in this position? Y/N");
+                                    boolean changeCard = s.nextLine().toUpperCase(Locale.ROOT).equals("Y");
+                                    if (changeCard) {
+                                        outWriter.print("Which card do you want to play? (1,2,3)");
+                                        execCmd("show-hand");
+                                        int chosenCardI = s.nextInt();
+                                        chosenCard = view.showPlayerHand(myID).get(chosenCardI - 1);
+                                        outWriter.print("Which side? (f for front, b or any for back)");
+                                        isChosenFront = s.nextLine().equals("f");
+                                        s.nextLine();
 
-                        boolean playBack= s.nextLine().toUpperCase(Locale.ROOT).equals("Y");
-                        if(playBack) view.playCardBack(chosenCard,chosenPosition,myID);
-                        else execCmd("play-card");
-
+                                        if (isChosenFront) view.playCardFront(chosenCard, chosenPosition, myID);
+                                        else view.playCardBack(chosenCard, chosenPosition, myID);
+                                        error = false;
+                                    }
+                                }
+                            } catch (RequirementsNotMetException ex) {
+                                outWriter.print(e.getMessage());
+                            }
+                        }
                     }
+                    //print field
+                    HashMap<Coordinates, Card> myField=view.getPlayersField(myName);
+                    List<Coordinates> myFieldBuildingHelper = view.getFieldBuildingHelper(myName);
+                    artist.show(myField,myFieldBuildingHelper);
+                    artist.addAvailablePosToField(view.showPlayersLegalPositions(myID));
+
+                    outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
+                    outWriter.print("Press enter to continue");
+                    s.nextLine();
+                    printIdleUI();
                     break;
 
                 case "choose-starter-card-side":
