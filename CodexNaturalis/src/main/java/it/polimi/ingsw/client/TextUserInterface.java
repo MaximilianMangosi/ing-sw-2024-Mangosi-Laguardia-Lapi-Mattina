@@ -220,6 +220,17 @@ public class TextUserInterface  {
                         if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myID );
                         else view.playCardBack(chosenCard, chosenPosition, myID);
 
+                        //print field
+                        HashMap<Coordinates, Card> myField=view.getPlayersField(myName);
+                        List<Coordinates> myFieldBuildingHelper = view.getFieldBuildingHelper(myName);
+                        artist.show(myField,myFieldBuildingHelper);
+                        artist.addAvailablePosToField(view.showPlayersLegalPositions(myID));
+
+                        outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
+                        outWriter.print("Press enter to continue");
+                        s.nextLine();
+                        printIdleUI();
+
 
                     } catch (RequirementsNotMetException e) {
                         outWriter.print(e.getMessage());
@@ -230,16 +241,6 @@ public class TextUserInterface  {
                         else execCmd("play-card");
 
                     }
-
-                    HashMap<Coordinates, Card> myField=view.getPlayersField(myName);
-                    List<Coordinates> myFieldBuildingHelper = view.getFieldBuildingHelper(myName);
-                    artist.show(myField,myFieldBuildingHelper);
-                    artist.addAvailablePosToField(view.showPlayersLegalPositions(myID));
-
-                    outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
-                    outWriter.print("Press enter to continue");
-                    s.nextLine();
-                    printIdleUI();
                     break;
 
                 case "choose-starter-card-side":
@@ -288,7 +289,6 @@ public class TextUserInterface  {
                 default:
                     outWriter.print("Unknown command");
             }
-
         }
     }
 

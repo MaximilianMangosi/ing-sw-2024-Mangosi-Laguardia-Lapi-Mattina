@@ -108,6 +108,7 @@ public class Player {
     public void checkAvailablePositions(Coordinates newCardPositioned, Card selectedCard) {
         int x = newCardPositioned.x;
         int y = newCardPositioned.y;
+        availablePositions.remove(newCardPositioned);
         unavailablePositions.add(newCardPositioned);
         //Verify that the angles are not nonexistent
         if (selectedCard.getResource("NW") != null){ //NW
