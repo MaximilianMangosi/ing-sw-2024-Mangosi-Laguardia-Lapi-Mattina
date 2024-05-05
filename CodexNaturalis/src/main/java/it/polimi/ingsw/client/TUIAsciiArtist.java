@@ -102,7 +102,6 @@ public class TUIAsciiArtist implements CardDisplay {
            }
         }
 
-
         if(goal instanceof IdenticalGoal){
           if(goal.getNumOfResource()==3){
               //identicalTool
@@ -223,5 +222,10 @@ public class TUIAsciiArtist implements CardDisplay {
             asciiField[i][j] = color+fieldBuildingHelper.indexOf(coordinate);
         }
 
+    }
+
+
+    public String[][] getMatrix() {
+        return matrix;
     }
 }
