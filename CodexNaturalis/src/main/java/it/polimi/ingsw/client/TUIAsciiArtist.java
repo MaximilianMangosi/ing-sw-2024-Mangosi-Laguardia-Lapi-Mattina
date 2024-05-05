@@ -202,7 +202,7 @@ public class TUIAsciiArtist implements CardDisplay {
     public String[][] getAsciiField(){
         return asciiField;
     }
-    public void show (HashMap<Coordinates, Card> field, List<Coordinates> fieldBuildingHelper, List<Coordinates> availablePositions){
+    public void show (HashMap<Coordinates, Card> field, List<Coordinates> fieldBuildingHelper){
         int i,j;
         asciiField = new String[240][880];
         for (Coordinates coordinate : fieldBuildingHelper){
@@ -220,12 +220,14 @@ public class TUIAsciiArtist implements CardDisplay {
             asciiField[i][j] = color+fieldBuildingHelper.indexOf(coordinate);
         }
 
-        int indexAvailablePos = 0;
+    }
+
+    public void addAvailablePosToField(List<Coordinates> availablePositions ){
+
         for(Coordinates coordinates : availablePositions){
-            j = 440 + 10*(coordinates.x);
-            i = 120 - 2*(coordinates.y);
-            asciiField[i][j] = String.valueOf(indexAvailablePos);
-            indexAvailablePos++;
+            int j = 440 + 10*(coordinates.x);
+            int i = 120 - 2*(coordinates.y);
+            asciiField[i][j] = String.valueOf(availablePositions.indexOf(coordinates));
         }
     }
 
