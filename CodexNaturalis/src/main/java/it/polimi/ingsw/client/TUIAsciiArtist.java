@@ -182,8 +182,8 @@ public class TUIAsciiArtist implements CardDisplay {
 
         }else if(numOfCentralResources == 3 ){
 
-            matrix[0][0]= YELLOW  + starterCard.getResource("NW").getSymbol();
-            matrix[0][12]= YELLOW + starterCard.getResource("NE").getSymbol();
+            matrix[0][0]= YELLOW  +starterCard.getResource("NW").getColorFG()+ starterCard.getResource("NW").getSymbol()+RESET+YELLOW;
+            matrix[0][12]= YELLOW +starterCard.getResource("NE").getColorFG()+ starterCard.getResource("NE").getSymbol()+RESET+YELLOW;
             matrix[1][6]=centralResources.get(0).getColorFG() + centralResources.get(0).getSymbol()+BLACK;
             matrix[2][6]=centralResources.get(1).getColorFG() + centralResources.get(1).getSymbol()+BLACK;
             matrix[3][6]=centralResources.get(2).getColorFG() + centralResources.get(2).getSymbol()+BLACK;
