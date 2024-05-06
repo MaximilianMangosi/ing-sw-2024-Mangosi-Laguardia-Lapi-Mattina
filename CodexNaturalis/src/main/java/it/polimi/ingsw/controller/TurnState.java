@@ -33,7 +33,7 @@ public class TurnState extends GameState{
      */
     public GameState nextState(){
         if((game.someoneHas20Points() || game.AreBothDeckEmpty()) && game.getCurrentPlayer().equals(game.getPlayers().getFirst()))
-            return new FinalTurnState(game,gameManager);
+            return new FinalTurnState(game,gameManager,userIDs);
         return this;
     }
 

@@ -141,12 +141,13 @@ public class Game{
      * @return true if a player has reached at least 20 points
      */
     public boolean someoneHas20Points(){
-        return listOfPlayers.stream().anyMatch(p->p.getPoints()>=20);
+        return listOfPlayers.stream().anyMatch(p->p.getPoints()>=1);
     }
 
     /**
     *   Builds the Players' hands and all the game decks
      * @author Giorgio Mattina
+     *
      * Builds the Players' hands and all the game decks
      */
     public void startGame() {
@@ -154,7 +155,7 @@ public class Game{
         int i = 0;
         int j = 0;
 
-        List<Coordinates> start_position = new ArrayList<>();
+
         Player player;
         //Mi manca un attimo come funziona APP ,cioè devo fare una copia dei mazzi da APP e poi fare lo shuffle
         String[] colorArray={"Red","Blue","Yellow","Green"};
@@ -173,7 +174,6 @@ public class Game{
             player = listOfPlayers.get(i);
             player.setColor(Colors.get(i));
             player.setPoints(0);
-            player.setAvailablePositions(start_position);
             //initialize the player's resource counter to 0
             for (Resource resource: resourceArray){
                 player.setResourceCounter(resource,0);
@@ -282,7 +282,8 @@ public class Game{
      * play card for starter card
      * @param isFront determines the side on which the card is played
      */
-    public void playStarterCardFront(Player player,boolean isFront){
+    public void playStarterCard(Player player,boolean isFront){
+
         //add counter of resources
         StarterCard starterCard = player.getStarterCard();
         player.addCardToMap(starterCard, new Coordinates(0,0));
@@ -295,7 +296,6 @@ public class Game{
         }
         //update availablePosition list
         player.checkAvailablePositions(new Coordinates(0,0), starterCard);
-
     }
 
     /**

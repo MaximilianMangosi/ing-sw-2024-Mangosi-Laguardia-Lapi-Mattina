@@ -89,8 +89,14 @@ public class TextUserInterface  {
             idleUI.append("\n");
 
             if (currentPlayer!=null) {
-                idleUI.append(currentPlayer);
-                idleUI.append(" is playing.\n");
+                if(currentPlayer.equals(myName)){
+                    idleUI.append("It's your turn.\n");
+                }
+                else{
+                    idleUI.append(currentPlayer);
+                    idleUI.append(" is playing.\n");
+                }
+
             }
             idleUI.append("Scoreboard:\n");
             for (Map.Entry<String,Integer> entry: sortedScoreboard(scoreboard)){
@@ -230,7 +236,6 @@ public class TextUserInterface  {
                     s.nextLine();
                     printIdleUI();
                     break;
-
                 case "choose-starter-card-side":
                     outWriter.print("Which side for the starter card? (f for front, b or any for back)");
                     artist.show(view.getStarterCard(myID));
@@ -277,32 +282,37 @@ public class TextUserInterface  {
                     break;
                 case "show-hand":
                     showHand();
+                    outWriter.print("Press enter to continue");
+                    s.nextLine();
                     break;
                 case "show-my-goal":
                    goal=view.showPrivateGoal(myID);
                    artist.show(new Goal[]{goal});
                    outWriter.print(artist.getMatrix());
-                   
+
                    outWriter.print("Press enter to continue");
                    s.nextLine();
                    artist.resetMatrix();
+                   break;
                 case "show-public-goal":
                    artist.show( view.getPublicGoals());
                    outWriter.print(artist.getMatrix());
-                   
+
                    outWriter.print("Press enter to continue");
                    s.nextLine();
                    artist.resetMatrix();
+                   break;
                 case "show-my-field":
                     showField(myName,false);
                     outWriter.print("Press enter to continue");
                     s.nextLine();
+                    break;
                 case "show-field":
                     String player= null;
                     while(error) {
                         outWriter.print("What player do you want to see the field? Insert his username");
                         player = s.nextLine();
-                        if(view.getPlayersList().contains(player)){ error=true;}
+                        if(view.getPlayersList().contains(player)){ error=false;}
                         else{
                             outWriter.print("This player doesn't exists");
                         }
@@ -310,6 +320,7 @@ public class TextUserInterface  {
                     showField(player,false);
                     outWriter.print("Press enter to continue");
                     s.nextLine();
+                    break;
                 case "disconnect":
                     view.closeGame(myID);
                     tuiUpdater.interrupt();
@@ -366,16 +377,17 @@ public class TextUserInterface  {
             return null;
         }
         if(topResourceCard!=null ) {
-            outWriter.print("The card on top of Resource Card deck is: " + topResourceCard.getColorFG() + topResourceCard.getSymbol());
+            outWriter.print("The card on top of Resource Card deck is: " + topResourceCard.getColorFG() + topResourceCard.getSymbol()+TUIAsciiArtist.RESET);
         }else{
             outWriter.print("The Resource Card deck is empty");
         }
         if(topGoldCard!=null){
-            outWriter.print("The card on top of Resource Card deck is:"+topGoldCard.getColorFG()+ topGoldCard.getSymbol());
+            outWriter.print("The card on top of Gold Card deck is:"+topGoldCard.getColorFG()+ topGoldCard.getSymbol()+TUIAsciiArtist.RESET);
         }else {
             outWriter.print("The Gold Card deck is empty");
         }
         int chosenDeck = s.nextInt();
+        s.nextLine();
         return chosenDeck;
     }
 
@@ -391,8 +403,6 @@ public class TextUserInterface  {
         for(Card card:hand){
             artist.show(card);
         }
-        outWriter.print("Press enter to continue");
-        s.nextLine();
     }
 
     /**
@@ -448,10 +458,12 @@ public class TextUserInterface  {
         HashMap<Coordinates, Card> field=view.getPlayersField(username);
         List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
         artist.show(field,fieldBuildingHelper);
-        if(availablePosition)
+        if(availablePosition) {
             artist.addAvailablePosToField(view.showPlayersLegalPositions(myID));
+            outWriter.print(artist.getAsciiField(), fieldBuildingHelper);
+            return;
+        }
         outWriter.print(artist.getAsciiField(), fieldBuildingHelper);
-
         outWriter.print("Do you want see a card? Insert the card number or insert any other character to continue:");
         while(true) {
             int chosenCardInt= 0;
@@ -461,8 +473,14 @@ public class TextUserInterface  {
             if(chosenCardInt>=fieldBuildingHelper.size()){
                 outWriter.print("Invalid number!");
             }else{
-                Coordinates chosenCardPosition=fieldBuildingHelper.get(chosenCardInt);
-                artist.show(field.get(chosenCardPosition));
+                if(chosenCardInt==0){
+                    artist.show(view.getStarterCard(myID)); //todo update with showStarterCard
+                }
+                else{
+                    Coordinates chosenCardPosition=fieldBuildingHelper.get(chosenCardInt);
+                    artist.show(field.get(chosenCardPosition));
+                }
+
             }
         }
 
