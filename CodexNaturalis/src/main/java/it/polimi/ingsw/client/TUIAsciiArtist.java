@@ -250,7 +250,7 @@ public class TUIAsciiArtist implements CardDisplay {
      * Builds the background of the front and back of a starter card, which never changes and writes it in matrix
      * @author Giorgio Mattina
      */
-    public void buildStarterCardStructure(){
+    private void buildStarterCardStructure(){
         int j=0;
         for (int i = 0; i<5;i++){
             if(i==0){//first row
