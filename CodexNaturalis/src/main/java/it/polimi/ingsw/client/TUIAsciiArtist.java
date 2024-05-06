@@ -153,6 +153,52 @@ public class TUIAsciiArtist implements CardDisplay {
     }
 
     /**
+     * calls buildStarterCardStructure and replaces angle and central resources based on parameter starterCard in matrix
+     * @author Giorgio Mattina
+     * @param starterCard
+     */
+    public void show(StarterCard starterCard){
+        matrix = new String[6][27];
+        //Build the front of the card
+        List<Resource> centralResources = starterCard.getCentralResource();
+        int numOfCentralResources = centralResources.size();
+        buildStarterCardStructure();
+        if(numOfCentralResources== 1 ){
+
+            matrix[0][0]= YELLOW+starterCard.getResource("NW").getColorFG() + starterCard.getResource("NW").getSymbol()+RESET+YELLOW;
+            matrix[0][12]= YELLOW+starterCard.getResource("NE").getColorFG() + starterCard.getResource("NE").getSymbol()+RESET+YELLOW;
+            matrix[4][0]= YELLOW+starterCard.getResource("SW").getColorFG() + starterCard.getResource("SW").getSymbol()+RESET+YELLOW;
+            matrix[4][12]= YELLOW+starterCard.getResource("SE").getColorFG() + starterCard.getResource("SE").getSymbol()+RESET+YELLOW;
+            matrix[2][6]= centralResources.get(0).getColorFG()+ centralResources.getFirst().getSymbol();
+
+        }else if(numOfCentralResources == 2){
+
+            matrix[0][0]= YELLOW+starterCard.getResource("NW").getColorFG() + starterCard.getResource("NW").getSymbol()+RESET+YELLOW;
+            matrix[0][12]= YELLOW+starterCard.getResource("NE").getColorFG() + starterCard.getResource("NE").getSymbol()+RESET+YELLOW;
+            matrix[4][0]= YELLOW+starterCard.getResource("SW").getColorFG() + starterCard.getResource("SW").getSymbol()+RESET+YELLOW;
+            matrix[4][12]= YELLOW+starterCard.getResource("SE").getColorFG() + starterCard.getResource("SE").getSymbol()+RESET+YELLOW;
+            matrix[1][6]= centralResources.get(0).getColorFG() + centralResources.get(0).getSymbol();
+            matrix[3][6]=centralResources.get(0).getColorFG()+ centralResources.get(1).getSymbol();
+
+        }else if(numOfCentralResources == 3 ){
+
+            matrix[0][0]= YELLOW  +starterCard.getResource("NW").getColorFG()+ starterCard.getResource("NW").getSymbol()+RESET+YELLOW;
+            matrix[0][12]= YELLOW +starterCard.getResource("NE").getColorFG()+ starterCard.getResource("NE").getSymbol()+RESET+YELLOW;
+            matrix[1][6]=centralResources.get(0).getColorFG() + centralResources.get(0).getSymbol()+BLACK;
+            matrix[2][6]=centralResources.get(1).getColorFG() + centralResources.get(1).getSymbol()+BLACK;
+            matrix[3][6]=centralResources.get(2).getColorFG() + centralResources.get(2).getSymbol()+BLACK;
+        }
+        //build the back in the right half of matrix
+        matrix[0][14]= YELLOW+starterCard.getResourceBack("NW").getColorFG() + starterCard.getResourceBack("NW").getSymbol()+RESET+YELLOW;
+        matrix[0][26]= YELLOW+starterCard.getResourceBack("NE").getColorFG() + starterCard.getResourceBack("NE").getSymbol()+RESET;
+        matrix[4][14]= YELLOW+starterCard.getResourceBack("SW").getColorFG() + starterCard.getResourceBack("SW").getSymbol()+RESET+YELLOW;
+        matrix[4][26]= YELLOW+starterCard.getResourceBack("SE").getColorFG() + starterCard.getResourceBack("SE").getSymbol()+RESET;
+
+
+        matrix[5][0]="FRONT";
+        matrix[5][14]="BACK";
+    }
+    /**
      * builds the background of a goalCard in the matrix
      * @author Giorgio Mattina,Riccardo Lapi
      * @param columnStart inclusive index where the methods start to build the matrix
@@ -196,6 +242,56 @@ public class TUIAsciiArtist implements CardDisplay {
                         matrix[i][j] = "═";
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Builds the background of the front and back of a starter card, which never changes and writes it in matrix
+     * @author Giorgio Mattina
+     */
+    public void buildStarterCardStructure(){
+        int j=0;
+        for (int i = 0; i<5;i++){
+            if(i==0){//first row
+                for ( j=0;j<27;j++){
+                    if(j==0 || j==14){
+                        matrix[i][j]=YELLOW+"╔"+YELLOW;
+                    }else if(j==12 || j==26){
+                        matrix[i][j]="╗"+RESET;
+                    }else if(j==13){
+                        matrix[i][j]=RESET+" ";
+                    }else{
+                        matrix[i][j]="═";
+                    }
+                }
+
+            }else if (i==1 || i==2 || i==3){//middle rows
+                for ( j=0;j<27;j++){
+                    if(j==0 || j==14 || j==12 || j==26){
+                        matrix[i][j]=RESET+YELLOW+"║"+RESET;
+
+                    }else if( j==13){
+                        matrix[i][j]=RESET+" ";
+                    }else{
+
+                        matrix[i][j]="\u001B[103m"+" ";
+                    }
+                }
+                matrix[i][26] += RESET;
+            }else if( i==4 ){//the last row
+                for ( j=0;j<27;j++){
+                    if(j==0 || j==14){
+                        matrix[i][j]=YELLOW+"╚"+YELLOW;
+                    }else if(j==12 || j==26){
+                        matrix[i][j]="╝"+RESET;
+                    }else if(j==13){
+                        matrix[i][j]=RESET+" ";
+                    }else{
+                        matrix[i][j]= "═";
+                    }
+                }
+
             }
         }
     }
