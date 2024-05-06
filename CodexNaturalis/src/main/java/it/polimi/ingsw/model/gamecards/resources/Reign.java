@@ -6,13 +6,13 @@ import java.io.Serializable;
 
 public enum Reign implements Resource, Serializable {
     @SerializedName("a")
-    ANIMAL("\u001B[104m","\u001B[36m","a"),
+    ANIMAL("\u001B[104m","\u001B[36m","A"),
     @SerializedName("m")
-    MUSHROOM("\u001B[101m","\u001B[31m","m"),
+    MUSHROOM("\u001B[101m","\u001B[31m","M"),
     @SerializedName("b")
-    BUG("\u001B[105m","\u001B[35m","b"),
+    BUG("\u001B[105m","\u001B[35m","B"),
     @SerializedName("pl")
-    PLANTS("\u001B[102m","\u001B[32m","p"),
+    PLANTS("\u001B[102m","\u001B[32m","P"),
     @SerializedName("e")
     EMPTY("\u001B[107m","\u001B[97m","■"),
     ;

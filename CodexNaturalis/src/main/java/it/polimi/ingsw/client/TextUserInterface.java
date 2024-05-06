@@ -183,20 +183,12 @@ public class TextUserInterface  {
                     try {
                         chosenCard=promptForChosenCard();
                         isChosenFront = promptForSide();
-
-                        //print field
-                        HashMap<Coordinates, Card> myField=view.getPlayersField(myName);
-                        List<Coordinates> myFieldBuildingHelper = view.getFieldBuildingHelper(myName);
-                        artist.show(myField,myFieldBuildingHelper);
-                        artist.addAvailablePosToField(view.showPlayersLegalPositions(myID));
-                        outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
-
+                        
+                        showField(myName,true);
+                        
                         outWriter.print("Where do you want to place the selected card? (int)");
 
-                        int chosenPositionI = s.nextInt();
-                        s.nextLine();
-                        List<Coordinates> availableCoordinates = view.showPlayersLegalPositions(myID);
-                        chosenPosition = availableCoordinates.get(chosenPositionI);
+                        chosenPosition = promptForChosenPosition();
 
                         if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myID );
                         else view.playCardBack(chosenCard, chosenPosition, myID);
@@ -215,12 +207,8 @@ public class TextUserInterface  {
                                     chosenCard = promptForChosenCard();
                                     isChosenFront = promptForSide();
                                     if (!changeCard) {
-                                        outWriter.print("Where do you want to place the selected card? (int)");
-                                        int chosenPositionI = s.nextInt();
-                                        s.nextLine();
-                                        List<Coordinates> availableCoordinates = view.showPlayersLegalPositions(myID);
-                                        chosenPosition = availableCoordinates.get(chosenPositionI);
-
+                                        showField(myName,true);
+                                        chosenPosition=promptForChosenPosition();
                                     }
 
                                     if (isChosenFront)
@@ -237,11 +225,7 @@ public class TextUserInterface  {
                         }
                     }
                     //print field
-                    HashMap<Coordinates, Card> myField=view.getPlayersField(myName);
-                    List<Coordinates> myFieldBuildingHelper = view.getFieldBuildingHelper(myName);
-                    artist.show(myField,myFieldBuildingHelper);
-
-                    outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
+                    showField(myName,false);
                     outWriter.print("Press enter to continue");
                     s.nextLine();
                     printIdleUI();
@@ -310,7 +294,9 @@ public class TextUserInterface  {
                    s.nextLine();
                    artist.resetMatrix();
                 case "show-my-field":
-
+                    showField(myName,false);
+                    outWriter.print("Press enter to continue");
+                    s.nextLine();
                 case "show-field":
                     String player= null;
                     while(error) {
@@ -321,16 +307,9 @@ public class TextUserInterface  {
                             outWriter.print("This player doesn't exists");
                         }
                     }
-
-                    HashMap<Coordinates,Card> field=view.getPlayersField(player);
-                    List<Coordinates> helper= view.getFieldBuildingHelper(player);
-                    artist.show(field,helper);
-                    outWriter.print(artist.getAsciiField(),helper);
-
+                    showField(player,false);
                     outWriter.print("Press enter to continue");
                     s.nextLine();
-                    
-                    
                 case "disconnect":
                     view.closeGame(myID);
                     tuiUpdater.interrupt();
@@ -339,6 +318,14 @@ public class TextUserInterface  {
                     outWriter.print("Unknown command");
             }
         }
+    }
+
+    private Coordinates promptForChosenPosition() throws RemoteException, InvalidUserId {
+        int chosenPositionI = s.nextInt();
+        s.nextLine();
+        List<Coordinates> availableCoordinates = view.showPlayersLegalPositions(myID);
+        Coordinates chosenPosition = availableCoordinates.get(chosenPositionI);
+        return chosenPosition;
     }
 
     private boolean handleNameNotUnique() throws RemoteException, IllegalOperationException {
@@ -456,5 +443,28 @@ public class TextUserInterface  {
         int chosenCardI= s.nextInt();
         s.nextLine();
         return view.showPlayerHand(myID).get(chosenCardI - 1);
+    }
+    private void showField(String username,boolean availablePosition) throws InvalidUserId, RemoteException {
+        HashMap<Coordinates, Card> field=view.getPlayersField(username);
+        List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
+        artist.show(field,fieldBuildingHelper);
+        if(availablePosition)
+            artist.addAvailablePosToField(view.showPlayersLegalPositions(myID));
+        outWriter.print(artist.getAsciiField(), fieldBuildingHelper);
+
+        outWriter.print("Do you want see a card? Insert the card number or insert any other character to continue:");
+        while(true) {
+            int chosenCardInt= 0;
+            try {
+                chosenCardInt = Integer.parseInt(s.nextLine());
+            } catch (NumberFormatException e) { return;}
+            if(chosenCardInt>=fieldBuildingHelper.size()){
+                outWriter.print("Invalid number!");
+            }else{
+                Coordinates chosenCardPosition=fieldBuildingHelper.get(chosenCardInt);
+                artist.show(field.get(chosenCardPosition));
+            }
+        }
+
     }
 }

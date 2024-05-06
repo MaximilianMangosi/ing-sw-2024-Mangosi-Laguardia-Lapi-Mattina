@@ -102,12 +102,11 @@ public class TUIAsciiArtistTest {
     }
 
     @Test
-    public void showTest (){
-        List<Card> deck =new ArrayList<>(gb.getResourceCardSet());
+    public void showCardTest (){
+        List<Card> deck =new ArrayList<>(gb.getGoldCardSet());
         for (int i =0 ; i< 10;i++){
             artist.show(deck.get(i));
         }
-
     }
     @Test
     public void showGoalTest (){
