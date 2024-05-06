@@ -414,6 +414,11 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         return controller.getTopOfResourceCardDeck();
     }
 
+    @Override
+    public Reign getTopOfGoldCardDeck() throws RemoteException {
+        return controller.getTopOfGoldCardDeck();
+    }
+
     public synchronized void updateAll() {
         updatePlayersPoints();
         updateNumOfResourceCards();

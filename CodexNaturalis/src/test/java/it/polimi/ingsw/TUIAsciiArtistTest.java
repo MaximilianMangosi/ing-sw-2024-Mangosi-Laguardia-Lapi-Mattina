@@ -100,12 +100,11 @@ public class TUIAsciiArtistTest {
     @Test
     public void showGoalTest (){
         List<Goal> deck =new ArrayList<>(gb.getGoalSet());
-        for (int i=0;i<3;i++){
-           // artist.show(deck.get(i));
-        }
+
+        artist.show((Goal[]) deck.toArray());
        String[][] matrix= artist.getMatrix();
         for (String[] row : matrix){
-            for(String cell: row) {
+            for(String cell: row){
                 if(cell != null)
                     System.out.print(cell);
                 else {
