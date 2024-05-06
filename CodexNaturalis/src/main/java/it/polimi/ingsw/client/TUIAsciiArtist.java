@@ -332,5 +332,7 @@ public class TUIAsciiArtist implements CardDisplay {
         return matrix;
     }
 
-
+    public void resetMatrix() {
+        matrix=new String[5][46];
+    }
 }

@@ -29,6 +29,7 @@ public class TextUserInterface  {
     private UUID myID;
     private String myName;
     private StringBuilder idleUI;
+    private Scanner s=new Scanner(System.in);
 
     /**
      * TextUserInterface's constructor: sets the View from witch the user will communicate with the server and creates the thread that handles the CLI
@@ -128,36 +129,22 @@ public class TextUserInterface  {
      */
 
     public void execCmd(String cmd) throws RemoteException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, DeckEmptyException, HandNotFullException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, InvalidGoalException {
-        Scanner s=new Scanner(System.in);
+        
         boolean error = true;
         synchronized (outWriter) {
             switch (cmd){
                 case "start-game":
                     try {
-                        outWriter.print("Insert username");
-                        myName = s.nextLine();
-                        myID=view.joinGame(myName);
+                        joinGame();
 
                     }catch (PlayerNameNotUniqueException e) {
                         outWriter.print(e.getMessage());
-                        while (error){
-                            try {
-                                outWriter.print("Insert username");
-                                myName = s.nextLine();
-                                myID = view.joinGame(myName);
-                                error=false;
-                            } catch (PlayerNameNotUniqueException ex) {
-                                outWriter.print(ex.getMessage());
-                            } catch (NoGameExistsException ignore) {
-                            }
-                        }
+                        handleNameNotUnique();
                     }catch (NoGameExistsException e){
                         outWriter.print(e.getMessage());
                         while (error) {
                             try {
-                                outWriter.print("Insert number of players");
-                                int numPlayers = s.nextInt();
-                                s.nextLine();
+                                int numPlayers = promptForNumPlayers();
                                 myID = view.BootGame(numPlayers, myName);
                                 error = false;
                             } catch (UnacceptableNumOfPlayersException ex1) {
@@ -168,20 +155,8 @@ public class TextUserInterface  {
                                     view.joinGame(myName);
                                 }catch (PlayerNameNotUniqueException e1){
                                     outWriter.print(e1.getMessage());
-                                    while (error){
-                                        try {
-                                            outWriter.print("Insert username");
-                                            myName = s.nextLine();
-                                            myID = view.joinGame(myName);
-                                            error=false;
-                                        } catch (PlayerNameNotUniqueException e2) {
-                                            outWriter.print(e2.getMessage());
-                                        } catch (NoGameExistsException ignore) {
-                                        }
-                                    }
-                                }catch (NoGameExistsException ignore){
-
-                                }
+                                    error=handleNameNotUnique();
+                                }catch (NoGameExistsException ignore){}
                             }
                         }
                     }
@@ -206,14 +181,10 @@ public class TextUserInterface  {
                     Coordinates chosenPosition=null;
                     boolean isChosenFront=false;
                     try {
-                        outWriter.print("Which card do you want to play? (1,2,3)");
-                        execCmd("show-hand");
-                        int chosenCardI = s.nextInt();
-                        s.nextLine();
-                        chosenCard = view.showPlayerHand(myID).get(chosenCardI - 1);
-                        outWriter.print("Which side? (f for front, b or any for back)");
-                        isChosenFront = s.nextLine().equals("f");
-                        outWriter.print("Where do you want to place the selected card [" + chosenCardI + "]? (int)");
+                        chosenCard=promptForChosenCard();
+                        isChosenFront = promptForSide();
+
+                        outWriter.print("Where do you want to place the selected card? (int)");
                         int chosenPositionI = s.nextInt();
                         s.nextLine();
                         List<Coordinates> availableCoordinates = view.showPlayersLegalPositions(myID);
@@ -233,19 +204,24 @@ public class TextUserInterface  {
                                 else {
                                     outWriter.print("Do you want to play another card in this position? Y/N");
                                     boolean changeCard = s.nextLine().toUpperCase(Locale.ROOT).equals("Y");
-                                    if (changeCard) {
-                                        outWriter.print("Which card do you want to play? (1,2,3)");
-                                        execCmd("show-hand");
-                                        int chosenCardI = s.nextInt();
-                                        chosenCard = view.showPlayerHand(myID).get(chosenCardI - 1);
-                                        outWriter.print("Which side? (f for front, b or any for back)");
-                                        isChosenFront = s.nextLine().equals("f");
+                                    chosenCard = promptForChosenCard();
+                                    isChosenFront = promptForSide();
+                                    if (!changeCard) {
+                                        outWriter.print("Where do you want to place the selected card? (int)");
+                                        int chosenPositionI = s.nextInt();
                                         s.nextLine();
+                                        List<Coordinates> availableCoordinates = view.showPlayersLegalPositions(myID);
+                                        chosenPosition = availableCoordinates.get(chosenPositionI);
 
-                                        if (isChosenFront) view.playCardFront(chosenCard, chosenPosition, myID);
-                                        else view.playCardBack(chosenCard, chosenPosition, myID);
-                                        error = false;
                                     }
+
+                                    if (isChosenFront)
+                                        view.playCardFront(chosenCard, chosenPosition, myID);
+                                    else
+                                        view.playCardBack(chosenCard, chosenPosition, myID);
+
+                                    error = false;
+
                                 }
                             } catch (RequirementsNotMetException ex) {
                                 outWriter.print(e.getMessage());
@@ -277,12 +253,17 @@ public class TextUserInterface  {
                     break;
 
                 case "draw-card-from-deck":
-                    outWriter.print("From which deck do you want to draw? (0,1)");
-                    Reign topResourceCard=view.getTopOfResourceCardDeck();
-                    outWriter.print("The card on top of Resource Card deck is:"+topResourceCard.getColorFG()+ topResourceCard.getSymbol());
-                    int chosenDeck = s.nextInt();
-                    view.drawFromDeck(myID, chosenDeck);
-                    execCmd("show-hand");
+                   while (error) {
+                       try {
+                           Integer chosenDeck = promptForChosenDeck();
+                           if (chosenDeck == null) break;
+                           view.drawFromDeck(myID, chosenDeck);
+                           error=false;
+                       } catch (InvalidChoiceException e) {
+                           outWriter.print(e.getMessage()+"[0,1]");
+                       }
+                   }
+                    showHand();
                     outWriter.print("Press enter to continue");
                     s.nextLine();
                     printIdleUI();
@@ -292,19 +273,57 @@ public class TextUserInterface  {
                     for(Card card:visibleCard){
                         artist.show(card);
                     }
-                    outWriter.print("Which card do you want to draw? (0, 1, 2, 3)");
-                    int chosenDrawCard = s.nextInt();
-                    view.drawVisibleCard(myID,chosenDrawCard);
+                    while (error) {
+                        try {
+                            outWriter.print("Which card do you want to draw? (0, 1, 2, 3)");
+                            int chosenDrawCard = s.nextInt();
+                            view.drawVisibleCard(myID,chosenDrawCard);
+                            error=false;
+                        } catch (InvalidChoiceException e) {
+                            outWriter.print(e+"[0,3]");
+                        }
+                    }
                     break;
                 case "show-hand":
-                    List<Card> hand =view.showPlayerHand(myID);
-                    for(Card card:hand){
-                        artist.show(card);
+                    showHand();
+                    break;
+                case "show-my-goal":
+                   goal=view.showPrivateGoal(myID);
+                   artist.show(new Goal[]{goal});
+                   outWriter.print(artist.getMatrix());
+                   
+                   outWriter.print("Press enter to continue");
+                   s.nextLine();
+                   artist.resetMatrix();
+                case "show-public-goal":
+                   artist.show( view.getPublicGoals());
+                   outWriter.print(artist.getMatrix());
+                   
+                   outWriter.print("Press enter to continue");
+                   s.nextLine();
+                   artist.resetMatrix();
+                case "show-my-field":
+
+                case "show-field":
+                    String player= null;
+                    while(error) {
+                        outWriter.print("What player do you want to see the field? Insert his username");
+                        player = s.nextLine();
+                        if(view.getPlayersList().contains(player)){ error=true;}
+                        else{
+                            outWriter.print("This player doesn't exists");
+                        }
                     }
+
+                    HashMap<Coordinates,Card> field=view.getPlayersField(player);
+                    List<Coordinates> helper= view.getFieldBuildingHelper(player);
+                    artist.show(field,helper);
+                    outWriter.print(artist.getAsciiField(),helper);
+
                     outWriter.print("Press enter to continue");
                     s.nextLine();
-                    printIdleUI();
-                    break;
+                    
+                    
                 case "disconnect":
                     view.closeGame(myID);
                     tuiUpdater.interrupt();
@@ -313,6 +332,73 @@ public class TextUserInterface  {
                     outWriter.print("Unknown command");
             }
         }
+    }
+
+    private boolean handleNameNotUnique() throws RemoteException, IllegalOperationException {
+        while (true){
+            try {
+                joinGame();
+                return false;
+            } catch (PlayerNameNotUniqueException ex) {
+                outWriter.print(ex.getMessage());
+            } catch (NoGameExistsException ignore) {
+            }
+        }
+    }
+
+    private int promptForNumPlayers() {
+        outWriter.print("Insert number of players");
+        int numPlayers = s.nextInt();
+        s.nextLine();
+        return numPlayers;
+    }
+
+    private void joinGame() throws RemoteException, NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException {
+        outWriter.print("Insert username");
+        myName = s.nextLine();
+        myID=view.joinGame(myName);
+    }
+
+    private Integer promptForChosenDeck() throws RemoteException {
+        outWriter.print("From which deck do you want to draw? (0,1)");
+        Reign topResourceCard= null;
+        Reign topGoldCard= null;
+        try {
+            topResourceCard = view.getTopOfResourceCardDeck();
+            topGoldCard = view.getTopOfGoldCardDeck();
+        } catch (NoSuchElementException ignore) {}
+        if(topResourceCard==null && topGoldCard  == null){
+            outWriter.print("Both deck are empty, please draw from visible card");
+            return null;
+        }
+        if(topResourceCard!=null ) {
+            outWriter.print("The card on top of Resource Card deck is: " + topResourceCard.getColorFG() + topResourceCard.getSymbol());
+        }else{
+            outWriter.print("The Resource Card deck is empty");
+        }
+        if(topGoldCard!=null){
+            outWriter.print("The card on top of Resource Card deck is:"+topGoldCard.getColorFG()+ topGoldCard.getSymbol());
+        }else {
+            outWriter.print("The Gold Card deck is empty");
+        }
+        int chosenDeck = s.nextInt();
+        return chosenDeck;
+    }
+
+    private boolean promptForSide() {
+        boolean isChosenFront;
+        outWriter.print("Which side? (f for front, b or any for back)");
+        isChosenFront = s.nextLine().equals("f");
+        return isChosenFront;
+    }
+
+    private void showHand() throws RemoteException, InvalidUserId {
+        List<Card> hand =view.showPlayerHand(myID);
+        for(Card card:hand){
+            artist.show(card);
+        }
+        outWriter.print("Press enter to continue");
+        s.nextLine();
     }
 
     /**
@@ -356,5 +442,12 @@ public class TextUserInterface  {
         updateIdleUI();
         outWriter.clearScreen();
         outWriter.print(String.valueOf(idleUI));
+    }
+    private Card promptForChosenCard() throws InvalidUserId, RemoteException {
+        outWriter.print("Which card do you want to play? (1,2,3)");
+        showHand();
+        int chosenCardI= s.nextInt();
+        s.nextLine();
+        return view.showPlayerHand(myID).get(chosenCardI - 1);
     }
 }

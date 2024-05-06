@@ -399,4 +399,7 @@ public class Controller {
     public Reign getTopOfResourceCardDeck() {
         return getGame().getResourceCardDeck().getFirst().getReign();
     }
+
+    public Reign getTopOfGoldCardDeck() { return getGame().getGoldCardDeck().getFirst().getReign();
+    }
 }
