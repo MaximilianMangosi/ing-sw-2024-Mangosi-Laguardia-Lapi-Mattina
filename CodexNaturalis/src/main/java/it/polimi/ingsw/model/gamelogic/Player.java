@@ -13,7 +13,7 @@ public class Player {
     private Map<Coordinates,Card> field=new HashMap<>();
     private HashMap<Resource,Integer> resourceCounters = new HashMap<>();
     private StarterCard starterCard;
-    private List<Coordinates> availablePositions;
+    private List<Coordinates> availablePositions=new ArrayList<>();
     private List<Coordinates> unavailablePositions=new ArrayList<>();
     private String name;
     private String check;

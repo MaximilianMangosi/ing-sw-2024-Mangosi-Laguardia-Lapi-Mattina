@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class FinalTurnState extends GameState{
@@ -21,9 +22,10 @@ public class FinalTurnState extends GameState{
      * @param game
      * @param gameManager
      */
-    FinalTurnState(Game game, GameManager gameManager) {
+    FinalTurnState(Game game, GameManager gameManager, HashMap<UUID,Player> uuids) {
         super(gameManager);
         this.game=game;
+        this.userIDs=uuids;
     }
     /**
      * checks for Turn rights, and calls playCardFront
@@ -40,9 +42,8 @@ public class FinalTurnState extends GameState{
         //checks if it's the player's turn, if the card is legal and if the position is legal
         CheckTurnCardPosition(selectedCard, position, userId);
         game.playCardFront(selectedCard,position);
-
         Player player = getPlayerFromUid(userId);
-
+        game.nextTurn();
         if(game.getPlayers().getLast().equals(player)){
             for(Player p : game.getPlayers()){
 

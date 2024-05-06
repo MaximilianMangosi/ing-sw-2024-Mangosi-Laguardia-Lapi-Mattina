@@ -150,7 +150,7 @@ public class GameTest {
         for (Resource resource: resourceArray){
             p.setResourceCounter(resource,0);
         }
-        game.playStarterCardFront(p,true);
+        game.playStarterCard(p,true);
         assertEquals(1,p.getResourceCounter(Reign.PLANTS));
         assertEquals(2,p.getResourceCounter(Reign.BUG));
         assertEquals(0,p.getResourceCounter(Reign.ANIMAL));
