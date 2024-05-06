@@ -184,7 +184,15 @@ public class TextUserInterface  {
                         chosenCard=promptForChosenCard();
                         isChosenFront = promptForSide();
 
+                        //print field
+                        HashMap<Coordinates, Card> myField=view.getPlayersField(myName);
+                        List<Coordinates> myFieldBuildingHelper = view.getFieldBuildingHelper(myName);
+                        artist.show(myField,myFieldBuildingHelper);
+                        artist.addAvailablePosToField(view.showPlayersLegalPositions(myID));
+                        outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
+
                         outWriter.print("Where do you want to place the selected card? (int)");
+
                         int chosenPositionI = s.nextInt();
                         s.nextLine();
                         List<Coordinates> availableCoordinates = view.showPlayersLegalPositions(myID);
@@ -232,7 +240,6 @@ public class TextUserInterface  {
                     HashMap<Coordinates, Card> myField=view.getPlayersField(myName);
                     List<Coordinates> myFieldBuildingHelper = view.getFieldBuildingHelper(myName);
                     artist.show(myField,myFieldBuildingHelper);
-                    artist.addAvailablePosToField(view.showPlayersLegalPositions(myID));
 
                     outWriter.print(artist.getAsciiField(),myFieldBuildingHelper);
                     outWriter.print("Press enter to continue");
