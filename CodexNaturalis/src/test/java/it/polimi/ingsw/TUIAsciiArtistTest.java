@@ -151,10 +151,5 @@ public class TUIAsciiArtistTest {
         }
 
     }
-    @Test
-    public void showFieldTest(){
-        game.startGame();
-        artist.show(game.getPlayers().getFirst().getField(), )
 
-    }
 }
