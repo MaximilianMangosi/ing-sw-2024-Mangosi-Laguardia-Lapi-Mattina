@@ -99,7 +99,7 @@ public class Controller {
         if(currentState.playCardFront(selectedCard, position, userId)){
             view.setWinner(currentState.game.getWinner().getName());
             view.setIsGameEnded();
-            currentState.nextState();
+            currentState=currentState.nextState();
         }
         view.updatePlayersHands();
         view.updatePlayersField();

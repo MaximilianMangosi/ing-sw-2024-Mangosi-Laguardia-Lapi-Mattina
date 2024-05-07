@@ -44,6 +44,11 @@ public class FinalTurnState extends GameState{
         game.playCardFront(selectedCard,position);
         Player player = getPlayerFromUid(userId);
         game.nextTurn();
+
+        return isGameOver(player);
+    }
+
+    private boolean isGameOver(Player player) {
         if(game.getPlayers().getLast().equals(player)){
             for(Player p : game.getPlayers()){
 
@@ -79,22 +84,7 @@ public class FinalTurnState extends GameState{
         CheckTurnCardPosition(selectedCard,position,userId);
         game.playCardBack(selectedCard,position);
         Player player = getPlayerFromUid(userId);
-        if(game.getPlayers().getLast().equals(player)){
-            for(Player p : game.getPlayers()){
-
-                Goal privateGoal = p.getGoal();
-                Goal[] publicGoals = game.getPublicGoals();
-
-                int totGoalsPoint = privateGoal.calculateGoal(p);
-                totGoalsPoint += publicGoals[0].calculateGoal(p);
-                totGoalsPoint += publicGoals[1].calculateGoal(p);
-
-                p.setGoalPoints(totGoalsPoint);
-            }
-
-            return true;
-        }
-        return false;
+        return isGameOver(player);
     }
 
     /**

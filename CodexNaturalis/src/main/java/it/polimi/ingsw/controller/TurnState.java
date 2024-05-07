@@ -32,9 +32,18 @@ public class TurnState extends GameState{
      * @return the next state
      */
     public GameState nextState(){
-        if((game.someoneHas20Points() || game.AreBothDeckEmpty()) && game.getCurrentPlayer().equals(game.getPlayers().getFirst()))
+        if((game.someoneHas20Points() || game.AreBothDeckEmpty()) && isFirstPlayer())
             return new FinalTurnState(game,gameManager,userIDs);
         return this;
+    }
+
+    /**
+     * If currentPlayer is the first of PlayersList and his turn his ended (he played one card and drawn another one) than the state can change
+     * @author Giuseppe Laguardia
+     * @return true if currentPlayer is first player of the list and has ended his turn
+     */
+    private boolean isFirstPlayer() {
+        return game.getCurrentPlayer().equals(game.getPlayers().getFirst()) && game.getCurrentPlayer().getHand().size()==3;
     }
 
     /**
