@@ -64,9 +64,9 @@ public class LGoal extends Goal {
         }
 
         for(Map.Entry<Coordinates, Card> card : field.entrySet()){
-            Reign currentReign = (card.getValue() instanceof GoldCard) ? ((GoldCard) card.getValue()).getReign() : ((ResourceCard)card.getValue()).getReign();
-            if(!currentReign.equals(primaryReign)) continue;
 
+            Reign currentReign = card.getValue().getReign();
+            if(!primaryReign.equals(currentReign)) continue;
             Coordinates current = card.getKey();
 
             if(usedCards.contains(current)) continue;

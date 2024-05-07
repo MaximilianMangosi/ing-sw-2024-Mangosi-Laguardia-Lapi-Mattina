@@ -92,6 +92,12 @@ public class TUIAsciiArtist implements CardDisplay {
         System.out.println(strbuilder.toString());
             //TODO invece di stampare aggiungi alla matrice
     }
+
+    /**
+     * @author Giuseppe Laguardia and Riccardo Lapi
+     * print the goals of the player
+     * @param goals array of the players goals
+     */
     public void show(Goal[] goals){
         int k=0;
         matrix=new String[5][46];
@@ -295,9 +301,21 @@ public class TUIAsciiArtist implements CardDisplay {
             }
         }
     }
+
+    /**
+     * @author Giorgio Mattina
+     * @return the player field
+     */
     public String[][] getAsciiField(){
         return asciiField;
     }
+
+    /**
+     * @author Giuseppe Laguardia, Giorgio Mattina, Riccardo Lapi, Maximilian Mangosi
+     * print the user field
+     * @param field the user field
+     * @param fieldBuildingHelper List of the coordinates in order of insertion
+     */
     public void show (HashMap<Coordinates, Card> field, List<Coordinates> fieldBuildingHelper){
         int i,j;
         asciiField = new String[240][880];
@@ -318,6 +336,11 @@ public class TUIAsciiArtist implements CardDisplay {
 
     }
 
+    /**
+     * @author Riccardo Lapi
+     * add the available postions of the player inside the asciiField
+     * @param availablePositions List of position where the user can play the card
+     */
     public void addAvailablePosToField(List<Coordinates> availablePositions ){
 
         for(Coordinates coordinates : availablePositions){
@@ -327,11 +350,18 @@ public class TUIAsciiArtist implements CardDisplay {
         }
     }
 
-
+    /**
+     * @author Giuseppe Laguardia
+     * @return matrix
+     */
     public String[][] getMatrix() {
         return matrix;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * reset the matrix
+     */
     public void resetMatrix() {
         matrix=new String[5][46];
     }

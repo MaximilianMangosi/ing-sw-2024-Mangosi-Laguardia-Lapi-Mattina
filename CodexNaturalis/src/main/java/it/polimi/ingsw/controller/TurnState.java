@@ -125,6 +125,11 @@ public class TurnState extends GameState{
         game.drawVisibleCard(choice);
         game.nextTurn();
     }
+
+    /**
+     * @author Giuseppe Laguardia
+     * @return if the game is started
+     */
     @Override
     public boolean isGameStarted() {
         return true;
