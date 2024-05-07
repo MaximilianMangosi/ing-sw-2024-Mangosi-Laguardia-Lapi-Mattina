@@ -63,6 +63,17 @@ public class Controller {
         changeState();
         return userID;
     }
+
+    /**
+     * calls joinGame on currentState with the player's name as a parameter, then updates the players list in view and
+     * calls changeState()
+     * @author Giorgio Mattina
+     * @param playerName
+     * @return the UUID returned by currentState
+     * @throws NoGameExistsException
+     * @throws IllegalOperationException
+     * @throws PlayerNameNotUniqueException
+     */
     public UUID joinGame(String playerName) throws NoGameExistsException, IllegalOperationException,PlayerNameNotUniqueException {
         UUID userID= currentState.joinGame(playerName);
         view.updatePlayersList();
@@ -362,6 +373,11 @@ public class Controller {
         return currentState.game.getVisibleCards();
     }
 
+    /**
+     * getter of current Map of UUID-Player
+     * @author Giuseppe Laguardia
+     * @return Map UUID-Player
+     */
     public  Map<UUID,Player> getUserIDs(){
         return currentState.userIDs;
     }

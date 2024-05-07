@@ -159,6 +159,7 @@ public class TextUserInterface  {
                                 outWriter.print(ex.getMessage());
                                 try{
                                     view.joinGame(myName);
+                                    error=false;
                                 }catch (PlayerNameNotUniqueException e1){
                                     outWriter.print(e1.getMessage());
                                     error=handleNameNotUnique();
@@ -324,6 +325,7 @@ public class TextUserInterface  {
                 case "disconnect":
                     view.closeGame(myID);
                     tuiUpdater.interrupt();
+                    outWriter.print("You quit the game, type 'start-game' to restart playing\n");
                     break;
                 default:
                     outWriter.print("Unknown command");
@@ -488,7 +490,9 @@ public class TextUserInterface  {
                 outWriter.print("Invalid number!");
             }else{
                 if(chosenCardInt==0){
-                    artist.show(view.getStarterCard(myID)); //todo update with showStarterCard
+                    StarterCard st = view.getStarterCard(myID);
+                    artist.show(st);
+                    outWriter.print(artist.getMatrix(),st.IsFront());//todo update with showStarterCard
                 }
                 else{
                     Coordinates chosenCardPosition=fieldBuildingHelper.get(chosenCardInt);

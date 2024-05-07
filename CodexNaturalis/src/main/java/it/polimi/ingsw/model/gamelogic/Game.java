@@ -172,7 +172,8 @@ public class Game{
         shuffle(listOfGoal);
         shuffle(starterCards);
         Resource[] resourceArray={Reign.ANIMAL,Reign.MUSHROOM,Reign.BUG,Reign.PLANTS, Tool.PHIAL,Tool.FEATHER,Tool.SCROLL};
-
+        publicGoals[0] = listOfGoal.removeFirst();
+        publicGoals[1]=listOfGoal.removeFirst();
 
         for (i = 0; i < numOfPlayers; i++) {
 

@@ -24,8 +24,10 @@ public class UpdateTUI extends Thread{
                 }
                  sleep(30000);
 
-            } catch (RemoteException | InterruptedException e) {
+            } catch (RemoteException e) {
                 throw new RuntimeException(e);
+            }catch(InterruptedException ignore){
+
             }
             catch ( InvalidUserId e){
                 System.out.println(e.getMessage());
