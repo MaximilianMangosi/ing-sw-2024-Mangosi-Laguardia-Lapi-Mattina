@@ -331,6 +331,13 @@ public class TextUserInterface  {
         }
     }
 
+    /**
+     * reads from terminal the choice of the position, then returns the Coordinates of that choice
+     * @author Giuseppe Laguardia
+     * @return coordinates of the card corresponding to the user's choice
+     * @throws RemoteException
+     * @throws InvalidUserId
+     */
     private Coordinates promptForChosenPosition() throws RemoteException, InvalidUserId {
         int chosenPositionI = s.nextInt();
         s.nextLine();
@@ -339,6 +346,13 @@ public class TextUserInterface  {
         return chosenPosition;
     }
 
+    /**
+     * tryes to call joinGame and catches PlayerNameNotUniqueException and NoGameExistsException
+     * @return false after calling joinGame successfully
+     * @author Giuseppe Laguardia
+     * @throws RemoteException
+     * @throws IllegalOperationException
+     */
     private boolean handleNameNotUnique() throws RemoteException, IllegalOperationException {
         while (true){
             try {
