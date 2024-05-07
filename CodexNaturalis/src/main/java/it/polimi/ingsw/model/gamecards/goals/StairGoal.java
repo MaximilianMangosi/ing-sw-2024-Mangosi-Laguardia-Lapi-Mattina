@@ -13,24 +13,42 @@ import java.util.List;
 import java.util.Map;
 
 public class StairGoal extends Goal {
+    /**
+     * @author Riccardo Lapi
+     * @param points of the goal
+     * @param reign of the goal
+     * @param isToLowerRight of the goal
+     */
     public StairGoal(int points, Reign reign, boolean isToLowerRight) {
         super(points);
         this.reign = reign;
         this.isToLowerRight = isToLowerRight;
     }
 
+    /**
+     * @author Riccardo Lapi
+     * @return the reign
+     */
     public Reign getReign() {
         return reign;
     }
 
     private final Reign reign;
 
+    /**
+     * @author Riccardo Lapi
+     * @return isToLowerRight
+     */
     public boolean isToLowerRight() {
         return isToLowerRight;
     }
 
     private final boolean isToLowerRight;
 
+    /**
+     * @author Riccardo Lapi
+     * @return the ui descriptor
+     */
     @Override
     public String getUIDescription() {
         return "Stair Goal: " + points + " points every Stair with Reign " + reign.toString();

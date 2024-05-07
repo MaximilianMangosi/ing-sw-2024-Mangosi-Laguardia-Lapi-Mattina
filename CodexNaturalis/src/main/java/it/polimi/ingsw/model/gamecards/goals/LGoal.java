@@ -13,6 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 public class LGoal extends Goal {
+    /**
+     * @author Riccardo Lapi
+     * @param points of the goal
+     * @param primaryReign of the goal
+     * @param secondaryReign of the goal
+     */
     public LGoal(int points, Reign primaryReign, Reign secondaryReign) {
         super(points);
         this.primaryReign = primaryReign;
@@ -22,15 +28,26 @@ public class LGoal extends Goal {
     private final Reign primaryReign;
     private final Reign secondaryReign;
 
+    /**
+     * @author Riccardo Lapi
+     * @return the primary reign
+     */
     public Reign getPrimaryReign() {
         return primaryReign;
     }
 
+    /**
+     * @author Riccardo Lapi
+     * @return the secondary reign
+     */
     public Reign getSecondaryReign() {
         return secondaryReign;
     }
 
-
+    /**
+     * @author Riccardo Lapi
+     * @return ui description
+     */
     @Override
     public String getUIDescription() {
         return "L Goal: " + points + " points every L with 1" + primaryReign.toString() + " dx or sx and 2 " + secondaryReign.toString();
