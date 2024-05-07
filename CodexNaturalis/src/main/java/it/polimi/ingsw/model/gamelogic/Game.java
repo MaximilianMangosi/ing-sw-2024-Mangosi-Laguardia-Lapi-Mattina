@@ -61,6 +61,11 @@ public class Game{
 
     }
 
+    /**
+     * getter of list of players
+     * @author Giuseppe Laguardia
+     * @return List <Player></>
+     */
     public List<Player> getPlayers() {
         return new ArrayList<>(listOfPlayers);
     }
@@ -145,7 +150,7 @@ public class Game{
     }
 
     /**
-    *   Builds the Players' hands and all the game decks
+     * Builds the Players' hands and all the game decks
      * @author Giorgio Mattina
      *
      * Builds the Players' hands and all the game decks

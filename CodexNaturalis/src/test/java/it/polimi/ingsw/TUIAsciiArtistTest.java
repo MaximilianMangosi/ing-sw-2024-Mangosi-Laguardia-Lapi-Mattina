@@ -26,6 +26,7 @@ import static java.util.Collections.shuffle;
 
 public class TUIAsciiArtistTest {
     public TUIAsciiArtist artist=new TUIAsciiArtist();
+    public Game game;
     public GameBox gb = new GameBox();
     private void fillList(ArrayList<String> jsonsList,int numOfJson,String path) throws IOException {
         for (int i = 1; i <=numOfJson; i++) {
@@ -89,6 +90,14 @@ public class TUIAsciiArtistTest {
         gb.addLGoals(LGoalJsons);
         gb.addStairGoals(stairGoalJsons);
         gb.addDistinctGoals();
+        Player p1= new Player("Pepo");
+        Player p2= new Player("Iugal");
+        Player p3= new Player("Maxi il processo che ha sconfitto la mafia");
+        Player p4 = new Player("Mario");
+        game= new Game(p1,4,gb);
+        game.addPlayer(p2);
+        game.addPlayer(p3);
+        game.addPlayer(p4);
 
     }
 
@@ -142,4 +151,5 @@ public class TUIAsciiArtistTest {
         }
 
     }
+
 }

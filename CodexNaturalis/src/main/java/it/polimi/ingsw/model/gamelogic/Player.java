@@ -20,58 +20,137 @@ public class Player {
     private int points;
     private int goalPoints;
 
+
+    /**
+     * constructor of class Player
+     * @author Giuseppe Laguardia
+     * @param name the player's nickname
+     */
     public Player(String name){
         this.name = name;
     }
 
+    /**
+     * getter of number of points obtained through goalCards
+     * @author Giuseppe Laguardia
+     * @return
+     */
     public int getGoalPoints() {
         return goalPoints;
     }
 
+    /**
+     * setter of  number of points obtained through goalCards
+     * @author Giuseppe Laguardia
+     * @param goalPoints
+     */
     public void setGoalPoints(int goalPoints) {
         this.goalPoints = goalPoints;
     }
 
+    /**
+     * setter of the player's hand
+     * @author Giuseppe Laguardia
+     * @param hand
+     */
     public void setHand(List<Card> hand) {
         this.hand = hand;
     }
 
+    /**
+     * getter of the player's private goal
+     * @author Giuseppe Laguardia
+     * @return
+     */
     public Goal getGoal() {
         return goal;
     }
 
+    /**
+     * setter of player's private goal
+     * @author Giuseppe Laguardia
+     * @param goal
+     */
     public void setGoal(Goal goal) {
         this.goal = goal;
     }
 
+    /**
+     * getter of the player's field (Map Coordinates to Card)
+     * @author Giuseppe Laguardia
+     * @return Map of Coordinates-Card
+     */
     public Map<Coordinates, Card> getField() {
         return field;
     }
 
+    /**
+     * setter of player's personal field
+     * @author Giuseppe Laguardia
+     * @param field
+     */
     public void setField(Map<Coordinates, Card> field) {
         this.field = field;
     }
 
+    /**
+     * getter of player's Starter Card
+     * @author Giuseppe Laguardia
+     * @return player's starterCard
+     */
     public StarterCard getStarterCard() {
         return starterCard;
     }
 
+    /**
+     * setter of player's Starter Card
+     * @author Giuseppe Laguardia
+     * @param starterCard
+     */
     public void setStarterCard(StarterCard starterCard) {
         this.starterCard = starterCard;
     }
 
+    /**
+     * getter of List of available positions
+     * @author Giuseppe Laguardia
+     * @return list of coordinates, the player's available positions
+     */
+
     public List<Coordinates> getAvailablePositions() {
         return availablePositions;
     }
+
+    /**
+     * getter of player's list of unavailable positions
+     * @author Giuseppe Laguardia
+     * @return List of coordinates
+     */
     public List<Coordinates> getUnavailablePositions(){return unavailablePositions;}
 
+    /**
+     * setter of player's list of available positions
+     * @author Giuseppe Laguardia
+     * @param availablePositions, a list of coordinates
+     */
     public void setAvailablePositions(List<Coordinates> availablePositions) {
         this.availablePositions = availablePositions;
     }
+
+    /**
+     * getter of the two player's goal options
+     * @author Giuseppe Laguardia
+     * @return an array of size 2, containing two Goal objects
+     */
     public Goal[] getGoalOptions() {
         return goalOptions;
     }
 
+    /**
+     * setter  of the two player's goal options
+     * @author Giorgio Mattina
+     * @param goalOptions, an array of goals of size 2
+     */
     public void setGoalOptions(Goal[] goalOptions) {
         this.goalOptions = goalOptions;
     }
@@ -134,30 +213,65 @@ public class Player {
     }
 
 
-
+    /**
+     * getter of player's nickname
+     * @author Giuseppe Laguardia
+     * @return player's nickname
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * setter of player's name
+     * @author Giuseppe Laguardia
+     * @param name, the player's nickname
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * getter of player's pawn's color
+     * @author Giuseppe Laguardia
+     * @return the color of the player's pawn
+     */
     public String getCheck() {
         return check;
     }
 
+    /**
+     * setter of player's pawn's color
+     * @author Giuseppe Laguardia
+     * @param check, a color
+     */
     public void setCheck(String check) {
         this.check = check;
     }
 
+    /**
+     *  getter of player's points
+     * @author Giuseppe Laguardia
+     * @return player's points
+     */
     public int getPoints() {
         return points;
     }
 
+    /**
+     * setter of player's points
+     * @author Giuseppe Laguardia
+     * @param points
+     */
     public void setPoints(int points) {
         this.points = points;
     }
+
+    /**
+     * removes the Card parameter from player's hand
+     * @author Giorgio Mattina
+     * @param selectedCard
+     */
     public void removeFromHand(Card  selectedCard){
         hand.remove(selectedCard);
     }
