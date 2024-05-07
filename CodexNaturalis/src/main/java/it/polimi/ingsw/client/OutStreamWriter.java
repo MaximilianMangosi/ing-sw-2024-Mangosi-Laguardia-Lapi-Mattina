@@ -42,10 +42,43 @@ public class OutStreamWriter {
     }
 
     /**
-     * @author Giuseppe Laguardia
-     * @param helper list of the player coordinates in order of entry
-     * @return the X coordinate of the further to the right
+     * prints starter card either only the front if isFront = true or back if isFront=false
+     * @author Giorgio Mattina
+     * @param matrix ASCII representation of StarterCard
+     * @param isFront
      */
+    public void print(String[][] matrix,boolean isFront){
+        if(isFront){
+            for(int i=0;i<5;i++){
+                for (int j=0;j<14;j++){
+                    if(matrix[i][j]!=null) {
+                        System.out.print(matrix[i][j]);
+                    }
+                    else {
+                        System.out.print(" \u001B[0m");
+                    }
+
+
+                }
+                System.out.println(" \u001B[0m");
+            }
+        }else{
+            for(int i=0;i<5;i++){
+                for (int j=14;j<26;j++){
+                    if(matrix[i][j]!=null) {
+                        System.out.print(matrix[i][j]);
+                    }
+                    else {
+                        System.out.print(" \u001B[0m");
+                    }
+
+
+                }
+                System.out.println(" \u001B[0m");
+            }
+        }
+    }
+
     private Integer getMaxX(List<Coordinates> helper) {
         return helper.stream().map(c -> c.x).max(Integer::compare).orElse(398);
     }
