@@ -53,9 +53,8 @@ public class StairGoal extends Goal {
         Reign goalReign = getReign();
 
         for(Map.Entry<Coordinates, Card> card : field.entrySet()){
-            Reign currentReign = (card.getValue() instanceof GoldCard) ? ((GoldCard) card.getValue()).getReign() : ((ResourceCard)card.getValue()).getReign();
-            if(!currentReign.equals(goalReign)) continue;
-
+            Reign currentReign = card.getValue().getReign();
+            if(!goalReign.equals(currentReign)) continue;
             Coordinates current = card.getKey();
 
             if(usedCards.contains(current)) continue;

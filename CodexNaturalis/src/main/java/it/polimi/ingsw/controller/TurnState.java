@@ -32,8 +32,11 @@ public class TurnState extends GameState{
      * @return the next state
      */
     public GameState nextState(){
-        if((game.someoneHas20Points() || game.AreBothDeckEmpty()) && isFirstPlayer())
+        if((game.someoneHas20Points() || game.AreBothDeckEmpty()) && isFirstPlayer()){
+            System.out.println("final turn");
             return new FinalTurnState(game,gameManager,userIDs);
+        }
+
         return this;
     }
 

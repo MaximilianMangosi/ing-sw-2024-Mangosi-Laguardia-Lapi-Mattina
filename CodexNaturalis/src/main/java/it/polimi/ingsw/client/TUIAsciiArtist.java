@@ -47,25 +47,25 @@ public class TUIAsciiArtist implements CardDisplay {
             String angleSE = card.getResource("SE") !=null? card.getResource("SE").getSymbol() : "×";
 
             if(card.getRequirements().isEmpty()){
-                strbuilder.append(String.format(reignColor+"%s ----%c---- %s\n" +
-                                                  reignColor+ "| ■■■■■■■■■ |\n" +
-                                                 reignColor+  "| ■■■■■■■■■ |\n" +
-                                                 reignColor+   "| ■■■■■■■■■ |\n" +
-                                                 reignColor +"%s --------- %s\n"+RESET,angleNW,point, angleNE,angleSW,angleSE));
+                strbuilder.append(String.format(reignColor+"%s ----%c---- %s"+RESET+"\n" +
+                                                  reignColor+ "|           |"+RESET+"\n" +
+                                                 reignColor+  "|           |"+RESET+"\n" +
+                                                 reignColor+   "|           |"+RESET+"\n" +
+                                                 reignColor +"%s --------- %s"+RESET+"\n",angleNW,point, angleNE,angleSW,angleSE));
 
             }else{
-                strbuilder.append(String.format(YELLOW+"%s ----%c---- %s\n|"+
-                                 reignColor+" ■■■■■■■■■ "+YELLOW+"|\n|"+
-                                  reignColor+" ■■■■■■■■■ "+YELLOW+"|\n|"+
-                                  reignColor+" ■■■■■■■■■ "+YELLOW+"|\n"+
-                                       "%s --------- %s\n"+RESET,angleNW,point, angleNE,angleSW,angleSE));
+                strbuilder.append(String.format(YELLOW+"%s ----%c---- %s"+RESET+"\n"+
+                                 YELLOW+"|"+reignColor+"           "+YELLOW+"|"+RESET+"\n"+
+                                  YELLOW+"|"+reignColor+"           "+YELLOW+"|"+RESET+"\n"+
+                                  YELLOW+"|"+reignColor+"           "+YELLOW+"|"+RESET+"\n"+
+                                  YELLOW+ "%s --------- %s"+RESET+"\n",angleNW,point, angleNE,angleSW,angleSE));
                 int sum=0;
                 List<Resource> req=new ArrayList<>();
                 for(Resource s : card.getRequirements().keySet().stream().sorted().toList()){
                    for(int j = 0; j<card.getRequirements().get(s);j++)
                        req.add(s);
                 }
-                int bottomCenter=99;
+                int bottomCenter=107;
                 //regardless of the size
                 strbuilder.replace(bottomCenter,bottomCenter+1,req.removeFirst().getSymbol());
                 strbuilder.replace(bottomCenter+2,bottomCenter+3,req.removeFirst().getSymbol());
@@ -81,7 +81,7 @@ public class TUIAsciiArtist implements CardDisplay {
                     strbuilder.replace(bottomCenter+1,bottomCenter+2,req.removeFirst().getSymbol());
                 }
             }
-            int center=31;
+            int center=40;
             if (card.getPoints()==2){
                 strbuilder.replace(center,center+1,"A");
             }

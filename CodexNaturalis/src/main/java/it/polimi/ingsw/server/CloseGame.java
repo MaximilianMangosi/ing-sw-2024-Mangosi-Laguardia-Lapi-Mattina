@@ -22,7 +22,7 @@ public class CloseGame extends Thread{
                 // if the game has ended but some players didn't close the game, the thread waits for 2 minutes then deletes the game
                 if (shouldWait) {
                     try {
-                        wait(120000);
+                        sleep(120000);
                         shouldWait=false;
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
