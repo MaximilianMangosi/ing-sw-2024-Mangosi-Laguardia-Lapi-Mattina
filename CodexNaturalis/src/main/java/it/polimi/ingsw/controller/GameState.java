@@ -32,6 +32,10 @@ public abstract class GameState {
 
     }
 
+    /**
+     * @author Giorgio Mattina
+     * @return the user ids
+     */
     public HashMap<UUID, Player> getUserIDs() {
         return userIDs;
     }
@@ -173,6 +177,16 @@ public abstract class GameState {
      * @return false
      */
     public boolean isGameStarted(){return false;}
+
+    /**
+     * @author Giorgio Mattina
+     * abstract for the joinGame function
+     * @param playerName
+     * @return the UUID created
+     * @throws IllegalOperationException
+     * @throws NoGameExistsException
+     * @throws PlayerNameNotUniqueException
+     */
     public UUID joinGame(String playerName) throws IllegalOperationException, NoGameExistsException,PlayerNameNotUniqueException {
         throw new IllegalOperationException("joinGame");
     }

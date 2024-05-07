@@ -455,12 +455,25 @@ public class TextUserInterface  {
         return myID;
     }
 
-
+    /**
+     * @author Giuseppe Laguardia
+     * update the ui
+     * @throws InvalidUserId
+     * @throws RemoteException
+     */
     public void printIdleUI() throws InvalidUserId, RemoteException {
         updateIdleUI();
         outWriter.clearScreen();
         outWriter.print(String.valueOf(idleUI));
     }
+
+    /**
+     * @author Giuseppe Laguardia
+     * ask the user which card to play and return it
+     * @return the choosen Card
+     * @throws InvalidUserId
+     * @throws RemoteException
+     */
     private Card promptForChosenCard() throws InvalidUserId, RemoteException {
         outWriter.print("Which card do you want to play? (1,2,3)");
         showHand();
@@ -468,6 +481,15 @@ public class TextUserInterface  {
         s.nextLine();
         return view.showPlayerHand(myID).get(chosenCardI - 1);
     }
+
+    /**
+     * @author Giuseppe Laguardia
+     * print the filed with the users cards, and the available positions where he can play the new card
+     * @param username the player username
+     * @param availablePosition boolean that indicate whether to also print the available position of the new card
+     * @throws InvalidUserId
+     * @throws RemoteException
+     */
     private void showField(String username,boolean availablePosition) throws InvalidUserId, RemoteException {
         HashMap<Coordinates, Card> field=view.getPlayersField(username);
         List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
