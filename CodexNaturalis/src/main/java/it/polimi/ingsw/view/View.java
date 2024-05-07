@@ -389,16 +389,35 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         controller.closeGame(userID);
     }
 
+    /**
+     * getter of isGameEnded attribute
+     * @author Giuseppe Laguardia
+     * @return true if the game has ended
+     * @throws RemoteException
+     */
     @Override
     public boolean isGameEnded() throws RemoteException {
         return isGameEnded;
     }
 
+    /**
+     * getter of isGameStarted attribute
+     * @author Giuseppe Laguardia
+     * @return true if game has started
+     * @throws RemoteException
+     */
     @Override
     public boolean isGameStarted() throws RemoteException {
         return isGameStarted;
     }
 
+    /**
+     * getter of the FieldBuildingHelper
+     * @author Maximilian Mangosi
+     * @param name nickname of the player
+     * @return list of Coordinates
+     * @throws RemoteException
+     */
     @Override
     public List<Coordinates> getFieldBuildingHelper(String name) throws RemoteException {
         return fieldBuildingHelper.get(name);

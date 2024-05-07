@@ -63,6 +63,17 @@ public class Controller {
         changeState();
         return userID;
     }
+
+    /**
+     * calls joinGame on currentState with the player's name as a parameter, then updates the players list in view and
+     * calls changeState()
+     * @author Giorgio Mattina
+     * @param playerName
+     * @return the UUID returned by currentState
+     * @throws NoGameExistsException
+     * @throws IllegalOperationException
+     * @throws PlayerNameNotUniqueException
+     */
     public UUID joinGame(String playerName) throws NoGameExistsException, IllegalOperationException,PlayerNameNotUniqueException {
         UUID userID= currentState.joinGame(playerName);
         view.updatePlayersList();

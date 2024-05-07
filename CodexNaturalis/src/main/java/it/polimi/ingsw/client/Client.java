@@ -47,7 +47,7 @@ public class Client {
             //System.out.println("\033c");
             System.out.println("Welcome to Codex Naturalis\n press any key to start");
             s.nextLine();
-
+            System.out.println("Lets' start! Type 'start-game' to start a game\n");
 
             TextUserInterface tui= new TextUserInterface(view);
 
