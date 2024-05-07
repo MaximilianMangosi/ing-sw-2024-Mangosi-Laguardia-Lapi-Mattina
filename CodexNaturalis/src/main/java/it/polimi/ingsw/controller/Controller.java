@@ -373,6 +373,11 @@ public class Controller {
         return currentState.game.getVisibleCards();
     }
 
+    /**
+     * getter of current Map of UUID-Player
+     * @author Giuseppe Laguardia
+     * @return Map UUID-Player
+     */
     public  Map<UUID,Player> getUserIDs(){
         return currentState.userIDs;
     }

@@ -55,7 +55,7 @@ public class Client {
             while (true) {
                     try {
                         tui.execCmd(s.nextLine().toLowerCase(Locale.ROOT));
-                        tui.printIdleUI();
+
                     } catch (InvalidUserId | InvalidGoalException |
                              IllegalOperationException | HandNotFullException |
                              IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException |
