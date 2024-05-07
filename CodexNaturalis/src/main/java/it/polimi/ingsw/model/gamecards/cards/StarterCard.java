@@ -16,6 +16,19 @@ public class StarterCard extends Card implements Serializable {
     private final Reign BackSW;
     private final Reign BackSE;
     private final List<Reign> centralResources;
+
+    /**
+     * @author Giuseppe Laguardia
+     * @param NW coordinates of the angle front
+     * @param NE coordinates of the angle front
+     * @param SW coordinates of the angle front
+     * @param SE coordinates of the angle front
+     * @param backNW coordinates of the angle back
+     * @param backNE coordinates of the angle back
+     * @param backSW coordinates of the angle back
+     * @param backSE coordinates of the angle back
+     * @param centralResources central resources
+     */
     public StarterCard(Resource NW, Resource NE, Resource SW, Resource SE, Reign backNW, Reign backNE, Reign backSW, Reign backSE, ArrayList<Reign> centralResources) {
         super(NW, NE, SW, SE);
         BackNW = backNW;
@@ -43,14 +56,17 @@ public class StarterCard extends Card implements Serializable {
         return null;
     }
 
+    /**
+     * @author Giorgio Mattina
+     * @return the central resources of the starter card
+     */
     public List<Resource> getCentralResource() {
         return new ArrayList<>(centralResources);
     }
 
     /**
-     * Returns a  list of resources, when starter card is played back
      * @author Giorgio Mattina
-     * @return
+     * @return a  list of resources, when starter card is played back
      */
     public List<Resource> getBackResources(){
         //cycle through the card angles and return a list with all the resources in the card

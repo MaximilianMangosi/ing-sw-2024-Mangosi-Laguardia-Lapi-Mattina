@@ -9,9 +9,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GoldCardAngles extends GoldCard{
+    /**
+     * @author Giuseppe Laguardia
+     * @param NW coordinates of the angle
+     * @param NE coordinates of the angle
+     * @param SW coordinates of the angle
+     * @param SE coordinates of the angle
+     * @param reign of the card
+     * @param points of the card
+     * @param requirements of the card
+     */
     public GoldCardAngles(Resource NW, Resource NE, Resource SW, Resource SE, Reign reign, int points, HashMap<Reign, Integer> requirements) {
         super(NW, NE, SW, SE, reign, points, requirements);
     }
+
+    /**
+     * @author Giorgio Mattina
+     * adds point to the current player
+     * @param player current player
+     */
     public void addPoints(Player player){
         Coordinates position = new Coordinates(0,0);
 
