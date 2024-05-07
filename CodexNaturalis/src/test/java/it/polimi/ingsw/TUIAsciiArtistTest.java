@@ -92,7 +92,7 @@ public class TUIAsciiArtistTest {
         gb.addDistinctGoals();
         Player p1= new Player("Pepo");
         Player p2= new Player("Iugal");
-        Player p3= new Player("Maxi il processo che ha sconfitto la mafia");
+        Player p3= new Player("Maxi");
         Player p4 = new Player("Mario");
         game= new Game(p1,4,gb);
         game.addPlayer(p2);

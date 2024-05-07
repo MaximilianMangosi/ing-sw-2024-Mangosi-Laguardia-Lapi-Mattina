@@ -49,7 +49,7 @@ public class FinalTurnState extends GameState{
     }
 
     private boolean isGameOver(Player player) {
-        if(game.getPlayers().getLast().equals(player)){
+        if(game.getPlayers().getFirst().equals(player)){
             for(Player p : game.getPlayers()){
 
                 Goal privateGoal = p.getGoal();
@@ -84,17 +84,20 @@ public class FinalTurnState extends GameState{
         CheckTurnCardPosition(selectedCard,position,userId);
         game.playCardBack(selectedCard,position);
         Player player = getPlayerFromUid(userId);
+        game.nextTurn();
         return isGameOver(player);
     }
 
     /**
-     * Override of nextState
+     * Override of nextState, if the last
      * @author Giuseppe Laguardia
      * @return a new TerminalState object
      */
     @Override
     protected GameState nextState() {
-        return new TerminalState(game,gameManager,userIDs);
+        if(game.getPlayers().getFirst().equals(game.getCurrentPlayer()))
+            return new TerminalState(game,gameManager,userIDs);
+        return this;
     }
 
 

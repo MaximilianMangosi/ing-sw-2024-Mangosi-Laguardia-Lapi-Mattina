@@ -88,7 +88,6 @@ public class Controller {
         if(currentState.playCardFront(selectedCard, position, userId)){
             view.setWinner(currentState.game.getWinner().getName());
             view.setIsGameEnded();
-            currentState=currentState.nextState();
         }
         view.updatePlayersHands();
         view.updatePlayersField();
@@ -116,7 +115,6 @@ public class Controller {
     public synchronized void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException {
         if(currentState.playCardBack(selectedCard,position,userId)){
             view.setWinner(currentState.game.getWinner().getName());
-            currentState.nextState();
         }
         view.updatePlayersHands();
         view.updatePlayersField();
