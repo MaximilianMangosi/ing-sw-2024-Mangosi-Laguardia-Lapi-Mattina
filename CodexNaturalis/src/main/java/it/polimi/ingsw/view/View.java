@@ -227,7 +227,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         visibleCards=controller.getVisibleCards();
     }
     public void setIsGameEnded(){
-        isGameEnded=false;
+        isGameEnded=true;
     }
     public void setIsGameStarted(){
         isGameStarted=true;
