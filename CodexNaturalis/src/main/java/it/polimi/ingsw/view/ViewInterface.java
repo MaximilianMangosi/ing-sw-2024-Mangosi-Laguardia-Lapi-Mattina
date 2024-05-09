@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public interface ViewInterface extends Remote {
+public interface ViewInterface extends Remote  {
 
     //VIEW
     public Map<String, Integer> getPlayersPoints() throws RemoteException;
@@ -72,4 +72,7 @@ public interface ViewInterface extends Remote {
     Reign getTopOfResourceCardDeck() throws  RemoteException;
 
     Reign getTopOfGoldCardDeck() throws RemoteException;
+    boolean amIPinged(UUID id) throws  RemoteException;
+
+    void pong(UUID myID)throws RemoteException;
 }

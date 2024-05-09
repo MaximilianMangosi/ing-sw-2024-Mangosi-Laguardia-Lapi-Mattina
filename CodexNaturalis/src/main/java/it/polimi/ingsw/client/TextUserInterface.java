@@ -77,10 +77,10 @@ public class TextUserInterface  {
             if (!player.equals(players.getLast()))
                 idleUI.append(", ");
         }
-        idleUI.append("\n");
+        idleUI.append("\n\n");
         if (view.isGameEnded()){
             idleUI.append(winner);
-            idleUI.append("WINS!!!\n\n");
+            idleUI.append(" WINS!!!\n\n");
 
         }else if(view.isGameStarted()){
 
@@ -197,7 +197,7 @@ public class TextUserInterface  {
 
                         chosenPosition = promptForChosenPosition();
 
-                        if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myID );
+                        if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myID);
                         else view.playCardBack(chosenCard, chosenPosition, myID);
 
 
@@ -296,7 +296,7 @@ public class TextUserInterface  {
                    artist.resetMatrix();
                    break;
                 case "show-public-goal":
-                   artist.show( view.getPublicGoals());
+                   artist.show(view.getPublicGoals());
                    outWriter.print(artist.getMatrix());
 
                    outWriter.print("Press enter to continue");
@@ -407,7 +407,7 @@ public class TextUserInterface  {
         return chosenDeck;
     }
 
-    private boolean promptForSide() {
+    private boolean promptForSide(){
         boolean isChosenFront;
         outWriter.print("Which side? (f for front, b or any for back)");
         isChosenFront = s.nextLine().equals("f");
@@ -438,7 +438,7 @@ public class TextUserInterface  {
 
      */
     private List<Map.Entry<String, Integer>> sortedScoreboard(Map<String, Integer> scoreboard) {
-        return scoreboard.entrySet().stream().sorted(Map.Entry.comparingByValue()).toList();
+        return scoreboard.entrySet().stream().sorted(Map.Entry.comparingByValue()).toList().reversed();
     }
 
     /**

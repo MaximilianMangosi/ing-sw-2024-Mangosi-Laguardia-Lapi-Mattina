@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -93,7 +92,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates playersHands, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
-    public  synchronized void updatePlayersHands(){
+    public synchronized void updatePlayersHands(){
         playersHands=controller.getPlayersHands();
     }
 
@@ -438,6 +437,19 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         return controller.getTopOfGoldCardDeck();
     }
 
+    @Override
+    public boolean amIPinged(UUID id) throws RemoteException{
+        return controller.amIPinged(id);
+    }
+
+    /**
+     * Replies to server ping
+     * @param id the user's id communicating his presence
+     * @throws RemoteException when a disconnection occurs
+     */
+    public void pong(UUID id) throws RemoteException{
+        controller.pong(id);
+    }
     public synchronized void updateAll() {
         updatePlayersPoints();
         updateNumOfResourceCards();
