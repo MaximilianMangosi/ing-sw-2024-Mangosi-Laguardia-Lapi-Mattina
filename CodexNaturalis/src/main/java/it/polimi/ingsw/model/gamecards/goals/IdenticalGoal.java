@@ -15,19 +15,38 @@ public class IdenticalGoal extends Goal {
     private final Resource resource;
     private final int numOfResource;
 
+    /**
+     * @author Riccardo Lapi
+     * @param points of the goal
+     * @param resource of the goal
+     * @param numOfResource of the goal
+     */
     public IdenticalGoal(int points, Resource resource, int numOfResource) {
         super(points);
         this.resource = resource;
         this.numOfResource = numOfResource;
     }
 
+    /**
+     * @author Riccardo Lapi
+     * @return the number of resources
+     */
     public int getNumOfResource(){
         return numOfResource;
     }
+
+    /**
+     * @author Riccardo Lapi
+     * @return resource of the goal
+     */
     public Resource getResource() {
         return resource;
     }
 
+    /**
+     * @author Riccardo Lapi
+     * @return the ui description
+     */
     @Override
     public String getUIDescription() {
         return "Identical Goal: " + points + " points every " + numOfResource +" identical Resources visible on the Field";

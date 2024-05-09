@@ -7,20 +7,43 @@ import it.polimi.ingsw.model.gamelogic.Player;
 public class ResourceCard extends Card {
     Reign reign;
     int points;
+
+    /**
+     * @author Giuseppe Laguardia
+     * @param NW coordinates of the angle
+     * @param NE coordinates of the angle
+     * @param SW coordinates of the angle
+     * @param SE coordinates of the angle
+     * @param reign of the card
+     * @param points of the card
+     */
     public ResourceCard(Resource NW, Resource NE, Resource SW, Resource SE, int points, Reign reign) {
         super(NW, NE, SW, SE);
         this.points=points;
         this.reign=reign;
     }
 
+    /**
+     * @author Maximilian Mangosi, Giuseppe Laguardia
+     * @return the points of the card
+     */
     public int getPoints() {
         return points;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return the reign of the card
+     */
     public Reign getReign() {
         return reign;
     }
 
+    /**
+     * @author Giorgio Mattina
+     * adds points to the current player
+     * @param player current player
+     */
     public void addPoints(Player player){
         player.setPoints(player.getPoints() + this.getPoints());
     }

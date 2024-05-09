@@ -31,6 +31,11 @@ public class TerminalState extends GameState{
     public boolean isGameEnded() {
         return true;
     }
+
+    /**
+     * @author Giuseppe Laguardia
+     * @return if the game is started
+     */
     @Override
     public boolean isGameStarted() {
         return true;

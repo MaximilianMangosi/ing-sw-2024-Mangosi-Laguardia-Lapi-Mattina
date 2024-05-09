@@ -48,6 +48,12 @@ public class FinalTurnState extends GameState{
         return isGameOver(player);
     }
 
+    /**
+     * @author Riccardo Lapi and Giuseppe Laguardia
+     * if is the first player calculate the goal points
+     * @param player the player
+     * @return true if the passed player is the first one in the order
+     */
     private boolean isGameOver(Player player) {
         if(game.getPlayers().getFirst().equals(player)){
             for(Player p : game.getPlayers()){

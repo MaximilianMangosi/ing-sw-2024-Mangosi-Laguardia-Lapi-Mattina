@@ -92,7 +92,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      * updates playersHands, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
-    public synchronized void updatePlayersHands(){
+    public  synchronized void updatePlayersHands(){
         playersHands=controller.getPlayersHands();
     }
 
@@ -150,6 +150,13 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         return currentPlayer;
     }
 
+    /**
+     * @author Giuseppe Laguardia and Riccardo Lapi
+     * @param uid
+     * @return the legal position of the player with uid as the passed one
+     * @throws RemoteException
+     * @throws InvalidUserId
+     */
     @Override
     public List<Coordinates> showPlayersLegalPositions(UUID uid) throws RemoteException, InvalidUserId {
         return playersLegalPositions.get(uid);
@@ -225,9 +232,18 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     public synchronized void updateVisibleCards(){
         visibleCards=controller.getVisibleCards();
     }
+
+    /**
+     * @author Giuseppe Laguardia
+     * set isGameEnded to true
+     */
     public void setIsGameEnded(){
         isGameEnded=true;
     }
+    /**
+     * @author Giuseppe Laguardia
+     * set isGameStarted to true
+     */
     public void setIsGameStarted(){
         isGameStarted=true;
     }
@@ -262,7 +278,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      */
     @Override
     public synchronized UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException {
-        return controller.BootGame(numOfPlayers, playerName);
+        return controller.bootGame(numOfPlayers, playerName);
     }
     public synchronized UUID joinGame(String playerName) throws NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException {
         return controller.joinGame(playerName);
@@ -389,20 +405,19 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     }
 
     /**
-     * getter of isGameEnded attribute
-     * @author Giuseppe Laguardia
-     * @return true if the game has ended
+     * @author Giuseppe Lagurdia
+     * @return if the game is ended
      * @throws RemoteException
      */
+
     @Override
     public boolean isGameEnded() throws RemoteException {
         return isGameEnded;
     }
 
     /**
-     * getter of isGameStarted attribute
-     * @author Giuseppe Laguardia
-     * @return true if game has started
+     * @author Giuseppe Lagurdia
+     * @return if the game is started
      * @throws RemoteException
      */
     @Override
@@ -411,10 +426,9 @@ public class View extends UnicastRemoteObject implements ViewInterface {
     }
 
     /**
-     * getter of the FieldBuildingHelper
      * @author Maximilian Mangosi
-     * @param name nickname of the player
-     * @return list of Coordinates
+     * @param name the username of the player
+     * @return the fieldBuildingHelper for that player
      * @throws RemoteException
      */
     @Override
@@ -422,34 +436,39 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         return fieldBuildingHelper.get(name);
     }
 
+    /**
+     * @author Giuseppe Lagurdia
+     * @param myName
+     * @throws RemoteException
+     */
     @Override
     public void initializeFieldBuildingHelper(String myName) throws RemoteException {
         fieldBuildingHelper.put(myName,new ArrayList<>());
     }
 
+    /**
+     * @author Giuseppe Lagurdia
+     * @return the getTopOfResourceCardDeck
+     * @throws RemoteException
+     */
     @Override
     public Reign getTopOfResourceCardDeck() throws RemoteException {
         return controller.getTopOfResourceCardDeck();
     }
-
+    /**
+     * @author Giuseppe Lagurdia
+     * @return the getTopOfGoldCardDeck
+     * @throws RemoteException
+     */
     @Override
     public Reign getTopOfGoldCardDeck() throws RemoteException {
         return controller.getTopOfGoldCardDeck();
     }
 
-    @Override
-    public boolean amIPinged(UUID id) throws RemoteException{
-        return controller.amIPinged(id);
-    }
-
     /**
-     * Replies to server ping
-     * @param id the user's id communicating his presence
-     * @throws RemoteException when a disconnection occurs
+     * @author Giorgio Mattina
+     * update all the all the info
      */
-    public void pong(UUID id) throws RemoteException{
-        controller.pong(id);
-    }
     public synchronized void updateAll() {
         updatePlayersPoints();
         updateNumOfResourceCards();
@@ -467,28 +486,67 @@ public class View extends UnicastRemoteObject implements ViewInterface {
         setIsGameStarted();
     }
 
+    /**
+     * @author Giorgio Mattina
+     * @param id
+     * @return
+     */
     public List<Card> showPlayerHand(UUID id){
         //updatePlayersHands();
         return playersHands.get(id);
     }
+
+    /**
+     * @author Giorgio Mattina
+     * @param id the player uid
+     * @return the legal positions for the player uid
+     */
     public List<Coordinates> showPlayersLegalPosition(UUID id){
         //updatePlayersLegalPosition();
         return playersLegalPositions.get(id);
     }
+
+    /**
+     * @author Giorgio Mattina
+     * @param uid the player uid
+     * @return the Goals of the player with uid
+     */
     public Goal[] showPlayerGoalOptions(UUID uid){
         updatePlayersGoalOptions();
         return playersGoalOptions.get(uid);
     }
+
+    /**
+     * @author Giorgio Mattina
+     * @param uid the player uid
+     * @return the private goal for the player uid
+     */
     public Goal showPrivateGoal(UUID uid){
         return privateGoals.get(uid);
     }
+
+    /**
+     * @author Giorgio Mattina
+     * @param w the username of the winner player
+     */
     public void setWinner(String w){
         this.winner=w;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @param userId
+     * @return the started card for the player uid
+     * @throws RemoteException
+     */
     public StarterCard getStarterCard(UUID userId) throws RemoteException{
         return starterCardMap.get(userId);
     }
+
+    /**
+     * @author Giuseppe Laguardia
+     * update the starter card map
+     */
     public void updateStarterCardMap() {
         starterCardMap=controller.getPlayersStarterCards();
     }

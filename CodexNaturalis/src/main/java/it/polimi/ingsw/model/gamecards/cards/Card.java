@@ -94,36 +94,60 @@ public abstract class Card implements Serializable {
         return cardResources;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @param b value determining witch way the card is facing
+     */
     public void setIsFront(boolean b) {
         isFront = b;
     }
-
+    /**
+     * @author Giuseppe Laguardia
+     * returns the value of isFront
+     */
     public boolean IsFront() {
         return isFront;
     }
-
+    /**
+     * @author Giuseppe Laguardia
+     * returns the reign of the card (since this is the superclass the value is null)
+     */
     public Reign getReign() {
         return null;
     }
-
+    /**
+     * @author Giorgio Mattina
+     * checks the requirements of the card (since this is the superclass the value is true)
+     */
     public boolean checkRequirements(HashMap<Resource, Integer> resourceCounters) {
         return true;
     }
+    /**
+     * @author Giorgio Mattina
+     * adds points to the player
+     */
+    public void addPoints(Player currentPlayer) {}
 
-    public void addPoints(Player currentPlayer) {
-
-    }
+    /**
+     * @author Giorgio Mattina
+     * @param reign is the reign of the angle
+     * @param angle is the coordinate of the angle
+     */
     public void setAngle(Reign reign, String angle){
         if(angle.equals("NW"))
             this.NW = reign;
         if(angle.equals("SW"))
-            this.SW=reign;
+            this.SW = reign;
         if (angle.equals("NE"))
             this.NE = reign;
         if(angle.equals("SE"))
-            this.SE=reign;
+            this.SE = reign;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return the nuber of points of the card
+     */
     public int getPoints() {
         return 0;
     }
@@ -136,6 +160,11 @@ public abstract class Card implements Serializable {
     public HashMap<Reign, Integer> getRequirements() {
         return new HashMap<>();
     }
+
+    /**
+     * @author Giorgio Mattina
+     * @return returns the tool of the card
+     */
     public Tool getTool() {
         return null;
     }

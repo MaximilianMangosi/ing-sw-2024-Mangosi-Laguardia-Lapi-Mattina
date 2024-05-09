@@ -8,10 +8,12 @@ import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.ViewInterface;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -40,6 +42,15 @@ public class Client {
         * */
 
         try{
+
+            Socket server;
+            try{
+                server = new Socket("192.168.0.1", 2323);
+            }catch (IOException e){
+                System.out.println("Server not reachable\n");
+            }
+
+
             Registry registry = LocateRegistry.getRegistry( 1099);
             ViewInterface view = (ViewInterface) registry.lookup("ViewRMI");
 

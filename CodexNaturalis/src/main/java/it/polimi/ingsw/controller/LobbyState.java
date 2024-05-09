@@ -48,6 +48,14 @@ public class LobbyState extends GameState{
        return this;
     }
 
+    /**
+     * @author Giorgio Mattina
+     * add the new player to the game, and create a new unique userID
+     * @param playerName the username of the player
+     * @return the created User id
+     * @throws NoGameExistsException if there is no game already
+     * @throws PlayerNameNotUniqueException if the username (playerName) is already used
+     */
     public UUID joinGame(String playerName) throws NoGameExistsException, PlayerNameNotUniqueException {
         UUID identity = UUID.randomUUID();
         Player newPlayer = new Player(playerName);

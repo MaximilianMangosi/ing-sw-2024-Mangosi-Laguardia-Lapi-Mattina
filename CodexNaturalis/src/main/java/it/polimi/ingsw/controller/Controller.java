@@ -103,7 +103,7 @@ public class Controller {
      * @throws PlayerNameNotUniqueException if playerName is already taken by another user
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
-    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException,  IllegalOperationException, OnlyOneGameException {
+    public  UUID bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException,  IllegalOperationException, OnlyOneGameException {
         UUID userID= currentState.BootGame(numOfPlayers,playerName);
         view.updatePlayersList();
         changeState();
@@ -279,6 +279,12 @@ public class Controller {
         view.updateCurrentPlayer();
         view.updatePlayersPoints();
     }
+
+    /**
+     * @author Giuseppe Laguardia
+     * remove the game from the game manager
+     * @throws RemoteException
+     */
     public synchronized void deleteGameFromGameManager() throws RemoteException {
         currentState.deleteGameFromGameManager();
         view= new View(this);
@@ -419,22 +425,33 @@ public class Controller {
     }
 
     /**
-     * getter of current Map of UUID-Player
      * @author Giuseppe Laguardia
-     * @return Map UUID-Player
+     * @return the user ids
      */
     public  Map<UUID,Player> getUserIDs(){
         return currentState.userIDs;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return the current state
+     */
     public GameState getCurrentState() {
         return currentState;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return if the game id ended
+     */
     public boolean isGameEnded() {
         return currentState.isGameEnded();
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return the current game
+     */
     public Game getGame() {
         return currentState.game;
     }
@@ -446,6 +463,11 @@ public class Controller {
     public View getView(){
         return  view;
     }
+
+    /**
+     * @author Giuseppe Laguardia
+     * @return the player starter cards
+     */
     public HashMap<UUID, StarterCard> getPlayersStarterCards(){
         HashMap<UUID, StarterCard> starterCardMap = new HashMap<>();
         Set<UUID> set=currentState.userIDs.keySet();
@@ -455,10 +477,17 @@ public class Controller {
         return starterCardMap;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return the top (first) card of the Resource cards deck
+     */
     public Reign getTopOfResourceCardDeck() {
         return getGame().getResourceCardDeck().getFirst().getReign();
     }
-
+    /**
+     * @author Giuseppe Laguardia
+     * @return the top (first) card of the Gold cards deck
+     */
     public Reign getTopOfGoldCardDeck() { return getGame().getGoldCardDeck().getFirst().getReign();
     }
 

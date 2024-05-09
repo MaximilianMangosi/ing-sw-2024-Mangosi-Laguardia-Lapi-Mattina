@@ -45,12 +45,27 @@ public abstract class Goal implements Serializable {
         return false;
 
     }
+
+    /**
+     * @author Giorgio Mattina
+     * @return the number of resources
+     */
     public int getNumOfResource(){
         return 0;
     }
+
+    /**
+     * @author Giorgio Mattina
+     * @return the primary reign
+     */
     public Reign getPrimaryReign(){
         return null;
     }
+
+    /**
+     * @author Giorgio Mattina
+     * @return the points of the goal
+     */
     public int getPoints(){
         return points;
     }
