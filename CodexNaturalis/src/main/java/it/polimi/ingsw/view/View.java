@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -279,7 +278,7 @@ public class View extends UnicastRemoteObject implements ViewInterface {
      */
     @Override
     public synchronized UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException {
-        return controller.BootGame(numOfPlayers, playerName);
+        return controller.bootGame(numOfPlayers, playerName);
     }
     public synchronized UUID joinGame(String playerName) throws NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException {
         return controller.joinGame(playerName);

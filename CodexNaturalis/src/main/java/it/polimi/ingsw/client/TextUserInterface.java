@@ -142,7 +142,7 @@ public class TextUserInterface  {
                 case "start-game":
                     try {
                         joinGame();
-
+                        
                     }catch (PlayerNameNotUniqueException e) {
                         outWriter.print(e.getMessage());
                         handleNameNotUnique();
