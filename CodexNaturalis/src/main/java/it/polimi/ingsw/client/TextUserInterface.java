@@ -12,8 +12,9 @@ import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
-import it.polimi.ingsw.view.ViewInterface;
+import it.polimi.ingsw.view.View;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -23,7 +24,7 @@ import java.util.*;
  */
 public class TextUserInterface  {
     private final TUIAsciiArtist artist = new TUIAsciiArtist();
-    private final ViewInterface view;
+    private final View view;
     private final UpdateTUI tuiUpdater;
     private final OutStreamWriter outWriter = new OutStreamWriter();
     private UUID myID;
@@ -35,7 +36,7 @@ public class TextUserInterface  {
      * TextUserInterface's constructor: sets the View from witch the user will communicate with the server and creates the thread that handles the CLI
      * @param view View to communicate with servers.
      */
-    public TextUserInterface(ViewInterface view) {
+    public TextUserInterface(View view) {
         this.view = view;
         tuiUpdater=new UpdateTUI(outWriter,this);
     }
@@ -134,7 +135,7 @@ public class TextUserInterface  {
      * @throws DeckEmptyException
      */
 
-    public void execCmd(String cmd) throws RemoteException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, DeckEmptyException, HandNotFullException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, InvalidGoalException {
+    public void execCmd(String cmd) throws IOException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, DeckEmptyException, HandNotFullException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, InvalidGoalException, ClassNotFoundException {
         
         boolean error = true;
         synchronized (outWriter) {
@@ -151,19 +152,20 @@ public class TextUserInterface  {
                         while (error) {
                             try {
                                 int numPlayers = promptForNumPlayers();
-                                myID = view.BootGame(numPlayers, myName);
+                                myID = view.bootGame(numPlayers, myName);
                                 error = false;
                             } catch (UnacceptableNumOfPlayersException ex1) {
                                 outWriter.print(ex1.getMessage());
                             } catch (OnlyOneGameException ex) {
                                 outWriter.print(ex.getMessage());
-                                try{
+                                try {
                                     view.joinGame(myName);
-                                    error=false;
-                                }catch (PlayerNameNotUniqueException e1){
+                                    error = false;
+                                } catch (PlayerNameNotUniqueException e1) {
                                     outWriter.print(e1.getMessage());
-                                    error=handleNameNotUnique();
-                                }catch (NoGameExistsException ignore){}
+                                    error = handleNameNotUnique();
+                                } catch (NoGameExistsException ignore) {
+                                }
                             }
                         }
                     }

@@ -15,7 +15,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.ViewRMI;
 
 import java.rmi.RemoteException;
 import java.util.*;
@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Controller {
     protected GameState currentState;
     private ConcurrentHashMap <UUID,Boolean> pingMap= new ConcurrentHashMap<>();
-    private View view;
+    private ViewRMI view;
     /**
      * constructor of Controller, creates a new GameState
      * @author Giorgio Mattina
@@ -32,7 +32,7 @@ public class Controller {
      */
     public Controller( GameManager gameManager) throws RemoteException {
         currentState=new LobbyState(gameManager);
-        view = new View(this);
+        view = new ViewRMI(this);
     }
 
 
@@ -287,7 +287,7 @@ public class Controller {
      */
     public synchronized void deleteGameFromGameManager() throws RemoteException {
         currentState.deleteGameFromGameManager();
-        view= new View(this);
+        view= new ViewRMI(this);
     }
 
     /**
@@ -460,7 +460,7 @@ public class Controller {
      * @author Giorgio Mattina
      * @return view attribute
      */
-    public View getView(){
+    public ViewRMI getView(){
         return  view;
     }
 

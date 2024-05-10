@@ -1,11 +1,12 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.ViewRMI;
 import it.polimi.ingsw.model.gamecards.GameBox;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.rmi.RemoteException;
@@ -30,15 +31,23 @@ public class Server {
             GameManager gameManager = new GameManager();
             gameManager.setGameBox(gb);
             System.out.println("GameBox ready");
+
             //Controller and View setup
             Controller controller = new Controller(gameManager);
-            View view = controller.getView();
+            ViewRMI view = controller.getView();
 
             // export View
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("ViewRMI", view);
             System.out.println("Remote View has been correctly exported");
-
+            ServerSocket socket;
+            try {
+                socket = new ServerSocket(2323);
+            } catch (IOException e) {
+                System.out.println("cannot open server socket");
+                System.exit(1);
+                return;
+            }
             CloseGame t1 = new CloseGame(controller);
             t1.start();
             //TODO DisconnectionHandler

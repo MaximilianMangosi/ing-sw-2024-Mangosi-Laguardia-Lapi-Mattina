@@ -10,6 +10,11 @@ public class BootGameMessage extends ClientMessage{
     private int numPlayers;
     private String username;
 
+    public BootGameMessage(int numOfPlayers, String playerName) {
+       this.numPlayers=numOfPlayers;
+       this.username=playerName;
+    }
+
 
     public void processMessage(Controller controller, ClientHandler clientHandler)  {
         try {

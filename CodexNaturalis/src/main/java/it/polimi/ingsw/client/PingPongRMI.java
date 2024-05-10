@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.view.ViewInterface;
+import it.polimi.ingsw.view.ViewRMIInterface;
 
 import java.rmi.RemoteException;
 import java.util.UUID;
@@ -10,9 +10,9 @@ import java.util.UUID;
  *
  */
 public class PingPongRMI extends  Thread{
-    ViewInterface view;
+    ViewRMIInterface view;
     UUID myID;
-    PingPongRMI(ViewInterface View, UUID id){
+    PingPongRMI(ViewRMIInterface View, UUID id){
        this.view=view;
        myID=id;
     }
