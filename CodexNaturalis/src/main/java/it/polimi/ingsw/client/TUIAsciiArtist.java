@@ -11,7 +11,6 @@ import it.polimi.ingsw.model.gamecards.goals.StairGoal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
