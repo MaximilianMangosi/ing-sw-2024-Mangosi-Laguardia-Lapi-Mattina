@@ -15,14 +15,16 @@ import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.ViewRMI;
 
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Controller {
-    GameState currentState;
-    View view;
+    protected GameState currentState;
+    private ConcurrentHashMap <UUID,Boolean> pingMap= new ConcurrentHashMap<>();
+    private ViewRMI view;
     /**
      * constructor of Controller, creates a new GameState
      * @author Giorgio Mattina
@@ -30,7 +32,7 @@ public class Controller {
      */
     public Controller( GameManager gameManager) throws RemoteException {
         currentState=new LobbyState(gameManager);
-        view = new View(this);
+        view = new ViewRMI(this);
     }
 
 
@@ -45,6 +47,50 @@ public class Controller {
         }
 
     }
+    /**
+     * Checks if some users lost the connection to kick them from the game
+     * @author Giusppe Laguardia
+     * @throws RemoteException when a connection problem occurs
+     */
+    public void checkPong() throws RemoteException {
+        List<UUID> kickedPlayers= new ArrayList<>();
+        for (Map.Entry<UUID,Boolean> entry: pingMap.entrySet() ){
+            UUID userID=entry.getKey();
+            if(!entry.getValue()){
+                closeGame(userID);
+                kickedPlayers.add(userID);
+            }
+        }
+        //removes kickedPlayer from pingMap
+        for(UUID uID: kickedPlayers){
+            pingMap.remove(uID);
+        }
+    }
+    /**
+     * Sets to true the value corresponding to the given userID, used to ensure that player didn't lost connection
+     * @param userID the UUID of the user ensuring his connection
+     * @author Giuseppe Laguardia
+     */
+    public void pong(UUID userID){
+        pingMap.put(userID,true);
+    }
+    /**
+     * Returns true if the user has received a ping from the server.
+     * @return true the value corresponding to the given u
+     */
+    public boolean amIPinged(UUID userIDs){
+        return pingMap.get(userIDs);
+    }
+
+    /**
+     * Pings all the users, set to false all pingMap's value
+     * @author Giuseppe Laguardia
+     */
+    public void ping() {
+        for (Map.Entry<UUID,Boolean> entry: pingMap.entrySet() ){
+            entry.setValue(false);
+        }
+    }
 
     /**
      * call the BootGame method on currentState to create a new game if there aren't any pending otherwise joins the pending one.
@@ -57,7 +103,7 @@ public class Controller {
      * @throws PlayerNameNotUniqueException if playerName is already taken by another user
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
-    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException,  IllegalOperationException, OnlyOneGameException {
+    public  UUID bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException,  IllegalOperationException, OnlyOneGameException {
         UUID userID= currentState.BootGame(numOfPlayers,playerName);
         view.updatePlayersList();
         changeState();
@@ -222,7 +268,6 @@ public class Controller {
     public synchronized void closeGame(UUID userID) throws RemoteException {
         currentState.closeGame(userID);
         if(getUserIDs().size()<2){
-            //TODO update winner
             List<UUID> id = new ArrayList<>(currentState.userIDs.keySet());
             view.setWinner(currentState.getPlayerFromUid(id.getFirst()).getName());
             deleteGameFromGameManager();
@@ -242,7 +287,7 @@ public class Controller {
      */
     public synchronized void deleteGameFromGameManager() throws RemoteException {
         currentState.deleteGameFromGameManager();
-        view= new View(this);
+        view= new ViewRMI(this);
     }
 
     /**
@@ -415,7 +460,7 @@ public class Controller {
      * @author Giorgio Mattina
      * @return view attribute
      */
-    public View getView(){
+    public ViewRMI getView(){
         return  view;
     }
 
@@ -445,4 +490,6 @@ public class Controller {
      */
     public Reign getTopOfGoldCardDeck() { return getGame().getGoldCardDeck().getFirst().getReign();
     }
+
+
 }

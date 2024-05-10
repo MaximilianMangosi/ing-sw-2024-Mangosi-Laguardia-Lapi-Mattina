@@ -1,9 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
-import it.polimi.ingsw.view.ViewInterface;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class UpdateTUI extends Thread{

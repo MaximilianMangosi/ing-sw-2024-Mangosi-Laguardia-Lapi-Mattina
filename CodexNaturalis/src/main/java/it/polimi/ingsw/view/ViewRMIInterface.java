@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public interface ViewInterface extends Remote {
+public interface ViewRMIInterface extends Remote,View  {
 
     //VIEW
     public Map<String, Integer> getPlayersPoints() throws RemoteException;
@@ -49,7 +49,7 @@ public interface ViewInterface extends Remote {
     public StarterCard getStarterCard(UUID userId) throws RemoteException;
 
     //CONTROLLER
-    public  UUID BootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException;
+    public  UUID bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException;
     public UUID joinGame(String playerName) throws RemoteException, NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException;
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId;
     public void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId;
@@ -72,4 +72,7 @@ public interface ViewInterface extends Remote {
     Reign getTopOfResourceCardDeck() throws  RemoteException;
 
     Reign getTopOfGoldCardDeck() throws RemoteException;
+    boolean amIPinged(UUID id) throws  RemoteException;
+
+    void pong(UUID myID)throws RemoteException;
 }

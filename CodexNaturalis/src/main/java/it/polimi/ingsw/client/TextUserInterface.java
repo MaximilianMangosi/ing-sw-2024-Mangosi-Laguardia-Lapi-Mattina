@@ -12,8 +12,9 @@ import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
-import it.polimi.ingsw.view.ViewInterface;
+import it.polimi.ingsw.view.View;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -23,7 +24,7 @@ import java.util.*;
  */
 public class TextUserInterface  {
     private final TUIAsciiArtist artist = new TUIAsciiArtist();
-    private final ViewInterface view;
+    private final View view;
     private final UpdateTUI tuiUpdater;
     private final OutStreamWriter outWriter = new OutStreamWriter();
     private UUID myID;
@@ -35,7 +36,7 @@ public class TextUserInterface  {
      * TextUserInterface's constructor: sets the View from witch the user will communicate with the server and creates the thread that handles the CLI
      * @param view View to communicate with servers.
      */
-    public TextUserInterface(ViewInterface view) {
+    public TextUserInterface(View view) {
         this.view = view;
         tuiUpdater=new UpdateTUI(outWriter,this);
     }
@@ -77,10 +78,10 @@ public class TextUserInterface  {
             if (!player.equals(players.getLast()))
                 idleUI.append(", ");
         }
-        idleUI.append("\n");
+        idleUI.append("\n\n");
         if (view.isGameEnded()){
             idleUI.append(winner);
-            idleUI.append("WINS!!!\n\n");
+            idleUI.append(" WINS!!!\n\n");
 
         }else if(view.isGameStarted()){
 
@@ -134,7 +135,7 @@ public class TextUserInterface  {
      * @throws DeckEmptyException
      */
 
-    public void execCmd(String cmd) throws RemoteException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, DeckEmptyException, HandNotFullException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, InvalidGoalException {
+    public void execCmd(String cmd) throws IOException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, DeckEmptyException, HandNotFullException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, InvalidGoalException, ClassNotFoundException {
         
         boolean error = true;
         synchronized (outWriter) {
@@ -142,7 +143,7 @@ public class TextUserInterface  {
                 case "start-game":
                     try {
                         joinGame();
-
+                        
                     }catch (PlayerNameNotUniqueException e) {
                         outWriter.print(e.getMessage());
                         handleNameNotUnique();
@@ -151,19 +152,20 @@ public class TextUserInterface  {
                         while (error) {
                             try {
                                 int numPlayers = promptForNumPlayers();
-                                myID = view.BootGame(numPlayers, myName);
+                                myID = view.bootGame(numPlayers, myName);
                                 error = false;
                             } catch (UnacceptableNumOfPlayersException ex1) {
                                 outWriter.print(ex1.getMessage());
                             } catch (OnlyOneGameException ex) {
                                 outWriter.print(ex.getMessage());
-                                try{
+                                try {
                                     view.joinGame(myName);
-                                    error=false;
-                                }catch (PlayerNameNotUniqueException e1){
+                                    error = false;
+                                } catch (PlayerNameNotUniqueException e1) {
                                     outWriter.print(e1.getMessage());
-                                    error=handleNameNotUnique();
-                                }catch (NoGameExistsException ignore){}
+                                    error = handleNameNotUnique();
+                                } catch (NoGameExistsException ignore) {
+                                }
                             }
                         }
                     }
@@ -197,7 +199,7 @@ public class TextUserInterface  {
 
                         chosenPosition = promptForChosenPosition();
 
-                        if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myID );
+                        if(isChosenFront) view.playCardFront(chosenCard,chosenPosition, myID);
                         else view.playCardBack(chosenCard, chosenPosition, myID);
 
 
@@ -296,7 +298,7 @@ public class TextUserInterface  {
                    artist.resetMatrix();
                    break;
                 case "show-public-goal":
-                   artist.show( view.getPublicGoals());
+                   artist.show(view.getPublicGoals());
                    outWriter.print(artist.getMatrix());
 
                    outWriter.print("Press enter to continue");
@@ -407,7 +409,7 @@ public class TextUserInterface  {
         return chosenDeck;
     }
 
-    private boolean promptForSide() {
+    private boolean promptForSide(){
         boolean isChosenFront;
         outWriter.print("Which side? (f for front, b or any for back)");
         isChosenFront = s.nextLine().equals("f");
@@ -438,7 +440,7 @@ public class TextUserInterface  {
 
      */
     private List<Map.Entry<String, Integer>> sortedScoreboard(Map<String, Integer> scoreboard) {
-        return scoreboard.entrySet().stream().sorted(Map.Entry.comparingByValue()).toList();
+        return scoreboard.entrySet().stream().sorted(Map.Entry.comparingByValue()).toList().reversed();
     }
 
     /**
