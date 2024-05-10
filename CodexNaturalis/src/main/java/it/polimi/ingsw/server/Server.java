@@ -40,6 +40,7 @@ public class Server {
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("ViewRMI", view);
             System.out.println("Remote View has been correctly exported");
+
             ServerSocket socket;
             try {
                 socket = new ServerSocket(2323);
@@ -48,6 +49,8 @@ public class Server {
                 System.exit(1);
                 return;
             }
+
+
             CloseGame t1 = new CloseGame(controller);
             t1.start();
             //TODO DisconnectionHandler

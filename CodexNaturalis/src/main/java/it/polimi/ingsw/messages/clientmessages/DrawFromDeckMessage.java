@@ -14,11 +14,26 @@ public class DrawFromDeckMessage extends ClientMessage{
     private Integer chosenDeck;
     private UUID userId;
 
+    /**
+     * constructor of DrawFromDeckMessage
+     * @author Giorgio Mattina
+     * @param chosenDeck either the resource deck (0) or gold (!=0)
+     * @param userId the UUID of the player that called drawFromDeck
+     */
+    DrawFromDeckMessage(Integer chosenDeck,UUID userId){
+        this.chosenDeck=chosenDeck;
+        this.userId=userId;
+    }
 
+    /**
+     * Override, gets the controller from the ClientHandler and calls drawFromDeck on the controller
+     * @author Giorgio Mattina
+     * @param clientHandler the object that called processMessage
+     */
     @Override
-    public void processMessage(Controller controller, ClientHandler clientHandler) {
+    public void processMessage( ClientHandler clientHandler) {
         try {
-            controller.drawFromDeck(userId,chosenDeck);
+            clientHandler.getController().drawFromDeck(userId,chosenDeck);
         } catch (IsNotYourTurnException e) {
             throw new RuntimeException(e);
         } catch (HandFullException e) {

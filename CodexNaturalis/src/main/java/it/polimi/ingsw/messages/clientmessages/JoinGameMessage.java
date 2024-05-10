@@ -12,10 +12,24 @@ import java.io.ObjectOutputStream;
 public class JoinGameMessage extends ClientMessage {
      private String username;
 
+    /**
+     * Constructor of JoinGameMessage
+     * @author Giorgio Mattina
+     * @param username
+     */
+     JoinGameMessage(String username){
+         this.username=username;
+     }
+
+    /**
+     * Override, gets the controller from the clientHandler and ccalls joinGame on the controller
+     * @author Giorgio Mattina
+     * @param clientHandler
+     */
     @Override
-    public void processMessage (Controller controller, ClientHandler clientHandler)  {
+    public void processMessage ( ClientHandler clientHandler)  {
        try {
-           controller.joinGame(username);
+           clientHandler.getController().joinGame(username);
        } catch (NoGameExistsException e) {
            throw new RuntimeException(e);
        } catch (PlayerNameNotUniqueException e) {

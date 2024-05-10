@@ -14,5 +14,5 @@ import java.net.Socket;
 
 public abstract class ClientMessage extends Message {
 
-    public abstract void processMessage(Controller controller, ClientHandler clientHandler);
+    public abstract void processMessage(ClientHandler clientHandler);
 }

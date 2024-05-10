@@ -13,10 +13,25 @@ public class DrawVisibleMessage extends ClientMessage{
     private int chosenCard;
     private UUID userId;
 
+    /**
+     * constructor of DrawVisibleMessage
+     * @author Giorgio Mattina
+     * @param chosenCard
+     * @param userId
+     */
+    DrawVisibleMessage(int chosenCard,, UUID userId){
+        this.chosenCard=chosenCard;
+        this.userId=userId;
+    }
+
+    /**
+     * Override, gets the controller from the ClientHandler and calls drawVisibleCard on the controller
+     * @param clientHandler
+     */
     @Override
-    public void processMessage(Controller controller, ClientHandler clientHandler) {
+    public void processMessage( ClientHandler clientHandler) {
         try {
-            controller.drawVisibleCard(userId,chosenCard);
+            clientHandler.getController().drawVisibleCard(userId,chosenCard);
         } catch (IsNotYourTurnException e) {
             throw new RuntimeException(e);
         } catch (HandFullException e) {
