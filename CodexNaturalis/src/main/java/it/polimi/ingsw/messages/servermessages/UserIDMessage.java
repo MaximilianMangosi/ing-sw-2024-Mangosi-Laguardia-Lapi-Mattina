@@ -32,5 +32,6 @@ public class UserIDMessage extends ServerMessage{
     @Override
     public void processMessage() throws UnacceptableNumOfPlayersException {
 
+
     }
 }
