@@ -115,7 +115,7 @@ public class ViewSocket implements View{
      * @throws IllegalOperationException when in the current phase of the game bootGame is not admissible
      */
     @Override
-    public synchronized UUID bootGame(int numOfPlayers, String playerName) throws OnlyOneGameException,UnacceptableNumOfPlayersException,ClassNotFoundException,IllegalOperationException, IOException {
+    public synchronized UUID bootGame(int numOfPlayers, String playerName) throws OnlyOneGameException, UnacceptableNumOfPlayersException, ClassNotFoundException, IllegalOperationException, IOException, InvalidGoalException, HandNotFullException, HandFullException, InvalidChoiceException, NoGameExistsException, IsNotYourTurnException, InvalidUserId, RequirementsNotMetException, PlayerNameNotUniqueException, IllegalPositionException, InvalidCardException, DeckEmptyException {
         BootGameMessage message = new BootGameMessage(numOfPlayers,playerName);
         output.writeObject(message);
         ServerMessage reply= (ServerMessage) input.readObject();
@@ -125,8 +125,13 @@ public class ViewSocket implements View{
     }
 
     @Override
-    public synchronized UUID joinGame(String playerName) throws RemoteException, NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException {
-        return null;
+    public synchronized UUID joinGame(String playerName) throws IOException, NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException, ClassNotFoundException, InvalidGoalException, HandNotFullException, HandFullException, InvalidChoiceException, IsNotYourTurnException, InvalidUserId, RequirementsNotMetException, UnacceptableNumOfPlayersException, OnlyOneGameException, IllegalPositionException, InvalidCardException, DeckEmptyException {
+        JoinGameMessage message = new JoinGameMessage(playerName);
+        output.writeObject(message);
+        ServerMessage reply= (ServerMessage) input.readObject();
+        reply.processMessage();
+        // if processMessage didn't throw an exception then the reply of the server is an UserIDMessage
+        return ((UserIDMessage) reply).getYourID();
     }
 
     @Override
