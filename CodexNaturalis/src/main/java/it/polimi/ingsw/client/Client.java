@@ -1,16 +1,12 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.exceptions.*;
-import it.polimi.ingsw.model.Coordinates;
-import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
-import it.polimi.ingsw.model.gamecards.goals.Goal;
-import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
-import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.ViewInterface;
+import it.polimi.ingsw.view.ViewRMIInterface;
+import it.polimi.ingsw.view.ViewSocket;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -30,34 +26,27 @@ public class Client {
      * @param args
      */
     public static void main(String[] args) {
-        Client client=new Client();
-        /*
-        * startGame
-        * playCard
-        * chooseGoal
-        * chooseStarterCardSide
-        * drawCardFromDeck
-        * drawCardVisible
-        * disconnect
-        * */
-
+        View view;
+        Scanner s=new Scanner(System.in);
+        int connectionChoice= 0;
+        while (connectionChoice!=1 && connectionChoice!=2 ) {
+            System.out.println("Choose how to connect to Server.\n1)Socket\n2)RMI");
+            connectionChoice = s.nextInt();
+            s.nextLine();
+        }
         try{
-
-            Socket server;
-            try{
+            if(connectionChoice==1) {
+                Socket server;
                 server = new Socket("192.168.0.1", 2323);
-            }catch (IOException e){
-                System.out.println("Server not reachable\n");
+                view=new ViewSocket(server.getOutputStream(),server.getInputStream());
+            }else {
+
+                Registry registry = LocateRegistry.getRegistry(1099);
+                view = (ViewRMIInterface) registry.lookup("ViewRMI");
             }
 
-
-            Registry registry = LocateRegistry.getRegistry( 1099);
-            ViewInterface view = (ViewInterface) registry.lookup("ViewRMI");
-
-            Scanner s=new Scanner(System.in);
-            //System.out.println("\033c");
+            System.out.println("\033c");
             System.out.println("Welcome to Codex Naturalis ! \n Press Any Key To Start \n");
-
             System.out.println("\n\n");
             s.nextLine();
             System.out.println("Lets' start! Type 'start-game' to start a game\n");
@@ -74,14 +63,16 @@ public class Client {
                              IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException |
                              InvalidCardException | HandFullException | InvalidChoiceException | DeckEmptyException e) {
                         System.out.println(e.getMessage());
+                    } catch (ClassNotFoundException | IOException e) {
+                        System.out.println("Connection error");
                     }
             }
         }catch (RemoteException | NotBoundException e){
             System.out.println("Connection error");
+        }catch (IOException e){
+            System.out.println("Server not reachable");
         }
-
     }
 
-
-
 }
+
