@@ -15,11 +15,33 @@ public class PlayCardMessage extends ClientMessage{
     private Coordinates position;
     private UUID userId;
     private boolean playFront;
+
+    /**
+     * constructor of PlayCardMessage
+     * @author Giorgio Mattina
+     * @param chosenCard the object representing the chosen card by the player
+     * @param position the position in which the card must be placed
+     * @param userId the id of the player who is playing
+     * @param playFront true if the card is played front, false if back
+     */
+    PlayCardMessage(Card chosenCard,Coordinates position, UUID userId,boolean playFront){
+        this.chosenCard=chosenCard;
+        this.position=position;
+        this.userId=userId;
+        this.playFront=playFront;
+    }
+
+    /**
+     * override, gets the controller from ClientHandler and either calls playCardFront or
+     * playCardBack based on the value of this.playFront
+     * @author Giorgio Mattina
+     * @param clientHandler
+     */
     @Override
-    public void processMessage(Controller controller, ClientHandler clientHandler) {
+    public void processMessage( ClientHandler clientHandler) {
         if(playFront){
             try {
-                controller.playCardFront(chosenCard,position,userId);
+                clientHandler.getController().playCardFront(chosenCard,position,userId);
             } catch (IsNotYourTurnException e) {
                 throw new RuntimeException(e);
             } catch (RequirementsNotMetException e) {
@@ -35,7 +57,7 @@ public class PlayCardMessage extends ClientMessage{
             }
         }else{
             try {
-                controller.playCardBack(chosenCard,position,userId);
+                clientHandler.getController().playCardBack(chosenCard,position,userId);
             } catch (HandNotFullException e) {
                 throw new RuntimeException(e);
             } catch (IsNotYourTurnException e) {
