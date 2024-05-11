@@ -4,6 +4,10 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
+import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
+import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
+import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
+import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.ViewRMIInterface;
 import it.polimi.ingsw.view.ViewSocket;
@@ -28,6 +32,7 @@ public class Client {
     public static void main(String[] args) {
         View view;
         Scanner s=new Scanner(System.in);
+
         int connectionChoice= 0;
         while (connectionChoice!=1 && connectionChoice!=2 ) {
             System.out.println("Choose how to connect to Server.\n1)Socket\n2)RMI");
@@ -35,12 +40,12 @@ public class Client {
             s.nextLine();
         }
         try{
+            GameData gameData= new GameData();
             if(connectionChoice==1) {
                 Socket server;
                 server = new Socket("192.168.0.1", 2323);
-                view=new ViewSocket(server.getOutputStream(),server.getInputStream());
+                view=new ViewSocket(server.getOutputStream(),server.getInputStream(),gameData);
             }else {
-
                 Registry registry = LocateRegistry.getRegistry(1099);
                 view = (ViewRMIInterface) registry.lookup("ViewRMI");
             }
@@ -55,17 +60,13 @@ public class Client {
 
 
             while (true) {
-                    try {
-                        tui.execCmd(s.nextLine().toLowerCase(Locale.ROOT));
-
-                    } catch (InvalidUserId | InvalidGoalException |
-                             IllegalOperationException | HandNotFullException |
-                             IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException |
-                             InvalidCardException | HandFullException | InvalidChoiceException | DeckEmptyException e) {
-                        System.out.println(e.getMessage());
-                    } catch (ClassNotFoundException | IOException e) {
-                        System.out.println("Connection error");
-                    }
+                try {
+                    tui.execCmd(s.nextLine().toLowerCase(Locale.ROOT),connectionChoice);
+                } catch (ClassNotFoundException | IOException e) {
+                    System.out.println("Connection error");
+                }catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }catch (RemoteException | NotBoundException e){
             System.out.println("Connection error");

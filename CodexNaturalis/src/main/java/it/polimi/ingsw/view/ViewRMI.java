@@ -59,7 +59,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         return playersPoints;
     }
     /**
-     * updates NumOfResourceCards, calling the controller
+     * updates NumOfResourceCardsMessage, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
     public synchronized void updateNumOfResourceCards(){
@@ -74,7 +74,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         return numOfResourceCards;
     }
     /**
-     * updates NumOfGoldCards, calling the controller
+     * updates NumOfGoldCardsMessage, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
     public synchronized void updateNumOfGoldCards(){

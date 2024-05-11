@@ -26,12 +26,10 @@ public class UserIDMessage extends ServerMessage{
      */
     @Override
     public void processMessage(ViewSocket view) {
-        view.setMyID(yourID);
     }
 
     @Override
     public void processMessage() throws UnacceptableNumOfPlayersException {
-
 
     }
 }

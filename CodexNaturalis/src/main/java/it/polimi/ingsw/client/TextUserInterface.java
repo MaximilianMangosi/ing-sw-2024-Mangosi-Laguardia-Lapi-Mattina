@@ -120,7 +120,8 @@ public class TextUserInterface  {
     /**
      * @author Riccardo Lapi
      * given the command the user want to execute, it asks the user for the parameters it needs to perform that operation
-     * @param cmd string that represent the command to use
+     * @param cmd              string that represent the command to use
+     * @param connectionChoice
      * @throws RemoteException
      * @throws IllegalOperationException
      * @throws InvalidUserId
@@ -133,10 +134,12 @@ public class TextUserInterface  {
      * @throws HandFullException
      * @throws InvalidChoiceException
      * @throws DeckEmptyException
+     * @author Riccardo Lapi
+     * given the command the user want to execute, it asks the user for the parameters it needs to perform that operation
      */
 
-    public void execCmd(String cmd) throws IOException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, DeckEmptyException, HandNotFullException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, InvalidGoalException, ClassNotFoundException {
-        
+    public void execCmd(String cmd, int connectionChoice) throws IOException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, DeckEmptyException, HandNotFullException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, InvalidGoalException, ClassNotFoundException, NoGameExistsException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException {
+
         boolean error = true;
         synchronized (outWriter) {
             switch (cmd){
@@ -219,7 +222,6 @@ public class TextUserInterface  {
                                         showField(myName,true);
                                         chosenPosition=promptForChosenPosition();
                                     }
-
                                     if (isChosenFront)
                                         view.playCardFront(chosenCard, chosenPosition, myID);
                                     else
@@ -357,7 +359,7 @@ public class TextUserInterface  {
      * @throws RemoteException
      * @throws IllegalOperationException
      */
-    private boolean handleNameNotUnique() throws RemoteException, IllegalOperationException {
+    private boolean handleNameNotUnique() throws IOException, IllegalOperationException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
         while (true){
             try {
                 joinGame();
@@ -376,7 +378,7 @@ public class TextUserInterface  {
         return numPlayers;
     }
 
-    private void joinGame() throws RemoteException, NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException {
+    private void joinGame() throws IOException, NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
         outWriter.print("Insert username");
         myName = s.nextLine();
         myID=view.joinGame(myName);

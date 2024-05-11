@@ -43,7 +43,7 @@ public class ClientHandler  implements Runnable{
 
     }
 
-    private  void handleConnection() throws IOException{
+    private void handleConnection() throws IOException{
         try{
             while(true){
                 Object next = input.readObject();
