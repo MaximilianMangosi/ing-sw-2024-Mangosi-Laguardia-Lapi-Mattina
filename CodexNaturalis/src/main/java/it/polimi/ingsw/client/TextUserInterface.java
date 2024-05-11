@@ -138,7 +138,7 @@ public class TextUserInterface  {
      * given the command the user want to execute, it asks the user for the parameters it needs to perform that operation
      */
 
-    public void execCmd(String cmd, int connectionChoice) throws IOException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, DeckEmptyException, HandNotFullException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, InvalidGoalException, ClassNotFoundException, NoGameExistsException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException {
+    public void execCmd(String cmd) throws IOException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, HandNotFullException, InvalidCardException, InvalidGoalException, ClassNotFoundException, NoGameExistsException, RequirementsNotMetException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalPositionException, DeckEmptyException {
 
         boolean error = true;
         synchronized (outWriter) {

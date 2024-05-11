@@ -45,13 +45,14 @@ public class Client {
                 Socket server;
                 server = new Socket("192.168.0.1", 2323);
                 view=new ViewSocket(server.getOutputStream(),server.getInputStream(),gameData);
+                ServerHandler t1=new ServerHandler((ViewSocket) view);
             }else {
                 Registry registry = LocateRegistry.getRegistry(1099);
                 view = (ViewRMIInterface) registry.lookup("ViewRMI");
             }
 
             System.out.println("\033c");
-            System.out.println("Welcome to Codex Naturalis ! \n Press Any Key To Start \n");
+            System.out.println("Welcome to Codex Naturalis! \n Press Any Key To Start \n");
             System.out.println("\n\n");
             s.nextLine();
             System.out.println("Lets' start! Type 'start-game' to start a game\n");
@@ -61,10 +62,14 @@ public class Client {
 
             while (true) {
                 try {
-                    tui.execCmd(s.nextLine().toLowerCase(Locale.ROOT),connectionChoice);
+                    tui.execCmd(s.nextLine().toLowerCase(Locale.ROOT));
                 } catch (ClassNotFoundException | IOException e) {
                     System.out.println("Connection error");
-                }catch (Exception e) {
+                }catch (IllegalOperationException | InvalidUserId | HandFullException | IsNotYourTurnException |
+                        HandNotFullException | InvalidCardException | InvalidGoalException | InvalidChoiceException |
+                        NoGameExistsException | RequirementsNotMetException | UnacceptableNumOfPlayersException |
+                        OnlyOneGameException | PlayerNameNotUniqueException | IllegalPositionException |
+                        DeckEmptyException e) {
                     System.out.println(e.getMessage());
                 }
             }

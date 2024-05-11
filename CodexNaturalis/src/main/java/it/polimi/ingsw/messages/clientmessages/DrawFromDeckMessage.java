@@ -20,7 +20,7 @@ public class DrawFromDeckMessage extends ClientMessage{
      * @param chosenDeck either the resource deck (0) or gold (!=0)
      * @param userId the UUID of the player that called drawFromDeck
      */
-    DrawFromDeckMessage(Integer chosenDeck,UUID userId){
+    public DrawFromDeckMessage(Integer chosenDeck, UUID userId){
         this.chosenDeck=chosenDeck;
         this.userId=userId;
     }
