@@ -107,7 +107,7 @@ public class TextUserInterface  {
                 idleUI.append("\n");
             }
             idleUI.append("\n\n");
-            if(view.showPrivateGoal(myID)==null){
+            if(showPrivateGoal() ==null){
                 idleUI.append("To start the game you have to choose your private goal from your goal options, try choose-goal\n");
             }if(!didIPlayStarterCard()){
                 idleUI.append("To start the game you have to choose the side of your starter card, try choose-starter-card-side\n");
@@ -120,8 +120,7 @@ public class TextUserInterface  {
     /**
      * @author Riccardo Lapi
      * given the command the user want to execute, it asks the user for the parameters it needs to perform that operation
-     * @param cmd              string that represent the command to use
-     * @param connectionChoice
+     * @param cmd string that represent the command to use
      * @throws RemoteException
      * @throws IllegalOperationException
      * @throws InvalidUserId
@@ -178,7 +177,7 @@ public class TextUserInterface  {
                     break;
                 case "choose-goal":
                     outWriter.print("Here are your goals, choose one (1,2)");
-                    Goal[] myGoals = view.showPlayerGoalOptions(myID);
+                    Goal[] myGoals = getGoalOptions();
                     artist.show(myGoals);
                     outWriter.print(artist.getMatrix());
                     String myGoal = s.nextLine();
@@ -226,9 +225,7 @@ public class TextUserInterface  {
                                         view.playCardFront(chosenCard, chosenPosition, myID);
                                     else
                                         view.playCardBack(chosenCard, chosenPosition, myID);
-
                                     error = false;
-
                                 }
                             } catch (RequirementsNotMetException ex) {
                                 outWriter.print(e.getMessage());
@@ -243,7 +240,7 @@ public class TextUserInterface  {
                     break;
                 case "choose-starter-card-side":
                     outWriter.print("Which side for the starter card? (f for front, b or any for back)");
-                    artist.show(view.getStarterCard(myID));
+                    artist.show(getStarterCard());
                     outWriter.print(artist.getMatrix());
                     boolean isChosenFrontStart = s.nextLine().equals("f");
                     view.chooseStarterCardSide(isChosenFrontStart, myID);
@@ -264,11 +261,11 @@ public class TextUserInterface  {
                            outWriter.print(e.getMessage()+"[0,1]");
                        }
                    }
-                    showHand();
-                    outWriter.print("Press enter to continue");
-                    s.nextLine();
-                    printIdleUI();
-                    break;
+                   showHand();
+                   outWriter.print("Press enter to continue");
+                   s.nextLine();
+                   printIdleUI();
+                   break;
                 case "draw-card-visible":
                     List<Card> visibleCard= view.getVisibleCards();
                     for(Card card:visibleCard){
@@ -284,6 +281,10 @@ public class TextUserInterface  {
                             outWriter.print(e+"[0,3]");
                         }
                     }
+                    showHand();
+                    outWriter.print("Press enter to continue");
+                    s.nextLine();
+                    printIdleUI();
                     break;
                 case "show-hand":
                     showHand();
@@ -291,10 +292,9 @@ public class TextUserInterface  {
                     s.nextLine();
                     break;
                 case "show-my-goal":
-                   goal=view.showPrivateGoal(myID);
+                   goal= showPrivateGoal();
                    artist.show(new Goal[]{goal});
                    outWriter.print(artist.getMatrix());
-
                    outWriter.print("Press enter to continue");
                    s.nextLine();
                    artist.resetMatrix();
@@ -335,6 +335,18 @@ public class TextUserInterface  {
                     outWriter.print("Unknown command");
             }
         }
+    }
+
+    private Goal[] getGoalOptions() throws RemoteException, InvalidUserId {
+        if(view.isRMI())
+            return view.showPlayerGoalOptions(myID);
+        return view.showPlayerGoalOptions();
+    }
+
+    private Goal showPrivateGoal() throws RemoteException, InvalidUserId {
+        if(view.isRMI())
+            return view.showPrivateGoal(myID);
+        return view.showPrivateGoal();
     }
 
     /**
@@ -419,7 +431,11 @@ public class TextUserInterface  {
     }
 
     private void showHand() throws RemoteException, InvalidUserId {
-        List<Card> hand =view.showPlayerHand(myID);
+        List<Card> hand ;
+        if(view.isRMI())
+            hand=view.showPlayerHand(myID);
+        else
+            hand=view.showPlayerHand();
         for(Card card:hand){
             artist.show(card);
         }
@@ -431,8 +447,14 @@ public class TextUserInterface  {
      * @throws RemoteException if there are connection problem with the server
      */
     private boolean didIPlayStarterCard() throws RemoteException {
-        StarterCard myStarterCard=view.getStarterCard(myID);
+        StarterCard myStarterCard= getStarterCard();
         return view.getPlayersField(myName).containsValue(myStarterCard);
+    }
+
+    private StarterCard getStarterCard() throws RemoteException {
+        if(view.isRMI())
+            return view.getStarterCard(myID);
+        return view.getStarterCard();
     }
 
     /**
@@ -516,7 +538,7 @@ public class TextUserInterface  {
                 outWriter.print("Invalid number!");
             }else{
                 if(chosenCardInt==0){
-                    StarterCard st = view.getStarterCard(myID);
+                    StarterCard st = getStarterCard();
                     artist.show(st);
                     outWriter.print(artist.getMatrix(),st.IsFront());//todo update with showStarterCard
                 }

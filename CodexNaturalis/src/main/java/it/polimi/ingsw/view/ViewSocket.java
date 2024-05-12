@@ -40,6 +40,11 @@ public class ViewSocket implements View{
     }
 
     @Override
+    public boolean isRMI() {
+        return false;
+    }
+
+    @Override
     public Map<String, Integer> getPlayersPoints()  {
         return gd.getPlayersPoints();
     }
@@ -60,6 +65,11 @@ public class ViewSocket implements View{
     }
 
     @Override
+    public List<Card> showPlayerHand() throws RemoteException, InvalidUserId {
+        return gd.getHand();
+    }
+
+    @Override
     public HashMap<Coordinates, Card> getPlayersField(String name) {
         return gd.getPlayerField(name);
     }
@@ -75,7 +85,13 @@ public class ViewSocket implements View{
     }
 
     @Override
+    @Deprecated
     public List<Coordinates> showPlayersLegalPositions(UUID uid) {
+        return null;
+    }
+
+    @Override
+    public List<Coordinates> showPlayersLegalPositions() throws RemoteException, InvalidUserId {
         return gd.getLegalPositions();
     }
 
@@ -85,12 +101,24 @@ public class ViewSocket implements View{
     }
 
     @Override
+    @Deprecated
     public Goal[] showPlayerGoalOptions(UUID uid) {
+        return null;
+    }
+
+    @Override
+    public Goal[] showPlayerGoalOptions() throws RemoteException, InvalidUserId {
         return gd.getGoalOptions();
     }
 
     @Override
+    @Deprecated
     public Goal showPrivateGoal(UUID uid) {
+        return  null;
+    }
+
+    @Override
+    public Goal showPrivateGoal() throws RemoteException, InvalidUserId {
         return gd.getPrivateGoal();
     }
 
@@ -105,7 +133,13 @@ public class ViewSocket implements View{
     }
 
     @Override
+    @Deprecated
     public StarterCard getStarterCard(UUID userId) throws RemoteException {
+        return  null;
+    }
+
+    @Override
+    public StarterCard getStarterCard() throws RemoteException {
         return gd.getStarterCard();
     }
 

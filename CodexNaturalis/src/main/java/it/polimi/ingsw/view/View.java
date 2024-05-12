@@ -21,12 +21,14 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface View {
+    boolean isRMI();
     //VIEW
     public Map<String, Integer> getPlayersPoints() throws RemoteException;
     public int getNumOfResourceCards() throws RemoteException;
     public int getNumOfGoldCards()  throws RemoteException;
 
     public List<Card> showPlayerHand(UUID uid) throws RemoteException, InvalidUserId;
+    public List<Card> showPlayerHand() throws RemoteException, InvalidUserId;
 
     public HashMap<Coordinates,Card> getPlayersField(String name) throws RemoteException;
 
@@ -35,17 +37,21 @@ public interface View {
     public String getCurrentPlayer() throws RemoteException;
 
     public List<Coordinates> showPlayersLegalPositions(UUID uid) throws RemoteException, InvalidUserId;
+    public List<Coordinates> showPlayersLegalPositions() throws RemoteException, InvalidUserId;
 
     public Goal[] getPublicGoals() throws RemoteException;
 
     public Goal[] showPlayerGoalOptions(UUID uid) throws RemoteException, InvalidUserId;
+    public Goal[] showPlayerGoalOptions() throws RemoteException, InvalidUserId;
 
     public Goal showPrivateGoal(UUID uid) throws RemoteException, InvalidUserId;
+    public Goal showPrivateGoal() throws RemoteException, InvalidUserId;
 
     public List<Card> getVisibleCards() throws RemoteException;
 
     public String getWinner() throws RemoteException;
     public StarterCard getStarterCard(UUID userId) throws RemoteException;
+    public StarterCard getStarterCard() throws RemoteException;
 
     //CONTROLLER
     public  UUID bootGame(int numOfPlayers, String playerName) throws OnlyOneGameException, UnacceptableNumOfPlayersException, ClassNotFoundException, IllegalOperationException, IOException, InvalidGoalException, HandNotFullException, HandFullException, InvalidChoiceException, NoGameExistsException, IsNotYourTurnException, InvalidUserId, RequirementsNotMetException, PlayerNameNotUniqueException, IllegalPositionException, InvalidCardException, DeckEmptyException;
