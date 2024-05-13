@@ -9,14 +9,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.HelloController">
    <children>
       <Text layoutX="221.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the number of players:" wrappingWidth="157.77985000610352" />
       <ButtonBar layoutX="165.0" layoutY="328.0">
          <buttons>
-          <Button mnemonicParsing="false" text="2" />
-            <Button mnemonicParsing="false" text="3" />
-            <Button mnemonicParsing="false" text="4" />
+          <Button mnemonicParsing="false" onAction="#onSelect2Player" text="2" />
+            <Button mnemonicParsing="false" onAction="#onSelect3Player" text="3" />
+            <Button mnemonicParsing="false" onAction="#onSelect4Player" text="4" />
          </buttons>
       </ButtonBar>
       <MenuButton layoutX="492.0" layoutY="12.0" mnemonicParsing="false" text="MenuButton">
@@ -32,12 +32,13 @@
       </Text>
       <ButtonBar layoutX="205.0" layoutY="142.0" prefHeight="26.0" prefWidth="161.0">
          <buttons>
-            <Button mnemonicParsing="false" text="Socket" />
-            <Button mnemonicParsing="false" text="RMI" />
+            <Button mnemonicParsing="false" onAction="#onSocketSelected" text="Socket" />
+            <Button mnemonicParsing="false" onAction="#onRmiSelected" text="RMI" />
          </buttons>
       </ButtonBar>
       <Text layoutX="220.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the type of connection:" />
-      <TextField layoutX="219.0" layoutY="225.0" />
+      <TextField fx:id="usernameField" layoutX="219.0" layoutY="225.0" onKeyReleased="#onUsernameChange" />
       <Text layoutX="222.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
+      <Button layoutX="507.0" layoutY="310.0" mnemonicParsing="false" onAction="#onPlay" prefHeight="52.0" prefWidth="52.0" text="Play" />
    </children>
 </AnchorPane>
