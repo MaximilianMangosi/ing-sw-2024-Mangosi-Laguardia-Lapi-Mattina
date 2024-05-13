@@ -7,7 +7,9 @@ import java.util.List;
 
 public class VisibleCardMessage extends ServerMessage{
     List<Card> visibleCards;
-
+    public VisibleCardMessage(List<Card> listOfCard){
+        this.visibleCards=listOfCard;
+    }
     @Override
     public void processMessage(ViewSocket view) {
         view.getGameData().setVisibleCards(visibleCards);

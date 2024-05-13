@@ -3,9 +3,17 @@ package it.polimi.ingsw.messages.clientmessages;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
+import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
+import it.polimi.ingsw.messages.exceptionmessages.InvalidUserIdMessage;
+import it.polimi.ingsw.messages.servermessages.FieldMessage;
+import it.polimi.ingsw.messages.servermessages.SuccessMessage;
+import it.polimi.ingsw.model.Coordinates;
+import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.server.ClientHandler;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class ChooseStarterCardMessage extends ClientMessage{
@@ -28,15 +36,18 @@ public class ChooseStarterCardMessage extends ClientMessage{
      * @param clientHandler, the object that called processMessage
      */
     @Override
-    public void processMessage(ClientHandler clientHandler) {
+    public void processMessage(ClientHandler clientHandler) throws IOException{
         try {
-            clientHandler.getController().chooseStarterCardSide(isFront,userId);
+            Controller c = clientHandler.getController();
+            String playerName = c.getUserIDs().get(userId).getName();
+            c.chooseStarterCardSide(isFront,userId);
+            clientHandler.answerClient(new SuccessMessage());
+            clientHandler.broadCast(new FieldMessage((HashMap<Coordinates, Card>) c.getPlayersField().get(playerName),c.getView().getFieldBuildingHelper(playerName)),playerName);
+            clientHandler.answerClient(new LegalPositionMessage());
         } catch (InvalidUserId e) {
-            throw new RuntimeException(e);
+            clientHandler.answerClient(new InvalidUserIdMessage());
         } catch (IllegalOperationException e) {
-            throw new RuntimeException(e);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            clientHandler.answerClient(new IllegalOperationMessage(e));
         }
     }
 }

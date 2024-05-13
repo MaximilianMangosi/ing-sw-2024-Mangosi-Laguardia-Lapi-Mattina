@@ -54,12 +54,13 @@ public class Server {
             DisconnectionHandler t2=new DisconnectionHandler(controller);
             t1.start();
             t2.start();
+            ViewUpdater viewUpdater = new ViewUpdater();
             while (true){
                 try {
-                    /* accepts connections; for every connection we accept,
-                     * create a new Thread executing a ClientHandler */
+
                     Socket client = socket.accept();
-                    ClientHandler clientHandler = new ClientHandler(client,controller);
+                    ClientHandler clientHandler = new ClientHandler(client,controller,viewUpdater);
+                    viewUpdater.addClient(clientHandler);
                     Thread thread = new Thread(clientHandler, "server_" + client.getInetAddress());
                     thread.start();
                 } catch (IOException e) {
@@ -67,6 +68,9 @@ public class Server {
                 }
             }
 
+
+
+            //TODO DisconnectionHandler
         } catch (RemoteException ex) {
             System.out.println("Connection error unable to export object:\n" + ex.getMessage());}
     }

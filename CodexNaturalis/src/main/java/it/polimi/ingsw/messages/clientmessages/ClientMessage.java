@@ -9,10 +9,11 @@ import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.server.ClientHandler;
 
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public abstract class ClientMessage extends Message {
 
-    public abstract void processMessage(ClientHandler clientHandler);
+    public abstract void processMessage(ClientHandler clientHandler) throws IOException;
 }

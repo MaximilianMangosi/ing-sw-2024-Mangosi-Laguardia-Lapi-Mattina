@@ -5,9 +5,13 @@ import it.polimi.ingsw.controller.exceptions.DeckEmptyException;
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.controller.exceptions.InvalidChoiceException;
 import it.polimi.ingsw.controller.exceptions.IsNotYourTurnException;
+import it.polimi.ingsw.messages.exceptionmessages.*;
+import it.polimi.ingsw.messages.servermessages.HandMessage;
+import it.polimi.ingsw.messages.servermessages.SuccessMessage;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.server.ClientHandler;
 
+import java.io.IOException;
 import java.util.UUID;
 
 public class DrawFromDeckMessage extends ClientMessage{
@@ -31,19 +35,32 @@ public class DrawFromDeckMessage extends ClientMessage{
      * @param clientHandler the object that called processMessage
      */
     @Override
-    public void processMessage( ClientHandler clientHandler) {
+    public void processMessage( ClientHandler clientHandler) throws IOException {
         try {
             clientHandler.getController().drawFromDeck(userId,chosenDeck);
+            SuccessMessage answer = new SuccessMessage();
+            HandMessage handMessage = new HandMessage(clientHandler.getController().getPlayersHands().get(userId));
+
+            clientHandler.answerClient(answer);
+            clientHandler.answerClient(handMessage);
         } catch (IsNotYourTurnException e) {
-            throw new RuntimeException(e);
+            IsNotYourTurnMessage answer =new IsNotYourTurnMessage();
+            clientHandler.answerClient(answer);
+
         } catch (HandFullException e) {
-            throw new RuntimeException(e);
+            HandFullMessage answer = new HandFullMessage();
+            clientHandler.answerClient(answer);
+
         } catch (DeckEmptyException e) {
-            throw new RuntimeException(e);
+            DeckEmptyMessage answer= new DeckEmptyMessage();
+            clientHandler.answerClient(answer);
+
         } catch (IllegalOperationException e) {
-            throw new RuntimeException(e);
+            IllegalOperationMessage answer = new IllegalOperationMessage(e);
+            clientHandler.answerClient(answer);
         } catch (InvalidChoiceException e) {
-            throw new RuntimeException(e);
+            InvalidChoiceMessage answer =new InvalidChoiceMessage();
+            clientHandler.answerClient(answer);
         }
     }
 }

@@ -3,11 +3,18 @@ package it.polimi.ingsw.messages.clientmessages;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
+import it.polimi.ingsw.messages.exceptionmessages.NoGameExistsMessage;
+import it.polimi.ingsw.messages.exceptionmessages.PlayerNameNotUniqueMessage;
+import it.polimi.ingsw.messages.servermessages.PlayersListMessage;
+import it.polimi.ingsw.messages.servermessages.UserIDMessage;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.server.ClientHandler;
 
+import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.UUID;
 
 public class JoinGameMessage extends ClientMessage {
      private String username;
@@ -27,15 +34,23 @@ public class JoinGameMessage extends ClientMessage {
      * @param clientHandler
      */
     @Override
-    public void processMessage ( ClientHandler clientHandler)  {
+    public void processMessage ( ClientHandler clientHandler) throws IOException {
        try {
-           clientHandler.getController().joinGame(username);
+           Controller c= clientHandler.getController();
+           UUID newId =c.joinGame(username);
+           UserIDMessage answer = new UserIDMessage(newId);
+           PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
+           clientHandler.answerClient(answer);
+           clientHandler.broadCast(msg);
        } catch (NoGameExistsException e) {
-           throw new RuntimeException(e);
+           NoGameExistsMessage answer = new NoGameExistsMessage();
+           clientHandler.answerClient(answer);
        } catch (PlayerNameNotUniqueException e) {
-           throw new RuntimeException(e);
+           PlayerNameNotUniqueMessage answer = new PlayerNameNotUniqueMessage();
+           clientHandler.answerClient(answer);
        } catch (IllegalOperationException e) {
-           throw new RuntimeException(e);
+           IllegalOperationMessage answer = new IllegalOperationMessage(e);
+           clientHandler.answerClient(answer);
        }
     }
 
