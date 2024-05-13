@@ -16,6 +16,10 @@ import java.util.List;
 public class HandMessage extends ServerMessage{
     List<Card> newHand;
 
+    public HandMessage(List<Card> newHand) {
+        this.newHand = newHand;
+    }
+
     @Override
     public void processMessage(ViewSocket view) {
         GameData gd= view.getGameData();

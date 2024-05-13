@@ -51,7 +51,9 @@ public class Server {
                 return;
             }
             CloseGame t1 = new CloseGame(controller);
+            DisconnectionHandler t2=new DisconnectionHandler(controller);
             t1.start();
+            t2.start();
             ViewUpdater viewUpdater = new ViewUpdater();
             while (true){
                 try {

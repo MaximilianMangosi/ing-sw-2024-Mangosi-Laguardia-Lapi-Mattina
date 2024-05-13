@@ -46,6 +46,7 @@ public class Client {
                 server = new Socket("192.168.0.1", 2323);
                 view=new ViewSocket(server.getOutputStream(),server.getInputStream(),gameData);
                 ServerHandler t1=new ServerHandler((ViewSocket) view);
+                t1.start();
             }else {
                 Registry registry = LocateRegistry.getRegistry(1099);
                 view = (ViewRMIInterface) registry.lookup("ViewRMI");

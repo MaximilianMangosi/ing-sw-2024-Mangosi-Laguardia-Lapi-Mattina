@@ -20,52 +20,93 @@ import java.io.*;
 import java.rmi.RemoteException;
 import java.util.*;
 
+/**
+ * A View implementation using Socket, used to interact with the server to send commands and receive data
+ */
 public class ViewSocket implements View{
     private final ObjectOutputStream output;
     private final ObjectInputStream input;
     private final GameData gd;
-
+    /**
+     * Constructs a ViewSocket with the specified output stream, input stream, and game data.
+     * @author Giuseppe Laguardia
+     * @param output    The output stream.
+     * @param input     The input stream.
+     * @param gameData  The game data.
+     * @throws IOException if an I/O error occurs.
+     */
     public ViewSocket(OutputStream output, InputStream input, GameData gameData) throws IOException {
         this.output = new ObjectOutputStream(output);
         this.input = new ObjectInputStream(input);
         this.gd=gameData;
     }
-
+    /**
+     * Gets the output stream.
+     *
+     * @return The output stream.
+     */
     public ObjectOutputStream getOutput() {
         return output;
     }
-
+    /**
+     * Gets the input stream.
+     *
+     * @return The input stream.
+     */
     public ObjectInputStream getInput() {
         return input;
     }
-
+    /**
+     * Indicates whether this view is using RMI.
+     *
+     * @return Always returns false for socket implementation.
+     */
     @Override
     public boolean isRMI() {
         return false;
     }
-
+    /**
+     * Retrieves the points of all players in the game.
+     *
+     * @return A map containing player names as keys and their respective points as values.
+     */
     @Override
     public Map<String, Integer> getPlayersPoints()  {
         return gd.getPlayersPoints();
     }
-
+    /**
+     * Retrieves the number of resource cards remaining in the deck.
+     *
+     * @return The number of resource cards.
+     */
     @Override
     public int getNumOfResourceCards()  {
        return gd.getNumOfResourceCards();
     }
-
+    /**
+     * Retrieves the number of gold cards remaining in the deck.
+     *
+     * @return The number of resource cards.
+     */
     @Override
     public int getNumOfGoldCards() {
         return gd.getNumOfGoldCards();
     }
-
+/**
+ * This method is deprecated and will always return null. Use {@link #showPlayerHand()} instead.
+ * @return Always returns null.
+ */
     @Override
+    @Deprecated
     public List<Card> showPlayerHand(UUID uid) {
-        return gd.getHand();
+        return null;
     }
-
+/**
+ * Retrieves the hand of the current player.
+ * @return a list of cards representing the current player's hand.
+ */
     @Override
-    public List<Card> showPlayerHand() throws RemoteException, InvalidUserId {
+    public List<Card> showPlayerHand(){
         return gd.getHand();
     }
 
@@ -83,61 +124,100 @@ public class ViewSocket implements View{
     public String getCurrentPlayer() throws RemoteException {
         return gd.getCurrentPlayer();
     }
-
+    /**
+    * This method is deprecated and will always return null. Use {@link #showPlayersLegalPositions()}  instead.
+    * @return Always returns null.
+    */
     @Override
     @Deprecated
     public List<Coordinates> showPlayersLegalPositions(UUID uid) {
         return null;
     }
-
+    /**
+     * Retrieves the legal positions where the current player can place cards.
+     *
+     * @return The list of legal positions.
+     */
     @Override
-    public List<Coordinates> showPlayersLegalPositions() throws RemoteException, InvalidUserId {
+    public List<Coordinates> showPlayersLegalPositions()  {
         return gd.getLegalPositions();
     }
-
+    /**
+     * Retrieves the public goals available in the game.
+     * @return An array of public goals.
+     */
     @Override
     public Goal[] getPublicGoals() {
         return gd.getPublicGoals();
     }
-
+    /**
+     * This method is deprecated and will always return null. Use {@link #showPlayerGoalOptions()}  instead.
+     * @return Always returns null.
+     */
     @Override
     @Deprecated
     public Goal[] showPlayerGoalOptions(UUID uid) {
         return null;
     }
-
+    /**
+     * Retrieves the list of goal options available for user.
+     *
+     * @return An array of goal options.
+     */
     @Override
-    public Goal[] showPlayerGoalOptions() throws RemoteException, InvalidUserId {
+    public Goal[] showPlayerGoalOptions()  {
         return gd.getGoalOptions();
     }
-
+    /**
+     * This method is deprecated and will always return null. Use {@link #showPrivateGoal()}   instead.
+     * @return Always returns null.
+     */
     @Override
     @Deprecated
     public Goal showPrivateGoal(UUID uid) {
         return  null;
     }
-
+    /**
+     * Retrieves the private goal of user.
+     *
+     * @return The private goal of the user.
+     */
     @Override
-    public Goal showPrivateGoal() throws RemoteException, InvalidUserId {
+    public Goal showPrivateGoal() {
         return gd.getPrivateGoal();
     }
-
+    /**
+     * Retrieves the list of visible cards in the game.
+     *
+     * @return The list of visible cards.
+     */
     @Override
     public List<Card> getVisibleCards() {
         return gd.getVisibleCards();
     }
-
+    /**
+     * Retrieves the winner of the game.
+     *
+     * @return The name of the winner.
+     */
     @Override
     public String getWinner() {
         return gd.getWinner();
     }
-
+    /**
+     * This method is deprecated and will always return null. Use {@link #getStarterCard()}   instead.
+     * @return Always returns null.
+     */
     @Override
     @Deprecated
-    public StarterCard getStarterCard(UUID userId) throws RemoteException {
+    public StarterCard getStarterCard(UUID userId)  {
         return  null;
     }
-
+    /**
+     * Retrieves the starter card of the user.
+     *
+     * @return The starter card assigned to the player.
+     * */
     @Override
     public StarterCard getStarterCard() throws RemoteException {
         return gd.getStarterCard();

@@ -183,7 +183,7 @@ public class GameTest {
         assertEquals(1,p.getResourceCounter(Tool.PHIAL));
         assertEquals(0,p.getResourceCounter(Tool.SCROLL));
     }
-    private void fillList(ArrayList<String> jsonsList,int numOfJson,String path) throws IOException {
+    public static void fillList(ArrayList<String> jsonsList,int numOfJson,String path) throws IOException {
         for (int i = 1; i <=numOfJson; i++) {
             jsonsList.add(Files.readString(Path.of(path+i+".json")));
         }

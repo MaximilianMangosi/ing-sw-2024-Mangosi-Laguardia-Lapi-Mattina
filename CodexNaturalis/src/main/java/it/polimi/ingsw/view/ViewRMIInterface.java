@@ -23,6 +23,11 @@ import java.util.UUID;
 public interface ViewRMIInterface extends Remote,View  {
 
     //VIEW
+
+
+    @Override
+    boolean isRMI() throws RemoteException;
+
     public Map<String, Integer> getPlayersPoints() throws RemoteException;
     public int getNumOfResourceCards() throws RemoteException;
     public int getNumOfGoldCards()  throws RemoteException;

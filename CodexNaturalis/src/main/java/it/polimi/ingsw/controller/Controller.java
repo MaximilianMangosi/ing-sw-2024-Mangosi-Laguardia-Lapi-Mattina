@@ -106,6 +106,7 @@ public class Controller {
     public  UUID bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException,  IllegalOperationException, OnlyOneGameException {
         UUID userID= currentState.BootGame(numOfPlayers,playerName);
         view.updatePlayersList();
+        pingMap.put(userID,true);
         changeState();
         return userID;
     }
@@ -123,6 +124,7 @@ public class Controller {
     public UUID joinGame(String playerName) throws NoGameExistsException, IllegalOperationException,PlayerNameNotUniqueException {
         UUID userID= currentState.joinGame(playerName);
         view.updatePlayersList();
+        pingMap.put(userID,true);
         changeState();
         return userID;
     }
