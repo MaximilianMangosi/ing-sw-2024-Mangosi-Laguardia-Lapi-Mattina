@@ -19,7 +19,7 @@ public class DrawVisibleMessage extends ClientMessage{
      * @param chosenCard
      * @param userId
      */
-    DrawVisibleMessage(int chosenCard, UUID userId){
+    public DrawVisibleMessage(int chosenCard, UUID userId){
         this.chosenCard=chosenCard;
         this.userId=userId;
     }
@@ -32,6 +32,7 @@ public class DrawVisibleMessage extends ClientMessage{
     public void processMessage( ClientHandler clientHandler) {
         try {
             clientHandler.getController().drawVisibleCard(userId,chosenCard);
+
         } catch (IsNotYourTurnException e) {
             throw new RuntimeException(e);
         } catch (HandFullException e) {

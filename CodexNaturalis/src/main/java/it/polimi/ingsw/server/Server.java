@@ -52,12 +52,13 @@ public class Server {
             }
             CloseGame t1 = new CloseGame(controller);
             t1.start();
+            ViewUpdater viewUpdater = new ViewUpdater();
             while (true){
                 try {
-                    /* accepts connections; for every connection we accept,
-                     * create a new Thread executing a ClientHandler */
+
                     Socket client = socket.accept();
-                    ClientHandler clientHandler = new ClientHandler(client,controller);
+                    ClientHandler clientHandler = new ClientHandler(client,controller,viewUpdater);
+                    viewUpdater.addClient(clientHandler);
                     Thread thread = new Thread(clientHandler, "server_" + client.getInetAddress());
                     thread.start();
                 } catch (IOException e) {

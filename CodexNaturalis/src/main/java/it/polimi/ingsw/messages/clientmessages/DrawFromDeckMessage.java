@@ -34,6 +34,7 @@ public class DrawFromDeckMessage extends ClientMessage{
     public void processMessage( ClientHandler clientHandler) {
         try {
             clientHandler.getController().drawFromDeck(userId,chosenDeck);
+
         } catch (IsNotYourTurnException e) {
             throw new RuntimeException(e);
         } catch (HandFullException e) {

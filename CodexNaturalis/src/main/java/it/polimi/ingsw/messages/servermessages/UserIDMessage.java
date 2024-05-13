@@ -11,7 +11,9 @@ import java.util.UUID;
  */
 public class UserIDMessage extends ServerMessage{
     UUID yourID;
-
+    public UserIDMessage(UUID id){
+        this.yourID=id;
+    }
     /**
      * Returns the userID contained in the message
      * @return UUID that identifies the user's receiving this message
