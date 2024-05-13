@@ -353,6 +353,7 @@ public class ViewSocket implements View{
         synchronized (input) {
             ServerMessage reply=(ServerMessage) input.readObject();
             reply.processMessage();
+
         }
     }
 

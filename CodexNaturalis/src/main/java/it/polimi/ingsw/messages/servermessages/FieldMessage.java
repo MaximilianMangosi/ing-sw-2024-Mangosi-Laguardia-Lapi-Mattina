@@ -12,26 +12,21 @@ public class FieldMessage extends ServerMessage{
     HashMap <Coordinates, Card> newField;
     String player;
     List<Coordinates> newFieldBuilderHelper;
-    List<Coordinates> newAvailablePositions;
 
-    public FieldMessage(HashMap<Coordinates, Card> newField, List<Coordinates> newAvailablePositions, List<Coordinates> newFieldBuilderHelper) {
-        this.newField = newField;
-        this.newAvailablePositions = newAvailablePositions;
-        this.newFieldBuilderHelper = newFieldBuilderHelper;
-    }
 
-    public FieldMessage(HashMap<Coordinates, Card> newField, List<Coordinates> newFieldBuilderHelper) {
+    public FieldMessage(HashMap<Coordinates, Card> newField, List<Coordinates> newFieldBuilderHelper, String player) {
         this.newField = newField;
         this.newFieldBuilderHelper = newFieldBuilderHelper;
+        this.player=player;
     }
+
 
     @Override
     public void processMessage(ViewSocket view){
         GameData gd = view.getGameData();
         gd.setPlayerField(player,newField);
         gd.setFieldBuilderHelper(player,newFieldBuilderHelper);
-        if(newAvailablePositions!=null)
-            gd.setLegalPositions(newAvailablePositions);
+
 
     }
 }
