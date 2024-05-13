@@ -49,11 +49,10 @@ public class Server {
                 System.exit(1);
                 return;
             }
-
-
             CloseGame t1 = new CloseGame(controller);
+            DisconnectionHandler t2=new DisconnectionHandler(controller);
             t1.start();
-            //TODO DisconnectionHandler
+            t2.start();
         } catch (RemoteException ex) {
             System.out.println("Connection error unable to export object:\n" + ex.getMessage());}
     }

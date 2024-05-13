@@ -52,7 +52,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     }
 
     @Override
-    public boolean isRMI() {
+    public boolean isRMI() throws RemoteException {
         return true;
     }
 

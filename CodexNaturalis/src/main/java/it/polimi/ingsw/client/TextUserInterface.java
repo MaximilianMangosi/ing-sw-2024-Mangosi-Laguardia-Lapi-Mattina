@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.ViewRMIInterface;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -170,6 +171,10 @@ public class TextUserInterface  {
                                 }
                             }
                         }
+                    }
+                    if (view.isRMI()) {
+                        PingPongRMI td = new PingPongRMI((ViewRMIInterface) view, myID);
+                        td.start();
                     }
                     view.initializeFieldBuildingHelper( myName);
                     tuiUpdater.start();

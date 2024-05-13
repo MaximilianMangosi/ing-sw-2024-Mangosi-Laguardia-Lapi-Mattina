@@ -12,7 +12,7 @@ import java.util.UUID;
 public class PingPongRMI extends  Thread{
     ViewRMIInterface view;
     UUID myID;
-    PingPongRMI(ViewRMIInterface View, UUID id){
+    PingPongRMI(ViewRMIInterface view, UUID id){
        this.view=view;
        myID=id;
     }

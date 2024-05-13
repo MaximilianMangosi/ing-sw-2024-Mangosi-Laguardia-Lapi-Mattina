@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface View {
-    boolean isRMI();
+    boolean isRMI() throws RemoteException;
     //VIEW
     public Map<String, Integer> getPlayersPoints() throws RemoteException;
     public int getNumOfResourceCards() throws RemoteException;
