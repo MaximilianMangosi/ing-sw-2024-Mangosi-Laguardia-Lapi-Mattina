@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.gamelogic.GameManager;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.rmi.RemoteException;
@@ -52,7 +53,22 @@ public class Server {
             CloseGame t1 = new CloseGame(controller);
             DisconnectionHandler t2=new DisconnectionHandler(controller);
             t1.start();
-            t2.start();
+            while (true){
+                try {
+                    /* accepts connections; for every connection we accept,
+                     * create a new Thread executing a ClientHandler */
+                    Socket client = socket.accept();
+                    ClientHandler clientHandler = new ClientHandler(client,controller);
+                    Thread thread = new Thread(clientHandler, "server_" + client.getInetAddress());
+                    thread.start();
+                } catch (IOException e) {
+                    System.out.println("connection dropped");
+                }
+            }
+
+
+
+            //TODO DisconnectionHandler
         } catch (RemoteException ex) {
             System.out.println("Connection error unable to export object:\n" + ex.getMessage());}
     }
