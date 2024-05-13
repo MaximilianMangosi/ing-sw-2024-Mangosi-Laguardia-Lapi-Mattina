@@ -37,9 +37,7 @@ public class ClientHandler  implements Runnable{
 
         try{
             client.close();
-        } catch (IOException e) {
-
-        }
+        } catch (IOException ignored) {}
 
     }
 

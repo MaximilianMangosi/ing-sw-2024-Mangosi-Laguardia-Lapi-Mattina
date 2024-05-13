@@ -53,6 +53,7 @@ public class Server {
             CloseGame t1 = new CloseGame(controller);
             DisconnectionHandler t2=new DisconnectionHandler(controller);
             t1.start();
+            t2.start();
             while (true){
                 try {
                     /* accepts connections; for every connection we accept,
@@ -66,9 +67,6 @@ public class Server {
                 }
             }
 
-
-
-            //TODO DisconnectionHandler
         } catch (RemoteException ex) {
             System.out.println("Connection error unable to export object:\n" + ex.getMessage());}
     }
