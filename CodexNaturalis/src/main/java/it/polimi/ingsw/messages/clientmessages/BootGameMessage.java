@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
 import it.polimi.ingsw.messages.exceptionmessages.OnlyOneGameMessage;
 import it.polimi.ingsw.messages.exceptionmessages.UnacceptableNumOfPlayersMessage;
+import it.polimi.ingsw.messages.servermessages.PlayersListMessage;
 import it.polimi.ingsw.messages.servermessages.ServerMessage;
 import it.polimi.ingsw.messages.servermessages.UserIDMessage;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
@@ -35,24 +36,23 @@ public class BootGameMessage extends ClientMessage{
      */
     public void processMessage( ClientHandler clientHandler) throws IOException {
         try {
-            UUID newId =clientHandler.getController().bootGame(numPlayers,username);
+            Controller c= clientHandler.getController();
+            UUID newId =c.bootGame(numPlayers,username);
             UserIDMessage answer = new UserIDMessage(newId);
+            PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
+            clientHandler.broadCast(msg);
             clientHandler.answerClient(answer);
         } catch (UnacceptableNumOfPlayersException e) {
             UnacceptableNumOfPlayersMessage answer = new UnacceptableNumOfPlayersMessage();
             clientHandler.answerClient(answer);
-            throw new RuntimeException(e);
+
         } catch (IllegalOperationException e) {
             IllegalOperationMessage answer = new IllegalOperationMessage(new IllegalOperationException("Illegal Operation\n"));
             clientHandler.answerClient(answer);
-            throw new RuntimeException(e);
+
         } catch (OnlyOneGameException e) {
             OnlyOneGameMessage answer = new OnlyOneGameMessage();
             clientHandler.answerClient(answer);
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-
-            throw new RuntimeException(e);
         }
     }
 

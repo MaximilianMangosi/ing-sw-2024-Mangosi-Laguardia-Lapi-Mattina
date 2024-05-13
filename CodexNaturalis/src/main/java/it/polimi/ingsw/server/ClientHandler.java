@@ -61,10 +61,14 @@ public class ClientHandler  implements Runnable{
     }
 
     public void answerClient(Message msg) throws IOException {
-        output.writeObject((Object)msg);
+        synchronized (output){
+            output.writeObject((Object)msg);
+        }
     }
-    public void broadCast (List<ObjectOutputStream> outputs,ServerMessage msg){
-
+    public void broadCast (ServerMessage msg) throws IOException {
+        //ASSUMPTION : ONLY ONE GAME CAN BE HOSTED AT ONCE ON THE SERVER
+        //TODO: implement multiple parallel answers to different players in different games
+        viewUpdater.send(msg);
     }
     public Controller getController(){
         return this.controller;

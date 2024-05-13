@@ -337,13 +337,13 @@ public class ViewSocket implements View{
      * @throws InvalidUserId
      */
   @Override
-    public void chooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, IllegalOperationException, InvalidUserId {
-//        ChooseGoalMessage message= new ChooseGoalMessage(userId,newGoal);
-//        output.writeObject(message);
-//        synchronized (input) {
-//            ServerMessage reply=(ServerMessage) input.readObject();
-//            reply.processMessage();
-//        }
+    public void chooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, IllegalOperationException, InvalidUserId, IOException, ClassNotFoundException, HandNotFullException, HandFullException, InvalidChoiceException, NoGameExistsException, IsNotYourTurnException, RequirementsNotMetException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalPositionException, InvalidCardException, DeckEmptyException {
+        ChooseGoalMessage message= new ChooseGoalMessage(userId,newGoal);
+        output.writeObject(message);
+        synchronized (input) {
+            ServerMessage reply=(ServerMessage) input.readObject();
+            reply.processMessage();
+        }
     }
 
     @Override
