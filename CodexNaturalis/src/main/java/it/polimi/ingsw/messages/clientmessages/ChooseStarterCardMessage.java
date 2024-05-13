@@ -17,7 +17,7 @@ public class ChooseStarterCardMessage extends ClientMessage{
      * @param isFront
      * @param userId
      */
-    ChooseStarterCardMessage(boolean isFront, UUID userId){
+    public ChooseStarterCardMessage(boolean isFront, UUID userId){
         this.isFront=isFront;
         this.userId=userId;
     }

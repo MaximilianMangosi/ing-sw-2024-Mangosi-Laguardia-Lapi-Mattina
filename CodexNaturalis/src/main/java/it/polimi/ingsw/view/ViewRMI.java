@@ -51,6 +51,11 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         playersPoints=controller.getPlayersPoints();
     }
 
+    @Override
+    public boolean isRMI() {
+        return true;
+    }
+
     /**
      * @author Giorgio Mattina
      * @return map nickname-points for each player
@@ -59,7 +64,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         return playersPoints;
     }
     /**
-     * updates NumOfResourceCards, calling the controller
+     * updates NumOfResourceCardsMessage, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
     public synchronized void updateNumOfResourceCards(){
@@ -74,7 +79,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         return numOfResourceCards;
     }
     /**
-     * updates NumOfGoldCards, calling the controller
+     * updates NumOfGoldCardsMessage, calling the controller
      * @author Giorgio Mattina, Maximilian Mangosi
      */
     public synchronized void updateNumOfGoldCards(){
@@ -160,6 +165,12 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     @Override
     public List<Coordinates> showPlayersLegalPositions(UUID uid) throws RemoteException, InvalidUserId {
         return playersLegalPositions.get(uid);
+    }
+
+    @Override
+    @Deprecated
+    public List<Coordinates> showPlayersLegalPositions() throws RemoteException, InvalidUserId {
+        return null;
     }
 
     /**
@@ -516,6 +527,12 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         return playersHands.get(id);
     }
 
+    @Override
+    @Deprecated
+    public List<Card> showPlayerHand() throws RemoteException, InvalidUserId {
+        return null;
+    }
+
     /**
      * @author Giorgio Mattina
      * @param id the player uid
@@ -536,6 +553,12 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         return playersGoalOptions.get(uid);
     }
 
+    @Override
+    @Deprecated
+    public Goal[] showPlayerGoalOptions() throws RemoteException, InvalidUserId {
+        return null;
+    }
+
     /**
      * @author Giorgio Mattina
      * @param uid the player uid
@@ -543,6 +566,12 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      */
     public Goal showPrivateGoal(UUID uid){
         return privateGoals.get(uid);
+    }
+
+    @Override
+    @Deprecated
+    public Goal showPrivateGoal() throws RemoteException, InvalidUserId {
+        return null;
     }
 
     /**
@@ -561,6 +590,12 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      */
     public StarterCard getStarterCard(UUID userId) throws RemoteException{
         return starterCardMap.get(userId);
+    }
+
+    @Override
+    @Deprecated
+    public StarterCard getStarterCard() throws RemoteException {
+        return null;
     }
 
     /**

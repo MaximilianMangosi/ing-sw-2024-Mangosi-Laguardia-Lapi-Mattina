@@ -24,7 +24,7 @@ public class PlayCardMessage extends ClientMessage{
      * @param userId the id of the player who is playing
      * @param playFront true if the card is played front, false if back
      */
-    PlayCardMessage(Card chosenCard,Coordinates position, UUID userId,boolean playFront){
+    public PlayCardMessage(Card chosenCard, Coordinates position, UUID userId, boolean playFront){
         this.chosenCard=chosenCard;
         this.position=position;
         this.userId=userId;

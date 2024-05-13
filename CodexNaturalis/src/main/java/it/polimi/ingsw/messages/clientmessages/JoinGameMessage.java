@@ -17,7 +17,7 @@ public class JoinGameMessage extends ClientMessage {
      * @author Giorgio Mattina
      * @param username
      */
-     JoinGameMessage(String username){
+    public JoinGameMessage(String username){
          this.username=username;
      }
 
