@@ -19,7 +19,7 @@ public class DrawVisibleMessage extends ClientMessage{
      * @param chosenCard
      * @param userId
      */
-    public DrawVisibleMessage(int chosenCard, UUID userId){
+    DrawVisibleMessage(int chosenCard, UUID userId){
         this.chosenCard=chosenCard;
         this.userId=userId;
     }
