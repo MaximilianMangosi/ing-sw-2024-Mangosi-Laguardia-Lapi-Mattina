@@ -2,11 +2,16 @@ package it.polimi.ingsw.messages.clientmessages;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.exceptions.*;
+import it.polimi.ingsw.messages.exceptionmessages.*;
+import it.polimi.ingsw.messages.servermessages.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.server.ClientHandler;
 
+import java.io.IOException;
+import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class PlayCardMessage extends ClientMessage{
@@ -38,39 +43,45 @@ public class PlayCardMessage extends ClientMessage{
      * @param clientHandler
      */
     @Override
-    public void processMessage( ClientHandler clientHandler) {
-        if(playFront){
-            try {
-                clientHandler.getController().playCardFront(chosenCard,position,userId);
-            } catch (IsNotYourTurnException e) {
-                throw new RuntimeException(e);
-            } catch (RequirementsNotMetException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalPositionException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidCardException e) {
-                throw new RuntimeException(e);
-            } catch (HandNotFullException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalOperationException e) {
-                throw new RuntimeException(e);
+    public void processMessage( ClientHandler clientHandler) throws IOException {
+        Controller c = clientHandler.getController();
+        try {
+            if (playFront) {
+
+
+                c.playCardFront(chosenCard, position, userId);
+
+
+            } else {
+
+                clientHandler.getController().playCardBack(chosenCard, position, userId);
+
             }
-        }else{
-            try {
-                clientHandler.getController().playCardBack(chosenCard,position,userId);
-            } catch (HandNotFullException e) {
-                throw new RuntimeException(e);
-            } catch (IsNotYourTurnException e) {
-                throw new RuntimeException(e);
-            } catch (RequirementsNotMetException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalPositionException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalOperationException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidCardException e) {
-                throw new RuntimeException(e);
+            if (c.getView().getWinner()!=null){
+                clientHandler.broadCast(new GameEndMessage(c.getView().getWinner()));
             }
+            String playerName = c.getUserIDs().get(userId).getName();
+            clientHandler.answerClient(new HandMessage(c.getPlayersHands().get(userId)));
+            clientHandler.broadCast(new FieldMessage((HashMap<Coordinates, Card>) c.getPlayersField().get(playerName),c.getView().getFieldBuildingHelper(playerName),playerName));
+            clientHandler.broadCast(new PointsMessage((HashMap<String, Integer>) c.getPlayersPoints()));
+            clientHandler.broadCast(new TurnMessage(c.getCurrentPlayer()));
+            clientHandler.answerClient(new LegalPositionMessage(c.getPlayersLegalPositions().get(userId)));
+
+        } catch (HandNotFullException e) {
+            clientHandler.answerClient(new HandNotFullMessage());
+        } catch (IsNotYourTurnException e) {
+            clientHandler.answerClient(new IsNotYourTurnMessage());
+        } catch (RequirementsNotMetException e) {
+           clientHandler.answerClient(new RequirementsNotMetMessage());
+        } catch (IllegalPositionException e) {
+            clientHandler.answerClient(new IllegalPositionMessage());
+        } catch (IllegalOperationException e) {
+            clientHandler.answerClient( new IllegalOperationMessage(e));
+        } catch (InvalidCardException e) {
+            clientHandler.answerClient(new InvalidCardMessage());
+        } catch (RemoteException ignore) {
+
         }
+
     }
 }
