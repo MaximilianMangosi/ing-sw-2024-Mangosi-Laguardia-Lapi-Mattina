@@ -296,8 +296,8 @@ public class Controller {
      * @author Giorgio Mattina, Maximilian Mangosi
      * @return Map of each player's score
      */
-    public Map<String, Integer> getPlayersPoints(){
-        Map<String, Integer> scoreboard = new HashMap<>();
+    public HashMap<String, Integer> getPlayersPoints(){
+        HashMap<String, Integer> scoreboard = new HashMap<>();
         List<Player> playersList = currentState.game.getPlayers();
         for (int i = 0; i< currentState.game.getNumOfPlayers();i++){
            scoreboard.put(playersList.get(i).getName(),playersList.get(i).getPoints());

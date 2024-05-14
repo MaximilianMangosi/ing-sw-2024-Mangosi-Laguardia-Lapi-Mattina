@@ -22,8 +22,6 @@ public class GameStartMessage extends ServerMessage{
     public void processMessage(ViewSocket view) {
         view.getGameData().setGameStarted(true);
         view.getGameData().setPublicGoals(publicGoals);
-
-        view.getGameData().setPrivateGoal(privateGoal);
-        view.getGameData().setStarterCard(starterCard);
+        view.getGameData().setVisibleCards(visibleCards);
     }
 }

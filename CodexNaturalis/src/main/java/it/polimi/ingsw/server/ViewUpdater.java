@@ -23,5 +23,5 @@ public class ViewUpdater  {
     public void sendTo(ServerMessage message,UUID userId) throws IOException{
         clients.get(userId).answerClient(message);
     }
-    public void
+
 }
