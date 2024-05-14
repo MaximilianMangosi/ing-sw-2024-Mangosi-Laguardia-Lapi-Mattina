@@ -50,15 +50,13 @@ public class OutStreamWriter {
     public void print(String[][] matrix,boolean isFront){
         if(isFront){
             for(int i=0;i<5;i++){
-                for (int j=0;j<14;j++){
+                for (int j=0;j<13;j++){
                     if(matrix[i][j]!=null) {
                         System.out.print(matrix[i][j]);
                     }
                     else {
                         System.out.print(" \u001B[0m");
                     }
-
-
                 }
                 System.out.println(" \u001B[0m");
             }

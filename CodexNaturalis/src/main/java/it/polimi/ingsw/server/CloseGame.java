@@ -35,7 +35,6 @@ public class CloseGame extends Thread{
                         break;
                     }
                 }
-
             }
         }
     }
