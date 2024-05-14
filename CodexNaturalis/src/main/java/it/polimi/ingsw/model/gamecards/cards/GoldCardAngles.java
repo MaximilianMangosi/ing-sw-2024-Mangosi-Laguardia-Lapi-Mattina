@@ -19,8 +19,8 @@ public class GoldCardAngles extends GoldCard{
      * @param points of the card
      * @param requirements of the card
      */
-    public GoldCardAngles(Resource NW, Resource NE, Resource SW, Resource SE, Reign reign, int points, HashMap<Reign, Integer> requirements) {
-        super(NW, NE, SW, SE, reign, points, requirements);
+    public GoldCardAngles(Resource NW, Resource NE, Resource SW, Resource SE, Reign reign, int points, HashMap<Reign, Integer> requirements, int id) {
+        super(NW, NE, SW, SE, reign, points, requirements, id);
     }
 
     /**

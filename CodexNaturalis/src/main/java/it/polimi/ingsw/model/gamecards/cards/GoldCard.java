@@ -22,8 +22,8 @@ public class GoldCard extends Card {
      * @param points of the card
      * @param requirements of the card
      */
-    public GoldCard(Resource NW, Resource NE, Resource SW, Resource SE, Reign reign, int points, HashMap<Reign,Integer> requirements) {
-        super(NW, NE, SW, SE);
+    public GoldCard(Resource NW, Resource NE, Resource SW, Resource SE, Reign reign, int points, HashMap<Reign,Integer> requirements, int id) {
+        super(NW, NE, SW, SE, id);
         this.requirements=requirements;
         this.reign=reign;
         this.points=points;

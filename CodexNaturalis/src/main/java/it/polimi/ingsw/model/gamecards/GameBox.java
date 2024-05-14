@@ -301,7 +301,7 @@ public class GameBox {
      * @author Giuseppe Laguardia
      */
     public void addDistinctGoals(){
-        goalSet.add(new DistinctGoal(3));
+        goalSet.add(new DistinctGoal(3, 1));
     }
 
     private class ResourceAdapter extends TypeAdapter<Resource> {

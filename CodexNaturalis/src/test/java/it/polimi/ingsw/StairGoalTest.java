@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 
 public class StairGoalTest {
     GameBox gb=new GameBox();
-    StairGoal goal = new StairGoal(2, Reign.PLANTS,true);
+    StairGoal goal = new StairGoal(2, Reign.PLANTS,true, 1);
     Player p=new Player("pepo");
     @Before
     public void GameBoxSetup() throws IOException {
