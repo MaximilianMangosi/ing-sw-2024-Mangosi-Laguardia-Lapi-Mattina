@@ -15,7 +15,7 @@ public class ViewUpdater  {
     public Map<UUID,ClientHandler> getClients (){
         return  clients;
     }
-    public void send(ServerMessage msg) throws IOException {
+    public void sendAll(ServerMessage msg) throws IOException {
         for (ClientHandler c : clients.values()){
             c.answerClient(msg);
         }

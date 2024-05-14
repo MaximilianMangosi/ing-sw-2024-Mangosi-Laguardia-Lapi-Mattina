@@ -20,13 +20,13 @@ public class UpdateTUI extends Thread{
                     writer.clearScreen();
                     writer.print(tui.getIdleUI());
                 }
-                 sleep(30000);
+                synchronized (this){
+                    wait(30000);
+                }
 
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
-            }catch(InterruptedException ignore){
-
-            }
+            }catch(InterruptedException ignore){}
             catch ( InvalidUserId e){
                 System.out.println(e.getMessage());
             }

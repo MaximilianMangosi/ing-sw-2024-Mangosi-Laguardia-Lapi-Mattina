@@ -53,14 +53,13 @@ public class Server {
             CloseGame t1 = new CloseGame(controller);
             DisconnectionHandler t2=new DisconnectionHandler(controller);
             t1.start();
-            t2.start();
+            //t2.start();
             ViewUpdater viewUpdater = new ViewUpdater();
             while (true){
                 try {
 
                     Socket client = socket.accept();
                     ClientHandler clientHandler = new ClientHandler(client,controller,viewUpdater);
-
                     Thread thread = new Thread(clientHandler, "server_" + client.getInetAddress());
                     thread.start();
                 } catch (IOException e) {

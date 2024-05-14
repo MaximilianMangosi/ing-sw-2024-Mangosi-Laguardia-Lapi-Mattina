@@ -111,7 +111,7 @@ public class ViewSocket implements View{
     }
 
     @Override
-    public HashMap<Coordinates, Card> getPlayersField(String name) {
+    public Map<Coordinates, Card> getPlayersField(String name) {
         return gd.getPlayerField(name);
     }
 
@@ -222,7 +222,14 @@ public class ViewSocket implements View{
     public StarterCard getStarterCard() throws RemoteException {
         return gd.getStarterCard();
     }
-
+    private ServerMessage readMessage() throws IOException, ClassNotFoundException {
+        ServerMessage reply;
+        synchronized (input) {
+            reply = (ServerMessage) input.readObject();
+            //input.notifyAll();
+        }
+        return reply;
+    }
     /**
      * Sends to server a message for creating a new Game, and wait for his reply
      * @param numOfPlayers the int representing how many player can join the game
@@ -238,13 +245,11 @@ public class ViewSocket implements View{
     public UUID bootGame(int numOfPlayers, String playerName) throws OnlyOneGameException, UnacceptableNumOfPlayersException, ClassNotFoundException, IllegalOperationException, IOException, HandNotFullException, HandFullException, InvalidChoiceException, NoGameExistsException, IsNotYourTurnException, InvalidUserId, RequirementsNotMetException, PlayerNameNotUniqueException, IllegalPositionException, InvalidCardException, DeckEmptyException, InvalidGoalException {
         BootGameMessage message = new BootGameMessage(numOfPlayers,playerName);
         output.writeObject(message);
-        synchronized (input) {
-            ServerMessage reply = (ServerMessage) input.readObject();
-            reply.processMessage();
-            // if processMessage didn't throw an exception then the reply of the server is an UserIDMessage
-            UUID myID = ((UserIDMessage) reply).getYourID();
-            return myID;
-        }
+        ServerMessage reply = readMessage();
+        reply.processMessage();
+        // if processMessage didn't throw an exception then the reply of the server is an UserIDMessage
+        UUID myID = ((UserIDMessage) reply).getYourID();
+        return myID;
     }
 
 
@@ -252,14 +257,14 @@ public class ViewSocket implements View{
     public UUID joinGame(String playerName) throws IOException, PlayerNameNotUniqueException, IllegalOperationException, ClassNotFoundException, InvalidGoalException, HandNotFullException, HandFullException, InvalidChoiceException, IsNotYourTurnException, InvalidUserId, RequirementsNotMetException, UnacceptableNumOfPlayersException, OnlyOneGameException, IllegalPositionException, InvalidCardException, DeckEmptyException, NoGameExistsException {
         JoinGameMessage message = new JoinGameMessage(playerName);
         output.writeObject(message);
-        synchronized (input) {
-            ServerMessage reply = (ServerMessage) input.readObject();
-            reply.processMessage();
-            // if processMessage didn't throw an exception then the reply of the server is an UserIDMessage
-            UUID myID = ((UserIDMessage) reply).getYourID();
-            return myID;
-        }
+        ServerMessage reply = readMessage();
+        reply.processMessage();
+        // if processMessage didn't throw an exception then the reply of the server is an UserIDMessage
+        return ((UserIDMessage) reply).getYourID();
+
     }
+
+
     /**
      *Send a message for play a Card, then waits the server's reply
      * @param selectedCard the Card played
@@ -278,10 +283,8 @@ public class ViewSocket implements View{
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId, ClassNotFoundException, InvalidChoiceException, NoGameExistsException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, DeckEmptyException, IOException, InvalidGoalException, HandFullException {
         PlayCardMessage message= new PlayCardMessage(selectedCard,position,userId,true);
         output.writeObject(message);
-        synchronized (input) {
-            ServerMessage reply=(ServerMessage) input.readObject();
-            reply.processMessage();
-        }
+        ServerMessage reply = readMessage();
+        reply.processMessage();
 
     }
     /**
@@ -302,10 +305,8 @@ public class ViewSocket implements View{
     public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IOException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId, ClassNotFoundException, InvalidGoalException, HandFullException, InvalidChoiceException, NoGameExistsException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, DeckEmptyException {
         PlayCardMessage message= new PlayCardMessage(selectedCard,position,userId,false);
         output.writeObject(message);
-        synchronized (input) {
-            ServerMessage reply=(ServerMessage) input.readObject();
-            reply.processMessage();
-        }
+        ServerMessage reply = readMessage();
+        reply.processMessage();
     }
 
     /**
@@ -321,10 +322,8 @@ public class ViewSocket implements View{
     public void chooseStarterCardSide(boolean isFront, UUID userId) throws IOException, IllegalOperationException, InvalidUserId, ClassNotFoundException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException {
         ChooseStarterCardMessage message= new ChooseStarterCardMessage(isFront,userId);
         output.writeObject(message);
-        synchronized (input) {
-            ServerMessage reply=(ServerMessage) input.readObject();
-            reply.processMessage();
-        }
+        ServerMessage reply = readMessage();
+        reply.processMessage();
     }
 
     /**
@@ -340,41 +339,32 @@ public class ViewSocket implements View{
     public void chooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, IllegalOperationException, InvalidUserId, IOException, ClassNotFoundException, HandNotFullException, HandFullException, InvalidChoiceException, NoGameExistsException, IsNotYourTurnException, RequirementsNotMetException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalPositionException, InvalidCardException, DeckEmptyException {
         ChooseGoalMessage message= new ChooseGoalMessage(userId,newGoal);
         output.writeObject(message);
-        synchronized (input) {
-            ServerMessage reply=(ServerMessage) input.readObject();
-            reply.processMessage();
-        }
+        ServerMessage reply = readMessage();
+        reply.processMessage();
     }
 
     @Override
     public void drawFromDeck(UUID userId, int choice) throws IOException, IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException, InvalidUserId, InvalidGoalException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalPositionException, InvalidCardException, ClassNotFoundException {
         DrawFromDeckMessage message= new DrawFromDeckMessage(choice,userId);
         output.writeObject(message);
-        synchronized (input) {
-            ServerMessage reply=(ServerMessage) input.readObject();
-            reply.processMessage();
-
-        }
+        ServerMessage reply = readMessage();
+        reply.processMessage();
     }
 
     @Override
     public void drawVisibleCard(UUID userId, int choice) throws IOException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException, InvalidUserId, InvalidGoalException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalPositionException, InvalidCardException, DeckEmptyException, ClassNotFoundException {
         DrawVisibleMessage message= new DrawVisibleMessage(choice,userId);
         output.writeObject(message);
-        synchronized (input) {
-            ServerMessage reply=(ServerMessage) input.readObject();
-            reply.processMessage();
-        }
+        ServerMessage reply = readMessage();
+        reply.processMessage();
     }
 
     @Override
     public void closeGame(UUID userID) throws IOException, InvalidUserId, ClassNotFoundException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException {
         CloseGameMessage message= new CloseGameMessage(userID);
         output.writeObject(message);
-        synchronized (input){
-            ServerMessage reply=(ServerMessage) input.readObject();
-            reply.processMessage();
-        }
+        ServerMessage reply = readMessage();
+        reply.processMessage();
     }
 
     @Override

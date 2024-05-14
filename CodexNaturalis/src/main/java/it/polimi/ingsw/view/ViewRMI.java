@@ -120,9 +120,9 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @author Giorgio Mattina, Maximilian Mangosi
      * @return map playerId-playerField ( cards on the table with relative position)
      */
-    public HashMap<Coordinates,Card> getPlayersField(String name){
+    public Map<Coordinates,Card> getPlayersField(String name){
 
-        return (HashMap<Coordinates, Card>) playersField.get(name);
+        return playersField.get(name);
     }
     /**
      * updates PlayersList, calling the controller

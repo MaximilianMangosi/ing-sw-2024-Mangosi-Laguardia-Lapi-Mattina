@@ -16,8 +16,8 @@ public class ClientHandler  implements Runnable{
     private Socket client;
     private ObjectOutputStream output;
     private ObjectInputStream input;
-    private Controller controller;
-    private ViewUpdater viewUpdater;
+    private final Controller controller;
+    private final ViewUpdater viewUpdater;
 
 
     ClientHandler (Socket c,Controller controller,ViewUpdater viewUpdater){
@@ -60,15 +60,15 @@ public class ClientHandler  implements Runnable{
         }
     }
 
-    public void answerClient(Message msg) throws IOException {
+    public void answerClient(ServerMessage msg) throws IOException {
         synchronized (output){
-            output.writeObject((Object)msg);
+            output.writeObject(msg);
         }
     }
     public void broadCast (ServerMessage msg) throws IOException {
         //ASSUMPTION : ONLY ONE GAME CAN BE HOSTED AT ONCE ON THE SERVER
         //TODO: implement multiple parallel answers to different players in different games
-        viewUpdater.send(msg);
+        viewUpdater.sendAll(msg);
     }
     public Controller getController(){
         return this.controller;
