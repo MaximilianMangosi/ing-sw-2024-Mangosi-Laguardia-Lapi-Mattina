@@ -43,7 +43,7 @@ public class Client {
             GameData gameData= new GameData();
             if(connectionChoice==1) {
                 Socket server;
-                server = new Socket("192.168.0.1", 2323);
+                server = new Socket("localhost" , 2323);
                 view=new ViewSocket(server.getOutputStream(),server.getInputStream(),gameData);
                 ServerHandler t1=new ServerHandler((ViewSocket) view);
                 t1.start();
