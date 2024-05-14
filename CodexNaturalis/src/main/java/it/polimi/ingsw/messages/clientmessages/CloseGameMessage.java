@@ -10,10 +10,20 @@ import java.util.UUID;
 public class CloseGameMessage extends ClientMessage{
     UUID myID;
 
+    /**
+     * constructor of CLoseGameMessage
+     * @author Giuseppe Laguardia
+     * @param myID of the player who wants to close the game
+     */
     public CloseGameMessage(UUID myID) {
         this.myID = myID;
     }
-
+    /**
+     * calls the controller and answers the client with SuccessMessage,PlayersListMessage,RemoveFieldMessage,TurnMessage,PointsMessage
+     * @author Giuseppe Laguardia
+     * @param clientHandler the father thread that can send a response to the client
+     * @throws IOException
+     */
     @Override
     public void processMessage(ClientHandler clientHandler) throws IOException {
         Controller c=clientHandler.getController();

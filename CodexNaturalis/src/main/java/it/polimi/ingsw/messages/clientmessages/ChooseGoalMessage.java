@@ -18,11 +18,23 @@ public class ChooseGoalMessage extends ClientMessage{
     private UUID userId;
     private Goal goal;
 
+    /**
+     * constructor of ChooseGoalMessage
+     * @author Giorgio Mattina
+     * @param userId of the player who is choosing the goal
+     * @param goal the chosen goal
+     */
     public ChooseGoalMessage(UUID userId, Goal goal) {
         this.userId = userId;
         this.goal = goal;
     }
 
+    /**
+     * calls the controller and answers the client with SuccessMessage and ChosenGoalMessage
+     * @author Giorgio Mattina
+     * @param clientHandler the father thread that can send a response to the client
+     * @throws IOException
+     */
     @Override
     public void processMessage(ClientHandler clientHandler) throws IOException {
         try{
