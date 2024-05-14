@@ -60,7 +60,7 @@ public class Server {
 
                     Socket client = socket.accept();
                     ClientHandler clientHandler = new ClientHandler(client,controller,viewUpdater);
-                    viewUpdater.addClient(clientHandler);
+
                     Thread thread = new Thread(clientHandler, "server_" + client.getInetAddress());
                     thread.start();
                 } catch (IOException e) {

@@ -4,23 +4,24 @@ import it.polimi.ingsw.messages.servermessages.ServerMessage;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ViewUpdater  {
-    private List<ClientHandler> clients = new ArrayList<>();
-    public void updateView(){
+    private Map<UUID,ClientHandler> clients = new HashMap<>();
 
+    public void addClient(UUID userId,ClientHandler c){
+        this.clients.put(userId,c);
     }
-    public void addClient(ClientHandler c){
-        this.clients.add(c);
-    }
-    public List<ClientHandler> getClients (){
+    public Map<UUID,ClientHandler> getClients (){
         return  clients;
     }
     public void send(ServerMessage msg) throws IOException {
-        for (ClientHandler c : clients){
+        for (ClientHandler c : clients.values()){
             c.answerClient(msg);
         }
     }
+    public void sendTo(ServerMessage message,UUID userId) throws IOException{
+        clients.get(userId).answerClient(message);
+    }
+    public void
 }

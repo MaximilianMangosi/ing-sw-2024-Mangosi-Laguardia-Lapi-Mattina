@@ -42,6 +42,7 @@ public class BootGameMessage extends ClientMessage{
             PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
             clientHandler.broadCast(msg);
             clientHandler.answerClient(answer);
+            clientHandler.addClient(newId,clientHandler);
         } catch (UnacceptableNumOfPlayersException e) {
             UnacceptableNumOfPlayersMessage answer = new UnacceptableNumOfPlayersMessage();
             clientHandler.answerClient(answer);

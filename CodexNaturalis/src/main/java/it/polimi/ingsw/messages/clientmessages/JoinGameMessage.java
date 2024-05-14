@@ -6,14 +6,14 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
 import it.polimi.ingsw.messages.exceptionmessages.NoGameExistsMessage;
 import it.polimi.ingsw.messages.exceptionmessages.PlayerNameNotUniqueMessage;
-import it.polimi.ingsw.messages.servermessages.PlayersListMessage;
-import it.polimi.ingsw.messages.servermessages.UserIDMessage;
+import it.polimi.ingsw.messages.servermessages.*;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.server.ClientHandler;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Map;
 import java.util.UUID;
 
 public class JoinGameMessage extends ClientMessage {
@@ -38,10 +38,22 @@ public class JoinGameMessage extends ClientMessage {
        try {
            Controller c= clientHandler.getController();
            UUID newId =c.joinGame(username);
-           UserIDMessage answer = new UserIDMessage(newId);
-           PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
-           clientHandler.answerClient(answer);
-           clientHandler.broadCast(msg);
+           UserIDMessage idMessage = new UserIDMessage(newId);
+           PlayersListMessage playersListMessage = new PlayersListMessage(c.getPlayersList());
+           GameStartMessage gameStartMessage = new GameStartMessage(c.getPublicGoals(),c.getVisibleCards());
+           clientHandler.answerClient(idMessage);
+           clientHandler.addClient(newId,clientHandler);
+           if(c.getView().isGameStarted()){
+               for(Map.Entry<UUID,ClientHandler> entry : clientHandler.getAllClients().entrySet() ){
+                   UUID id = entry.getKey();
+                   ClientHandler target = entry.getValue();
+                   target.answerClient(new HandMessage(c.getPlayersHands().get(id)));
+                   target.answerClient(new GoalOptionsMessage(c.getGoalOptions().get(id)));
+                   target.answerClient(new StarterCardMessage(c.getPlayersStarterCards().get(id)));
+               }
+
+           }
+           clientHandler.broadCast(playersListMessage);
        } catch (NoGameExistsException e) {
            NoGameExistsMessage answer = new NoGameExistsMessage();
            clientHandler.answerClient(answer);

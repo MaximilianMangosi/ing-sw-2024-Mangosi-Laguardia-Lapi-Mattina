@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.List;
+import java.util.*;
 
 public class ClientHandler  implements Runnable{
     private Socket client;
@@ -74,4 +74,10 @@ public class ClientHandler  implements Runnable{
         return this.controller;
     }
 
+    public void addClient (UUID userId, ClientHandler c){
+        viewUpdater.addClient(userId,c);
+    }
+    public Map<UUID,ClientHandler> getAllClients(){
+        return viewUpdater.getClients();
+    }
 }
