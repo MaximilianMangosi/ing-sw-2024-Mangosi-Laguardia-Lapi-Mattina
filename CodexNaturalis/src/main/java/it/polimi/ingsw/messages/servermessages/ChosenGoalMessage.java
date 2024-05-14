@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.view.ViewSocket;
 
 public class ChosenGoalMessage extends ServerMessage{
     private Goal chosenGoal;
@@ -15,8 +16,9 @@ public class ChosenGoalMessage extends ServerMessage{
     public ChosenGoalMessage(Goal g){
         this.chosenGoal=g;
     }
+
     @Override
-    public void processMessage() throws UnacceptableNumOfPlayersException, OnlyOneGameException, IllegalOperationException, NoGameExistsException, PlayerNameNotUniqueException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, InvalidUserId, InvalidGoalException, HandFullException, DeckEmptyException, InvalidChoiceException {
-        super.processMessage();
+    public void processMessage(ViewSocket view) {
+        view.getGameData().setPrivateGoal(chosenGoal);
     }
 }

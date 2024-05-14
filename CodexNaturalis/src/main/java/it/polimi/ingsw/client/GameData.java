@@ -95,7 +95,9 @@ public class GameData {
     public void setPlayerField(String username, HashMap<Coordinates, Card> playersField) {
         this.playersField.put(username,playersField);
     }
-
+    public void removePlayerField(String username){
+        playersField.remove(username);
+    }
     public List<Coordinates> getLegalPositions() {
         return legalPositions;
     }
