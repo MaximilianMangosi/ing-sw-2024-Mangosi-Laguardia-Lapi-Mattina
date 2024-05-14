@@ -1,16 +1,17 @@
 {
-  "NW" :"p",
-  "NE" :"e",
-  "SW" :"e",
-  "SE" :"null",
-  "isFront": false,
-  "points": 1,
-  "reign":"a",
-  "tool":"p",
-  "requirements":{
-    "a":2,
-    "m":0,
-    "pl":0,
-    "b":1
-  }
+    "NW": "p",
+    "NE": "e",
+    "SW": "e",
+    "SE": "null",
+    "isFront": false,
+    "points": 1,
+    "reign": "a",
+    "tool": "p",
+    "requirements": {
+        "a": 2,
+        "m": 0,
+        "pl": 0,
+        "b": 1
+    },
+    "id": 7
 }

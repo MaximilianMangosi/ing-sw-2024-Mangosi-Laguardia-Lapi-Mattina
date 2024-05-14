@@ -1,12 +1,15 @@
 {
-  "NW" :"e",
-  "NE" :"pl",
-  "SW" :"b",
-  "SE" :"e",
-  "isFront": false,
-  "BackNW" :"m",
-  "BackNE" :"pl",
-  "BackSW" :"b",
-  "BackSE" :"a",
-  "centralResources":["b"]
+    "NW": "e",
+    "NE": "pl",
+    "SW": "b",
+    "SE": "e",
+    "isFront": false,
+    "BackNW": "m",
+    "BackNE": "pl",
+    "BackSW": "b",
+    "BackSE": "a",
+    "centralResources": [
+        "b"
+    ],
+    "id": 1
 }
