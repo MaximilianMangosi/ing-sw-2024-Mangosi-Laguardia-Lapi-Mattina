@@ -15,8 +15,8 @@ public class DistinctGoal extends Goal {
         return "Distinct Goal: " + points + " points every 3 distinct Tool visible on the Field";
     }
 
-    public DistinctGoal(int points) {
-        super(points);
+    public DistinctGoal(int points, int id) {
+        super(points, id);
     }
 
     /**

@@ -19,8 +19,8 @@ public class LGoal extends Goal {
      * @param primaryReign of the goal
      * @param secondaryReign of the goal
      */
-    public LGoal(int points, Reign primaryReign, Reign secondaryReign) {
-        super(points);
+    public LGoal(int points, Reign primaryReign, Reign secondaryReign, int id) {
+        super(points, id);
         this.primaryReign = primaryReign;
         this.secondaryReign = secondaryReign;
     }

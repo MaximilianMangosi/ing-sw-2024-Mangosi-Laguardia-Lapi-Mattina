@@ -19,8 +19,8 @@ public class StairGoal extends Goal {
      * @param reign of the goal
      * @param isToLowerRight of the goal
      */
-    public StairGoal(int points, Reign reign, boolean isToLowerRight) {
-        super(points);
+    public StairGoal(int points, Reign reign, boolean isToLowerRight, int id) {
+        super(points, id);
         this.reign = reign;
         this.isToLowerRight = isToLowerRight;
     }

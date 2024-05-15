@@ -19,7 +19,7 @@ import static java.util.Collections.shuffle;
 import static org.junit.Assert.assertEquals;
 
 public class DistinctGoalTest {
-    public DistinctGoal distinctGoal=new DistinctGoal(3);
+    public DistinctGoal distinctGoal=new DistinctGoal(3, 1);
     @Before
     public void distinctGoalSetup (){
         Player p = new Player("Pepo");

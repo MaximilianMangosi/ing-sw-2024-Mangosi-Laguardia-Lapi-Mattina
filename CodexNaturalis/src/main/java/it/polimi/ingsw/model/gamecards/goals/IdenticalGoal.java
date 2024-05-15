@@ -21,8 +21,8 @@ public class IdenticalGoal extends Goal {
      * @param resource of the goal
      * @param numOfResource of the goal
      */
-    public IdenticalGoal(int points, Resource resource, int numOfResource) {
-        super(points);
+    public IdenticalGoal(int points, Resource resource, int numOfResource, int id) {
+        super(points, id);
         this.resource = resource;
         this.numOfResource = numOfResource;
     }

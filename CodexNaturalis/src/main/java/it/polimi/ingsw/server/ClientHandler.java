@@ -20,13 +20,22 @@ public class ClientHandler implements Runnable{
     private final Controller controller;
     private final ViewUpdater viewUpdater;
 
-
+    /**
+     *constructor of class ClientHandler
+     * @param c the client socket
+     * @param controller game controller
+     * @param viewUpdater object that contains a list of clientHandlers
+     */
     ClientHandler (Socket c,Controller controller,ViewUpdater viewUpdater){
         this.client=c;
         this.controller=controller;
         this.viewUpdater = viewUpdater;
     }
 
+    /**
+     * main thread logic, calls handleConnection
+     * @author Giogio Mattina
+     */
     @Override
     public void run(){
         try{
@@ -49,6 +58,11 @@ public class ClientHandler implements Runnable{
 
     }
 
+    /**
+     * reads from input and calls processMessage on the Message object
+     * @author Giorgio Mattina
+     * @throws IOException
+     */
     private void handleConnection() throws IOException{
         try{
             while(true){
@@ -85,6 +99,11 @@ public class ClientHandler implements Runnable{
             Continue=viewUpdater.sendAll(msg);
         }
     }
+
+    /**
+     * getter of the game controller
+     * @return
+     */
     public Controller getController(){
         return this.controller;
     }
