@@ -42,25 +42,29 @@ public class Server {
             registry.rebind("ViewRMI", view);
             System.out.println("Remote View has been correctly exported");
 
-            ServerSocket socket;
+            ServerSocket commandSocket;
+
             try {
-                socket = new ServerSocket(2323);
+                commandSocket = new ServerSocket(2323);
+
             } catch (IOException e) {
-                System.out.println("cannot open server socket");
+                System.out.println("cannot open server commandSocket");
                 System.exit(1);
                 return;
             }
             CloseGame t1 = new CloseGame(controller);
             DisconnectionHandler t2=new DisconnectionHandler(controller);
-            t1.start();
-            t2.start();
             ViewUpdater viewUpdater = new ViewUpdater();
+            UpdateViewSocket t3= new UpdateViewSocket(viewUpdater);
+            t1.start();
+            //t2.start();
+            t3.start();
+
             while (true){
                 try {
 
-                    Socket client = socket.accept();
+                    Socket client = commandSocket.accept();
                     ClientHandler clientHandler = new ClientHandler(client,controller,viewUpdater);
-
                     Thread thread = new Thread(clientHandler, "server_" + client.getInetAddress());
                     thread.start();
                 } catch (IOException e) {

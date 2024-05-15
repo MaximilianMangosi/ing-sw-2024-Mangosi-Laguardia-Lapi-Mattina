@@ -13,6 +13,7 @@ import it.polimi.ingsw.view.ViewRMIInterface;
 import it.polimi.ingsw.view.ViewSocket;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -43,10 +44,8 @@ public class Client {
             GameData gameData= new GameData();
             if(connectionChoice==1) {
                 Socket server;
-                server = new Socket("localhost" , 2323);
+                server = new Socket(InetAddress.getLocalHost(), 2323);
                 view=new ViewSocket(server.getOutputStream(),server.getInputStream(),gameData);
-                ServerHandler t1=new ServerHandler((ViewSocket) view);
-                t1.start();
             }else {
                 Registry registry = LocateRegistry.getRegistry(1099);
                 view = (ViewRMIInterface) registry.lookup("ViewRMI");
@@ -61,6 +60,7 @@ public class Client {
             TextUserInterface tui= new TextUserInterface(view);
 
 
+            //noinspection InfiniteLoopStatement
             while (true) {
                 try {
                     tui.execCmd(s.nextLine().toLowerCase(Locale.ROOT));

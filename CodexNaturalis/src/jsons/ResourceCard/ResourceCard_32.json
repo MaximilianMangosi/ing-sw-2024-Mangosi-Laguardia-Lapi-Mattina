@@ -1,9 +1,10 @@
 {
-    "NW" :"null",
-    "NE" :"e",
-    "SW" :"b",
-    "SE" :"b",
+    "NW": "null",
+    "NE": "e",
+    "SW": "b",
+    "SE": "b",
     "isFront": false,
     "points": 0,
-    "reign":"b"
+    "reign": "b",
+    "id": 32
 }

@@ -12,10 +12,13 @@ import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.server.ClientHandler;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.UUID;
 public class BootGameMessage extends ClientMessage{
-    private int numPlayers;
-    private String username;
+    @Serial
+    private static final long serialVersionUID= 3697664496715415988L;
+    private final int numPlayers;
+    private final String username;
 
     /**
      * Constructor of BootGameMessage
@@ -40,9 +43,8 @@ public class BootGameMessage extends ClientMessage{
             UUID newId =c.bootGame(numPlayers,username);
             UserIDMessage answer = new UserIDMessage(newId);
             PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
-            clientHandler.broadCast(msg);
             clientHandler.answerClient(answer);
-            clientHandler.addClient(newId,clientHandler);
+            clientHandler.broadCast(msg);
         } catch (UnacceptableNumOfPlayersException e) {
             UnacceptableNumOfPlayersMessage answer = new UnacceptableNumOfPlayersMessage();
             clientHandler.answerClient(answer);

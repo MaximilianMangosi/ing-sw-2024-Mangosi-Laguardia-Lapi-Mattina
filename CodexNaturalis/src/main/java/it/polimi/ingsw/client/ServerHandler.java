@@ -4,30 +4,57 @@ import it.polimi.ingsw.messages.servermessages.ServerMessage;
 import it.polimi.ingsw.view.ViewSocket;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.UUID;
 
 public class ServerHandler extends Thread{
-    private ObjectOutputStream output;
     private ObjectInputStream input;
     private ViewSocket view;
+    private final UpdateTUI updateTUI;
+    private final UUID userID;
 
-    public ServerHandler( ViewSocket view) throws IOException {
-        this.output=view.getOutput();
-        this.input=view.getInput();
+    public ServerHandler(ViewSocket view, UpdateTUI tuiUpdater, UUID userID) throws IOException {
+        this.userID=userID;
         this.view=view;
+        updateTUI=tuiUpdater;
+    }
+    public ServerHandler(ViewSocket view,UUID userID) throws IOException {
+        this.userID=userID;
+        this.view=view;
+        updateTUI=null;
+
     }
 
     @Override
     public void run() {
         try {
+            Socket UVsocket= new Socket(InetAddress.getLocalHost(),3232);
+            ObjectOutputStream output= new ObjectOutputStream(UVsocket.getOutputStream());
+            input=new ObjectInputStream(UVsocket.getInputStream());
+            output.writeObject(userID);
+            System.out.println("ID sent");
+        } catch (IOException e) {
+            System.out.println("UpdateViewSocket not found");
+            System.exit(1);
+        }
+        try {
             while (true){
-                synchronized (input) {
-                    ServerMessage message= (ServerMessage) input.readObject();
-                    message.processMessage(view);
+                ServerMessage message;
+                //input.wait(3000);
+                message = (ServerMessage) input.readObject();
+                message.processMessage(view);
+                System.out.println("update received");
+                synchronized (updateTUI) {
+                    updateTUI.notifyAll();
+                    System.out.println("thread awaken");
                 }
             }
         } catch (IOException  | ClassNotFoundException e ) {
             System.out.println("Connection error!");
             System.exit(1);
-        }
+        } //catch (InterruptedException ignore) {}
     }
 }

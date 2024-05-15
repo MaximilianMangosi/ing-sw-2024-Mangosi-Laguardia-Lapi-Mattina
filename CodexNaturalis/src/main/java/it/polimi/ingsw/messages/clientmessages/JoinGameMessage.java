@@ -13,10 +13,13 @@ import it.polimi.ingsw.server.ClientHandler;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.util.Map;
 import java.util.UUID;
 
 public class JoinGameMessage extends ClientMessage {
+    @Serial
+    private static final long serialVersionUID= -337423706076800830L;
      private String username;
 
     /**
@@ -39,21 +42,21 @@ public class JoinGameMessage extends ClientMessage {
            Controller c= clientHandler.getController();
            UUID newId =c.joinGame(username);
            UserIDMessage idMessage = new UserIDMessage(newId);
-           PlayersListMessage playersListMessage = new PlayersListMessage(c.getPlayersList());
-           GameStartMessage gameStartMessage = new GameStartMessage(c.getPublicGoals(),c.getVisibleCards());
            clientHandler.answerClient(idMessage);
-           clientHandler.addClient(newId,clientHandler);
-           if(c.getView().isGameStarted()){
-               for(Map.Entry<UUID,ClientHandler> entry : clientHandler.getAllClients().entrySet() ){
-                   UUID id = entry.getKey();
-                   ClientHandler target = entry.getValue();
-                   target.answerClient(new HandMessage(c.getPlayersHands().get(id)));
-                   target.answerClient(new GoalOptionsMessage(c.getGoalOptions().get(id)));
-                   target.answerClient(new StarterCardMessage(c.getPlayersStarterCards().get(id)));
-               }
 
-           }
+           PlayersListMessage playersListMessage = new PlayersListMessage(c.getPlayersList());
            clientHandler.broadCast(playersListMessage);
+
+           if(c.getView().isGameStarted()){
+               for(UUID id: clientHandler.getAllClients().keySet() ){
+                   clientHandler.sendTo(id,new HandMessage(c.getPlayersHands().get(id)));
+                   clientHandler.sendTo(id,new GoalOptionsMessage(c.getGoalOptions().get(id)));
+                   clientHandler.sendTo(id,new StarterCardMessage(c.getPlayersStarterCards().get(id)));
+               }
+               GameStartMessage gameStartMessage = new GameStartMessage(c.getPublicGoals(),c.getVisibleCards());
+               clientHandler.broadCast(gameStartMessage);
+           }
+
        } catch (NoGameExistsException e) {
            NoGameExistsMessage answer = new NoGameExistsMessage();
            clientHandler.answerClient(answer);

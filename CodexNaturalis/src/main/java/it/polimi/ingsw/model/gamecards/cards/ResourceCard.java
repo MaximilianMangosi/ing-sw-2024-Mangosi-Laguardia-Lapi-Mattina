@@ -17,8 +17,8 @@ public class ResourceCard extends Card {
      * @param reign of the card
      * @param points of the card
      */
-    public ResourceCard(Resource NW, Resource NE, Resource SW, Resource SE, int points, Reign reign) {
-        super(NW, NE, SW, SE);
+    public ResourceCard(Resource NW, Resource NE, Resource SW, Resource SE, int points, Reign reign, int id) {
+        super(NW, NE, SW, SE, id);
         this.points=points;
         this.reign=reign;
     }

@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public abstract class Goal implements Serializable {
     protected int points;
+    private int id;
 
     /**
      * @author Riccardo Lapi
@@ -20,8 +21,9 @@ public abstract class Goal implements Serializable {
      * @author Riccardo Lapi
      * @param points int for the points this goal has
      */
-    public Goal(int points) {
+    public Goal(int points, int id) {
         this.points = points;
+        this.id = id;
     }
 
     /**

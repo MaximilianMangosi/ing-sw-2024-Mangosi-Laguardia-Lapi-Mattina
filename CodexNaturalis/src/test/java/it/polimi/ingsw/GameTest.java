@@ -140,11 +140,11 @@ public class GameTest {
         p.setAvailablePositions(new ArrayList<>());
 
 
-        p.addCardToHand(new ResourceCard(Reign.MUSHROOM,Reign.EMPTY,Reign.MUSHROOM,null,0,Reign.MUSHROOM));
-        p.addCardToHand(new ResourceCard(Reign.MUSHROOM,Reign.MUSHROOM,null,Reign.EMPTY,0,Reign.MUSHROOM));
-        p.addCardToHand(new ResourceCard(null,Reign.BUG,Tool.PHIAL,Reign.ANIMAL,0,Reign.ANIMAL));
+        p.addCardToHand(new ResourceCard(Reign.MUSHROOM,Reign.EMPTY,Reign.MUSHROOM,null,0,Reign.MUSHROOM, 1));
+        p.addCardToHand(new ResourceCard(Reign.MUSHROOM,Reign.MUSHROOM,null,Reign.EMPTY,0,Reign.MUSHROOM, 1));
+        p.addCardToHand(new ResourceCard(null,Reign.BUG,Tool.PHIAL,Reign.ANIMAL,0,Reign.ANIMAL, 1));
         Reign[] arr= {Reign.BUG};
-        p.setStarterCard(new StarterCard(Reign.EMPTY,Reign.PLANTS,Reign.BUG,Reign.EMPTY,Reign.MUSHROOM,Reign.PLANTS,Reign.BUG,Reign.ANIMAL,new ArrayList<>(List.of(arr))));
+        p.setStarterCard(new StarterCard(Reign.EMPTY,Reign.PLANTS,Reign.BUG,Reign.EMPTY,Reign.MUSHROOM,Reign.PLANTS,Reign.BUG,Reign.ANIMAL,new ArrayList<>(List.of(arr)), 1));
         Resource[] resourceArray={Reign.ANIMAL,Reign.MUSHROOM,Reign.BUG,Reign.PLANTS, Tool.PHIAL,Tool.FEATHER,Tool.SCROLL};
 
         for (Resource resource: resourceArray){

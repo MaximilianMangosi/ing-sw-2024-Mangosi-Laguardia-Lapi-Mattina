@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.clientmessages.ClientMessage;
 import it.polimi.ingsw.messages.exceptionmessages.ExceptionMessage;
+import it.polimi.ingsw.messages.servermessages.HandMessage;
 import it.polimi.ingsw.messages.servermessages.ServerMessage;
 
 import java.io.IOException;
@@ -12,12 +13,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
 
-public class ClientHandler  implements Runnable{
+public class ClientHandler implements Runnable{
     private Socket client;
     private ObjectOutputStream output;
     private ObjectInputStream input;
-    private Controller controller;
-    private ViewUpdater viewUpdater;
+    private final Controller controller;
+    private final ViewUpdater viewUpdater;
 
     /**
      *constructor of class ClientHandler
@@ -75,27 +76,28 @@ public class ClientHandler  implements Runnable{
     }
 
     /**
-     * writes a message on the outputStream
-     * @author Giorgio Mattina
-     * @param msg the Message object
-     * @throws IOException
+     * sends a SuccessMessage or ExceptionMessage to the client as reply to his command
+     * @param msg the message sent
+     * @throws IOException when a connection problem occurss
      */
-    public void answerClient(Message msg) throws IOException {
+    public void answerClient(ServerMessage msg) throws IOException {
         synchronized (output){
-            output.writeObject((Object)msg);
+            output.writeObject(msg);
         }
     }
-
     /**
-     * calls send on ViewUpdater, which sends the same message to all clients
-     * @author Giorgio Mattina
-     * @param msg
-     * @throws IOException
+     * Sends a message to all user containing a view's update, using viewUpdater
+     * @param msg the Server Message to send
+     * @throws IOException when a connection problem occurs
      */
     public void broadCast (ServerMessage msg) throws IOException {
         //ASSUMPTION : ONLY ONE GAME CAN BE HOSTED AT ONCE ON THE SERVER
         //TODO: implement multiple parallel answers to different players in different games
-        viewUpdater.send(msg);
+        boolean Continue = true;
+        System.out.println("first try");
+        while(Continue){
+            Continue=viewUpdater.sendAll(msg);
+        }
     }
 
     /**
@@ -106,21 +108,18 @@ public class ClientHandler  implements Runnable{
         return this.controller;
     }
 
-    /**
-     * calls addClient on the viewUpdater which puts the <UUID,clientHandler> Entry in the map in the ViewUpdater
-     * @author Giorgio Mattina
-     * @param userId
-     * @param c
-     */
-    public void addClient (UUID userId, ClientHandler c){
-        viewUpdater.addClient(userId,c);
+    public Map<UUID,ObjectOutputStream> getAllClients(){
+        return viewUpdater.getClients();
     }
 
     /**
-     * getter of every entry <UUID,ClientHandler> from ViewUpdater
-     * @return
+     * Sends a message to a user containing a view's update, using viewUpdater
+     * @param id the user's identifier
+     * @param message the Server Message to send
+     * @throws IOException when a connection problem occurs
      */
-    public Map<UUID,ClientHandler> getAllClients(){
-        return viewUpdater.getClients();
+
+    public void sendTo(UUID id, ServerMessage message) throws IOException {
+        viewUpdater.sendTo(message, id);
     }
 }

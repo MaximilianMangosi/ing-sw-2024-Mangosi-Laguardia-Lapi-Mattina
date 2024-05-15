@@ -21,8 +21,8 @@ public class GoldCardTool extends GoldCard{
      * @param requirements of the card
      * @param tool of the card
      */
-    public GoldCardTool(Resource NW, Resource NE, Resource SW, Resource SE, Reign reign, int points, HashMap<Reign, Integer> requirements, Tool tool) {
-        super(NW, NE, SW, SE, reign, points, requirements);
+    public GoldCardTool(Resource NW, Resource NE, Resource SW, Resource SE, Reign reign, int points, HashMap<Reign, Integer> requirements, Tool tool, int id) {
+        super(NW, NE, SW, SE, reign, points, requirements, id);
         this.tool=tool;
     }
 

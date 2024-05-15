@@ -34,7 +34,7 @@ public interface ViewRMIInterface extends Remote,View  {
 
     public List<Card> showPlayerHand(UUID uid) throws RemoteException, InvalidUserId;
 
-    public HashMap<Coordinates,Card>getPlayersField(String name) throws RemoteException;
+    public Map<Coordinates,Card>getPlayersField(String name) throws RemoteException;
 
     public List<String> getPlayersList() throws RemoteException;
 

@@ -29,8 +29,8 @@ public class StarterCard extends Card implements Serializable {
      * @param backSE coordinates of the angle back
      * @param centralResources central resources
      */
-    public StarterCard(Resource NW, Resource NE, Resource SW, Resource SE, Reign backNW, Reign backNE, Reign backSW, Reign backSE, ArrayList<Reign> centralResources) {
-        super(NW, NE, SW, SE);
+    public StarterCard(Resource NW, Resource NE, Resource SW, Resource SE, Reign backNW, Reign backNE, Reign backSW, Reign backSE, ArrayList<Reign> centralResources, int id) {
+        super(NW, NE, SW, SE, id);
         BackNW = backNW;
         BackNE = backNE;
         BackSW = backSW;

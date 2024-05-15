@@ -16,7 +16,7 @@ public abstract class Card implements Serializable {
     private Resource NE;
     private Resource SW;
     private Resource SE;
-
+    private int id;
     private boolean isFront;
 
     /**
@@ -26,11 +26,12 @@ public abstract class Card implements Serializable {
      * @param SW resource in left-down angle
      * @param SE resource in right-down angle
      */
-     public Card(Resource NW,Resource NE,Resource SW,Resource SE){
+     public Card(Resource NW,Resource NE,Resource SW,Resource SE, int id){
          this.NW=NW;
          this.NE=NE;
          this.SW=SW;
          this.SE=SE;
+         this.id=id;
      }
 
      /**

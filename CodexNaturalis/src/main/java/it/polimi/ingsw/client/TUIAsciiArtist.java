@@ -2,7 +2,6 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
-import it.polimi.ingsw.model.gamecards.cards.GoldCard;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.goals.IdenticalGoal;
@@ -315,7 +314,7 @@ public class TUIAsciiArtist implements CardDisplay {
      * @param field the user field
      * @param fieldBuildingHelper List of the coordinates in order of insertion
      */
-    public void show (HashMap<Coordinates, Card> field, List<Coordinates> fieldBuildingHelper){
+    public void show (Map<Coordinates, Card> field, List<Coordinates> fieldBuildingHelper){
         int i,j;
         asciiField = new String[240][880];
         for (Coordinates coordinate : fieldBuildingHelper){
