@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.InGameController">
+   <children>
+      <Pane fx:id="chooseStarterCard" layoutX="158.0" layoutY="74.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #a452e0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="150.0" layoutX="121.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../assets/cards/starterCard_front_1.jpg" />
+               </image>
+            </ImageView>
+            <Label layoutX="269.0" layoutY="24.0" text="Choose Side" textAlignment="CENTER" />
+            <ImageView fitHeight="100.0" fitWidth="150.0" layoutX="266.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../assets/cards/starterCard_front_1.jpg" />
+               </image>
+            </ImageView>
+         </children></Pane>
+   </children>
+</AnchorPane>
