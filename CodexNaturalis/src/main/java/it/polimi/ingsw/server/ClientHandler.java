@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.clientmessages.ClientMessage;
 import it.polimi.ingsw.messages.exceptionmessages.ExceptionMessage;
+import it.polimi.ingsw.messages.servermessages.HandMessage;
 import it.polimi.ingsw.messages.servermessages.ServerMessage;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
 
-public class ClientHandler  implements Runnable{
+public class ClientHandler implements Runnable{
     private Socket client;
     private ObjectOutputStream output;
     private ObjectInputStream input;
@@ -60,24 +61,46 @@ public class ClientHandler  implements Runnable{
         }
     }
 
+    /**
+     * sends a SuccessMessage or ExceptionMessage to the client as reply to his command
+     * @param msg the message sent
+     * @throws IOException when a connection problem occurss
+     */
     public void answerClient(ServerMessage msg) throws IOException {
         synchronized (output){
             output.writeObject(msg);
         }
     }
+    /**
+     * Sends a message to all user containing a view's update, using viewUpdater
+     * @param msg the Server Message to send
+     * @throws IOException when a connection problem occurs
+     */
     public void broadCast (ServerMessage msg) throws IOException {
         //ASSUMPTION : ONLY ONE GAME CAN BE HOSTED AT ONCE ON THE SERVER
         //TODO: implement multiple parallel answers to different players in different games
-        viewUpdater.sendAll(msg);
+        boolean Continue = true;
+        System.out.println("first try");
+        while(Continue){
+            Continue=viewUpdater.sendAll(msg);
+        }
     }
     public Controller getController(){
         return this.controller;
     }
 
-    public void addClient (UUID userId, ClientHandler c){
-        viewUpdater.addClient(userId,c);
-    }
-    public Map<UUID,ClientHandler> getAllClients(){
+    public Map<UUID,ObjectOutputStream> getAllClients(){
         return viewUpdater.getClients();
+    }
+
+    /**
+     * Sends a message to a user containing a view's update, using viewUpdater
+     * @param id the user's identifier
+     * @param message the Server Message to send
+     * @throws IOException when a connection problem occurs
+     */
+
+    public void sendTo(UUID id, ServerMessage message) throws IOException {
+        viewUpdater.sendTo(message, id);
     }
 }

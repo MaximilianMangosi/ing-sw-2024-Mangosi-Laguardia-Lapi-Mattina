@@ -15,13 +15,15 @@ public class UpdateTUI extends Thread{
     public void run(){
         while (true){
             try {
-                tui.updateIdleUI();
-                synchronized (writer){
-                    writer.clearScreen();
-                    writer.print(tui.getIdleUI());
-                }
                 synchronized (this){
                     wait(30000);
+                    System.out.println("I'm awake");
+                    tui.updateIdleUI();
+                    synchronized (writer){
+                        writer.clearScreen();
+                        writer.print(tui.getIdleUI());
+                    }
+
                 }
 
             } catch (RemoteException e) {

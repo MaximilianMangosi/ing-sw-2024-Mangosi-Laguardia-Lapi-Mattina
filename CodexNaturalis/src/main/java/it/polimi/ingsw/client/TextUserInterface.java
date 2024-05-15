@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.ViewRMIInterface;
+import it.polimi.ingsw.view.ViewSocket;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -31,7 +32,7 @@ public class TextUserInterface  {
     private UUID myID;
     private String myName;
     private StringBuilder idleUI;
-    private Scanner s=new Scanner(System.in);
+    private final Scanner s=new Scanner(System.in);
 
     /**
      * TextUserInterface's constructor: sets the View from witch the user will communicate with the server and creates the thread that handles the CLI
@@ -73,13 +74,15 @@ public class TextUserInterface  {
         idleUI=new StringBuilder();
         String winner=view.getWinner();
         List<String> players=view.getPlayersList();
-        idleUI.append("Players: ");
-        for (String player : players) {
-            idleUI.append(player);
-            if (!player.equals(players.getLast()))
-                idleUI.append(", ");
+        if(players!=null) {
+            idleUI.append("Players: ");
+            for (String player : players) {
+                idleUI.append(player);
+                if (!player.equals(players.getLast()))
+                    idleUI.append(", ");
+            }
+            idleUI.append("\n\n");
         }
-        idleUI.append("\n\n");
         if (view.isGameEnded()){
             idleUI.append(winner);
             idleUI.append(" WINS!!!\n\n");
@@ -100,13 +103,16 @@ public class TextUserInterface  {
                 }
 
             }
-            idleUI.append("Scoreboard:\n");
-            for (Map.Entry<String,Integer> entry: sortedScoreboard(scoreboard)){
-                idleUI.append(entry.getKey());
-                idleUI.append(": ");
-                idleUI.append(entry.getValue());
-                idleUI.append("\n");
+            if(scoreboard!=null){
+                idleUI.append("Scoreboard:\n");
+                for (Map.Entry<String,Integer> entry: sortedScoreboard(scoreboard)){
+                    idleUI.append(entry.getKey());
+                    idleUI.append(": ");
+                    idleUI.append(entry.getValue());
+                    idleUI.append("\n");
+                }
             }
+
             idleUI.append("\n\n");
             if(showPrivateGoal() ==null){
                 idleUI.append("To start the game you have to choose your private goal from your goal options, try choose-goal\n");
@@ -173,12 +179,15 @@ public class TextUserInterface  {
                         }
                     }
                     if (view.isRMI()) {
-                        PingPongRMI td = new PingPongRMI((ViewRMIInterface) view, myID);
-                        td.start();
+                        PingPongRMI td1 = new PingPongRMI((ViewRMIInterface) view, myID);
+                        td1.start();
+                    }
+                    else{
+                        ServerHandler td2= new ServerHandler((ViewSocket) view,tuiUpdater,myID);
+                        td2.start();
                     }
                     view.initializeFieldBuildingHelper( myName);
                     tuiUpdater.start();
-                    printIdleUI();
                     break;
                 case "choose-goal":
                     outWriter.print("Here are your goals, choose one (1,2)");
@@ -297,8 +306,8 @@ public class TextUserInterface  {
                     s.nextLine();
                     break;
                 case "show-my-goal":
-                   goal= showPrivateGoal();
-                   artist.show(new Goal[]{goal});
+                   Goal privateGoal= showPrivateGoal();
+                   artist.show(new Goal[]{privateGoal});
                    outWriter.print(artist.getMatrix());
                    outWriter.print("Press enter to continue");
                    s.nextLine();
@@ -453,7 +462,10 @@ public class TextUserInterface  {
      */
     private boolean didIPlayStarterCard() throws RemoteException {
         StarterCard myStarterCard= getStarterCard();
-        return view.getPlayersField(myName).containsValue(myStarterCard);
+        Map<Coordinates,Card> field= view.getPlayersField(myName);
+        if(field!=null)
+            return field.containsValue(myStarterCard);
+        return false;
     }
 
     private StarterCard getStarterCard() throws RemoteException {
@@ -524,7 +536,7 @@ public class TextUserInterface  {
      * @throws RemoteException
      */
     private void showField(String username,boolean availablePosition) throws InvalidUserId, RemoteException {
-        HashMap<Coordinates, Card> field=view.getPlayersField(username);
+        Map<Coordinates, Card> field=view.getPlayersField(username);
         List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
         artist.show(field,fieldBuildingHelper);
         if(availablePosition) {

@@ -224,10 +224,8 @@ public class ViewSocket implements View{
     }
     private ServerMessage readMessage() throws IOException, ClassNotFoundException {
         ServerMessage reply;
-        synchronized (input) {
-            reply = (ServerMessage) input.readObject();
-            //input.notifyAll();
-        }
+        reply = (ServerMessage) input.readObject();
+        //input.notifyAll();
         return reply;
     }
     /**
