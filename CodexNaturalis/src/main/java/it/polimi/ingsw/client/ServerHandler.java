@@ -35,7 +35,6 @@ public class ServerHandler extends Thread{
             ObjectOutputStream output= new ObjectOutputStream(UVsocket.getOutputStream());
             input=new ObjectInputStream(UVsocket.getInputStream());
             output.writeObject(userID);
-            System.out.println("ID sent");
         } catch (IOException e) {
             System.out.println("UpdateViewSocket not found");
             System.exit(1);
@@ -43,18 +42,15 @@ public class ServerHandler extends Thread{
         try {
             while (true){
                 ServerMessage message;
-                //input.wait(3000);
                 message = (ServerMessage) input.readObject();
                 message.processMessage(view);
-                System.out.println("update received");
                 synchronized (updateTUI) {
                     updateTUI.notifyAll();
-                    System.out.println("thread awaken");
                 }
             }
         } catch (IOException  | ClassNotFoundException e ) {
             System.out.println("Connection error!");
             System.exit(1);
-        } //catch (InterruptedException ignore) {}
+        }
     }
 }

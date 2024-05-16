@@ -18,7 +18,7 @@ public class GameData {
     private int numOfResourceCards;
     private int numOfGoldCards;
     private List<Card> hand;
-    private HashMap<String, HashMap<Coordinates, Card>> playersField=new HashMap<>();
+    private HashMap<String, Map<Coordinates, Card>> playersField=new HashMap<String, Map<Coordinates, Card>>();
     private List<Coordinates> legalPositions;
     private HashMap<String,List<Coordinates>> fieldBuilderHelper=new HashMap<>();
     private List<String> playersList;
@@ -85,14 +85,14 @@ public class GameData {
         this.hand = hand;
     }
 
-    public HashMap<Coordinates, Card> getPlayerField(String username) {
+    public Map<Coordinates, Card> getPlayerField(String username) {
         return playersField.get(username);
     }
 
-    public void setPlayersField(HashMap<String, HashMap<Coordinates, Card>> playersField) {
+    public void setPlayersField(HashMap<String, Map<Coordinates, Card>> playersField) {
         this.playersField = playersField;
     }
-    public void setPlayerField(String username, HashMap<Coordinates, Card> playersField) {
+    public void setPlayerField(String username, Map<Coordinates, Card> playersField) {
         this.playersField.put(username,playersField);
     }
     public void removePlayerField(String username){

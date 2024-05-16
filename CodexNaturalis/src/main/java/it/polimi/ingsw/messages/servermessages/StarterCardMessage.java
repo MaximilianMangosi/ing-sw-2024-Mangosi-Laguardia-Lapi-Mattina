@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.view.ViewSocket;
 
 public class StarterCardMessage extends ServerMessage{
     private StarterCard starterCard;
@@ -16,7 +17,7 @@ public class StarterCardMessage extends ServerMessage{
     }
 
     @Override
-    public void processMessage() throws UnacceptableNumOfPlayersException, OnlyOneGameException, IllegalOperationException, NoGameExistsException, PlayerNameNotUniqueException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, InvalidUserId, InvalidGoalException, HandFullException, DeckEmptyException, InvalidChoiceException {
-
+    public void processMessage(ViewSocket view) {
+        view.getGameData().setStarterCard(starterCard);
     }
 }

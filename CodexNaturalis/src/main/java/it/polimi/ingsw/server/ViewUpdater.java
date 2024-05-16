@@ -8,28 +8,23 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ViewUpdater  {
-    private final Map<UUID, ObjectOutputStream> clients = new HashMap<>();
+    private final Map<UUID, ObjectOutputStream> clients = new ConcurrentHashMap<>();
 
     public void addClient(UUID userId, ObjectOutputStream out){
-        this.clients.put(userId,out);
+        clients.put(userId,out);
+
     }
     public Map<UUID,ObjectOutputStream> getClients(){
-        return  clients;
+        return clients;
     }
-    public boolean sendAll(ServerMessage msg) throws IOException {
-        //System.out.println("check");
-        if(clients.isEmpty()) {
-            //System.out.println("empty");
-            return true;
-        }
-        System.out.println("ready to send");
+    public void sendAll(ServerMessage msg) throws IOException {
         for (ObjectOutputStream c : clients.values()){
             c.writeObject(msg);
         }
-        System.out.println("update sent");
-        return false;
+
     }
     public void sendTo(ServerMessage message,UUID userId) throws IOException{
         clients.get(userId).writeObject(message);

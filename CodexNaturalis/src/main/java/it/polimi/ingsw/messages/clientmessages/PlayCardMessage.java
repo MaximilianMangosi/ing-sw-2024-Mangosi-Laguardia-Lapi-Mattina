@@ -48,24 +48,19 @@ public class PlayCardMessage extends ClientMessage{
         try {
             if (playFront) {
 
-
                 c.playCardFront(chosenCard, position, userId);
-
-
             } else {
-
                 clientHandler.getController().playCardBack(chosenCard, position, userId);
-
             }
             if (c.getView().getWinner()!=null){
                 clientHandler.broadCast(new GameEndMessage(c.getView().getWinner()));
             }
             String playerName = c.getUserIDs().get(userId).getName();
-            clientHandler.answerClient(new HandMessage(c.getPlayersHands().get(userId)));
-            clientHandler.broadCast(new FieldMessage((HashMap<Coordinates, Card>) c.getPlayersField().get(playerName),c.getView().getFieldBuildingHelper(playerName),playerName));
-            clientHandler.broadCast(new PointsMessage((HashMap<String, Integer>) c.getPlayersPoints()));
+            clientHandler.sendTo(userId,new HandMessage(c.getPlayersHands().get(userId)));
+            clientHandler.broadCast(new FieldMessage( c.getPlayersField().get(playerName),c.getView().getFieldBuildingHelper(playerName),playerName));
+            clientHandler.broadCast(new PointsMessage( c.getPlayersPoints()));
             clientHandler.broadCast(new TurnMessage(c.getCurrentPlayer()));
-            clientHandler.answerClient(new LegalPositionMessage(c.getPlayersLegalPositions().get(userId)));
+            clientHandler.sendTo(userId,new LegalPositionMessage(c.getPlayersLegalPositions().get(userId)));
 
         } catch (HandNotFullException e) {
             clientHandler.answerClient(new HandNotFullMessage());
@@ -80,7 +75,6 @@ public class PlayCardMessage extends ClientMessage{
         } catch (InvalidCardException e) {
             clientHandler.answerClient(new InvalidCardMessage());
         } catch (RemoteException ignore) {
-
         }
 
     }

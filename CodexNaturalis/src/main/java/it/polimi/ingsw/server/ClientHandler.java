@@ -81,9 +81,7 @@ public class ClientHandler implements Runnable{
      * @throws IOException when a connection problem occurss
      */
     public void answerClient(ServerMessage msg) throws IOException {
-        synchronized (output){
-            output.writeObject(msg);
-        }
+        output.writeObject(msg);
     }
     /**
      * Sends a message to all user containing a view's update, using viewUpdater
@@ -93,11 +91,7 @@ public class ClientHandler implements Runnable{
     public void broadCast (ServerMessage msg) throws IOException {
         //ASSUMPTION : ONLY ONE GAME CAN BE HOSTED AT ONCE ON THE SERVER
         //TODO: implement multiple parallel answers to different players in different games
-        boolean Continue = true;
-        System.out.println("first try");
-        while(Continue){
-            Continue=viewUpdater.sendAll(msg);
-        }
+        viewUpdater.sendAll(msg);
     }
 
     /**

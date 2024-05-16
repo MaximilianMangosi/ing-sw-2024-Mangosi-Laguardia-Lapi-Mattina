@@ -11,11 +11,13 @@ import java.util.List;
 public class GameStartMessage extends ServerMessage{
     private Goal[] publicGoals;
     private List<Card> visibleCards;
+    private String currentPlayer;
 
 
-    public GameStartMessage(Goal[] publicGoals,List<Card> visibleCards ) {
+    public GameStartMessage(Goal[] publicGoals,List<Card> visibleCards ,String currentPlayer) {
         this.publicGoals = publicGoals;
         this.visibleCards=visibleCards;
+        this.currentPlayer=currentPlayer;
     }
 
     @Override
@@ -23,5 +25,6 @@ public class GameStartMessage extends ServerMessage{
         view.getGameData().setGameStarted(true);
         view.getGameData().setPublicGoals(publicGoals);
         view.getGameData().setVisibleCards(visibleCards);
+        view.getGameData().setCurrentPlayer(currentPlayer);
     }
 }
