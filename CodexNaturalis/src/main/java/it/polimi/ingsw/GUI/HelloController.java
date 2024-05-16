@@ -12,9 +12,15 @@ import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersExcept
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.ViewRMIInterface;
 import it.polimi.ingsw.view.ViewSocket;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -69,6 +75,29 @@ public class HelloController {
     @FXML
     private void onPlay() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
         HelloApplication.connectAndPlay(isSocketSelected, selectedUsername, numOfPlayers);
+
     }
 
+    public class SceneController {
+
+        private Stage stage;
+        private Scene scene;
+        private Parent root;
+
+        public void switchToScene1(ActionEvent event) throws IOException {
+            root = FXMLLoader.load(getClass().getResource("in-game"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        public void switchToScene2(ActionEvent event) throws IOException {
+            Parent root = FXMLLoader.load(getClass().getResource("Scene2.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+    }
 }
