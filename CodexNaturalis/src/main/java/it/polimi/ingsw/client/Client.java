@@ -44,7 +44,7 @@ public class Client {
             GameData gameData= new GameData();
             if(connectionChoice==1) {
                 Socket server;
-                server = new Socket(InetAddress.getLocalHost(), 2323);
+                server = new Socket("93.36.186.69", 2323);
                 view=new ViewSocket(server.getOutputStream(),server.getInputStream(),gameData);
             }else {
                 Registry registry = LocateRegistry.getRegistry(1099);

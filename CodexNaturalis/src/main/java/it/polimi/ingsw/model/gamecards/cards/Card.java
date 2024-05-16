@@ -20,6 +20,14 @@ public abstract class Card implements Serializable {
     private boolean isFront;
 
     /**
+     * gets the image ID of the Card, used in GUI
+     * @return the int that identifies the card jpg
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
      * Card constructor
      * @param NW resource in left-up angle
      * @param NE resource in right-up angle
