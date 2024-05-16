@@ -6,8 +6,7 @@ import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.controller.exceptions.InvalidChoiceException;
 import it.polimi.ingsw.controller.exceptions.IsNotYourTurnException;
 import it.polimi.ingsw.messages.exceptionmessages.*;
-import it.polimi.ingsw.messages.servermessages.HandMessage;
-import it.polimi.ingsw.messages.servermessages.SuccessMessage;
+import it.polimi.ingsw.messages.servermessages.*;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.server.ClientHandler;
 
@@ -37,12 +36,17 @@ public class DrawFromDeckMessage extends ClientMessage{
     @Override
     public void processMessage( ClientHandler clientHandler) throws IOException {
         try {
-            clientHandler.getController().drawFromDeck(userId,chosenDeck);
+            Controller c = clientHandler.getController();
+            c.drawFromDeck(userId,chosenDeck);
             SuccessMessage answer = new SuccessMessage();
-            HandMessage handMessage = new HandMessage(clientHandler.getController().getPlayersHands().get(userId));
+            HandMessage handMessage = new HandMessage(c.getPlayersHands().get(userId));
 
             clientHandler.answerClient(answer);
-            clientHandler.answerClient(handMessage);
+            clientHandler.sendTo(userId,handMessage);
+            clientHandler.broadCast(new TurnMessage(c.getCurrentPlayer()));
+            if(chosenDeck==0)
+                clientHandler.broadCast(new NumOfResourceCardsMessage(c.getNumOfResourceCards()));
+            else clientHandler.broadCast(new NumOfGoldCardsMessage(c.getNumOfGoldCards()));
         } catch (IsNotYourTurnException e) {
             IsNotYourTurnMessage answer =new IsNotYourTurnMessage();
             clientHandler.answerClient(answer);

@@ -266,7 +266,7 @@ public class Game{
         var drawCard = visibleCards.remove(choice);
         currentPlayer.addCardToHand(drawCard);
         if (!(goldCardDeck.isEmpty() && resourceCardDeck.isEmpty())) {
-            if (drawCard instanceof GoldCard) {
+            if (drawCard instanceof GoldCard) { //TODO  remove instanceof
                 try {
                     visibleCards.add(goldCardDeck.removeFirst());
                 } catch (NoSuchElementException e) {

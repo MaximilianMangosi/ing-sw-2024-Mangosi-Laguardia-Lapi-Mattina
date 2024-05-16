@@ -43,19 +43,18 @@ public class JoinGameMessage extends ClientMessage {
            UUID newId =c.joinGame(username);
            UserIDMessage idMessage = new UserIDMessage(newId);
            clientHandler.answerClient(idMessage);
-
-           PlayersListMessage playersListMessage = new PlayersListMessage(c.getPlayersList());
-           clientHandler.broadCast(playersListMessage);
-
+           Thread.sleep(100); // to give client time to connect to the other port for view updates
            if(c.getView().isGameStarted()){
                for(UUID id: clientHandler.getAllClients().keySet() ){
                    clientHandler.sendTo(id,new HandMessage(c.getPlayersHands().get(id)));
                    clientHandler.sendTo(id,new GoalOptionsMessage(c.getGoalOptions().get(id)));
                    clientHandler.sendTo(id,new StarterCardMessage(c.getPlayersStarterCards().get(id)));
                }
-               GameStartMessage gameStartMessage = new GameStartMessage(c.getPublicGoals(),c.getVisibleCards());
+               GameStartMessage gameStartMessage = new GameStartMessage(c.getPublicGoals(),c.getVisibleCards(),c.getCurrentPlayer());
                clientHandler.broadCast(gameStartMessage);
            }
+           PlayersListMessage playersListMessage = new PlayersListMessage(c.getPlayersList());
+           clientHandler.broadCast(playersListMessage);
 
        } catch (NoGameExistsException e) {
            NoGameExistsMessage answer = new NoGameExistsMessage();
@@ -66,7 +65,7 @@ public class JoinGameMessage extends ClientMessage {
        } catch (IllegalOperationException e) {
            IllegalOperationMessage answer = new IllegalOperationMessage(e);
            clientHandler.answerClient(answer);
-       }
+       } catch (InterruptedException ignore) {}
     }
 
 }

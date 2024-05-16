@@ -41,7 +41,7 @@ public class DrawVisibleMessage extends ClientMessage{
             c.drawVisibleCard(userId,chosenCard);
             SuccessMessage ok = new SuccessMessage();
             clientHandler.answerClient(ok);
-            HandMessage handMessage = new HandMessage(c.getPlayersHands().get(userId));
+            clientHandler.sendTo(userId,new HandMessage(c.getPlayersHands().get(userId)));
             clientHandler.broadCast(new TurnMessage(c.getCurrentPlayer()));
             clientHandler.broadCast(new VisibleCardMessage(c.getVisibleCards()));
             clientHandler.broadCast(new NumOfGoldCardsMessage(c.getNumOfGoldCards()));

@@ -44,7 +44,7 @@ public class ChooseStarterCardMessage extends ClientMessage{
             c.chooseStarterCardSide(isFront,userId);
             clientHandler.answerClient(new SuccessMessage());
             clientHandler.broadCast(new FieldMessage((HashMap<Coordinates, Card>) c.getPlayersField().get(playerName),c.getView().getFieldBuildingHelper(playerName),playerName));
-            clientHandler.answerClient(new LegalPositionMessage(c.getPlayersLegalPositions().get(userId)));
+            clientHandler.sendTo(userId,new LegalPositionMessage(c.getPlayersLegalPositions().get(userId)));
         } catch (InvalidUserId e) {
             clientHandler.answerClient(new InvalidUserIdMessage());
         } catch (IllegalOperationException e) {

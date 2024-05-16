@@ -1,5 +1,6 @@
 package it.polimi.ingsw.messages.clientmessages;
 
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.controller.exceptions.InvalidGoalException;
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
@@ -38,9 +39,10 @@ public class ChooseGoalMessage extends ClientMessage{
     @Override
     public void processMessage(ClientHandler clientHandler) throws IOException {
         try{
-            clientHandler.getController().ChooseGoal(userId,goal);
+            Controller c = clientHandler.getController();
+            c.ChooseGoal(userId,goal);
             clientHandler.answerClient(new SuccessMessage());
-            clientHandler.answerClient(new ChosenGoalMessage(goal));
+            clientHandler.sendTo(userId,new ChosenGoalMessage(goal));
         } catch (InvalidGoalException e) {
             clientHandler.answerClient(new InvalidGoalMessage());
         } catch (InvalidUserId e) {

@@ -185,6 +185,7 @@ public class TextUserInterface  {
                     else{
                         ServerHandler td2= new ServerHandler((ViewSocket) view,tuiUpdater,myID);
                         td2.start();
+
                     }
                     view.initializeFieldBuildingHelper( myName);
                     tuiUpdater.start();
@@ -446,10 +447,7 @@ public class TextUserInterface  {
 
     private void showHand() throws RemoteException, InvalidUserId {
         List<Card> hand ;
-        if(view.isRMI())
-            hand=view.showPlayerHand(myID);
-        else
-            hand=view.showPlayerHand();
+        hand=getHand();
         for(Card card:hand){
             artist.show(card);
         }
@@ -524,7 +522,14 @@ public class TextUserInterface  {
         showHand();
         int chosenCardI= s.nextInt();
         s.nextLine();
-        return view.showPlayerHand(myID).get(chosenCardI - 1);
+        return getHand().get(chosenCardI - 1);
+    }
+
+    private List<Card> getHand() throws RemoteException, InvalidUserId {
+        if(view.isRMI())
+            return view.showPlayerHand(myID);
+        return view.showPlayerHand();
+
     }
 
     /**

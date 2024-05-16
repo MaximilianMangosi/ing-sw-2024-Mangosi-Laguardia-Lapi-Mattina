@@ -44,6 +44,7 @@ public class BootGameMessage extends ClientMessage{
             UserIDMessage answer = new UserIDMessage(newId);
             PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
             clientHandler.answerClient(answer);
+            Thread.sleep(100);
             clientHandler.broadCast(msg);
         } catch (UnacceptableNumOfPlayersException e) {
             UnacceptableNumOfPlayersMessage answer = new UnacceptableNumOfPlayersMessage();
@@ -56,7 +57,7 @@ public class BootGameMessage extends ClientMessage{
         } catch (OnlyOneGameException e) {
             OnlyOneGameMessage answer = new OnlyOneGameMessage();
             clientHandler.answerClient(answer);
-        }
+        } catch (InterruptedException ignore) {}
     }
 
 }
