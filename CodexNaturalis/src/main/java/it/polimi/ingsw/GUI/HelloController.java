@@ -29,6 +29,9 @@ import java.rmi.registry.Registry;
 import java.util.UUID;
 
 public class HelloController {
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
     private boolean isSocketSelected = true;
 
     private String selectedUsername;
@@ -75,7 +78,11 @@ public class HelloController {
     @FXML
     private void onPlay() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
         HelloApplication.connectAndPlay(isSocketSelected, selectedUsername, numOfPlayers);
+        FXMLLoader loader= new FXMLLoader(getClass().getResource("choose-starter-card-side.fxml"));
+        root= loader.load();
 
+        ChooseSideController nextController= loader.getController();
+        //pass view to the controller
     }
 
     public class SceneController {
