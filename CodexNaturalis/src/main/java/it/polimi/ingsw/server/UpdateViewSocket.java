@@ -9,6 +9,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.UUID;
 
+/**
+ * Thread that keeps listening to port 3232 for new UUIDs, then adds them to ViewUpdater object
+ */
 public class UpdateViewSocket extends Thread{
     ServerSocket  UVSocket;
     ViewUpdater viewUpdater;

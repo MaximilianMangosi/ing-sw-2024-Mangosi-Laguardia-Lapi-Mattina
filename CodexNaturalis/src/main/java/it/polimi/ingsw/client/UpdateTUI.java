@@ -4,6 +4,9 @@ import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 
 import java.rmi.RemoteException;
 
+/**
+ * thread that waits 30 seconds, prints "I'm Awake" and updates the UI
+ */
 public class UpdateTUI extends Thread{
     final OutStreamWriter writer;
     TextUserInterface tui;
