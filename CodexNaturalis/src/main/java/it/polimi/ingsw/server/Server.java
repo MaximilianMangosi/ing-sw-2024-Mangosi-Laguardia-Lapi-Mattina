@@ -49,7 +49,6 @@ public class Server {
 
             } catch (IOException e) {
                 System.out.println("cannot open server commandSocket");
-                System.exit(1);
                 return;
             }
             CloseGame t1 = new CloseGame(controller);
@@ -71,10 +70,6 @@ public class Server {
                     System.out.println("connection dropped");
                 }
             }
-
-
-
-            //TODO DisconnectionHandler
         } catch (RemoteException ex) {
             System.out.println("Connection error unable to export object:\n" + ex.getMessage());}
     }
