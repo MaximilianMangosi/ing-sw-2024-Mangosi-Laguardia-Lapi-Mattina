@@ -1,8 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.CooseStarterCardSide">
-
-</AnchorPane>
+<Pane maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.ChooseSideController">
+   <children>
+      <ImageView fx:id="frontImage" fitHeight="193.0" fitWidth="275.0" layoutX="370.0" layoutY="250.0" onMouseClicked="#chooseFront" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../CardsFront/StarterCards/081.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="backImage" fitHeight="193.0" fitWidth="275.0" layoutX="660.0" layoutY="250.0" onMouseClicked="#chooseBack" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../CardsBack/StarterCard/081.png" />
+         </image>
+         <viewport>
+            <Rectangle2D />
+         </viewport>
+      </ImageView>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="500.0" layoutY="16.0" text="Choose on which side play the starter card: ">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <HBox fx:id="handBox" alignment="CENTER" layoutX="380.0" layoutY="680.0" onMouseEntered="#slideUpHand" onMouseExited="#slideDownHand" prefHeight="129.0" prefWidth="551.0" spacing="5.0" style="-fx-background-color: #ebdcaa;">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <children>
+            <ImageView fitHeight="133.0" fitWidth="177.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../CardsFront/ResourceCard/001.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="133.0" fitWidth="177.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../CardsFront/ResourceCard/002.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="133.0" fitWidth="177.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../CardsFront/ResourceCard/003.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+   </children>
+</Pane>

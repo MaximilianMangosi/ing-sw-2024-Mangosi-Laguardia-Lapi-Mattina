@@ -16,16 +16,13 @@ public class UpdateTUI extends Thread{
         while (true){
             try {
                 synchronized (this){
-                    wait(30000);
-                    System.out.println("I'm awake");
+                    wait(15000);
                     tui.updateIdleUI();
                     synchronized (writer){
                         writer.clearScreen();
                         writer.print(tui.getIdleUI());
                     }
-
                 }
-
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }catch(InterruptedException ignore){}
