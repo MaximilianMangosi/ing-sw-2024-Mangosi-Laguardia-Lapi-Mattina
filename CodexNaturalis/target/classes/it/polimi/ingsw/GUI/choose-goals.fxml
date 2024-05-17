@@ -9,9 +9,9 @@
 <?import javafx.scene.shape.CubicCurve?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.ChooseGoalController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.ChooseGoalController">
    <children>
-      <ImageView fx:id="privateGoal1" fitHeight="560.0" fitWidth="841.0" layoutX="174.0" layoutY="467.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="privateGoal1" fitHeight="150.0" fitWidth="200.0" layoutX="53.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../../../../../assets/assets/CODEX_cards_gold_front/094.png" />
          </image>
@@ -49,7 +49,7 @@
             <Image url="@../../../../../../../../../assets/assets/CODEX_cards_gold_front/098.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="publicGoal2" fitHeight="193.0" fitWidth="275.0" layoutX="1216.0" layoutY="179.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="publicGoal2" fitHeight="150.0" fitWidth="200.0" layoutX="321.0" layoutY="239.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../../../../../assets/assets/CODEX_cards_gold_front/099.png" />
          </image>
