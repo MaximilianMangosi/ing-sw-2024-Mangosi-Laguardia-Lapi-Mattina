@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -42,6 +43,8 @@ public class HelloController {
 
     @FXML
     private TextField usernameField;
+    @FXML
+    private VBox playerNum;
 
     @FXML
     protected void onHelloButtonClick() {
@@ -83,6 +86,10 @@ public class HelloController {
 
         ChooseSideController nextController= loader.getController();
         //pass view to the controller
+    }
+
+    public void initialize(){
+        playerNum.setVisible(false);
     }
 
     public class SceneController {
