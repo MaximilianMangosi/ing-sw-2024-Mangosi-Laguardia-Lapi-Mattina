@@ -10,10 +10,12 @@ import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.View;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.UUID;
 public class ChooseSideController {
 
     UUID myID;
+    String myName;
     View view;
     @FXML
     ImageView frontImage;
@@ -39,7 +42,8 @@ public class ChooseSideController {
     ImageView publicGoal2;
 
     ImageView[] handImage=new ImageView[3];
-//    public void initialize() throws InvalidUserId, RemoteException {
+
+    //    public void initialize() throws InvalidUserId, RemoteException {
 //        int id=view.showPlayerGoalOptions()[0].getId();
 //        Image privateOption1 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/Goal/0"+id));
 //        privateGoal1.setImage(privateOption1);
@@ -79,6 +83,7 @@ public class ChooseSideController {
         backImage.setLayoutX(1352);
         backImage.setLayoutY(400);
 
+
     }
     @FXML
     public void choosePrivateGoal1() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
@@ -92,6 +97,21 @@ public class ChooseSideController {
     }
     public void slideDownHand(){
         handBox.setLayoutY(984);
+    }
+
+    private void switchToMainStage(ActionEvent event) throws InvalidUserId, RemoteException {
+        if(view.showPrivateGoal(myID)!=null && view.getPlayersField(myName).containsValue(view.getStarterCard(myID))){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("in-game.fxml"));
+            //root=loader.load();
+            //InGameController c= loader.getController();
+            // c.setView(view);
+            // c.setMyId(myID);
+            //c.setMyName(myName);
+            //stage= (Stage)((Node) event.getSource()).getScene().getWindow();
+            //scene= new Scene(root);
+            //stage.setScene(scene);
+            //stage.show();
+        }
     }
 
 
