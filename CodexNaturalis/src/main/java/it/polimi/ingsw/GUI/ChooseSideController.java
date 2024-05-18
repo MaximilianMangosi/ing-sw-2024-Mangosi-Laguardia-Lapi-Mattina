@@ -37,7 +37,10 @@ public class ChooseSideController {
     ImageView publicGoal1;
     @FXML
     ImageView publicGoal2;
-
+    public ChooseSideController(View v, UUID myId){
+        view= v;
+        this.myID=myId;
+    }
     ImageView[] handImage=new ImageView[3];
     public void initialize() throws InvalidUserId, RemoteException {
         int id=view.showPlayerGoalOptions()[0].getId();
