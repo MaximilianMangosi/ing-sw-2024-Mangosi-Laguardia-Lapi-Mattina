@@ -71,4 +71,7 @@ public abstract class Goal implements Serializable {
     public int getPoints(){
         return points;
     }
+    public int getId(){
+        return id;
+    }
 }

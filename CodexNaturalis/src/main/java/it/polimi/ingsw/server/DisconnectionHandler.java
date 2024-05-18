@@ -4,6 +4,9 @@ import it.polimi.ingsw.controller.Controller;
 
 import java.rmi.RemoteException;
 
+/**
+ * keeps calling ping on the controller, which sets the boolean value in pingMap to false for each UUID
+ */
 public class DisconnectionHandler extends Thread{
     private Controller controller;
     DisconnectionHandler(Controller controller){
