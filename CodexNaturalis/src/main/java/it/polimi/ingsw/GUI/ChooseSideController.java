@@ -25,9 +25,7 @@ import java.util.UUID;
 
 public class ChooseSideController extends GUIController {
 
-    UUID myID;
-    String myName;
-    View view;
+
     @FXML
     ImageView frontImage;
     @FXML
@@ -44,37 +42,37 @@ public class ChooseSideController extends GUIController {
     ImageView publicGoal2;
 
 
-//    public void initialize() throws InvalidUserId, RemoteException {
-//        int id = view.showPlayerGoalOptions()[0].getId();
-//        Image privateOption1 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
-//        privateGoal1.setImage(privateOption1);
-//        id = view.showPlayerGoalOptions()[1].getId();
-//        Image privateOption2 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
-//        privateGoal2.setImage(privateOption2);
-//
-//        id = view.getPublicGoals()[0].getId();
-//        Image publicOption1 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
-//        publicGoal1.setImage(publicOption1);
-//        id = view.getPublicGoals()[1].getId();
-//        Image publicOption2 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
-//        publicGoal2.setImage(publicOption2);
-//
-//        id = view.getStarterCard(myID).getId();
-//        Image starterCardFr = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
-//        frontImage.setImage(starterCardFr);
-//
-//        Image starterCardBk = new Image(getClass().getResourceAsStream("src/main/resources/CardsBack/" + id + ".png"));
-//        backImage.setImage(starterCardBk);
-//
-//        for (Card card : view.showPlayerHand(myID)) {
-//            id = card.getId();
-//            Image cardPng = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
-//            ImageView cardView = new ImageView(cardPng);
-//            handBox.getChildren().add(cardView);
-//
-//        }
-//
-//    }
+    public void init() throws InvalidUserId, RemoteException {
+        int id = view.showPlayerGoalOptions()[0].getId();
+        Image privateOption1 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
+        privateGoal1.setImage(privateOption1);
+        id = view.showPlayerGoalOptions()[1].getId();
+        Image privateOption2 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
+        privateGoal2.setImage(privateOption2);
+
+        id = view.getPublicGoals()[0].getId();
+        Image publicOption1 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
+        publicGoal1.setImage(publicOption1);
+        id = view.getPublicGoals()[1].getId();
+        Image publicOption2 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
+        publicGoal2.setImage(publicOption2);
+
+        id = view.getStarterCard(myID).getId();
+        Image starterCardFr = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
+        frontImage.setImage(starterCardFr);
+
+        Image starterCardBk = new Image(getClass().getResourceAsStream("src/main/resources/CardsBack/" + id + ".png"));
+        backImage.setImage(starterCardBk);
+
+        for (Card card : view.showPlayerHand(myID)) {
+            id = card.getId();
+            Image cardPng = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
+            ImageView cardView = new ImageView(cardPng);
+            handBox.getChildren().add(cardView);
+
+        }
+
+    }
     public void setImageView(Image front,Image back){
         frontImage.setImage(front);
         backImage.setImage(back);

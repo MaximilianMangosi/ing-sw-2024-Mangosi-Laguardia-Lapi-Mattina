@@ -69,6 +69,7 @@ public class WaitingRoomController extends GUIController{
                 }
             }
             button.setVisible(true);
+
         }).start();
     }
 
