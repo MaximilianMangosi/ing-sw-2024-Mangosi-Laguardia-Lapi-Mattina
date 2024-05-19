@@ -18,8 +18,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,34 +31,42 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.UUID;
 
-public class HelloController {
+public class HelloController extends GUIController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private View view;
+    private UUID myID;
+
     private boolean isSocketSelected = true;
 
     private String selectedUsername;
 
-    private int numOfPlayers = 2;
     @FXML
     private Label welcomeText;
 
     @FXML
     private TextField usernameField;
+    @FXML
+    private VBox playerNum;
 
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
-
+    private Button selectSocketButton;
+    @FXML
+    private Button selectRMIButton;
     @FXML
     private void onSocketSelected(){
         isSocketSelected = true;
+        selectSocketButton.setStyle("-fx-background-color: #820933");
+        selectRMIButton.setStyle("-fx-background-color: #e5a78a");
     }
+
 
     @FXML
     private void onRmiSelected(){
         isSocketSelected = false;
+        selectSocketButton.setStyle("-fx-background-color: #e5a78a");
+        selectRMIButton.setStyle("-fx-background-color: #820933");
     }
 
     @FXML
@@ -64,47 +75,86 @@ public class HelloController {
     }
 
     @FXML
-    private void onSelect2Player(){
-        numOfPlayers = 2;
+    private void onSelect2Player() throws IOException {
+        createNewGame(2);
     }
     @FXML
-    private void onSelect3Player(){
-        numOfPlayers = 3;
+    private void onSelect3Player() throws IOException {
+        createNewGame(3);
     }
     @FXML
-    private void onSelect4Player(){
-        numOfPlayers = 4;
+    private void onSelect4Player() throws IOException {
+        createNewGame(4);
     }
     @FXML
     private void onPlay() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
-        HelloApplication.connectAndPlay(isSocketSelected, selectedUsername, numOfPlayers);
-        FXMLLoader loader= new FXMLLoader(getClass().getResource("choose-starter-card-side.fxml"));
-        root= loader.load();
-
-        ChooseSideController nextController= loader.getController();
-        //pass view to the controller
+        connectAndPlay(isSocketSelected, selectedUsername);
     }
 
-    public class SceneController {
-
-        private Stage stage;
-        private Scene scene;
-        private Parent root;
-
-        public void switchToScene1(ActionEvent event) throws IOException {
-            root = FXMLLoader.load(getClass().getResource("in-game"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
-
-        public void switchToScene2(ActionEvent event) throws IOException {
-            Parent root = FXMLLoader.load(getClass().getResource("Scene2.fxml"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
+    public void initialize(){
+        playerNum.setVisible(false);
     }
+
+    private void connectAndPlay(boolean isSocketSelected, String selectedUsername) throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, UnacceptableNumOfPlayersException, OnlyOneGameException {
+        try {
+            GameData gameData = new GameData();
+            if (isSocketSelected) {
+                Socket server;
+                server = new Socket("192.168.0.1", 2323);
+                view = new ViewSocket(server.getOutputStream(), server.getInputStream(), gameData);
+                //ServerHandler t1 = new ServerHandler((ViewSocket) view,);
+            } else {
+                Registry registry = LocateRegistry.getRegistry(1099);
+                view = (ViewRMIInterface) registry.lookup("ViewRMI");
+            }
+        } catch (Exception e) {
+            //
+            return;
+        }
+
+        boolean error = true;
+
+        try {
+
+            myID = view.joinGame(selectedUsername);
+            changeScene("waiting-room.fxml", null);
+
+        } catch (PlayerNameNotUniqueException e) {
+            // handleNameNotUnique();
+        } catch (NoGameExistsException e) {
+            playerNum.setVisible(true);
+        }
+
+    }
+
+    private void createNewGame(int numOfPlayers) throws IOException {
+
+            try {
+                myID = view.bootGame(numOfPlayers, selectedUsername);
+            } catch (UnacceptableNumOfPlayersException ex1) {
+                //
+            } catch (OnlyOneGameException ex) {
+                //
+                try {
+                    view.joinGame(selectedUsername);
+                } catch (PlayerNameNotUniqueException e1) {
+                    return;
+                } catch (NoGameExistsException | IOException | IllegalOperationException | ClassNotFoundException |
+                         InvalidGoalException | HandNotFullException | HandFullException | InvalidChoiceException |
+                         IsNotYourTurnException | InvalidUserId | RequirementsNotMetException |
+                         UnacceptableNumOfPlayersException | OnlyOneGameException | IllegalPositionException |
+                         InvalidCardException | DeckEmptyException ignore) {
+
+                }
+            }catch (HandFullException | ClassNotFoundException | IllegalOperationException | IOException |
+                    InvalidGoalException | HandNotFullException | InvalidChoiceException | NoGameExistsException |
+                    IsNotYourTurnException | InvalidUserId | RequirementsNotMetException |
+                    PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException | DeckEmptyException h){
+                return;
+            }
+
+            changeScene("waiting-room.fxml", null);
+
+    }
+
 }

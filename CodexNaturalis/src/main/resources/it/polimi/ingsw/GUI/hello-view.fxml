@@ -11,14 +11,14 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.HelloController">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: dbd3a9;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Codex Naturalis">
                <font>
                   <Font size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="40.0" />
+                  <Insets top="70.0" />
                </VBox.margin>
             </Text>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username:">
@@ -36,41 +36,59 @@
             </Text>
             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onSocketSelected" text="Socket" />
-                  <Button mnemonicParsing="false" onAction="#onRmiSelected" text="RMI" />
+                  <Button fx:id="selectSocketButton" mnemonicParsing="false" onAction="#onSocketSelected" style="-fx-background-color: e5a78a;" text="Socket" textFill="#f2f2f2">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Button>
+                  <Button fx:id="selectRMIButton" mnemonicParsing="false" onAction="#onRmiSelected" style="-fx-background-color: e5a78a;" text="RMI" textFill="#f2f2f2">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Button>
                </children>
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
             </HBox>
-            <Button mnemonicParsing="false" onAction="#onPlay" prefHeight="52.0" prefWidth="100.0" text="Play">
+            <VBox fx:id="playerNum" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select the number of players:" wrappingWidth="157.77985000610352">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Text>
+                  <HBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" spacing="30.0">
+                     <children>
+                      <Button mnemonicParsing="false" onAction="#onSelect2Player" style="-fx-background-color: e5a78a;" text="2" textFill="#f2f2f2">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font></Button>
+                        <Button mnemonicParsing="false" onAction="#onSelect3Player" style="-fx-background-color: e5a78a;" text="3" textFill="#f2f2f2">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font></Button>
+                        <Button mnemonicParsing="false" onAction="#onSelect4Player" style="-fx-background-color: e5a78a;" text="4" textFill="#f2f2f2">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font></Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+            <Button mnemonicParsing="false" onAction="#onPlay" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: e5a78a;" text="Play" textFill="#f2f2f2">
                <VBox.margin>
                   <Insets top="100.0" />
                </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
             </Button>
          </children>
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
-      </VBox>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select the number of players:" wrappingWidth="157.77985000610352">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Text>
-            <HBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" spacing="30.0">
-               <children>
-                <Button mnemonicParsing="false" onAction="#onSelect2Player" text="2" />
-                  <Button mnemonicParsing="false" onAction="#onSelect3Player" text="3" />
-                  <Button mnemonicParsing="false" onAction="#onSelect4Player" text="4" />
-               </children>
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
       </VBox>
    </children>
 </AnchorPane>
