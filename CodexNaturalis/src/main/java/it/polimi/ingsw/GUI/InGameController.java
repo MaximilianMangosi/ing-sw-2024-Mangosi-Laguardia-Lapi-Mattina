@@ -13,10 +13,7 @@ import java.rmi.RemoteException;
 public class InGameController extends GUIController {
     @FXML
     private HBox playerListBox=new HBox();
-    private
-
-
-    public void initialize() throws RemoteException {
+    private void initialize() throws RemoteException {
         String[] temp={"pepo","Maxsdfkajflkjaldk","Giorgio"};
         for (String p :temp){
             StackPane sp= new StackPane();

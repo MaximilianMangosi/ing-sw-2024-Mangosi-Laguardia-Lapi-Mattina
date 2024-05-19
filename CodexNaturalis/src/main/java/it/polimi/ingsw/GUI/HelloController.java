@@ -33,10 +33,6 @@ import java.rmi.registry.Registry;
 import java.util.UUID;
 
 public class HelloController extends GUIController {
-
-    private View view;
-    private UUID myID;
-
     private boolean isSocketSelected = true;
 
     private String selectedUsername;

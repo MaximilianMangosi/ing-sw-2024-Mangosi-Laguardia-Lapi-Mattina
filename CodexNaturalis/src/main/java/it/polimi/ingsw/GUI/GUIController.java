@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.UUID;
 
 public class GUIController {
@@ -37,6 +38,11 @@ public class GUIController {
         Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+
+        c.init();
         stage.show();
+    }
+
+    public void init() {
     }
 }

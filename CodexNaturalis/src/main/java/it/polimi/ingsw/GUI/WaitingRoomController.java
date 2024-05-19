@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.model.gamelogic.Player;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -14,24 +15,51 @@ public class WaitingRoomController extends GUIController{
     @FXML
     private HBox playersContainer;
 
-    @FXML
-    public void initialize() throws RemoteException {
-        List<String> already = new ArrayList<>();
+    @Override
+    public void init() {
+        updatePlayerList();
+    }
 
-        while (!view.isGameStarted()) {
-            if (!already.equals(view.getPlayersList())) {
-                createPlayerLables(view.getPlayersList());
+    private void updatePlayerList() {
+        new Thread(()->{
+            List<String> already = new ArrayList<>();
+
+            while (true) {
+                try {
+                    if (view.isGameStarted()) break;
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    if (!already.equals(view.getPlayersList())) {
+                        System.out.println(view.getPlayersList());
+                        Platform.runLater(()->{
+                            try {
+                                createPlayerLables(view.getPlayersList());
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    }
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    already = view.getPlayersList();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
-            already = view.getPlayersList();
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        }).start();
     }
 
     private void createPlayerLables(List<String> names) {
+        playersContainer.getChildren().clear();
         for (String name : names) {
             Label label = new Label(name);
             label.setStyle("-fx-font-size: 20px");
