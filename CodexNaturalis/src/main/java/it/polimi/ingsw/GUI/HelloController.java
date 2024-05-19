@@ -34,9 +34,7 @@ import java.util.UUID;
 
 public class HelloController extends GUIController {
     private boolean isSocketSelected = true;
-
-    private String selectedUsername;
-
+    
     @FXML
     private Button playID;
 
@@ -66,7 +64,7 @@ public class HelloController extends GUIController {
 
     @FXML
     private void onUsernameChange(){
-        selectedUsername = usernameField.getText();
+        myName = usernameField.getText();
     }
 
     @FXML
@@ -107,7 +105,8 @@ public class HelloController extends GUIController {
 
         try {
 
-            myID = view.joinGame(selectedUsername);
+            myID = view.joinGame(myName);
+            view.initializeFieldBuildingHelper(myName);
             changeScene("waiting-room.fxml", event);
 
         } catch (PlayerNameNotUniqueException e) {
@@ -121,13 +120,13 @@ public class HelloController extends GUIController {
     private void createNewGame(int numOfPlayers, ActionEvent event) throws IOException, InvalidUserId {
 
             try {
-                myID = view.bootGame(numOfPlayers, selectedUsername);
+                myID = view.bootGame(numOfPlayers, myName);
+                view.initializeFieldBuildingHelper(myName);
             } catch (UnacceptableNumOfPlayersException ex1) {
-                //
             } catch (OnlyOneGameException ex) {
-                //
                 try {
-                    view.joinGame(selectedUsername);
+                    view.joinGame(myName);
+                    view.initializeFieldBuildingHelper(myName);
                 } catch (PlayerNameNotUniqueException e1) {
                     return;
                 } catch (NoGameExistsException | IOException | IllegalOperationException | ClassNotFoundException |

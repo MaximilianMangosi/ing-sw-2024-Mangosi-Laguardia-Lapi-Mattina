@@ -35,7 +35,7 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </TextArea>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <HBox fx:id="privateGoalBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
                   <ImageView fx:id="privateGoal2" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal2" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -95,7 +95,7 @@
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor>
             </TextArea>
-            <HBox alignment="CENTER" prefHeight="183.0" prefWidth="768.0" spacing="20.0">
+            <HBox fx:id="starterCardBox" alignment="CENTER" prefHeight="183.0" prefWidth="768.0" spacing="20.0">
                <children>
                   <ImageView fx:id="frontImage" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#chooseFront" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -120,14 +120,14 @@
             </HBox>
          </children>
       </VBox>
-      <StackPane fx:id="handBox" alignment="TOP_CENTER" layoutX="860.0" layoutY="1020.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#slideUpHand" onMouseExited="#slideDownHand" prefHeight="246.0" prefWidth="200.0">
+      <StackPane fx:id="handPane" alignment="TOP_CENTER" layoutX="860.0" layoutY="1020.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#slideUpHand" onMouseExited="#slideDownHand" prefHeight="246.0" prefWidth="200.0">
          <children>
-            <HBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" onMouseEntered="#slideUpHand" onMouseExited="#slideDownHand" prefHeight="230.0" prefWidth="845.0" spacing="5.0" style="-fx-background-color: #ebdcaa;">
+            <HBox fx:id="handBox" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="230.0" prefWidth="845.0" spacing="5.0" style="-fx-background-color: #ebdcaa;">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <children>
-                  <ImageView fitHeight="193.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="193.0" fitWidth="275.0" onMouseEntered="#slideUpHand" onMouseExited="#slideDownHand" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../CardsFront/1.png" />
                      </image>
