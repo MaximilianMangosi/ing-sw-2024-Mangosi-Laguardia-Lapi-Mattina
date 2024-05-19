@@ -25,6 +25,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.registry.LocateRegistry;
@@ -32,16 +33,12 @@ import java.rmi.registry.Registry;
 import java.util.UUID;
 
 public class HelloController extends GUIController {
-
-    private View view;
-    private UUID myID;
-
     private boolean isSocketSelected = true;
 
     private String selectedUsername;
 
     @FXML
-    private Label welcomeText;
+    private Button playID;
 
     @FXML
     private TextField usernameField;
@@ -73,32 +70,28 @@ public class HelloController extends GUIController {
     }
 
     @FXML
-    private void onSelect2Player() throws IOException {
-        createNewGame(2);
+    private void onSelect2Player(ActionEvent event) throws IOException {
+        createNewGame(2, event);
     }
     @FXML
-    private void onSelect3Player() throws IOException {
-        createNewGame(3);
+    private void onSelect3Player(ActionEvent event) throws IOException {
+        createNewGame(3, event);
     }
     @FXML
-    private void onSelect4Player() throws IOException {
-        createNewGame(4);
-    }
-    @FXML
-    private void onPlay() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
-        connectAndPlay(isSocketSelected, selectedUsername);
+    private void onSelect4Player(ActionEvent event) throws IOException {
+        createNewGame(4, event);
     }
 
     public void initialize(){
         playerNum.setVisible(false);
     }
-
-    private void connectAndPlay(boolean isSocketSelected, String selectedUsername) throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, UnacceptableNumOfPlayersException, OnlyOneGameException {
+    @FXML
+    private void onPlay(ActionEvent event) throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, UnacceptableNumOfPlayersException, OnlyOneGameException {
         try {
             GameData gameData = new GameData();
             if (isSocketSelected) {
                 Socket server;
-                server = new Socket("192.168.0.1", 2323);
+                server = new Socket("local-host", 2323);
                 view = new ViewSocket(server.getOutputStream(), server.getInputStream(), gameData);
                 //ServerHandler t1 = new ServerHandler((ViewSocket) view,);
             } else {
@@ -115,7 +108,7 @@ public class HelloController extends GUIController {
         try {
 
             myID = view.joinGame(selectedUsername);
-            changeScene("waiting-room.fxml", null);
+            changeScene("waiting-room.fxml", event);
 
         } catch (PlayerNameNotUniqueException e) {
             // handleNameNotUnique();
@@ -125,7 +118,7 @@ public class HelloController extends GUIController {
 
     }
 
-    private void createNewGame(int numOfPlayers) throws IOException {
+    private void createNewGame(int numOfPlayers, ActionEvent event) throws IOException {
 
             try {
                 myID = view.bootGame(numOfPlayers, selectedUsername);
@@ -151,7 +144,7 @@ public class HelloController extends GUIController {
                 return;
             }
 
-            changeScene("waiting-room.fxml", null);
+            changeScene("waiting-room.fxml", event);
 
     }
 
