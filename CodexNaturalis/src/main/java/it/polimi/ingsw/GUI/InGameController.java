@@ -17,7 +17,7 @@ import java.util.List;
 
 public class InGameController extends GUIController {
     @FXML
-    private HBox playerListBox=new HBox();
+    private HBox playerListBox;
 
     @FXML
     private ImageView visibleCard1;
@@ -47,6 +47,8 @@ public class InGameController extends GUIController {
             handBox.getChildren().add(cardView);
         }
 
+        checkGameInfo();
+
     }
 
     private void checkGameInfo(){
@@ -54,6 +56,9 @@ public class InGameController extends GUIController {
         new Thread(() -> {
 
             List<Card> oldCards = new ArrayList<>();
+
+            String oldCurrentPlayer = "";
+
             while(true){
 
                 //visible cards
@@ -73,6 +78,22 @@ public class InGameController extends GUIController {
                     throw new RuntimeException(e);
                 }
 
+                //current player
+                try {
+                    if(!view.getCurrentPlayer().equals(oldCurrentPlayer)){
+                        Platform.runLater(() -> {
+                            try {
+                                updateCurrentPlayer(view.getCurrentPlayer());
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                        oldCurrentPlayer = view.getCurrentPlayer();
+                    }
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -83,6 +104,28 @@ public class InGameController extends GUIController {
     }
 
     private void updateVisibleCards(List<Card> newCards){
+        Image img1 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + newCards.get(0).getId() + ".png"));
+        visibleCard1.setImage(img1);
 
+        Image img2 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + newCards.get(1).getId() + ".png"));
+        visibleCard2.setImage(img2);
+
+        Image img3 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + newCards.get(2).getId() + ".png"));
+        visibleCard3.setImage(img3);
+
+        Image img4 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + newCards.get(3).getId() + ".png"));
+        visibleCard4.setImage(img4);
+    }
+
+    private void updateCurrentPlayer(String newCurrentPlayer){
+        playerListBox.getChildren().forEach(p -> {
+           Label label = (Label) ((StackPane)p).getChildren().getFirst();
+
+           if(newCurrentPlayer.equals(label.getText())){
+               label.setStyle("-fx-background-color: d9be4a");
+           }else{
+               label.setStyle("-fx-background-color: 0");
+           }
+        });
     }
 }
