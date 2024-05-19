@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 import it.polimi.ingsw.view.View;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -28,7 +29,7 @@ public class GUIController {
     public void setMyName(String myName){
         this.myName = myName;
     }
-    public void changeScene(String pathXML, ActionEvent event) throws IOException {
+    public void changeScene(String pathXML, ActionEvent event) throws IOException, InvalidUserId {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(pathXML));
         Parent root = loader.load();
         GUIController c = loader.getController();
@@ -43,6 +44,6 @@ public class GUIController {
         stage.show();
     }
 
-    public void init() {
+    public void init() throws RemoteException, InvalidUserId {
     }
 }

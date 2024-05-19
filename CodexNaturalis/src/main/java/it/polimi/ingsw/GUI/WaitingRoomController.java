@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 import it.polimi.ingsw.model.gamelogic.Player;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -22,7 +23,7 @@ public class WaitingRoomController extends GUIController{
     private Button button;
 
     @FXML
-    private void onButtonSelected(ActionEvent event) throws IOException {
+    private void onButtonSelected(ActionEvent event) throws IOException, InvalidUserId {
         changeScene("choose-starter-card-side.fxml", event);
     }
 

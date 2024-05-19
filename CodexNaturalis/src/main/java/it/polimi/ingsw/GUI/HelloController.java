@@ -70,15 +70,15 @@ public class HelloController extends GUIController {
     }
 
     @FXML
-    private void onSelect2Player(ActionEvent event) throws IOException {
+    private void onSelect2Player(ActionEvent event) throws IOException, InvalidUserId {
         createNewGame(2, event);
     }
     @FXML
-    private void onSelect3Player(ActionEvent event) throws IOException {
+    private void onSelect3Player(ActionEvent event) throws IOException, InvalidUserId {
         createNewGame(3, event);
     }
     @FXML
-    private void onSelect4Player(ActionEvent event) throws IOException {
+    private void onSelect4Player(ActionEvent event) throws IOException, InvalidUserId {
         createNewGame(4, event);
     }
 
@@ -118,7 +118,7 @@ public class HelloController extends GUIController {
 
     }
 
-    private void createNewGame(int numOfPlayers, ActionEvent event) throws IOException {
+    private void createNewGame(int numOfPlayers, ActionEvent event) throws IOException, InvalidUserId {
 
             try {
                 myID = view.bootGame(numOfPlayers, selectedUsername);
