@@ -32,9 +32,7 @@ import java.rmi.registry.Registry;
 import java.util.UUID;
 
 public class HelloController extends GUIController {
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+
     private View view;
     private UUID myID;
 

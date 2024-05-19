@@ -12,9 +12,12 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class GUIController {
-    View view;
-    UUID myID;
-    String myName;
+    protected View view;
+    protected UUID myID;
+    protected String myName;
+    protected Stage stage;
+    protected Scene scene;
+    protected Parent root;
     public void setView(View view){
         this.view = view;
     }
