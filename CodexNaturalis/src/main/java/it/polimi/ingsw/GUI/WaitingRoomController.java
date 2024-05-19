@@ -2,12 +2,14 @@ package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 import it.polimi.ingsw.model.gamelogic.Player;
+import it.polimi.ingsw.view.View;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.awt.*;
 import java.io.IOException;
@@ -21,6 +23,9 @@ public class WaitingRoomController extends GUIController{
 
     @FXML
     private Button button;
+
+    @FXML
+    private VBox vBox;
 
     @FXML
     private void onButtonSelected(ActionEvent event) throws IOException, InvalidUserId {
@@ -69,6 +74,7 @@ public class WaitingRoomController extends GUIController{
                 }
             }
             button.setVisible(true);
+            vBox.setVisible(false);
 
         }).start();
     }

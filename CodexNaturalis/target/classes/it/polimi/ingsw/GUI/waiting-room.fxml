@@ -13,12 +13,16 @@
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting for other players...">
-               <font>
-                  <Font size="25.0" />
-               </font>
-            </Text>
-            <HBox fx:id="playersContainer" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" />
+            <VBox fx:id="vBox" alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting for other players...">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Text>
+                  <HBox fx:id="playersContainer" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" />
+               </children>
+            </VBox>
             <Button fx:id="button" mnemonicParsing="false" onAction="#onButtonSelected" prefHeight="59.0" prefWidth="144.0" text="Start!">
                <font>
                   <Font size="18.0" />
