@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.View;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
@@ -17,7 +18,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
