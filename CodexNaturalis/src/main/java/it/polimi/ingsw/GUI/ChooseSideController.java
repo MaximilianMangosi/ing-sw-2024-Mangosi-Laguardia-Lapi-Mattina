@@ -23,7 +23,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.UUID;
 
-public class ChooseSideController {
+public class ChooseSideController extends GUIController {
 
     UUID myID;
     String myName;
@@ -105,18 +105,9 @@ public class ChooseSideController {
         handBox.setLayoutY(1023);
     }
 
-    private void switchToMainStage(ActionEvent event) throws InvalidUserId, RemoteException {
+    private void switchToMainStage(ActionEvent event) throws InvalidUserId, IOException {
         if(view.showPrivateGoal(myID)!=null && view.getPlayersField(myName).containsValue(view.getStarterCard(myID))){
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("in-game.fxml"));
-            //root=loader.load();
-            //InGameController c= loader.getController();
-            // c.setView(view);
-            // c.setMyId(myID);
-            //c.setMyName(myName);
-            //stage= (Stage)((Node) event.getSource()).getScene().getWindow();
-            //scene= new Scene(root);
-            //stage.setScene(scene);
-            //stage.show();
+            changeScene("in-game.fxml",event);
         }
     }
 
