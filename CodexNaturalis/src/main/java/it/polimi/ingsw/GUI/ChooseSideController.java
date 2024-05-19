@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.controller.exceptions.*;
+import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
@@ -14,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -31,7 +33,7 @@ public class ChooseSideController {
     @FXML
     ImageView backImage;
     @FXML
-    HBox handBox;
+    StackPane handBox;
     @FXML
     ImageView privateGoal1;
     @FXML
@@ -41,49 +43,53 @@ public class ChooseSideController {
     @FXML
     ImageView publicGoal2;
 
-    ImageView[] handImage=new ImageView[3];
 
-    //    public void initialize() throws InvalidUserId, RemoteException {
-//        int id=view.showPlayerGoalOptions()[0].getId();
-//        Image privateOption1 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/Goal/0"+id));
+//    public void initialize() throws InvalidUserId, RemoteException {
+//        int id = view.showPlayerGoalOptions()[0].getId();
+//        Image privateOption1 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
 //        privateGoal1.setImage(privateOption1);
+//        id = view.showPlayerGoalOptions()[1].getId();
+//        Image privateOption2 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
+//        privateGoal2.setImage(privateOption2);
 //
-//         id=view.showPlayerGoalOptions()[1].getId();
-//        Image privateOption2 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/Goal/0"+id));
-//        privateGoal1.setImage(privateOption2);
+//        id = view.getPublicGoals()[0].getId();
+//        Image publicOption1 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
+//        publicGoal1.setImage(publicOption1);
+//        id = view.getPublicGoals()[1].getId();
+//        Image publicOption2 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
+//        publicGoal2.setImage(publicOption2);
 //
-//        id=view.getPublicGoals()[0].getId();
-//        Image publicOption1 = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/Goal/0"+id));
-//        privateGoal1.setImage(publicOption1);
-//        //TODO fix index of goal cards
-//        id=view.getPublicGoals()[1].getId();
-//        Image publicOption2  = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/Goal/0"+id));
-//        privateGoal1.setImage(publicOption2);
-//
-//        id=view.getStarterCard(myID).getId();
-//        Image starterCardFr  = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/StarterCards/0"+id));
+//        id = view.getStarterCard(myID).getId();
+//        Image starterCardFr = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
 //        frontImage.setImage(starterCardFr);
 //
-//        Image starterCardBk  = new Image(getClass().getResourceAsStream("src/main/resources/CardsBack/StarterCards/0"+id));
+//        Image starterCardBk = new Image(getClass().getResourceAsStream("src/main/resources/CardsBack/" + id + ".png"));
 //        backImage.setImage(starterCardBk);
+//
+//        for (Card card : view.showPlayerHand(myID)) {
+//            id = card.getId();
+//            Image cardPng = new Image(getClass().getResourceAsStream("src/main/resources/CardsFront/" + id + ".png"));
+//            ImageView cardView = new ImageView(cardPng);
+//            handBox.getChildren().add(cardView);
+//
+//        }
+//
 //    }
     public void setImageView(Image front,Image back){
         frontImage.setImage(front);
         backImage.setImage(back);
     }
     public void chooseFront() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
-       // view.chooseStarterCardSide(true,myID);
+       view.chooseStarterCardSide(true,myID);
         backImage.setVisible(false);
         frontImage.setLayoutX(1352);
         frontImage.setLayoutY(400);
     }
     public void chooseBack() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
-        //view.chooseStarterCardSide(false,myID);
+        view.chooseStarterCardSide(false,myID);
         frontImage.setVisible(false);
         backImage.setLayoutX(1352);
         backImage.setLayoutY(400);
-
-
     }
     @FXML
     public void choosePrivateGoal1() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
@@ -93,10 +99,10 @@ public class ChooseSideController {
         view.chooseGoal(myID,view.showPlayerGoalOptions(myID)[1]);
     }
     public void slideUpHand(){
-        handBox.setLayoutY(884);
+        handBox.setLayoutY(840);
     }
     public void slideDownHand(){
-        handBox.setLayoutY(984);
+        handBox.setLayoutY(1023);
     }
 
     private void switchToMainStage(ActionEvent event) throws InvalidUserId, RemoteException {
