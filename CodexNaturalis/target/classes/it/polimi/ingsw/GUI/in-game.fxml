@@ -64,7 +64,7 @@
                      <content>
                         <AnchorPane prefHeight="1566.0" prefWidth="2400.0">
                            <children>
-                              <StackPane fx:id="fieldPane" layoutX="-240.0" layoutY="-390.0" prefHeight="1610.0" prefWidth="2408.0" AnchorPane.bottomAnchor="390.0" AnchorPane.leftAnchor="-240.0" AnchorPane.rightAnchor="240.0" AnchorPane.topAnchor="-390.0">
+                              <StackPane layoutX="-240.0" layoutY="-390.0" prefHeight="1610.0" prefWidth="2408.0" AnchorPane.bottomAnchor="390.0" AnchorPane.leftAnchor="-240.0" AnchorPane.rightAnchor="240.0" AnchorPane.topAnchor="-390.0">
                                  <children>
                                     <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0">
                                        <children>
