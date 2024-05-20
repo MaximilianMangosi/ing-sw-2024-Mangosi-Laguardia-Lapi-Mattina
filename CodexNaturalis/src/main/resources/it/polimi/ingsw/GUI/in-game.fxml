@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -81,8 +82,8 @@
             </Text>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="visibleCard1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="visibleCard2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -93,8 +94,8 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="visibleCard3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="visibleCard4" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
@@ -137,11 +138,23 @@
       </VBox>
       <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="1080.0" prefWidth="541.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1379.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="1091.0" fitWidth="541.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../../../../Desktop/politecnico/anno%203/PROVA%20FINALE%20(INGEGNERIA%20DEL%20SOFTWARE)/Introduzione/Regolamenti%20e%20materiale%20grafico/1709659529364-fc3762d4-a9b8-4f88-9f1f-cc7a7a1a8700_1.jpg" />
-               </image>
-            </ImageView>
+            <StackPane alignment="TOP_LEFT" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="1091.0" fitWidth="541.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../Desktop/politecnico/anno%203/PROVA%20FINALE%20(INGEGNERIA%20DEL%20SOFTWARE)/Introduzione/Regolamenti%20e%20materiale%20grafico/1709659529364-fc3762d4-a9b8-4f88-9f1f-cc7a7a1a8700_1.jpg" />
+                     </image>
+                  </ImageView>
+                  <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="19.0" prefWidth="64.0" style="-fx-background-color: A59833; -fx-background-radius: 100;" text="X" textFill="RED">
+                     <StackPane.margin>
+                        <Insets left="505.0" />
+                     </StackPane.margin>
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </StackPane>
          </children>
       </VBox>
    </children>

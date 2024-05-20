@@ -13,6 +13,7 @@ import it.polimi.ingsw.view.View;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -46,9 +47,13 @@ public class ChooseSideController extends GUIController {
     ImageView publicGoal1;
     @FXML
     ImageView publicGoal2;
+    @FXML
+    Button button;
 
+    private int sealedCards=0;
 
     public void init() throws InvalidUserId, RemoteException {
+        button.setVisible(false);
         int id = view.showPlayerGoalOptions(myID)[0].getId();
         Image privateOption1 = new Image(String.valueOf(getClass().getResource("/CardsFront/"+id+".png")));
         privateGoal1.setImage(privateOption1);
@@ -78,32 +83,45 @@ public class ChooseSideController extends GUIController {
             cardView.setFitWidth(275);
             cardView.setFitHeight(193);
             handBox.getChildren().add(cardView);
-
-
         }
-
     }
     public void setImageView(Image front,Image back){
         frontImage.setImage(front);
         backImage.setImage(back);
     }
     public void chooseFront() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
-       view.chooseStarterCardSide(true,myID);
-       starterCardBox.getChildren().remove(1);
+        view.chooseStarterCardSide(true,myID);
+        starterCardBox.getChildren().remove(1);
+        sealedCards++;
+        if (sealedCards==2){
+            button.setVisible(true);
+        }
 
     }
     public void chooseBack() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
         view.chooseStarterCardSide(false,myID);
         starterCardBox.getChildren().removeFirst();
+        sealedCards++;
+        if (sealedCards==2){
+            button.setVisible(true);
+        }
     }
     @FXML
     public void choosePrivateGoal1() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
         view.chooseGoal(myID,view.showPlayerGoalOptions(myID)[0]);
         privateGoalBox.getChildren().removeFirst();
+        sealedCards++;
+        if (sealedCards==2){
+            button.setVisible(true);
+        }
     }
     public void choosePrivateGoal2() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
         view.chooseGoal(myID,view.showPlayerGoalOptions(myID)[1]);
         privateGoalBox.getChildren().remove(1);
+        sealedCards++;
+        if (sealedCards==2){
+            button.setVisible(true);
+        }
     }
     public void slideUpHand(){
         handPane.setLayoutY(840);
@@ -111,12 +129,13 @@ public class ChooseSideController extends GUIController {
     public void slideDownHand(){handPane.setLayoutY(1023);
     }
 
+
+    @FXML
     private void switchToMainStage(ActionEvent event) throws InvalidUserId, IOException {
         if(view.showPrivateGoal(myID)!=null && view.getPlayersField(myName).containsValue(view.getStarterCard(myID))){
             changeScene("in-game.fxml",event);
         }
     }
-
 
 
 
