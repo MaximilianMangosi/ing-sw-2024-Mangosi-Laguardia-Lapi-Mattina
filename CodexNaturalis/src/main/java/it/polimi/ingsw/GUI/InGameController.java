@@ -54,12 +54,19 @@ public class InGameController extends GUIController {
     @FXML
     private ImageView visibleCard4;
     @FXML
-    private HBox handBox= new HBox();
+    private HBox handBox;
+    @FXML
+    private VBox deckBox;
+    @FXML
+    private VBox scoreboardBox;
     @FXML
     private StackPane fieldPane;
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
     public void init() throws RemoteException, InvalidUserId {
+        deckBox.setVisible(false);
+        scoreboardBox.setVisible(false);
+        errorMsg.setVisible(false);
         for (String p : view.getPlayersList()) {
             StackPane sp = new StackPane();
             Label label = new Label(p);
@@ -70,23 +77,26 @@ public class InGameController extends GUIController {
             playerListBox.getChildren().add(sp);
 
         }
-        handBox.getChildren().clear();
+        int i=0;
         for (Card card : view.showPlayerHand(myID)){
             int id = card.getId();
             Image cardPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-            ImageView cardView = new ImageView(cardPng);
-            handBox.getChildren().add(cardView);
+            ImageView cardView = (ImageView) handBox.getChildren().get(i);
+            cardView.setImage(cardPng);
+            i++;
         }
+        i=0;
         for (Goal g: view.getPublicGoals()){
             int id= g.getId();
             Image goalPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-            ImageView goalView= new ImageView(goalPng);
-            goalsBox.getChildren().add(goalView);
+            ImageView goalView= (ImageView) goalsBox.getChildren().get(i);
+            goalView.setImage(goalPng);
+            i++;
         }
         int id = view.showPrivateGoal(myID).getId();
         Image goalPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-        ImageView goalView= new ImageView(goalPng);
-        privateGoalBox.getChildren().add(goalView);
+        ImageView goalView= (ImageView) privateGoalBox.getChildren().getFirst();
+        goalView.setImage(goalPng);
 
         resourceCardDeck.setOnMouseClicked(mouseEvent -> drawFromDeck(0));
         goldCardDeck.setOnMouseClicked(mouseEvent -> drawFromDeck(1));
@@ -94,15 +104,16 @@ public class InGameController extends GUIController {
         visibleCard2.setOnMouseClicked(mouseEvent -> drawVisibleCard(1));
         visibleCard3.setOnMouseClicked(mouseEvent -> drawVisibleCard(2));
         visibleCard4.setOnMouseClicked(mouseEvent -> drawVisibleCard(3));
-        errorMsg.setVisible(false);
 
-        Image stCard = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-        ImageView starterCard = new ImageView(stCard);
-        StackPane starterCardPane = new StackPane();
-        fieldPane.getChildren().add(starterCardPane);
-        starterCardPane.getChildren().add(starterCard);
-        GridPane starterCardGrid = new GridPane(2,2);
-        starterCardPane.getChildren().add(starterCardGrid);
+        id=view.getStarterCard(myID).getId();
+        Image scPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+        StackPane starterCardPane = (StackPane) fieldPane.getChildren().getFirst();
+        GridPane starterCardGrid  = (GridPane) starterCardPane.getChildren().getFirst();
+        ImageView scView=new ImageView(scPng);
+        scView.setFitWidth(200);
+        scView.setFitHeight(150);
+        starterCardGrid.getChildren().add(scView);
+
         Button NW = new Button();
         Button NE = new Button();
         Button SW = new Button();
@@ -180,7 +191,7 @@ public class InGameController extends GUIController {
 
                         oldTopResource = newTopResource;
                     }
-                    Reign newTopGold = view.getTopOfResourceCardDeck();
+                    Reign newTopGold = view.getTopOfGoldCardDeck();
                     if(!newTopGold.equals(oldTopGold)){
                         Platform.runLater(() -> {
                             updateTopGold(newTopGold);
@@ -282,7 +293,7 @@ public class InGameController extends GUIController {
             case BUG -> img= new Image(getClass().getResourceAsStream("/CardsBack/76.png"));
             default ->   img=new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
         }
-        resourceCardDeck.setImage(img);
+        goldCardDeck.setImage(img);
     }
     public void placeCard(Button b, Coordinates position){
         StackPane newCard = new StackPane();

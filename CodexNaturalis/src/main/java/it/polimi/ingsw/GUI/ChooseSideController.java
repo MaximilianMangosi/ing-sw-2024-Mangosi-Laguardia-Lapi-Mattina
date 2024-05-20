@@ -2,17 +2,14 @@ package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.gamecards.cards.Card;
-import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
-import it.polimi.ingsw.view.View;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,8 +18,6 @@ import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.List;
-import java.util.UUID;
 
 public class ChooseSideController extends GUIController {
 
@@ -48,24 +43,28 @@ public class ChooseSideController extends GUIController {
     @FXML
     ImageView publicGoal2;
     @FXML
-    Button button;
+    private Button startButton;
 
     private int sealedCards=0;
 
     public void init() throws InvalidUserId, RemoteException {
-        button.setVisible(false);
+        startButton.setVisible(false);
         int id = view.showPlayerGoalOptions(myID)[0].getId();
+        System.out.println(id);
         Image privateOption1 = new Image(String.valueOf(getClass().getResource("/CardsFront/"+id+".png")));
         privateGoal1.setImage(privateOption1);
 
         id = view.showPlayerGoalOptions(myID)[1].getId();
+        System.out.println(id);
         Image privateOption2 = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
         privateGoal2.setImage(privateOption2);
 
         id = view.getPublicGoals()[0].getId();
+        System.out.println(id);
         Image publicOption1 = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
         publicGoal1.setImage(publicOption1);
         id = view.getPublicGoals()[1].getId();
+        System.out.println(id);
         Image publicOption2 = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
         publicGoal2.setImage(publicOption2);
 
@@ -85,16 +84,12 @@ public class ChooseSideController extends GUIController {
             handBox.getChildren().add(cardView);
         }
     }
-    public void setImageView(Image front,Image back){
-        frontImage.setImage(front);
-        backImage.setImage(back);
-    }
     public void chooseFront() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
         view.chooseStarterCardSide(true,myID);
         starterCardBox.getChildren().remove(1);
         sealedCards++;
         if (sealedCards==2){
-            button.setVisible(true);
+            startButton.setVisible(true);
         }
 
     }
@@ -103,34 +98,31 @@ public class ChooseSideController extends GUIController {
         starterCardBox.getChildren().removeFirst();
         sealedCards++;
         if (sealedCards==2){
-            button.setVisible(true);
+            startButton.setVisible(true);
         }
     }
-    @FXML
+
     public void choosePrivateGoal1() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
         view.chooseGoal(myID,view.showPlayerGoalOptions(myID)[0]);
-        privateGoalBox.getChildren().removeFirst();
-        sealedCards++;
-        if (sealedCards==2){
-            button.setVisible(true);
-        }
-    }
-    @FXML
-    public void choosePrivateGoal2() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
-        view.chooseGoal(myID,view.showPlayerGoalOptions(myID)[1]);
         privateGoalBox.getChildren().remove(1);
         sealedCards++;
         if (sealedCards==2){
-            button.setVisible(true);
+            startButton.setVisible(true);
+        }
+    }
+
+    public void choosePrivateGoal2() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
+        view.chooseGoal(myID,view.showPlayerGoalOptions(myID)[1]);
+        privateGoalBox.getChildren().removeFirst();
+        sealedCards++;
+        if (sealedCards==2){
+            startButton.setVisible(true);
         }
     }
     public void slideUpHand(){
-        handPane.setLayoutY(840);
+        handPane.setLayoutY(830);
     }
-    public void slideDownHand(){handPane.setLayoutY(1023);
-    }
-
-
+    public void slideDownHand(){handPane.setLayoutY(1020);}
     @FXML
     private void switchToMainStage(ActionEvent event) throws InvalidUserId, IOException {
         changeScene("in-game.fxml",event);

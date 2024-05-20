@@ -15,18 +15,26 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: dbd3a9;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.ChooseSideController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: dbd3a9;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.ChooseSideController">
    <children>
-      <Button fx:id="button" mnemonicParsing="false" onAction="#switchToMainStage" text="Start" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1819.5" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1023.0">
-         <font>
-            <Font size="30.0" />
-         </font>
-      </Button>
-      <VBox alignment="CENTER" prefHeight="1080.0" prefWidth="958.0" spacing="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="962.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" layoutX="908.0" layoutY="-6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="848.0" prefWidth="102.0">
+         <children>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="811.0" prefWidth="115.0">
+               <children>
+                  <Separator maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="839.0" prefWidth="115.0" valignment="TOP" />
+                  <Button fx:id="startButton" alignment="CENTER" mnemonicParsing="false" onAction="#switchToMainStage" text="Start">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Button>
+               </children>
+            </StackPane>
+         </children></VBox>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="842.0" prefWidth="908.0" spacing="45.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CHOOSE YOUR PRIVATE GOAL">
                <font>
-                  <Font size="30.0" />
+                  <Font name="Bodoni MT Condensed" size="38.0" />
                </font>
                <VBox.margin>
                   <Insets top="30.0" />
@@ -57,7 +65,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="30.0" />
+                  <Font name="Bodoni MT Condensed" size="38.0" />
                </font>
             </Text>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
@@ -71,23 +79,22 @@
                      <image>
                         <Image url="@../../../../CardsFront/90.png" />
                      </image>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </ImageView>
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </HBox>
          </children>
-         <padding>
-            <Insets bottom="200.0" />
-         </padding>
       </VBox>
-      <VBox alignment="CENTER" layoutX="927.0" layoutY="-6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="811.0" prefWidth="115.0" AnchorPane.bottomAnchor="269.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" layoutX="1012.0" prefHeight="842.0" prefWidth="908.0" spacing="30.0">
          <children>
-            <Separator maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="1920.0" prefWidth="20.0" valignment="TOP" />
-         </children></VBox>
-      <VBox alignment="CENTER" layoutX="1192.0" prefHeight="1080.0" prefWidth="961.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="959.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CHOOSE THE SIDE OF THE STARTER">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CHOOSE THE SIDE OF THE STARTER CARD">
                <font>
-                  <Font size="30.0" />
+                  <Font name="Bodoni MT Condensed" size="38.0" />
                </font>
                <VBox.margin>
                   <Insets top="30.0" />
@@ -127,7 +134,7 @@
             <Insets bottom="200.0" left="30.0" />
          </padding>
       </VBox>
-      <StackPane fx:id="handPane" alignment="TOP_CENTER" layoutX="869.0" layoutY="785.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#slideUpHand" onMouseExited="#slideDownHand" prefHeight="246.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <StackPane fx:id="handPane" alignment="TOP_CENTER" layoutX="536.5" layoutY="1020.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#slideUpHand" onMouseExited="#slideDownHand" prefHeight="230.0" prefWidth="845.0">
          <children>
             <HBox fx:id="handBox" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="230.0" prefWidth="845.0" spacing="5.0" style="-fx-background-color: #ebdcaa;">
                <padding>
@@ -151,7 +158,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <Label alignment="TOP_CENTER" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="845.0" style="-fx-background-color: dbd3a9;" text="HAND">
+            <Label alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="845.0" style="-fx-background-color: #ebdcaa;" text="HAND">
                <font>
                   <Font name="Bodoni MT Condensed" size="38.0" />
                </font>

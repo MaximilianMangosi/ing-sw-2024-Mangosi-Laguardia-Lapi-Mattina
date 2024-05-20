@@ -37,7 +37,7 @@ public class GUIController {
         c.setMyId(myID);
         c.setMyName(myName);
         Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1920, 1080);
+        Scene scene = new Scene(root);
         stage.setScene(scene);
 
         c.init();
