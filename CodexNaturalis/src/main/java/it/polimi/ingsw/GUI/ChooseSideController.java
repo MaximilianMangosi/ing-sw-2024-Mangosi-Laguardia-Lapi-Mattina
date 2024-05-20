@@ -115,6 +115,7 @@ public class ChooseSideController extends GUIController {
             button.setVisible(true);
         }
     }
+    @FXML
     public void choosePrivateGoal2() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
         view.chooseGoal(myID,view.showPlayerGoalOptions(myID)[1]);
         privateGoalBox.getChildren().remove(1);

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.controller.exceptions.*;
+import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
@@ -22,6 +23,7 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import org.controlsfx.control.spreadsheet.Grid;
 
 import java.beans.EventHandler;
 import java.io.IOException;
@@ -56,6 +58,7 @@ public class InGameController extends GUIController {
     @FXML
     private StackPane fieldPane;
     private EventHandler playCardEvent;
+    private ImageView selectedCardToPlay;
     public void init() throws RemoteException, InvalidUserId {
         for (String p : view.getPlayersList()) {
             StackPane sp = new StackPane();
@@ -104,11 +107,18 @@ public class InGameController extends GUIController {
         Button NE = new Button();
         Button SW = new Button();
         Button SE = new Button();
+        NW.setVisible(false);
+        NE.setVisible(false);
+        SW.setVisible(false);
+        SE.setVisible(false);
         starterCardGrid.add(NW,0,0);
         starterCardGrid.add(NE,0,1);
         starterCardGrid.add(SW,1,0);
         starterCardGrid.add(SE,1,1);
-
+        NW.setOnMouseClicked(mouseEvent -> placeCard(NW,new Coordinates(0,0)));
+        NE.setOnMouseClicked(mouseEvent -> placeCard(NE,new Coordinates(0,0)));
+        SW.setOnMouseClicked(mouseEvent -> placeCard(SW,new Coordinates(0,0)));
+        SE.setOnMouseClicked(mouseEvent -> placeCard(SE,new Coordinates(0,0)));
         checkGameInfo();
 
 
@@ -274,5 +284,34 @@ public class InGameController extends GUIController {
         }
         resourceCardDeck.setImage(img);
     }
+    public void placeCard(Button b, Coordinates position){
+        StackPane newCard = new StackPane();
+        GridPane newGrid = new GridPane(2,2);
+        fieldPane.getChildren().add(newCard);
+        ImageView newCardImage = new ImageView(selectedCardToPlay.getImage());
+        newCard.getChildren().add(newCardImage);
+        newCard.getChildren().add(newGrid);
+
+        switch(b.getId()){
+            case "NW" :
+                newCard.setTranslateX((position.x-1)*155.5);
+                newCard.setTranslateY(-(position.y-1)*79.5);
+                break;
+            case "NE":
+                newCard.setTranslateX((position.x+1)*155.5);
+                newCard.setTranslateY(-(position.y-1)*79.5);
+                break;
+            case "SW":
+                newCard.setTranslateX((position.x-1)*155.5);
+                newCard.setTranslateY(-(position.y+1)*79.5);
+                break;
+            case "SE":
+                newCard.setTranslateX((position.x+1)*155.5);
+                newCard.setTranslateY(-(position.y+1)*79.5);
+                break;
+        }
+
+    }
+
 
 }

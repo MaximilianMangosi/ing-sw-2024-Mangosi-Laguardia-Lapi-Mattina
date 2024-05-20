@@ -35,21 +35,24 @@
             </Text>
             <HBox fx:id="privateGoalBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <ImageView fx:id="privateGoal1" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal2" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="privateGoal1" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal1" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../CardsFront/87.png" />
                      </image>
                      <cursor>
-                        <Cursor fx:constant="HAND" />
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
                      <effect>
                         <Glow />
                      </effect>
                   </ImageView>
-                  <ImageView fx:id="privateGoal2" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal1" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="privateGoal2" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal2" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../CardsFront/88.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
                   </ImageView>
                </children>
             </HBox>
@@ -100,6 +103,9 @@
                      <image>
                         <Image url="@../../../../CardsFront/81.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
                   </ImageView>
                   <ImageView fx:id="backImage" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#chooseBack" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -108,6 +114,9 @@
                      <viewport>
                         <Rectangle2D />
                      </viewport>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
                   </ImageView>
                </children>
                <opaqueInsets>
