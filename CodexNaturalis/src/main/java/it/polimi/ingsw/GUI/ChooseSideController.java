@@ -78,8 +78,6 @@ public class ChooseSideController extends GUIController {
             cardView.setFitWidth(275);
             cardView.setFitHeight(193);
             handBox.getChildren().add(cardView);
-
-
         }
 
     }

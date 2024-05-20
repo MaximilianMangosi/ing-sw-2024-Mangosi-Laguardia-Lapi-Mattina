@@ -37,7 +37,7 @@
             </TextArea>
             <HBox fx:id="privateGoalBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <ImageView fx:id="privateGoal2" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal2" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="privateGoal1" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal2" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../CardsFront/87.png" />
                      </image>
@@ -48,7 +48,7 @@
                         <Glow />
                      </effect>
                   </ImageView>
-                  <ImageView fx:id="privateGoal1" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal1" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="privateGoal2" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal1" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../CardsFront/88.png" />
                      </image>
