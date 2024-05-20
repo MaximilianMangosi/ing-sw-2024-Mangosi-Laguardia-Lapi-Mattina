@@ -133,9 +133,7 @@ public class ChooseSideController extends GUIController {
 
     @FXML
     private void switchToMainStage(ActionEvent event) throws InvalidUserId, IOException {
-        if(view.showPrivateGoal(myID)!=null && view.getPlayersField(myName).containsValue(view.getStarterCard(myID))){
-            changeScene("in-game.fxml",event);
-        }
+        changeScene("in-game.fxml",event);
     }
 
 
