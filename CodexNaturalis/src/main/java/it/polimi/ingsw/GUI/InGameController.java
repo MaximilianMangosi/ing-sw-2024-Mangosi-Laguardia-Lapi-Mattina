@@ -67,6 +67,7 @@ public class InGameController extends GUIController {
             playerListBox.getChildren().add(sp);
 
         }
+        handBox.getChildren().clear();
         for (Card card : view.showPlayerHand(myID)){
             int id = card.getId();
             Image cardPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
