@@ -11,15 +11,21 @@ import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
+import java.beans.EventHandler;
 import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +53,9 @@ public class InGameController extends GUIController {
     private ImageView visibleCard4;
     @FXML
     private HBox handBox= new HBox();
+    @FXML
+    private StackPane fieldPane;
+    private EventHandler playCardEvent;
     public void init() throws RemoteException, InvalidUserId {
         for (String p : view.getPlayersList()) {
             StackPane sp = new StackPane();
@@ -83,7 +92,24 @@ public class InGameController extends GUIController {
         visibleCard4.setOnMouseClicked(mouseEvent -> drawVisibleCard(3));
         errorMsg.setVisible(false);
 
+        Image stCard = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+        ImageView starterCard = new ImageView(stCard);
+        StackPane starterCardPane = new StackPane();
+        fieldPane.getChildren().add(starterCardPane);
+        starterCardPane.getChildren().add(starterCard);
+        GridPane starterCardGrid = new GridPane(2,2);
+        starterCardPane.getChildren().add(starterCardGrid);
+        Button NW = new Button();
+        Button NE = new Button();
+        Button SW = new Button();
+        Button SE = new Button();
+        starterCardGrid.add(NW,0,0);
+        starterCardGrid.add(NE,0,1);
+        starterCardGrid.add(SW,1,0);
+        starterCardGrid.add(SE,1,1);
+
         checkGameInfo();
+
 
     }
 
@@ -247,4 +273,5 @@ public class InGameController extends GUIController {
         }
         resourceCardDeck.setImage(img);
     }
+
 }

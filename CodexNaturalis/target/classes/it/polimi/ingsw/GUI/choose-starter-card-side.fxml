@@ -3,41 +3,39 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.CubicCurve?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.ChooseSideController">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: dbd3a9;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.ChooseSideController">
    <children>
-      <VBox alignment="CENTER" layoutX="768.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="845.0" prefWidth="384.0">
+      <Button fx:id="button" mnemonicParsing="false" onAction="#switchToMainStage" text="Start" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1819.5" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1023.0">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Button>
+      <VBox alignment="CENTER" prefHeight="1080.0" prefWidth="958.0" spacing="45.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="962.0" AnchorPane.topAnchor="0.0">
          <children>
-            <CubicCurve controlX1="-243.3333740234375" controlX2="77.199951171875" controlY1="-27.555572509765625" controlY2="154.4661865234375" endX="-92.99993896484375" endY="402.66668701171875" fill="#eedd6a" startX="-92.99993896484375" startY="-426.00006103515625" stroke="BLACK" />
-         </children>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="1080.0" prefWidth="768.0" spacing="45.0">
-         <children>
-            <TextArea accessibleRole="TEXT" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="115.0" prefWidth="718.0" text="CHOOSE YOUR PRIVATE GOAL&#10;">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CHOOSE YOUR PRIVATE GOAL">
                <font>
-                  <Font name="Bodoni MT Condensed" size="38.0" />
+                  <Font size="30.0" />
                </font>
                <VBox.margin>
-                  <Insets top="50.0" />
+                  <Insets top="30.0" />
                </VBox.margin>
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-            </TextArea>
+            </Text>
             <HBox fx:id="privateGoalBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <ImageView fx:id="privateGoal2" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal2" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="privateGoal1" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal2" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../CardsFront/87.png" />
                      </image>
@@ -48,21 +46,21 @@
                         <Glow />
                      </effect>
                   </ImageView>
-                  <ImageView fx:id="privateGoal1" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal1" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="privateGoal2" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#choosePrivateGoal1" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../CardsFront/88.png" />
                      </image>
                   </ImageView>
                </children>
             </HBox>
-            <TextArea accessibleRole="TEXT" editable="false" prefHeight="117.0" prefWidth="279.0" text="THE PUBLIC GOALS:&#10;">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="PUBLIC GOALS:">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
                <font>
-                  <Font name="Bodoni MT Condensed" size="38.0" />
+                  <Font size="30.0" />
                </font>
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-            </TextArea>
+            </Text>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
                   <ImageView fx:id="publicGoal1" fitHeight="207.0" fitWidth="305.0" pickOnBounds="true" preserveRatio="true">
@@ -79,22 +77,23 @@
             </HBox>
          </children>
          <padding>
-            <Insets left="50.0" />
+            <Insets bottom="200.0" />
          </padding>
       </VBox>
-      <VBox alignment="TOP_CENTER" layoutX="1152.0" prefHeight="1080.0" prefWidth="768.0" spacing="180.0">
+      <VBox alignment="CENTER" layoutX="927.0" layoutY="-6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="811.0" prefWidth="115.0" AnchorPane.bottomAnchor="269.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TextArea accessibleRole="TEXT" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="117.0" prefWidth="734.0" text="CHOOSE THE SIDE OF THE STARTER CARD YOU WISH TO PLAY">
+            <Separator maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="1920.0" prefWidth="20.0" valignment="TOP" />
+         </children></VBox>
+      <VBox alignment="CENTER" layoutX="1192.0" prefHeight="1080.0" prefWidth="961.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="959.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CHOOSE THE SIDE OF THE STARTER">
                <font>
-                  <Font name="Bodoni MT Condensed" size="38.0" />
+                  <Font size="30.0" />
                </font>
                <VBox.margin>
-                  <Insets top="50.0" />
+                  <Insets top="30.0" />
                </VBox.margin>
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor>
-            </TextArea>
+            </Text>
             <HBox fx:id="starterCardBox" alignment="CENTER" prefHeight="183.0" prefWidth="768.0" spacing="20.0">
                <children>
                   <ImageView fx:id="frontImage" fitHeight="207.0" fitWidth="305.0" onMouseClicked="#chooseFront" pickOnBounds="true" preserveRatio="true">
@@ -119,8 +118,11 @@
                </padding>
             </HBox>
          </children>
+         <padding>
+            <Insets bottom="200.0" left="30.0" />
+         </padding>
       </VBox>
-      <StackPane fx:id="handPane" alignment="TOP_CENTER" layoutX="860.0" layoutY="1020.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#slideUpHand" onMouseExited="#slideDownHand" prefHeight="246.0" prefWidth="200.0">
+      <StackPane fx:id="handPane" alignment="TOP_CENTER" layoutX="869.0" layoutY="785.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#slideUpHand" onMouseExited="#slideDownHand" prefHeight="246.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <HBox fx:id="handBox" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="230.0" prefWidth="845.0" spacing="5.0" style="-fx-background-color: #ebdcaa;">
                <padding>
@@ -144,7 +146,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <Label alignment="TOP_CENTER" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="845.0" style="-fx-background-color: #ebdcaa;" text="HAND">
+            <Label alignment="TOP_CENTER" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="845.0" style="-fx-background-color: dbd3a9;" text="HAND">
                <font>
                   <Font name="Bodoni MT Condensed" size="38.0" />
                </font>
@@ -152,4 +154,4 @@
          </children>
       </StackPane>
    </children>
-</Pane>
+</AnchorPane>
