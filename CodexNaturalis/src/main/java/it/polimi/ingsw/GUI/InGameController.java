@@ -158,10 +158,11 @@ public class InGameController extends GUIController {
         cardGrid.add(NE,1,0);
         cardGrid.add(SW,0,1);
         cardGrid.add(SE,1,1);
-        NW.setOnMouseClicked(mouseEvent -> placeCard(NW,new Coordinates(position.x-1,position.y-1)));
-        NE.setOnMouseClicked(mouseEvent -> placeCard(NE,new Coordinates(position.x+1, position.y-1)));
-        SW.setOnMouseClicked(mouseEvent -> placeCard(SW,new Coordinates(position.x-1, position.y+1 )));
-        SE.setOnMouseClicked(mouseEvent -> placeCard(SE,new Coordinates(position.x+1, position.y+1 )));
+
+        NW.setOnMouseClicked(mouseEvent -> placeCard(new Coordinates(position.x-1,position.y-1)));
+        NE.setOnMouseClicked(mouseEvent -> placeCard(new Coordinates(position.x+1, position.y-1)));
+        SW.setOnMouseClicked(mouseEvent -> placeCard(new Coordinates(position.x-1, position.y+1 )));
+        SE.setOnMouseClicked(mouseEvent -> placeCard(new Coordinates(position.x+1, position.y+1 )));
     }
 
     private void drawFromDeck(int i) {
@@ -324,33 +325,27 @@ public class InGameController extends GUIController {
         }
         goldCardDeck.setImage(img);
     }
-    public void placeCard(Button b, Coordinates position){
+    public void placeCard( Coordinates position){
         //
+
         StackPane newCardPane = new StackPane();
         newCardPane.setPrefWidth(200);
         newCardPane.setPrefHeight(150);
+        newCardPane.setLayoutX(position.x* 155.5);
+        newCardPane.setLayoutY(position.y * 79.5);
         GridPane newGrid = new GridPane(2,2);
-        setupGrid(newGrid,new Coordinates(position.x, position.y));
         newGrid.setPrefWidth(200);
         newGrid.setPrefHeight(150);
-        fieldPane.getChildren().add(newCardPane);
+        setupGrid(newGrid,new Coordinates(position.x, position.y));
+
+
         ImageView newCardImage = selectedCardToPlay;
         newCardImage.setFitWidth(200);
         newCardImage.setFitHeight(150);
-        newCardPane.getChildren().add(newCardImage);
         newCardPane.getChildren().add(newGrid);
-
+        newCardPane.getChildren().add(newCardImage);
+        fieldPane.getChildren().add(newCardPane);
         handBox.getChildren().remove(selectedCardToPlay);
-
-        int c=GridPane.getColumnIndex(b);
-        int r=GridPane.getRowIndex(b);
-
-
-        newCardPane.setTranslateX(position.x* 155.5);
-        newCardPane.setTranslateY(position.y * 79.5);
-
-
-
     }
     public void showDeck(){
         deckButton.setVisible(false);
