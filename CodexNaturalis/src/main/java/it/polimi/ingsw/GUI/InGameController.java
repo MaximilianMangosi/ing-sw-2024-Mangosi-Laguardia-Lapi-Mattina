@@ -120,17 +120,16 @@ public class InGameController extends GUIController {
 
         id=view.getStarterCard(myID).getId();
         Image scPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-        StackPane starterCardPane = (StackPane) fieldPane.getChildren().getFirst();
-        GridPane starterCardGrid  =new GridPane(2,2);
-        starterCardGrid.setPrefWidth(200);
-        starterCardGrid.setPrefHeight(150);
+
+
         ImageView scView=new ImageView(scPng);
         scView.setFitWidth(200);
         scView.setFitHeight(150);
-        starterCardPane.getChildren().add(scView);
-        starterCardPane.getChildren().add(starterCardGrid);
+        scView.setOnMouseClicked(mouseEvent -> handleClickCard(mouseEvent,new Coordinates(0,0)));
+        fieldPane.getChildren().add(scView);
 
-        setupGrid(starterCardGrid,new Coordinates(0,0));
+
+       // setupGrid(starterCardGrid,new Coordinates(0,0));
         checkGameInfo();
 
 
@@ -328,27 +327,30 @@ public class InGameController extends GUIController {
     public void placeCard( Coordinates position){
         //
 
-        StackPane newCardPane = new StackPane();
-        newCardPane.setPrefWidth(200);
-        newCardPane.setPrefHeight(150);
-        fieldPane.getChildren().add(newCardPane);
-        newCardPane.setTranslateX(position.x* 155.5);
-        newCardPane.setTranslateY(position.y * 79.5);
-
-        GridPane newGrid = new GridPane(2,2);
-        newGrid.setPrefWidth(200);
-        newGrid.setPrefHeight(150);
-        newGrid.setTranslateX(position.x* 155.5);
-        newGrid.setTranslateY(position.y * 79.5);
+//        StackPane newCardPane = new StackPane();
+//        newCardPane.setPrefWidth(200);
+//        newCardPane.setPrefHeight(150);
 
 
-        ImageView newCardImage = selectedCardToPlay;
-        newCardImage.setFitWidth(200);
-        newCardImage.setFitHeight(150);
-        newCardPane.getChildren().add(newCardImage);
-        newCardPane.getChildren().add(newGrid);
-        setupGrid(newGrid,new Coordinates(position.x, position.y));
-        handBox.getChildren().remove(selectedCardToPlay);
+//        GridPane newGrid = new GridPane(2,2);
+//        newGrid.setPrefWidth(200);
+//        newGrid.setPrefHeight(150);
+//        newGrid.setTranslateX(position.x* 155.5);
+//        newGrid.setTranslateY(position.y * 79.5);
+//
+//
+         ImageView newCardImage = selectedCardToPlay;
+         newCardImage.setFitWidth(200);
+         newCardImage.setFitHeight(150);
+         newCardImage.setTranslateX(position.x* 155.5);
+         newCardImage.setTranslateY(position.y * 79.5);
+
+//        newCardPane.getChildren().add(newCardImage);
+//        newCardPane.getChildren().add(newGrid);
+//        setupGrid(newGrid,new Coordinates(position.x, position.y));
+         newCardImage.setOnMouseClicked(mouseEvent -> handleClickCard(mouseEvent,position));
+         fieldPane.getChildren().add(newCardImage);
+         handBox.getChildren().remove(selectedCardToPlay);
     }
     public void showDeck(){
         deckButton.setVisible(false);
@@ -385,6 +387,20 @@ public class InGameController extends GUIController {
 
 
     }
+    private void handleClickCard (MouseEvent event,Coordinates coordinates){
+        ImageView cardImage = (ImageView) event.getSource();
+        double clickX = event.getX();
+        double clickY = event.getY();
+        if(clickX<100 && clickY <75){
+            placeCard(new Coordinates(coordinates.x-1,coordinates.y-1 ));
+        } else if (clickX>=100 && clickY <75) {
+            placeCard(new Coordinates(coordinates.x+1,coordinates.y-1 ));
+        } else if (clickX<100 && clickY >=75) {
+            placeCard(new Coordinates(coordinates.x-1,coordinates.y+1 ));
+        } else {
+            placeCard(new Coordinates(coordinates.x+1,coordinates.y+1 ));
+        }
 
+    }
 
 }
