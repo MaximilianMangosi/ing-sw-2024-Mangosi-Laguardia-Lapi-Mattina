@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -61,11 +62,21 @@ public class InGameController extends GUIController {
     private VBox scoreboardBox;
     @FXML
     private StackPane fieldPane;
+    @FXML
+    private Button scoreboardButton;
+    @FXML
+    private Button deckButton;
+    @FXML
+    private Button hideScoreboardButton;
+    @FXML
+    private Button hideDeckButton;
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
     public void init() throws RemoteException, InvalidUserId {
         deckBox.setVisible(false);
+        hideDeckButton.setVisible(false);
         scoreboardBox.setVisible(false);
+        hideScoreboardButton.setVisible(false);
         errorMsg.setVisible(false);
         for (String p : view.getPlayersList()) {
             StackPane sp = new StackPane();
@@ -83,6 +94,7 @@ public class InGameController extends GUIController {
             Image cardPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
             ImageView cardView = (ImageView) handBox.getChildren().get(i);
             cardView.setImage(cardPng);
+            cardView.setOnMouseClicked(this::selectCard);
             i++;
         }
         i=0;
@@ -114,6 +126,13 @@ public class InGameController extends GUIController {
         scView.setFitHeight(150);
         starterCardGrid.getChildren().add(scView);
 
+        setupGrid(starterCardGrid);
+        checkGameInfo();
+
+
+    }
+
+    private void setupGrid(GridPane CardGrid) {
         Button NW = new Button();
         Button NE = new Button();
         Button SW = new Button();
@@ -122,17 +141,14 @@ public class InGameController extends GUIController {
         NE.setVisible(false);
         SW.setVisible(false);
         SE.setVisible(false);
-        starterCardGrid.add(NW,0,0);
-        starterCardGrid.add(NE,0,1);
-        starterCardGrid.add(SW,1,0);
-        starterCardGrid.add(SE,1,1);
+        CardGrid.add(NW,0,0);
+        CardGrid.add(NE,0,1);
+        CardGrid.add(SW,1,0);
+        CardGrid.add(SE,1,1);
         NW.setOnMouseClicked(mouseEvent -> placeCard(NW,new Coordinates(0,0)));
         NE.setOnMouseClicked(mouseEvent -> placeCard(NE,new Coordinates(0,0)));
         SW.setOnMouseClicked(mouseEvent -> placeCard(SW,new Coordinates(0,0)));
         SE.setOnMouseClicked(mouseEvent -> placeCard(SE,new Coordinates(0,0)));
-        checkGameInfo();
-
-
     }
 
     private void drawFromDeck(int i) {
@@ -298,10 +314,12 @@ public class InGameController extends GUIController {
     public void placeCard(Button b, Coordinates position){
         StackPane newCard = new StackPane();
         GridPane newGrid = new GridPane(2,2);
+        setupGrid(newGrid);
         fieldPane.getChildren().add(newCard);
-        ImageView newCardImage = new ImageView(selectedCardToPlay.getImage());
-        newCard.getChildren().add(newCardImage);
+        ImageView newCardImage = selectedCardToPlay;
         newCard.getChildren().add(newGrid);
+        newCard.getChildren().add(newCardImage);
+        handBox.getChildren().remove(selectedCardToPlay);
 
         switch(b.getId()){
             case "NW" :
@@ -321,6 +339,40 @@ public class InGameController extends GUIController {
                 newCard.setTranslateY(-(position.y+1)*79.5);
                 break;
         }
+
+    }
+    public void showDeck(){
+        deckButton.setVisible(false);
+        deckBox.setVisible(true);
+        deckBox.setLayoutX(1379);
+        hideDeckButton.setVisible(true);
+
+    }
+    public void showScoreboard(){
+        scoreboardButton.setVisible(false);
+        scoreboardBox.setVisible(true);
+        scoreboardBox.setLayoutX(0);
+        hideScoreboardButton.setVisible(true);
+    }
+    public void hideDeck(){
+        hideDeckButton.setVisible(false);
+        deckBox.setLayoutX(-541);
+        deckBox.setVisible(false);
+        deckButton.setVisible(true);
+    }
+    public void hideScoreboard(){
+        hideScoreboardButton.setVisible(false);
+        scoreboardBox.setLayoutX(1920);
+        scoreboardBox.setVisible(false);
+        scoreboardButton.setVisible(true);
+    }
+    public void selectCard(MouseEvent e){
+        if(selectedCardToPlay!=null)
+            selectedCardToPlay.setStyle("-fx-border-width: 0");
+        selectedCardToPlay=(ImageView) e.getSource();
+        selectedCardToPlay.setStyle("-fx-border-color: green");
+        selectedCardToPlay.setStyle("-fx-border-width: 5");
+
 
     }
 
