@@ -331,20 +331,23 @@ public class InGameController extends GUIController {
         StackPane newCardPane = new StackPane();
         newCardPane.setPrefWidth(200);
         newCardPane.setPrefHeight(150);
-        newCardPane.setLayoutX(position.x* 155.5);
-        newCardPane.setLayoutY(position.y * 79.5);
+        fieldPane.getChildren().add(newCardPane);
+        newCardPane.setTranslateX(position.x* 155.5);
+        newCardPane.setTranslateY(position.y * 79.5);
+
         GridPane newGrid = new GridPane(2,2);
         newGrid.setPrefWidth(200);
         newGrid.setPrefHeight(150);
-        setupGrid(newGrid,new Coordinates(position.x, position.y));
+        newGrid.setTranslateX(position.x* 155.5);
+        newGrid.setTranslateY(position.y * 79.5);
 
 
         ImageView newCardImage = selectedCardToPlay;
         newCardImage.setFitWidth(200);
         newCardImage.setFitHeight(150);
-        newCardPane.getChildren().add(newGrid);
         newCardPane.getChildren().add(newCardImage);
-        fieldPane.getChildren().add(newCardPane);
+        newCardPane.getChildren().add(newGrid);
+        setupGrid(newGrid,new Coordinates(position.x, position.y));
         handBox.getChildren().remove(selectedCardToPlay);
     }
     public void showDeck(){
