@@ -130,14 +130,14 @@ public class InGameController extends GUIController {
         starterCardPane.getChildren().add(scView);
         starterCardPane.getChildren().add(starterCardGrid);
 
-        setupGrid(starterCardGrid);
+        setupGrid(starterCardGrid,new Coordinates(0,0));
         checkGameInfo();
 
 
     }
 
-    private void setupGrid(GridPane cardGrid) {
-        Coordinates position=new Coordinates((int) cardGrid.getLayoutX(), (int) cardGrid.getLayoutY());
+    private void setupGrid(GridPane cardGrid,Coordinates position) {
+       // Coordinates position=new Coordinates((int) cardGrid.getLayoutX(), (int) cardGrid.getLayoutY());
         Button  NW = new Button();
         Button NE = new Button();
         Button SW = new Button();
@@ -158,10 +158,10 @@ public class InGameController extends GUIController {
         cardGrid.add(NE,0,1);
         cardGrid.add(SW,1,0);
         cardGrid.add(SE,1,1);
-        NW.setOnMouseClicked(mouseEvent -> placeCard(NW,position));
-        NE.setOnMouseClicked(mouseEvent -> placeCard(NE,position));
-        SW.setOnMouseClicked(mouseEvent -> placeCard(SW,position));
-        SE.setOnMouseClicked(mouseEvent -> placeCard(SE,position));
+        NW.setOnMouseClicked(mouseEvent -> placeCard(NW,new Coordinates(position.x-1,position.y-1)));
+        NE.setOnMouseClicked(mouseEvent -> placeCard(NE,new Coordinates(position.x+1, position.y-1)));
+        SW.setOnMouseClicked(mouseEvent -> placeCard(SW,new Coordinates(position.x-1, position.y+1 )));
+        SE.setOnMouseClicked(mouseEvent -> placeCard(SE,new Coordinates(position.x+1, position.y+1 )));
     }
 
     private void drawFromDeck(int i) {
@@ -338,26 +338,29 @@ public class InGameController extends GUIController {
         newCard.getChildren().add(newCardImage);
         newCard.getChildren().add(newGrid);
         handBox.getChildren().remove(selectedCardToPlay);
-        setupGrid(newGrid);
 
-        switch(b.getId()){
-            case "NW" :
-                newCard.setTranslateX((position.x-1)*155.5);
-                newCard.setTranslateY(-(position.y-1)*79.5);
-                break;
-            case "NE":
-                newCard.setTranslateX((position.x+1)*155.5);
-                newCard.setTranslateY(-(position.y-1)*79.5);
-                break;
-            case "SW":
-                newCard.setTranslateX((position.x-1)*155.5);
-                newCard.setTranslateY(-(position.y+1)*79.5);
-                break;
-            case "SE":
-                newCard.setTranslateX((position.x+1)*155.5);
-                newCard.setTranslateY(-(position.y+1)*79.5);
-                break;
+        int c=GridPane.getColumnIndex(b);
+        int r=GridPane.getRowIndex(b);
+        if(r==0 && c==0) {
+            newCard.setTranslateX(position.x* 155.5);
+            newCard.setTranslateY(position.y * 79.5);
+            setupGrid(newGrid,new Coordinates(position.x, position.y));
         }
+        else if(r==0 && c==1) {
+            newCard.setTranslateX(position.x* 155.5);
+            newCard.setTranslateY(position.y * 79.5);
+            setupGrid(newGrid,new Coordinates(position.x, position.y));
+        }
+        else if(r==1 && c==0) {
+            newCard.setTranslateX(position.x* 155.5);
+            newCard.setTranslateY(position.y * 79.5);
+            setupGrid(newGrid,new Coordinates(position.x, position.y));
+        } else if (r==1 && c==1) {
+            newCard.setTranslateX(position.x* 155.5);
+            newCard.setTranslateY(position.y * 79.5);
+            setupGrid(newGrid,new Coordinates(position.x, position.y));
+        }
+
 
     }
     public void showDeck(){
