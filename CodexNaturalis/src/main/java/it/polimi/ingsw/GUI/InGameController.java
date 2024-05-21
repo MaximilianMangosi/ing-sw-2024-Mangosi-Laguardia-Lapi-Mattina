@@ -3,6 +3,7 @@ package it.polimi.ingsw.GUI;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
@@ -120,11 +121,14 @@ public class InGameController extends GUIController {
         id=view.getStarterCard(myID).getId();
         Image scPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
         StackPane starterCardPane = (StackPane) fieldPane.getChildren().getFirst();
-        GridPane starterCardGrid  = (GridPane) starterCardPane.getChildren().getFirst();
+        GridPane starterCardGrid  =new GridPane(2,2);
+        starterCardGrid.setPrefWidth(200);
+        starterCardGrid.setPrefHeight(150);
         ImageView scView=new ImageView(scPng);
         scView.setFitWidth(200);
         scView.setFitHeight(150);
-        starterCardGrid.getChildren().add(scView);
+        starterCardPane.getChildren().add(scView);
+        starterCardPane.getChildren().add(starterCardGrid);
 
         setupGrid(starterCardGrid);
         checkGameInfo();
@@ -132,23 +136,32 @@ public class InGameController extends GUIController {
 
     }
 
-    private void setupGrid(GridPane CardGrid) {
-        Button NW = new Button();
+    private void setupGrid(GridPane cardGrid) {
+        Coordinates position=new Coordinates((int) cardGrid.getLayoutX(), (int) cardGrid.getLayoutY());
+        Button  NW = new Button();
         Button NE = new Button();
         Button SW = new Button();
         Button SE = new Button();
-        NW.setVisible(false);
-        NE.setVisible(false);
-        SW.setVisible(false);
-        SE.setVisible(false);
-        CardGrid.add(NW,0,0);
-        CardGrid.add(NE,0,1);
-        CardGrid.add(SW,1,0);
-        CardGrid.add(SE,1,1);
-        NW.setOnMouseClicked(mouseEvent -> placeCard(NW,new Coordinates(0,0)));
-        NE.setOnMouseClicked(mouseEvent -> placeCard(NE,new Coordinates(0,0)));
-        SW.setOnMouseClicked(mouseEvent -> placeCard(SW,new Coordinates(0,0)));
-        SE.setOnMouseClicked(mouseEvent -> placeCard(SE,new Coordinates(0,0)));
+        NW.setPrefWidth(100);
+        NW.setPrefHeight(75);
+        NE.setPrefWidth(100);
+        NE.setPrefHeight(75);
+        SW.setPrefWidth(100);
+        SW.setPrefHeight(75);
+        SE.setPrefWidth(100);
+        SE.setPrefHeight(75);
+//        NW.setOpacity(0);
+//        NE.setOpacity(0);
+//        SW.setOpacity(0);
+//        SE.setOpacity(0);
+        cardGrid.add(NW,0,0);
+        cardGrid.add(NE,0,1);
+        cardGrid.add(SW,1,0);
+        cardGrid.add(SE,1,1);
+        NW.setOnMouseClicked(mouseEvent -> placeCard(NW,position));
+        NE.setOnMouseClicked(mouseEvent -> placeCard(NE,position));
+        SW.setOnMouseClicked(mouseEvent -> placeCard(SW,position));
+        SE.setOnMouseClicked(mouseEvent -> placeCard(SE,position));
     }
 
     private void drawFromDeck(int i) {
@@ -313,13 +326,19 @@ public class InGameController extends GUIController {
     }
     public void placeCard(Button b, Coordinates position){
         StackPane newCard = new StackPane();
+        newCard.setPrefWidth(200);
+        newCard.setPrefHeight(150);
         GridPane newGrid = new GridPane(2,2);
-        setupGrid(newGrid);
+        newGrid.setPrefWidth(200);
+        newGrid.setPrefHeight(150);
         fieldPane.getChildren().add(newCard);
         ImageView newCardImage = selectedCardToPlay;
-        newCard.getChildren().add(newGrid);
+        newCardImage.setFitWidth(200);
+        newCardImage.setFitHeight(150);
         newCard.getChildren().add(newCardImage);
+        newCard.getChildren().add(newGrid);
         handBox.getChildren().remove(selectedCardToPlay);
+        setupGrid(newGrid);
 
         switch(b.getId()){
             case "NW" :
@@ -367,11 +386,12 @@ public class InGameController extends GUIController {
         scoreboardButton.setVisible(true);
     }
     public void selectCard(MouseEvent e){
+        System.out.println("card clicked");
         if(selectedCardToPlay!=null)
             selectedCardToPlay.setStyle("-fx-border-width: 0");
         selectedCardToPlay=(ImageView) e.getSource();
         selectedCardToPlay.setStyle("-fx-border-color: green");
-        selectedCardToPlay.setStyle("-fx-border-width: 5");
+        selectedCardToPlay.setStyle("-fx-border-width: 50");
 
 
     }
