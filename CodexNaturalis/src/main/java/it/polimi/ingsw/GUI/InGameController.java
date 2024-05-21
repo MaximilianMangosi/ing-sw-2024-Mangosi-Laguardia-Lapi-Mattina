@@ -382,16 +382,14 @@ public class InGameController extends GUIController {
         scoreboardButton.setVisible(true);
     }
     public void selectCard(MouseEvent e){
-        if(e.isPrimaryButtonDown()){
+
             System.out.println("card clicked");
             if(selectedCardToPlay!=null)
                 selectedCardToPlay.setStyle("-fx-border-width: 0");
             selectedCardToPlay=(ImageView) e.getSource();
             selectedCardToPlay.setStyle("-fx-border-color: green");
             selectedCardToPlay.setStyle("-fx-border-width: 50");
-        }else{
-            //TODO flip the card
-        }
+
 
 
 
