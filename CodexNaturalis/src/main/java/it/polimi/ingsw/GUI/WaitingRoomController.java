@@ -1,8 +1,6 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
-import it.polimi.ingsw.model.gamelogic.Player;
-import it.polimi.ingsw.view.View;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,11 +9,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.awt.*;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WaitingRoomController extends GUIController{
     @FXML
@@ -39,33 +36,25 @@ public class WaitingRoomController extends GUIController{
     }
 
     private void updatePlayerList() {
+        AtomicBoolean flag = new AtomicBoolean(false);
         new Thread(()->{
-            List<String> already = new ArrayList<>();
-
             while (true) {
-                try {
-                    if (view.isGameStarted()) break;
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
-                    if (!already.equals(view.getPlayersList())) {
-                        System.out.println(view.getPlayersList());
-                        Platform.runLater(()->{
-                            try {
-                                createPlayerLables(view.getPlayersList());
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                Platform.runLater(()->{
+                    try {
+                        createPlayerLables(view.getPlayersList());
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
                     }
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
-                    already = view.getPlayersList();
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    try {
+                        if (view.isGameStarted()){
+                            flag.set(true);
+                        }
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                if (flag.get()){
+                    break;
                 }
                 try {
                     Thread.sleep(500);
@@ -73,10 +62,18 @@ public class WaitingRoomController extends GUIController{
                     throw new RuntimeException(e);
                 }
             }
+
             button.setVisible(true);
-            vBox.setVisible(false);
+            //vBox.setVisible(false);
 
         }).start();
+
+        try {
+            System.out.println(view.getPlayersList());
+            createPlayerLables(view.getPlayersList());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void createPlayerLables(List<String> names) {
