@@ -155,8 +155,8 @@ public class InGameController extends GUIController {
 //        SW.setOpacity(0);
 //        SE.setOpacity(0);
         cardGrid.add(NW,0,0);
-        cardGrid.add(NE,0,1);
-        cardGrid.add(SW,1,0);
+        cardGrid.add(NE,1,0);
+        cardGrid.add(SW,0,1);
         cardGrid.add(SE,1,1);
         NW.setOnMouseClicked(mouseEvent -> placeCard(NW,new Coordinates(position.x-1,position.y-1)));
         NE.setOnMouseClicked(mouseEvent -> placeCard(NE,new Coordinates(position.x+1, position.y-1)));
@@ -325,41 +325,30 @@ public class InGameController extends GUIController {
         goldCardDeck.setImage(img);
     }
     public void placeCard(Button b, Coordinates position){
-        StackPane newCard = new StackPane();
-        newCard.setPrefWidth(200);
-        newCard.setPrefHeight(150);
+        //
+        StackPane newCardPane = new StackPane();
+        newCardPane.setPrefWidth(200);
+        newCardPane.setPrefHeight(150);
         GridPane newGrid = new GridPane(2,2);
+        setupGrid(newGrid,new Coordinates(position.x, position.y));
         newGrid.setPrefWidth(200);
         newGrid.setPrefHeight(150);
-        fieldPane.getChildren().add(newCard);
+        fieldPane.getChildren().add(newCardPane);
         ImageView newCardImage = selectedCardToPlay;
         newCardImage.setFitWidth(200);
         newCardImage.setFitHeight(150);
-        newCard.getChildren().add(newCardImage);
-        newCard.getChildren().add(newGrid);
+        newCardPane.getChildren().add(newCardImage);
+        newCardPane.getChildren().add(newGrid);
+
         handBox.getChildren().remove(selectedCardToPlay);
 
         int c=GridPane.getColumnIndex(b);
         int r=GridPane.getRowIndex(b);
-        if(r==0 && c==0) {
-            newCard.setTranslateX(position.x* 155.5);
-            newCard.setTranslateY(position.y * 79.5);
-            setupGrid(newGrid,new Coordinates(position.x, position.y));
-        }
-        else if(r==0 && c==1) {
-            newCard.setTranslateX(position.x* 155.5);
-            newCard.setTranslateY(position.y * 79.5);
-            setupGrid(newGrid,new Coordinates(position.x, position.y));
-        }
-        else if(r==1 && c==0) {
-            newCard.setTranslateX(position.x* 155.5);
-            newCard.setTranslateY(position.y * 79.5);
-            setupGrid(newGrid,new Coordinates(position.x, position.y));
-        } else if (r==1 && c==1) {
-            newCard.setTranslateX(position.x* 155.5);
-            newCard.setTranslateY(position.y * 79.5);
-            setupGrid(newGrid,new Coordinates(position.x, position.y));
-        }
+
+
+        newCardPane.setTranslateX(position.x* 155.5);
+        newCardPane.setTranslateY(position.y * 79.5);
+
 
 
     }
