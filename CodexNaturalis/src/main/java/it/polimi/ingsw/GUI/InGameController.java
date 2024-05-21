@@ -32,7 +32,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InGameController extends GUIController {
     @FXML
@@ -71,6 +73,7 @@ public class InGameController extends GUIController {
     private Button hideScoreboardButton;
     @FXML
     private Button hideDeckButton;
+    private Map<ImageView,Integer> handCardsId = new HashMap<>();
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
     public void init() throws RemoteException, InvalidUserId {
@@ -96,6 +99,7 @@ public class InGameController extends GUIController {
             ImageView cardView = (ImageView) handBox.getChildren().get(i);
             cardView.setImage(cardPng);
             cardView.setOnMouseClicked(this::selectCard);
+            handCardsId.put(cardView,id);
             i++;
         }
         i=0;
@@ -378,12 +382,17 @@ public class InGameController extends GUIController {
         scoreboardButton.setVisible(true);
     }
     public void selectCard(MouseEvent e){
-        System.out.println("card clicked");
-        if(selectedCardToPlay!=null)
-            selectedCardToPlay.setStyle("-fx-border-width: 0");
-        selectedCardToPlay=(ImageView) e.getSource();
-        selectedCardToPlay.setStyle("-fx-border-color: green");
-        selectedCardToPlay.setStyle("-fx-border-width: 50");
+        if(e.isPrimaryButtonDown()){
+            System.out.println("card clicked");
+            if(selectedCardToPlay!=null)
+                selectedCardToPlay.setStyle("-fx-border-width: 0");
+            selectedCardToPlay=(ImageView) e.getSource();
+            selectedCardToPlay.setStyle("-fx-border-color: green");
+            selectedCardToPlay.setStyle("-fx-border-width: 50");
+        }else{
+            //TODO flip the card
+        }
+
 
 
     }
