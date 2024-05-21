@@ -3,9 +3,11 @@ package it.polimi.ingsw.GUI;
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 import it.polimi.ingsw.view.View;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
@@ -39,7 +41,10 @@ public class GUIController {
         Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
-
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        stage.setHeight(screenBounds.getHeight());
+        stage.setWidth(screenBounds.getWidth());
+        stage.centerOnScreen();
         c.init();
         stage.show();
     }
