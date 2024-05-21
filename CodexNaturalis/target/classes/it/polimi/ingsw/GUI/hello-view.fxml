@@ -15,7 +15,7 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Codex Naturalis">
                <font>
-                  <Font size="20.0" />
+                  <Font size="30.0" />
                </font>
                <VBox.margin>
                   <Insets top="70.0" />
@@ -24,7 +24,10 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username:">
                <VBox.margin>
                   <Insets top="40.0" />
-               </VBox.margin></Text>
+               </VBox.margin>
+               <font>
+                  <Font size="20.0" />
+               </font></Text>
             <TextField fx:id="usernameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#onUsernameChange" prefHeight="25.0" prefWidth="300.0">
                <VBox.margin>
                   <Insets top="10.0" />
@@ -33,6 +36,9 @@
                <VBox.margin>
                   <Insets top="40.0" />
                </VBox.margin>
+               <font>
+                  <Font size="20.0" />
+               </font>
             </Text>
             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" spacing="20.0">
                <children>
@@ -51,10 +57,13 @@
             </HBox>
             <VBox fx:id="playerNum" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="No match was foud, please select the number of players:" wrappingWidth="161.77985000610352">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="No match was found, please select the number of players:" textAlignment="CENTER" wrappingWidth="268.9932289123535">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
                   </Text>
                   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" spacing="30.0">
                      <children>
