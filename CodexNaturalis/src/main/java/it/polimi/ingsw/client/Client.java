@@ -44,10 +44,10 @@ public class Client {
             GameData gameData= new GameData();
             if(connectionChoice==1) {
                 Socket server;
-                server = new Socket("localhost", 2323);
+                server = new Socket( InetAddress.getLocalHost(),2323);
                 view=new ViewSocket(server.getOutputStream(),server.getInputStream(),gameData);
             }else {
-                Registry registry = LocateRegistry.getRegistry("localhost",1099);
+                Registry registry = LocateRegistry.getRegistry(1099);
                 view = (ViewRMIInterface) registry.lookup("ViewRMI");
             }
 

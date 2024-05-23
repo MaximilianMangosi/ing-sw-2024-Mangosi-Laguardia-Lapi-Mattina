@@ -28,21 +28,36 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                      <children>
-                        <ImageView fitHeight="193.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../CardsFront/1.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="193.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../CardsFront/2.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="193.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../CardsFront/3.png" />
-                           </image>
-                        </ImageView>
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="193.0" prefWidth="275.0">
+                           <children>
+                              <ImageView fitHeight="193.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../CardsFront/2.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="193.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </StackPane>
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="193.0" prefWidth="275.0">
+                           <children>
+                              <ImageView fitHeight="193.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../CardsFront/3.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="193.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </StackPane>
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="193.0" prefWidth="275.0">
+                           <children>
+                              <ImageView fitHeight="193.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../CardsFront/1.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="193.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </StackPane>
                      </children>
                   </HBox>
                   <Label alignment="TOP_CENTER" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="845.0" text="HAND">
