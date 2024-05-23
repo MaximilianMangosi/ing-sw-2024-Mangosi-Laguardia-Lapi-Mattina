@@ -89,7 +89,7 @@ public class HelloController extends GUIController {
             GameData gameData = new GameData();
             if (isSocketSelected) {
                 Socket server;
-                server = new Socket("local-host", 2323);
+                server = new Socket("localhost", 2323);
                 view = new ViewSocket(server.getOutputStream(), server.getInputStream(), gameData);
                 //ServerHandler t1 = new ServerHandler((ViewSocket) view,);
             } else {
@@ -122,7 +122,7 @@ public class HelloController extends GUIController {
             try {
                 myID = view.bootGame(numOfPlayers, myName);
                 view.initializeFieldBuildingHelper(myName);
-            } catch (UnacceptableNumOfPlayersException ex1) {
+            } catch (UnacceptableNumOfPlayersException ignore) {
             } catch (OnlyOneGameException ex) {
                 try {
                     view.joinGame(myName);

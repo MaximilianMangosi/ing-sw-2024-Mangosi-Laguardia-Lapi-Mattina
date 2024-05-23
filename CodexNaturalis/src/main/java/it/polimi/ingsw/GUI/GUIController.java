@@ -38,6 +38,7 @@ public class GUIController {
         c.setView(view);
         c.setMyId(myID);
         c.setMyName(myName);
+        c.init();
         Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -45,7 +46,6 @@ public class GUIController {
         stage.setHeight(screenBounds.getHeight());
         stage.setWidth(screenBounds.getWidth());
         stage.centerOnScreen();
-        c.init();
         stage.show();
     }
 

@@ -95,11 +95,16 @@ public class InGameController extends GUIController {
         int i=0;
         for (Card card : view.showPlayerHand(myID)){
             int id = card.getId();
-            Image cardPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-            ImageView cardView = (ImageView) handBox.getChildren().get(i);
-            cardView.setImage(cardPng);
-            cardView.setOnMouseClicked(this::selectCard);
-            handCardsId.put(cardView,id);
+
+            Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+            Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
+            StackPane cardStack = (StackPane) handBox.getChildren().get(i);
+            ImageView backView= (ImageView) cardStack.getChildren().getFirst();
+            ImageView frontView= (ImageView) cardStack.getChildren().get(1);
+            backView.setImage(backPng);
+            frontView.setImage(frontPng);
+            backView.setVisible(false);
+            cardStack.setOnMouseClicked(this::selectCard);
             i++;
         }
         i=0;
@@ -188,7 +193,7 @@ public class InGameController extends GUIController {
                 PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException  |
                 ClassNotFoundException ignore){}
     }
-
+//JL
     private void checkGameInfo(){
 
         new Thread(() -> {
@@ -329,29 +334,11 @@ public class InGameController extends GUIController {
         goldCardDeck.setImage(img);
     }
     public void placeCard( Coordinates position){
-        //
-
-//        StackPane newCardPane = new StackPane();
-//        newCardPane.setPrefWidth(200);
-//        newCardPane.setPrefHeight(150);
-
-
-//        GridPane newGrid = new GridPane(2,2);
-//        newGrid.setPrefWidth(200);
-//        newGrid.setPrefHeight(150);
-//        newGrid.setTranslateX(position.x* 155.5);
-//        newGrid.setTranslateY(position.y * 79.5);
-//
-//
          ImageView newCardImage = selectedCardToPlay;
          newCardImage.setFitWidth(200);
          newCardImage.setFitHeight(150);
          newCardImage.setTranslateX(position.x* 155.5);
          newCardImage.setTranslateY(position.y * 79.5);
-
-//        newCardPane.getChildren().add(newCardImage);
-//        newCardPane.getChildren().add(newGrid);
-//        setupGrid(newGrid,new Coordinates(position.x, position.y));
          newCardImage.setOnMouseClicked(mouseEvent -> handleClickCard(mouseEvent,position));
          fieldPane.getChildren().add(newCardImage);
          handBox.getChildren().remove(selectedCardToPlay);
@@ -382,17 +369,10 @@ public class InGameController extends GUIController {
         scoreboardButton.setVisible(true);
     }
     public void selectCard(MouseEvent e){
-
-            System.out.println("card clicked");
-            if(selectedCardToPlay!=null)
-                selectedCardToPlay.setStyle("-fx-border-width: 0");
-            selectedCardToPlay=(ImageView) e.getSource();
-            selectedCardToPlay.setStyle("-fx-border-color: green");
-            selectedCardToPlay.setStyle("-fx-border-width: 50");
-
-
-
-
+        StackPane cardPane= (StackPane) e.getSource();
+        for( Node cardView: cardPane.getChildren()){
+            cardView.setVisible(!cardView.isVisible());
+        }
     }
     private void handleClickCard (MouseEvent event,Coordinates coordinates){
         ImageView cardImage = (ImageView) event.getSource();
