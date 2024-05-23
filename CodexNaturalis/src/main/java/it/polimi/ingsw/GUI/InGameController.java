@@ -3,7 +3,6 @@ package it.polimi.ingsw.GUI;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
-import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
@@ -13,23 +12,18 @@ import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import org.controlsfx.control.spreadsheet.Grid;
 
 import java.beans.EventHandler;
 import java.io.IOException;
-import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,22 +86,11 @@ public class InGameController extends GUIController {
             playerListBox.getChildren().add(sp);
 
         }
-        int i=0;
-        for (Card card : view.showPlayerHand(myID)){
-            int id = card.getId();
-
-            Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-            Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
-            StackPane cardStack = (StackPane) handBox.getChildren().get(i);
-            ImageView backView= (ImageView) cardStack.getChildren().getFirst();
-            ImageView frontView= (ImageView) cardStack.getChildren().get(1);
-            backView.setImage(backPng);
-            frontView.setImage(frontPng);
-            backView.setVisible(false);
-            cardStack.setOnMouseClicked(this::selectCard);
-            i++;
+        updateHand(view.showPlayerHand(myID));
+        for(Node cardStack: handBox.getChildren() ){
+            cardStack.setOnMouseClicked(this::flipCard);
         }
-        i=0;
+        int i=0;
         for (Goal g: view.getPublicGoals()){
             int id= g.getId();
             Image goalPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
@@ -138,40 +121,11 @@ public class InGameController extends GUIController {
         fieldPane.getChildren().add(scView);
 
 
-       // setupGrid(starterCardGrid,new Coordinates(0,0));
         checkGameInfo();
 
 
     }
 
-    private void setupGrid(GridPane cardGrid,Coordinates position) {
-       // Coordinates position=new Coordinates((int) cardGrid.getLayoutX(), (int) cardGrid.getLayoutY());
-        Button  NW = new Button();
-        Button NE = new Button();
-        Button SW = new Button();
-        Button SE = new Button();
-        NW.setPrefWidth(100);
-        NW.setPrefHeight(75);
-        NE.setPrefWidth(100);
-        NE.setPrefHeight(75);
-        SW.setPrefWidth(100);
-        SW.setPrefHeight(75);
-        SE.setPrefWidth(100);
-        SE.setPrefHeight(75);
-//        NW.setOpacity(0);
-//        NE.setOpacity(0);
-//        SW.setOpacity(0);
-//        SE.setOpacity(0);
-        cardGrid.add(NW,0,0);
-        cardGrid.add(NE,1,0);
-        cardGrid.add(SW,0,1);
-        cardGrid.add(SE,1,1);
-
-        NW.setOnMouseClicked(mouseEvent -> placeCard(new Coordinates(position.x-1,position.y-1)));
-        NE.setOnMouseClicked(mouseEvent -> placeCard(new Coordinates(position.x+1, position.y-1)));
-        SW.setOnMouseClicked(mouseEvent -> placeCard(new Coordinates(position.x-1, position.y+1 )));
-        SE.setOnMouseClicked(mouseEvent -> placeCard(new Coordinates(position.x+1, position.y+1 )));
-    }
 
     private void drawFromDeck(int i) {
         try {
@@ -201,6 +155,7 @@ public class InGameController extends GUIController {
             List<Card> oldVisibleCards = new ArrayList<>();
             Reign oldTopResource=null;
             Reign oldTopGold=null;
+            List<Card> oldHand=new ArrayList<>();
 
             String oldCurrentPlayer = "";
 
@@ -208,16 +163,10 @@ public class InGameController extends GUIController {
 
                 //visible cards
                 try {
-                    if(!view.getVisibleCards().equals(oldVisibleCards)){
-                        Platform.runLater(() -> {
-                            try {
-                                updateVisibleCards(view.getVisibleCards());
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
-
-                        oldVisibleCards = view.getVisibleCards();
+                    List<Card> newVisibleCards = view.getVisibleCards();
+                    if(!newVisibleCards.equals(oldVisibleCards)){
+                        Platform.runLater(() -> updateVisibleCards(newVisibleCards));
+                        oldVisibleCards = newVisibleCards;
                     }
                 //decks
 
@@ -237,19 +186,19 @@ public class InGameController extends GUIController {
 
                         oldTopGold = newTopGold;
                     }
+                //hand
+                    List<Card> newHand= view.showPlayerHand(myID);
+                    if(!newHand.equals(oldHand))
+                        Platform.runLater(()->updateHand(newHand));
+                    oldHand=newHand;
 
                 //current player
+                    String newCurrentPlayer=view.getCurrentPlayer();
                     if(!view.getCurrentPlayer().equals(oldCurrentPlayer)){
-                        Platform.runLater(() -> {
-                            try {
-                                updateCurrentPlayer(view.getCurrentPlayer());
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
-                        oldCurrentPlayer = view.getCurrentPlayer();
+                        Platform.runLater(() -> updateCurrentPlayer(newCurrentPlayer));
+                        oldCurrentPlayer = newCurrentPlayer;
                     }
-                } catch (RemoteException e) {
+                } catch (RemoteException | InvalidUserId e) {
                     errorMsg.setVisible(true);
                     errorMsg.setText("Connection Error");
                     try {Thread.sleep(3000);} catch (InterruptedException ignore) {}
@@ -295,6 +244,7 @@ public class InGameController extends GUIController {
     public void drawVisibleCard(int choice)  {
         try {
             view.drawVisibleCard(myID,choice);
+
         } catch (IOException e) {
             errorMsg.setVisible(true);
             errorMsg.setText("Connection Error");
@@ -322,7 +272,7 @@ public class InGameController extends GUIController {
         }
         resourceCardDeck.setImage(img);
     }
-    private  void updateTopGold(Reign newTop){
+    private void updateTopGold(Reign newTop){
         Image img;
         switch (newTop) {
             case MUSHROOM -> img= new Image(getClass().getResourceAsStream("/CardsBack/41.png"));
@@ -332,6 +282,20 @@ public class InGameController extends GUIController {
             default ->   img=new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
         }
         goldCardDeck.setImage(img);
+    }
+    private void updateHand(List<Card> newHand){
+        for(Card card: newHand){
+            int id = card.getId();
+            Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+            Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
+            StackPane cardStack = (StackPane) handBox.getChildren().get(newHand.indexOf(card));
+            ImageView backView= (ImageView) cardStack.getChildren().getFirst();
+            ImageView frontView= (ImageView) cardStack.getChildren().get(1);
+            backView.setImage(backPng);
+            frontView.setImage(frontPng);
+            backView.setVisible(false);
+
+        }
     }
     public void placeCard( Coordinates position){
          ImageView newCardImage = selectedCardToPlay;
@@ -368,7 +332,7 @@ public class InGameController extends GUIController {
         scoreboardBox.setVisible(false);
         scoreboardButton.setVisible(true);
     }
-    public void selectCard(MouseEvent e){
+    public void flipCard(MouseEvent e){
         StackPane cardPane= (StackPane) e.getSource();
         for( Node cardView: cardPane.getChildren()){
             cardView.setVisible(!cardView.isVisible());
