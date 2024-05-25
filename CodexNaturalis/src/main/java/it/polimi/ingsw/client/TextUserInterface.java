@@ -346,6 +346,20 @@ public class TextUserInterface  {
                     tuiUpdater.interrupt();
                     outWriter.print("You quit the game, type 'start-game' to restart playing\n");
                     break;
+                case "show-chat":
+                    List<String> chatShow = view.getChatList();
+                    for (String chats : chatShow){
+                        outWriter.print(chats);
+                    }
+                    break;
+                case "write-chat":
+                    List<String> chatWrite = view.getChatList();
+                    for (String chats : chatWrite){
+                        outWriter.print(chats);
+                    }
+                    outWriter.print("Write your message: ");
+                    s.nextLine();
+                    break;
                 default:
                     outWriter.print("Unknown command");
             }

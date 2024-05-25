@@ -80,4 +80,6 @@ public interface View {
     boolean amIPinged(UUID id) throws RemoteException;
 
     void pong(UUID myID)throws RemoteException;
+
+    List<String> getChatList();
 }
