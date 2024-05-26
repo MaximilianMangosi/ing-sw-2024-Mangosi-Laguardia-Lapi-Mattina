@@ -28,7 +28,11 @@ public class GameData {
     private String currentPlayer;
     private StarterCard starterCard;
     private List<Card> visibleCards;
+    private List<String> chatData;
 
+    public  List<String> getChatData(){
+        return  chatData;
+    }
 
     public boolean isGameStarted() {
         return isGameStarted;

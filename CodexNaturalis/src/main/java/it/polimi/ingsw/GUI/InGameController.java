@@ -13,16 +13,20 @@ import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import javafx.application.Platform;
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
+import javax.management.monitor.MonitorSettingException;
 import java.beans.EventHandler;
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -42,6 +46,8 @@ public class InGameController extends GUIController {
     private ImageView goldCardDeck;
     @FXML
     private HBox goalsBox;
+    @FXML
+    private BorderPane borderPane;
     @FXML
     private HBox privateGoalBox;
     @FXML
@@ -85,6 +91,9 @@ public class InGameController extends GUIController {
                 label.setStyle("-fx-background-color: d9be4a");
             sp.getChildren().add(label);
             playerListBox.getChildren().add(sp);
+            //makes label clickable
+            label.setOnMouseClicked(this::showEnemyField);
+
 
         }
         updateHand(getHand());
@@ -355,6 +364,48 @@ public class InGameController extends GUIController {
         } else {
             placeCard(new Coordinates(coordinates.x+1,coordinates.y+1 ));
         }
+
+    }
+    //
+    private void showEnemyField(MouseEvent event) throws RemoteException {
+        //fetch the other player's hand
+        Label l =(Label) event.getSource();
+        String username = l.getText();
+
+        Map <Coordinates, Card> field=  view.getPlayersField(username);
+        List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
+
+        Button returnToMyFieldButton = new Button("Return");
+
+        //saves the old field and sets it invisible
+        Pane oldCenter = (Pane) borderPane.getCenter();
+        Node oldFirstChild = oldCenter.getChildren().getFirst();
+        oldFirstChild.setVisible(false);
+        //build a new field
+        StackPane newFieldPane = new StackPane();
+        newFieldPane.setPrefWidth(2408);
+        newFieldPane.setPrefHeight(1610);
+        newFieldPane.setLayoutX(-240);
+        newFieldPane.setLayoutY(-390);
+
+        AnchorPane newAnchor = new AnchorPane(newFieldPane);
+        newAnchor.setPrefWidth(2400);
+        newAnchor.setPrefHeight(1566);
+        ScrollPane newScrollPane = new ScrollPane(newAnchor);
+        newScrollPane.setPrefWidth(200);
+        newScrollPane.setPrefHeight(200);
+
+        StackPane newHugeStackPane = new StackPane(newScrollPane);
+        newHugeStackPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        newHugeStackPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+
+        playerListBox.getChildren().add(returnToMyFieldButton);
+        ((Pane) borderPane.getCenter()).getChildren().add(newHugeStackPane);
+
+        returnToMyFieldButton.setOnMouseClicked(MouseEvent->returnToMyField(MouseEvent,oldFirstChild,newHugeStackPane));
+
+    }
+    private void returnToMyField(MouseEvent event,Node oldField,Node newField){
 
     }
 

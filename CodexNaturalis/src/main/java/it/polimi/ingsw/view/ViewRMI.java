@@ -37,7 +37,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     private List<Card> visibleCards;
     private HashMap<UUID,StarterCard> starterCardMap;
     private HashMap<String, List<Coordinates>> fieldBuildingHelper=new HashMap<>();
-
+    private List<String> chatList;
 
     public ViewRMI(Controller controller) throws RemoteException {
         this.controller=controller;
@@ -494,6 +494,11 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     @Override
     public void pong(UUID myID) throws RemoteException {
         controller.pong(myID);
+    }
+
+    @Override
+    public List<String> getChatList() {
+        return chatList;
     }
 
     /**

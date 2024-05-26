@@ -405,6 +405,11 @@ public class  ViewSocket implements View{
 
     }
 
+    @Override
+    public List<String> getChatList() {
+        return gd.getChatData();
+    }
+
     public GameData getGameData() {
       return gd;
     }
