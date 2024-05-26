@@ -1,16 +1,14 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.clientmessages.ClientMessage;
-import it.polimi.ingsw.messages.exceptionmessages.ExceptionMessage;
-import it.polimi.ingsw.messages.servermessages.HandMessage;
 import it.polimi.ingsw.messages.servermessages.ServerMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class ClientHandler implements Runnable{
@@ -47,6 +45,7 @@ public class ClientHandler implements Runnable{
         System.out.println("Connected to "+client.getInetAddress());
 
         try {
+            new Thread(this::RMIToSocketDispatcher).start();
             handleConnection();
         } catch (IOException e) {
             System.out.println("client" + client.getInetAddress() + "connection dropped\n");
@@ -56,6 +55,36 @@ public class ClientHandler implements Runnable{
             client.close();
         } catch (IOException ignored) {}
 
+    }
+
+    /**
+     * Retrieves a message from Remote view and send to the Socket clients
+     * @author Giuseppe Laguardia
+     */
+    private void RMIToSocketDispatcher(){
+        while (true) {
+            try {
+                if(shouldStop())
+                    break;
+                ServerMessage newMsg=controller.retrieveMessage();
+                viewUpdater.sendAll(newMsg);
+            } catch (IOException e) {
+                System.out.println("RMIToSocketDispatcher stopped");
+                System.exit(1);
+            }
+        }
+    }
+
+    /**
+     * check if a RMIToSocketDispatcher thread should continue
+     * @return true if there is at least a player using RMI, false otherwise
+     * @throws RemoteException if a connection error occurs
+     */
+    private boolean shouldStop() throws RemoteException {
+        // if there is player in game are more than the players using socket then at least one of them is using RMI and the thread must continue
+        int numOfPlayersInGame= controller.getPlayersList().size();
+        int numOfSocketPlayers= viewUpdater.getClients().size();
+        return  controller.getView().isGameStarted() && numOfPlayersInGame <= numOfSocketPlayers;
     }
 
     /**
@@ -71,7 +100,8 @@ public class ClientHandler implements Runnable{
                 cmd.processMessage(this);
             }
         } catch (ClassNotFoundException e) {
-            System.out.println("Invalid stream from client\n");
+            System.out.println("Invalid stream from client");
+            System.exit(1);
         }
     }
 

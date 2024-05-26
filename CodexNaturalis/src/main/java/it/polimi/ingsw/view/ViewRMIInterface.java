@@ -24,7 +24,6 @@ public interface ViewRMIInterface extends Remote,View  {
 
     //VIEW
 
-
     @Override
     boolean isRMI() throws RemoteException;
 

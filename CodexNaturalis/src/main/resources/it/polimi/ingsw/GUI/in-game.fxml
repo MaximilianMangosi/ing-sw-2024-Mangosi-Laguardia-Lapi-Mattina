@@ -189,7 +189,7 @@
       </HBox>
       <Button fx:id="hideScoreboardButton" layoutX="541.0" mnemonicParsing="false" onAction="#hideScoreboard" text="X" />
       <Button fx:id="hideDeckButton" layoutX="1355.0" mnemonicParsing="false" onAction="#hideDeck" text="X" />
-      <Label fx:id="errorMsg" alignment="CENTER" prefHeight="126.0" prefWidth="744.0" style="-fx-background-color: rgba(222,219,219,0.6);" text="ERROR MESSAGE" textFill="#b51f1f">
+      <Label fx:id="errorMsg" alignment="CENTER" prefHeight="126.0" prefWidth="744.0" style="-fx-background-color: rgba(222,219,219,0.6);" text="ERROR MESSAGE" textFill="#b51f1f" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="480.0">
          <font>
             <Font name="System Bold" size="64.0" />
          </font>

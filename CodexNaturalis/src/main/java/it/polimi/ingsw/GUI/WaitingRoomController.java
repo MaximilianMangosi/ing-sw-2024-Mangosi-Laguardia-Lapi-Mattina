@@ -42,15 +42,11 @@ public class WaitingRoomController extends GUIController{
                 Platform.runLater(()->{
                     try {
                         createPlayerLables(view.getPlayersList());
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
-                    try {
                         if (view.isGameStarted()){
                             flag.set(true);
                         }
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                        //TODO error msg
                     }
                 });
                 if (flag.get()){
@@ -58,9 +54,7 @@ public class WaitingRoomController extends GUIController{
                 }
                 try {
                     Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                } catch (InterruptedException ignore) {}
             }
 
             button.setVisible(true);
@@ -68,12 +62,12 @@ public class WaitingRoomController extends GUIController{
 
         }).start();
 
-        try {
-            System.out.println(view.getPlayersList());
-            createPlayerLables(view.getPlayersList());
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            System.out.println(view.getPlayersList());
+//            createPlayerLables(view.getPlayersList());
+//        } catch (RemoteException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     private void createPlayerLables(List<String> names) {

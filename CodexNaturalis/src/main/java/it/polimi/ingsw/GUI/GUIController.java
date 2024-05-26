@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.client.UserInterface;
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 import it.polimi.ingsw.view.View;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.UUID;
 
-public class GUIController {
+public class GUIController extends UserInterface {
     protected View view;
     protected UUID myID;
     protected String myName;

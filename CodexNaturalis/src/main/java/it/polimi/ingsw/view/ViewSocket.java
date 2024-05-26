@@ -23,7 +23,7 @@ import java.util.*;
 /**
  * A View implementation using Socket, used to interact with the server to send commands and receive data
  */
-public class ViewSocket implements View{
+public class  ViewSocket implements View{
     private final ObjectOutputStream output;
     private final ObjectInputStream input;
     private final GameData gd;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.exceptions.*;
+import it.polimi.ingsw.messages.servermessages.ServerMessage;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
@@ -19,11 +20,12 @@ import it.polimi.ingsw.view.ViewRMI;
 
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 
 public class Controller {
     protected GameState currentState;
     private ConcurrentHashMap <UUID,Boolean> pingMap= new ConcurrentHashMap<>();
+    private  BlockingQueue<ServerMessage> messageQueue = new LinkedBlockingQueue<>();
     private ViewRMI view;
     /**
      * constructor of Controller, creates a new GameState
@@ -90,6 +92,29 @@ public class Controller {
         for (Map.Entry<UUID,Boolean> entry: pingMap.entrySet() ){
             entry.setValue(false);
         }
+    }
+
+    /**
+     * adds a ServerMessage to messagesQueue
+     *@author Giuseppe Laguardia
+     * @param msg the message needed to send to the server
+     */
+    public void addMessage(ServerMessage msg){
+        try {
+            messageQueue.put(msg);
+        }catch (InterruptedException ignore){}
+    }
+
+    /**
+     * gets and removes the first message of the queue
+     * @author Giuseppe Laguardia
+     * @return the first ServerMessage
+     */
+    public ServerMessage retrieveMessage(){
+        try {
+            return messageQueue.take();
+        } catch (InterruptedException ignore) {}
+        return null;
     }
 
     /**

@@ -24,13 +24,11 @@ import java.util.*;
  * Class that handles the displaying of the TUI and communicate with the server
  * @author Giuseppe Laguardia
  */
-public class TextUserInterface  {
+public class TextUserInterface extends UserInterface {
     private final TUIAsciiArtist artist = new TUIAsciiArtist();
-    private final View view;
     private final UpdateTUI tuiUpdater;
     private final OutStreamWriter outWriter = new OutStreamWriter();
-    private UUID myID;
-    private String myName;
+
     private StringBuilder idleUI;
     private final Scanner s=new Scanner(System.in);
 
@@ -114,7 +112,7 @@ public class TextUserInterface  {
             }
 
             idleUI.append("\n\n");
-            if(showPrivateGoal() ==null){
+            if(getPrivateGoal() ==null){
                 idleUI.append("To start the game you have to choose your private goal from your goal options, try choose-goal\n");
             }if(!didIPlayStarterCard()){
                 idleUI.append("To start the game you have to choose the side of your starter card, try choose-starter-card-side\n");
@@ -307,7 +305,7 @@ public class TextUserInterface  {
                     s.nextLine();
                     break;
                 case "show-my-goal":
-                   Goal privateGoal= showPrivateGoal();
+                   Goal privateGoal= getPrivateGoal();
                    artist.show(new Goal[]{privateGoal});
                    outWriter.print(artist.getMatrix());
                    outWriter.print("Press enter to continue");
@@ -352,17 +350,7 @@ public class TextUserInterface  {
         }
     }
 
-    private Goal[] getGoalOptions() throws RemoteException, InvalidUserId {
-        if(view.isRMI())
-            return view.showPlayerGoalOptions(myID);
-        return view.showPlayerGoalOptions();
-    }
 
-    private Goal showPrivateGoal() throws RemoteException, InvalidUserId {
-        if(view.isRMI())
-            return view.showPrivateGoal(myID);
-        return view.showPrivateGoal();
-    }
 
     /**
      * reads from terminal the choice of the position, then returns the Coordinates of that choice
@@ -466,11 +454,6 @@ public class TextUserInterface  {
         return false;
     }
 
-    private StarterCard getStarterCard() throws RemoteException {
-        if(view.isRMI())
-            return view.getStarterCard(myID);
-        return view.getStarterCard();
-    }
 
     /**
      * sorts the scoreboard in order of points
@@ -525,12 +508,6 @@ public class TextUserInterface  {
         return getHand().get(chosenCardI - 1);
     }
 
-    private List<Card> getHand() throws RemoteException, InvalidUserId {
-        if(view.isRMI())
-            return view.showPlayerHand(myID);
-        return view.showPlayerHand();
-
-    }
 
     /**
      * @author Giuseppe Laguardia

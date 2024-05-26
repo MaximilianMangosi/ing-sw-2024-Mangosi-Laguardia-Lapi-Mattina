@@ -20,13 +20,13 @@ public class ViewUpdater  {
     public Map<UUID,ObjectOutputStream> getClients(){
         return clients;
     }
-    public void sendAll(ServerMessage msg) throws IOException {
+    public synchronized void sendAll(ServerMessage msg) throws IOException {
         for (ObjectOutputStream c : clients.values()){
             c.writeObject(msg);
         }
 
     }
-    public void sendTo(ServerMessage message,UUID userId) throws IOException{
+    public synchronized void sendTo(ServerMessage message,UUID userId) throws IOException{
         clients.get(userId).writeObject(message);
     }
 

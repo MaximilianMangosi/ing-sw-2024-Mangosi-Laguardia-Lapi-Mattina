@@ -525,6 +525,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     public List<Card> showPlayerHand(UUID id){
         //updatePlayersHands();
         return playersHands.get(id);
+
     }
 
     @Override

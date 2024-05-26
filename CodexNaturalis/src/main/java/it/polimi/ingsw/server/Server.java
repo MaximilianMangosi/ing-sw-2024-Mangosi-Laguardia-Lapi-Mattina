@@ -66,6 +66,7 @@ public class Server {
                     ClientHandler clientHandler = new ClientHandler(client,controller,viewUpdater);
                     Thread thread = new Thread(clientHandler, "server_" + client.getInetAddress());
                     thread.start();
+
                 } catch (IOException e) {
                     System.out.println("connection dropped");
                 }

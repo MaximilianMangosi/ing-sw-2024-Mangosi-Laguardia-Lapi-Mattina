@@ -3,6 +3,7 @@ package it.polimi.ingsw.GUI;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
@@ -86,7 +87,7 @@ public class InGameController extends GUIController {
             playerListBox.getChildren().add(sp);
 
         }
-        updateHand(view.showPlayerHand(myID));
+        updateHand(getHand());
         for(Node cardStack: handBox.getChildren() ){
             cardStack.setOnMouseClicked(this::flipCard);
         }
@@ -98,7 +99,7 @@ public class InGameController extends GUIController {
             goalView.setImage(goalPng);
             i++;
         }
-        int id = view.showPrivateGoal(myID).getId();
+        int id = getPrivateGoal().getId();
         Image goalPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
         ImageView goalView= (ImageView) privateGoalBox.getChildren().getFirst();
         goalView.setImage(goalPng);
@@ -110,7 +111,7 @@ public class InGameController extends GUIController {
         visibleCard3.setOnMouseClicked(mouseEvent -> drawVisibleCard(2));
         visibleCard4.setOnMouseClicked(mouseEvent -> drawVisibleCard(3));
 
-        id=view.getStarterCard(myID).getId();
+        id= getStarterCard().getId();
         Image scPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
 
 
@@ -125,6 +126,9 @@ public class InGameController extends GUIController {
 
 
     }
+
+
+
 
 
     private void drawFromDeck(int i) {
@@ -187,7 +191,7 @@ public class InGameController extends GUIController {
                         oldTopGold = newTopGold;
                     }
                 //hand
-                    List<Card> newHand= view.showPlayerHand(myID);
+                    List<Card> newHand= getHand();
                     if(!newHand.equals(oldHand))
                         Platform.runLater(()->updateHand(newHand));
                     oldHand=newHand;
