@@ -92,7 +92,7 @@ public class InGameController extends GUIController {
             sp.getChildren().add(label);
             playerListBox.getChildren().add(sp);
             //makes label clickable
-            label.setOnMouseClicked(this::showEnemyField);
+            //label.setOnMouseClicked(this::showEnemyField);
 
 
         }

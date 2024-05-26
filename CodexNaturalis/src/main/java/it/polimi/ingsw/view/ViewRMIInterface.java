@@ -80,5 +80,8 @@ public interface ViewRMIInterface extends Remote,View  {
 
     void pong(UUID myID)throws RemoteException;
 
-    List<String> getChatList();
+    List<String> getChatList() throws RemoteException;
+
+    @Override
+    void sendChatMessage(String message) throws RemoteException;
 }

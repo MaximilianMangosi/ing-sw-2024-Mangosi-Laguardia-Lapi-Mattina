@@ -37,7 +37,11 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     private List<Card> visibleCards;
     private HashMap<UUID,StarterCard> starterCardMap;
     private HashMap<String, List<Coordinates>> fieldBuildingHelper=new HashMap<>();
-    private List<String> chatList;
+    private List<String> chatList = new ArrayList<>(250);
+
+    public void sendChatMessage(String message){
+        chatList.add(message);
+    }
 
     public ViewRMI(Controller controller) throws RemoteException {
         this.controller=controller;

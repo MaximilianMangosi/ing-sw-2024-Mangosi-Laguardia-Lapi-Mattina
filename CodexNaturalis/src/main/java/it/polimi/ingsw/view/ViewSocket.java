@@ -410,6 +410,13 @@ public class  ViewSocket implements View{
         return gd.getChatData();
     }
 
+    @Override
+    public void sendChatMessage(String message) throws IOException, ClassNotFoundException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException {
+      output.writeObject(new ChatMessage(message));
+      ServerMessage reply = readMessage();
+      reply.processMessage();
+    }
+
     public GameData getGameData() {
       return gd;
     }
