@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +29,14 @@ public class GameData {
     private String currentPlayer;
     private StarterCard starterCard;
     private List<Card> visibleCards;
-    private List<String> chatData;
+    private List<String> chatData = new ArrayList<>(250);
 
     public  List<String> getChatData(){
         return  chatData;
+    }
+
+    public void setChatData(List<String> chatData){
+        this.chatData = chatData;
     }
 
     public boolean isGameStarted() {

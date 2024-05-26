@@ -358,7 +358,7 @@ public class TextUserInterface  {
                         outWriter.print(chats);
                     }
                     outWriter.print("Write your message: ");
-                    s.nextLine();
+                    view.sendChatMessage(myName + ": " + s.nextLine());
                     break;
                 default:
                     outWriter.print("Unknown command");
