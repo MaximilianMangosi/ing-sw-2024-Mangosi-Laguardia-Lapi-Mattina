@@ -2,7 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.messages.clientmessages.ClientMessage;
-import it.polimi.ingsw.messages.servermessages.ServerMessage;
+import it.polimi.ingsw.messages.servermessages.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -67,6 +67,13 @@ public class ClientHandler implements Runnable{
                 if(shouldStop())
                     break;
                 ServerMessage newMsg=controller.retrieveMessage();
+                if(newMsg instanceof GameStartMessage) {
+                    for (UUID id : getAllClients().keySet()) {
+                        sendTo(id, new HandMessage(controller.getPlayersHands().get(id)));
+                        sendTo(id, new GoalOptionsMessage(controller.getGoalOptions().get(id)));
+                        sendTo(id, new StarterCardMessage(controller.getPlayersStarterCards().get(id)));
+                    }
+                }
                 viewUpdater.sendAll(newMsg);
             } catch (IOException e) {
                 System.out.println("RMIToSocketDispatcher stopped");

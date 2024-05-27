@@ -386,6 +386,11 @@ public class  ViewSocket implements View{
     }
 
     @Override
+    public void updateFieldBuildingHelper(Coordinates position, String username) {
+        gd.getFieldBuilderHelper(username).add(position);
+    }
+
+    @Override
     public Reign getTopOfResourceCardDeck() {
         return null;
     }

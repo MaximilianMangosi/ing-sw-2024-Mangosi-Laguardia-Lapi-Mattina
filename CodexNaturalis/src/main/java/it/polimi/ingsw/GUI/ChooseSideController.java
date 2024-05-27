@@ -126,6 +126,7 @@ public class ChooseSideController extends GUIController {
     @FXML
     private void switchToMainStage(ActionEvent event) throws InvalidUserId, IOException {
         changeScene("in-game.fxml",event);
+        stage.setFullScreen(true);
     }
 
 

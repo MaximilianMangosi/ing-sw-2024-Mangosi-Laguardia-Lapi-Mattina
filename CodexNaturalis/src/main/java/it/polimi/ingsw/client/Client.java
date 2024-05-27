@@ -34,7 +34,6 @@ public class Client {
     public static void main(String[] args) {
         View view;
         Scanner s=new Scanner(System.in);
-
         int connectionChoice= 0;
         while (connectionChoice!=1 && connectionChoice!=2 ) {
             System.out.println("Choose how to connect to Server.\n1)Socket\n2)RMI");

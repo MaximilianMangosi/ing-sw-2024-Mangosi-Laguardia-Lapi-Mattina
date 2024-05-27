@@ -41,9 +41,13 @@ public class JoinGameMessage extends ClientMessage {
        try {
            Controller c= clientHandler.getController();
            UUID newId =c.joinGame(username);
+           c.getView().initializeFieldBuildingHelper(username);
+
            UserIDMessage idMessage = new UserIDMessage(newId);
            clientHandler.answerClient(idMessage);
+
            Thread.sleep(100); // to give client time to connect to the other port for view updates
+
            if(c.getView().isGameStarted()){
                for(UUID id: clientHandler.getAllClients().keySet() ){
                    clientHandler.sendTo(id,new HandMessage(c.getPlayersHands().get(id)));

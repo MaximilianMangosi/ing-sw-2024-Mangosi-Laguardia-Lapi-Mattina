@@ -41,6 +41,7 @@ public class BootGameMessage extends ClientMessage{
         try {
             Controller c= clientHandler.getController();
             UUID newId =c.bootGame(numPlayers,username);
+            c.getView().initializeFieldBuildingHelper(username);
             UserIDMessage answer = new UserIDMessage(newId);
             PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
             clientHandler.answerClient(answer);

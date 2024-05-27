@@ -183,9 +183,7 @@ public class TextUserInterface extends UserInterface {
                     else{
                         ServerHandler td2= new ServerHandler((ViewSocket) view,tuiUpdater,myID);
                         td2.start();
-
                     }
-                    view.initializeFieldBuildingHelper( myName);
                     tuiUpdater.start();
                     break;
                 case "choose-goal":
@@ -338,6 +336,7 @@ public class TextUserInterface extends UserInterface {
                     showField(player,false);
                     outWriter.print("Press enter to continue");
                     s.nextLine();
+
                     break;
                 case "disconnect":
                     view.closeGame(myID);
