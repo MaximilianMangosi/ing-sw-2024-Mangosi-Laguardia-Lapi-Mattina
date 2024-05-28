@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
+import it.polimi.ingsw.model.gamelogic.Player;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
@@ -37,10 +38,19 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     private List<Card> visibleCards;
     private HashMap<UUID,StarterCard> starterCardMap;
     private HashMap<String, List<Coordinates>> fieldBuildingHelper=new HashMap<>();
-    private List<String> chatList = new ArrayList<>(250);
+    private List<String> globalChat = new ArrayList<>(250);
+    private Map<UUID, Map<String, List<String>>> privateChat = new HashMap<>();
 
-    public void sendChatMessage(String message){
-        chatList.add(message);
+    public void sendChatMessage(String message) throws IllegalOperationException {
+        controller.addToGlobalChat(message);
+    }
+
+    public void sendPrivateMessage(String receiver, String message, UUID sender) throws IllegalOperationException {
+        controller.addMessage(receiver, message, sender);
+    }
+
+    public List<String> getPrivateChat(String receiver, UUID uuid){
+        return privateChat.get(uuid).get(receiver);
     }
 
     public ViewRMI(Controller controller) throws RemoteException {
@@ -501,7 +511,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
 
     @Override
     public List<String> getChatList() {
-        return chatList;
+        return globalChat;
     }
 
     /**
@@ -523,6 +533,20 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         updateVisibleCards();
         updateStarterCardMap();
         setIsGameStarted();
+        updateGlobalChat();
+        updatePrivateChat();
+    }
+
+    public void updatePrivateChat() {
+        for (Map.Entry<UUID, Player> entry : controller.getUserIDs().entrySet()){
+            UUID id = entry.getKey();
+            Player player = entry.getValue();
+            privateChat.put(id, player.getPrivateChats());
+        }
+    }
+
+    public void updateGlobalChat() {
+        globalChat = controller.getGlobalChat();
     }
 
     /**

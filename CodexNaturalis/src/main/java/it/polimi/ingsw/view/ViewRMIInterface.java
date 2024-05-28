@@ -83,5 +83,5 @@ public interface ViewRMIInterface extends Remote,View  {
     List<String> getChatList() throws RemoteException;
 
     @Override
-    void sendChatMessage(String message) throws RemoteException;
+    void sendChatMessage(String message) throws RemoteException, IllegalOperationException;
 }

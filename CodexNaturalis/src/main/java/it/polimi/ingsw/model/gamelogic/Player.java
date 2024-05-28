@@ -20,6 +20,19 @@ public class Player {
     private int points;
     private int goalPoints;
 
+    private Map<String, List<String>> privateChat = new HashMap<>();
+
+    public List<String> getPrivateChat(String name){
+        return privateChat.get(name);
+    }
+
+    public Map<String, List<String>> getPrivateChats (){
+        return privateChat;
+    }
+
+    public void addMessage(String name, String message){
+        privateChat.get(name).add(message);
+    }
 
     /**
      * constructor of class Player
