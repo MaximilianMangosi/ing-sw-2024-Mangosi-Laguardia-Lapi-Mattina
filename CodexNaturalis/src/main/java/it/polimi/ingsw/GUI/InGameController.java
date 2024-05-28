@@ -367,43 +367,59 @@ public class InGameController extends GUIController {
 
     }
     //
-    private void showEnemyField(MouseEvent event) throws RemoteException {
+    private void showEnemyField(MouseEvent event)  {
         //fetch the other player's hand
-        Label l =(Label) event.getSource();
-        String username = l.getText();
+        try {
+            Label l = (Label) event.getSource();
+            String username = l.getText();
 
-        Map <Coordinates, Card> field=  view.getPlayersField(username);
-        List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
+            Map<Coordinates, Card> field = view.getPlayersField(username);
+            List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
 
-        Button returnToMyFieldButton = new Button("Return");
+            Button returnToMyFieldButton = new Button("Return");
 
-        //saves the old field and sets it invisible
-        Pane oldCenter = (Pane) borderPane.getCenter();
-        Node oldFirstChild = oldCenter.getChildren().getFirst();
-        oldFirstChild.setVisible(false);
-        //build a new field
-        StackPane newFieldPane = new StackPane();
-        newFieldPane.setPrefWidth(2408);
-        newFieldPane.setPrefHeight(1610);
-        newFieldPane.setLayoutX(-240);
-        newFieldPane.setLayoutY(-390);
+            //saves the old field and sets it invisible
+            Pane oldCenter = (Pane) borderPane.getCenter();
+            Node oldFirstChild = oldCenter.getChildren().getFirst();
+            oldFirstChild.setVisible(false);
+            //build a new field
+            StackPane newFieldPane = new StackPane();
+            newFieldPane.setPrefWidth(2408);
+            newFieldPane.setPrefHeight(1610);
+            newFieldPane.setLayoutX(-240);
+            newFieldPane.setLayoutY(-390);
 
-        AnchorPane newAnchor = new AnchorPane(newFieldPane);
-        newAnchor.setPrefWidth(2400);
-        newAnchor.setPrefHeight(1566);
-        ScrollPane newScrollPane = new ScrollPane(newAnchor);
-        newScrollPane.setPrefWidth(200);
-        newScrollPane.setPrefHeight(200);
+            AnchorPane newAnchor = new AnchorPane(newFieldPane);
+            newAnchor.setPrefWidth(2400);
+            newAnchor.setPrefHeight(1566);
+            ScrollPane newScrollPane = new ScrollPane(newAnchor);
+            newScrollPane.setPrefWidth(200);
+            newScrollPane.setPrefHeight(200);
 
-        StackPane newHugeStackPane = new StackPane(newScrollPane);
-        newHugeStackPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        newHugeStackPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+            StackPane newHugeStackPane = new StackPane(newScrollPane);
+            newHugeStackPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+            newHugeStackPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+            //adds the enemy card
+            int id;
+            for (Coordinates c :fieldBuildingHelper){
+                //load the image
+                id = field.get(c).getId();
+                Image i = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+                ImageView newImageView = new ImageView(i);
+                newFieldPane.getChildren().add(newImageView);
+                newImageView.setFitWidth(200);
+                newImageView.setFitHeight(150);
+                newImageView.setTranslateX(c.x*155.5);
+                newImageView.setTranslateY(c.y*79.5);
+            }
 
-        playerListBox.getChildren().add(returnToMyFieldButton);
-        ((Pane) borderPane.getCenter()).getChildren().add(newHugeStackPane);
+            playerListBox.getChildren().add(returnToMyFieldButton);
+            ((Pane) borderPane.getCenter()).getChildren().add(newHugeStackPane);
 
-        returnToMyFieldButton.setOnMouseClicked(MouseEvent->returnToMyField(MouseEvent,oldFirstChild,newHugeStackPane));
-
+            returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent, oldFirstChild, newHugeStackPane));
+        }catch (RemoteException e){
+            //ERROR MESSAGE
+        }
     }
     private void returnToMyField(MouseEvent event,Node oldField,Node newField){
 
