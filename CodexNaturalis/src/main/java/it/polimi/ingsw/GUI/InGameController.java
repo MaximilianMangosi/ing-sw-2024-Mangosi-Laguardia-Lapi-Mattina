@@ -22,18 +22,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
 import javax.management.monitor.MonitorSettingException;
 import java.beans.EventHandler;
+import java.io.File;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InGameController extends GUIController {
     @FXML
@@ -98,9 +96,17 @@ public class InGameController extends GUIController {
 
 
         }
+        fieldPane.setOnDragOver(this::handleDragOver);
+        fieldPane.setOnDragDropped(this::handleDragDropped);
         updateHand(getHand());
         for(Node cardStack: handBox.getChildren() ){
             cardStack.setOnMouseClicked(this::flipCard);
+
+            ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handlePickUpCard);
+            ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handlePickUpCard);
+            ((StackPane) cardStack).getChildren().getFirst().setOnDragDone(this::handleDragDone);
+            ((StackPane) cardStack).getChildren().get(1).setOnDragDone(this::handleDragDone);
+
         }
         int i=0;
         for (Goal g: view.getPublicGoals()){
@@ -131,6 +137,8 @@ public class InGameController extends GUIController {
         scView.setFitHeight(150);
         scView.setOnMouseClicked(mouseEvent -> handleClickCard(mouseEvent,new Coordinates(0,0)));
         fieldPane.getChildren().add(scView);
+
+
 
 
         checkGameInfo();
@@ -348,6 +356,7 @@ public class InGameController extends GUIController {
         scoreboardButton.setVisible(true);
     }
     public void flipCard(MouseEvent e){
+        System.out.println("clickeda ùù asda");
         StackPane cardPane= (StackPane) e.getSource();
         for( Node cardView: cardPane.getChildren()){
             cardView.setVisible(!cardView.isVisible());
@@ -424,7 +433,7 @@ public class InGameController extends GUIController {
 
 
         }catch (RemoteException e){
-            //ERROR MESSAGE
+            //TODO ERROR MESSAGE
         }
     }
     private void returnToMyField(MouseEvent event,Node oldField,Node newField){
@@ -434,5 +443,41 @@ public class InGameController extends GUIController {
         playerListBox.getChildren().remove(event.getSource());
         returnButtonPresent=false;
     }
+    private void handlePickUpCard(MouseEvent event){
+        Dragboard db=((Node) event.getSource()).startDragAndDrop(TransferMode.MOVE);
+        ClipboardContent cpc = new ClipboardContent();
+        cpc.putImage(((ImageView)event.getSource()).getImage());
+        db.setContent(cpc);
+        event.consume();
+    }
+    private void handleDragOver(DragEvent e){
+        double hover_x = e.getX();
+        double hover_y = e.getY();
+        if(e.getDragboard().hasImage()){
+            e.acceptTransferModes(TransferMode.MOVE);
+        }
+        e.consume();
+    }
+    private void  handleDragDropped(DragEvent e){
+        Dragboard db = e.getDragboard();
+        double hover_x = e.getX()-1204;
+        double hover_y = e.getY()-805;
 
+        Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
+        ImageView newCardImage =new ImageView(db.getImage());
+        newCardImage.setFitWidth(200);
+        newCardImage.setFitHeight(150);
+        newCardImage.setTranslateX(newCoordinate.x*155.5);
+        newCardImage.setTranslateY(newCoordinate.y * 79.5);
+
+        fieldPane.getChildren().add(newCardImage);
+        e.setDropCompleted(true);
+
+    }
+    private void handleDragDone(DragEvent e ){
+        if (e.getTransferMode() == TransferMode.MOVE) {
+            handBox.getChildren().remove(((ImageView)e.getSource()).getParent());
+        }
+        e.consume();
+    }
 }

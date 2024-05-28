@@ -23,6 +23,20 @@
          <bottom>
             <StackPane alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="246.0" prefWidth="1931.0" BorderPane.alignment="CENTER">
                <children>
+                  <HBox alignment="BOTTOM_CENTER" prefHeight="146.0" prefWidth="1931.0" spacing="1600.0" translateY="-10.0">
+                     <children>
+                        <Button fx:id="scoreboardButton" mnemonicParsing="false" onAction="#showScoreboard" prefHeight="46.0" prefWidth="148.0" text="SCOREBOARD">
+                           <font>
+                              <Font name="Bodoni MT Condensed" size="25.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="deckButton" mnemonicParsing="false" onAction="#showDeck" prefHeight="46.0" prefWidth="95.0" text="DECKS">
+                           <font>
+                              <Font name="Bodoni MT Condensed" size="25.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
                   <HBox fx:id="handBox" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="230.0" prefWidth="845.0" spacing="5.0">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -65,20 +79,6 @@
                         <Font name="Bodoni MT Condensed" size="38.0" />
                      </font>
                   </Label>
-                  <HBox alignment="BOTTOM_CENTER" prefHeight="146.0" prefWidth="1931.0" spacing="1600.0" translateY="-10.0">
-                     <children>
-                        <Button fx:id="scoreboardButton" mnemonicParsing="false" onAction="#showScoreboard" prefHeight="46.0" prefWidth="148.0" text="SCOREBOARD">
-                           <font>
-                              <Font name="Bodoni MT Condensed" size="25.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="deckButton" mnemonicParsing="false" onAction="#showDeck" prefHeight="46.0" prefWidth="95.0" text="DECKS">
-                           <font>
-                              <Font name="Bodoni MT Condensed" size="25.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </HBox>
                </children>
             </StackPane>
          </bottom>
