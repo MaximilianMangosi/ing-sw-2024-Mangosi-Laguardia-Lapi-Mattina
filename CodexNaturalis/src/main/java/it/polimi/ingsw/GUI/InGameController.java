@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
+import it.polimi.ingsw.model.gamelogic.Player;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
@@ -450,28 +451,44 @@ public class InGameController extends GUIController {
         db.setContent(cpc);
         event.consume();
     }
-    private void handleDragOver(DragEvent e){
-        double hover_x = e.getX();
-        double hover_y = e.getY();
-        if(e.getDragboard().hasImage()){
-            e.acceptTransferModes(TransferMode.MOVE);
+    private void handleDragOver(DragEvent e)  {
+        try{
+            double hover_x = e.getX()-1204;
+            double hover_y = e.getY()-805;
+            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
+            List<Coordinates> avlbPositions = view.showPlayersLegalPositions(myID);
+
+            if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
+                e.acceptTransferModes(TransferMode.MOVE);
+            }
+            e.consume();
+        }catch (InvalidUserId invalidUserId){
+
+        }catch (RemoteException remoteException){
+
         }
-        e.consume();
+
     }
     private void  handleDragDropped(DragEvent e){
-        Dragboard db = e.getDragboard();
-        double hover_x = e.getX()-1204;
-        double hover_y = e.getY()-805;
+        try{
+            String p= view.getCurrentPlayer();
+            Dragboard db = e.getDragboard();
+            double hover_x = e.getX()-1204;
+            double hover_y = e.getY()-805;
 
-        Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
-        ImageView newCardImage =new ImageView(db.getImage());
-        newCardImage.setFitWidth(200);
-        newCardImage.setFitHeight(150);
-        newCardImage.setTranslateX(newCoordinate.x*155.5);
-        newCardImage.setTranslateY(newCoordinate.y * 79.5);
+            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
+            ImageView newCardImage =new ImageView(db.getImage());
+            newCardImage.setFitWidth(200);
+            newCardImage.setFitHeight(150);
+            newCardImage.setTranslateX(newCoordinate.x*155.5);
+            newCardImage.setTranslateY(newCoordinate.y * 79.5);
 
-        fieldPane.getChildren().add(newCardImage);
-        e.setDropCompleted(true);
+            fieldPane.getChildren().add(newCardImage);
+            e.setDropCompleted(true);
+        }catch (RemoteException ex){
+
+        }
+
 
     }
     private void handleDragDone(DragEvent e ){
