@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.exceptions.*;
-import it.polimi.ingsw.messages.servermessages.ServerMessage;
+import it.polimi.ingsw.messages.servermessages.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
@@ -25,7 +25,7 @@ import java.util.concurrent.*;
 public class Controller {
     protected GameState currentState;
     private ConcurrentHashMap <UUID,Boolean> pingMap= new ConcurrentHashMap<>();
-    private  BlockingQueue<ServerMessage> messageQueue = new LinkedBlockingQueue<>();
+    private BlockingQueue<ServerMessage> messageQueue = new LinkedBlockingQueue<>();
     private ViewRMI view;
     /**
      * constructor of Controller, creates a new GameState
@@ -131,6 +131,8 @@ public class Controller {
     public  UUID bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException,  IllegalOperationException, OnlyOneGameException {
         UUID userID= currentState.BootGame(numOfPlayers,playerName);
         view.updatePlayersList();
+        view.initializeFieldBuildingHelper(playerName);
+        addMessage(new PlayersListMessage(getPlayersList()));
         pingMap.put(userID,true);
         changeState();
         return userID;
@@ -140,17 +142,25 @@ public class Controller {
      * calls joinGame on currentState with the player's name as a parameter, then updates the players list in view and
      * calls changeState()
      * @author Giorgio Mattina
-     * @param playerName
+     * @param playerName the player's username joining the game
      * @return the UUID returned by currentState
      * @throws NoGameExistsException
      * @throws IllegalOperationException
      * @throws PlayerNameNotUniqueException
      */
-    public UUID joinGame(String playerName) throws NoGameExistsException, IllegalOperationException,PlayerNameNotUniqueException {
+    public UUID joinGame(String playerName) throws NoGameExistsException, IllegalOperationException, PlayerNameNotUniqueException {
         UUID userID= currentState.joinGame(playerName);
         view.updatePlayersList();
-        pingMap.put(userID,true);
+        view.initializeFieldBuildingHelper(playerName);
         changeState();
+        try {
+            if(view.isGameStarted()){
+                System.out.println("partita iniziata");
+                GameStartMessage gameStartMessage = new GameStartMessage(getPublicGoals(),getVisibleCards(),getCurrentPlayer());
+                addMessage(gameStartMessage);
+            }
+        } catch (RemoteException ignore){}
+        pingMap.put(userID,true);
         return userID;
     }
 
@@ -170,14 +180,18 @@ public class Controller {
      */
     public synchronized void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException {
         if(currentState.playCardFront(selectedCard, position, userId)){
-            view.setWinner(currentState.game.getWinner().getName());
+            String winnerName = currentState.game.getWinner().getName();
+            view.setWinner(winnerName);
             view.setIsGameEnded();
+            addMessage(new GameEndMessage(winnerName));
         }
         view.updatePlayersHands();
         view.updatePlayersField();
         view.updatePlayersPoints();
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
+        
+       handlePlayCardSocketUpdate(userId);
 
         currentState=currentState.nextState();
     }
@@ -198,14 +212,32 @@ public class Controller {
      */
     public synchronized void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException {
         if(currentState.playCardBack(selectedCard,position,userId)){
-            view.setWinner(currentState.game.getWinner().getName());
+            String winnerName = currentState.game.getWinner().getName();
+            view.setWinner(winnerName);
+            view.setIsGameEnded();
+            addMessage(new GameEndMessage(winnerName));
         }
         view.updatePlayersHands();
         view.updatePlayersField();
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
 
+        handlePlayCardSocketUpdate(userId);
+
         currentState=currentState.nextState();
+    }
+
+    /**
+     * adds to message queue the view updates for socket players caused by playCard
+     * @param userId the player who play the card
+     */
+    private void handlePlayCardSocketUpdate(UUID userId) {
+        String playerName = getUserIDs().get(userId).getName();
+        try {
+            addMessage(new FieldMessage(getPlayersField().get(playerName),getView().getFieldBuildingHelper(playerName),playerName));
+            addMessage(new PointsMessage(getPlayersPoints()));
+            addMessage(new TurnMessage(getCurrentPlayer()));
+        } catch (RemoteException ignore) {}
     }
 
     /**
@@ -222,6 +254,8 @@ public class Controller {
         view.updateStarterCardMap();
         view.updatePlayersField();
         view.updatePlayersLegalPosition();
+        String player = getUserIDs().get(userId).getName();
+        addMessage(new FieldMessage(getPlayersField().get(player),getView().getFieldBuildingHelper(player), player));
 
         currentState=currentState.nextState();
     }
@@ -260,8 +294,15 @@ public class Controller {
 
         view.updatePlayersHands();
         view.updateCurrentPlayer();
-        if(choice==0){ view.updateNumOfResourceCards(); }
-        else {view.updateNumOfGoldCards(); }
+        addMessage(new TurnMessage(getCurrentPlayer()));
+        if(choice==0){
+            view.updateNumOfResourceCards();
+            addMessage(new NumOfResourceCardsMessage(getNumOfResourceCards()));
+        }
+        else {
+            view.updateNumOfGoldCards();
+            addMessage(new NumOfGoldCardsMessage(getNumOfGoldCards()));
+        }
 
         currentState=currentState.nextState();
     }
@@ -284,6 +325,12 @@ public class Controller {
         view.updateNumOfGoldCards();
         view.updateNumOfResourceCards();
 
+        addMessage(new TurnMessage(getCurrentPlayer()));
+        addMessage(new VisibleCardMessage(getVisibleCards()));
+        addMessage(new NumOfGoldCardsMessage(getNumOfGoldCards()));
+        addMessage(new NumOfResourceCardsMessage(getNumOfResourceCards()));
+
+
         currentState=currentState.nextState();
     }
 
@@ -305,6 +352,12 @@ public class Controller {
         view.updatePlayersField();
         view.updateCurrentPlayer();
         view.updatePlayersPoints();
+
+        String username= getUserIDs().get(userID).getName();
+        addMessage(new PlayersListMessage(getPlayersList()));
+        addMessage(new RemoveFieldMessage(username));
+        addMessage(new TurnMessage(getCurrentPlayer()));
+        addMessage(new PointsMessage(getPlayersPoints()));
     }
 
     /**

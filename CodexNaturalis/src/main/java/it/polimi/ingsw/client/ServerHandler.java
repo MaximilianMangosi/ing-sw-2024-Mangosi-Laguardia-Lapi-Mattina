@@ -41,8 +41,7 @@ public class ServerHandler extends Thread{
         }
         try {
             while (true){
-                ServerMessage message;
-                message = (ServerMessage) input.readObject();
+                ServerMessage message = (ServerMessage) input.readObject();
                 message.processMessage(view);
                 synchronized (updateTUI) {
                     updateTUI.notifyAll();

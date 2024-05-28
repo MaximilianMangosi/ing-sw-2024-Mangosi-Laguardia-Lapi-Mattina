@@ -36,6 +36,7 @@ public class GameData {
     }
 
     public void setChatData(List<String> chatData){
+        System.out.println("chat received");
         this.chatData = chatData;
     }
 

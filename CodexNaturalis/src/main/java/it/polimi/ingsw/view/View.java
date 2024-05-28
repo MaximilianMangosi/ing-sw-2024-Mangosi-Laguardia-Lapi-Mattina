@@ -73,6 +73,7 @@ public interface View {
     List<Coordinates> getFieldBuildingHelper(String name) throws RemoteException;
 
     void initializeFieldBuildingHelper(String myName) throws RemoteException;
+    void updateFieldBuildingHelper(Coordinates position, String username) throws RemoteException ;
 
     Reign getTopOfResourceCardDeck() throws RemoteException;
 

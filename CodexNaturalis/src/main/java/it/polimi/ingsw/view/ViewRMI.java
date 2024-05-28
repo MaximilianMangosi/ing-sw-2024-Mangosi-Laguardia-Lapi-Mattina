@@ -316,7 +316,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     @Override
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId {
         controller.playCardFront(selectedCard, position, userId);
-        updateFieldBuildingHelper(position, userId);
+        updateFieldBuildingHelper(position,controller.getUserIDs().get(userId).getName());
     }
 
     /**
@@ -337,11 +337,10 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     @Override
     public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId {
         controller.playCardBack(selectedCard, position, userId);
-        updateFieldBuildingHelper(position, userId);
+        updateFieldBuildingHelper(position, controller.getUserIDs().get(userId).getName());
     }
 
-    private void updateFieldBuildingHelper(Coordinates position, UUID userId)  {
-        String username=controller.getUserIDs().get(userId).getName();
+    public void updateFieldBuildingHelper(Coordinates position, String username)  {
         fieldBuildingHelper.get(username).add(position);
     }
 
@@ -357,7 +356,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     @Override
     public void chooseStarterCardSide(boolean isFront, UUID userId) throws RemoteException, InvalidUserId, IllegalOperationException, InvalidUserId {
         controller.chooseStarterCardSide(isFront, userId);
-        updateFieldBuildingHelper(new Coordinates(0,0),userId);
+        updateFieldBuildingHelper(new Coordinates(0,0),controller.getUserIDs().get(userId).getName());
     }
 
     /**
@@ -457,7 +456,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws RemoteException
      */
     @Override
-    public void initializeFieldBuildingHelper(String myName) throws RemoteException {
+    public void initializeFieldBuildingHelper(String myName) {
         fieldBuildingHelper.put(myName,new ArrayList<>());
     }
 

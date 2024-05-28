@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 import java.rmi.RemoteException;
 
 /**
- * thread that waits 30 seconds, prints "I'm Awake" and updates the UI
+ * thread updates the TUI and waits 15 seconds
  */
 public class UpdateTUI extends Thread{
     final OutStreamWriter writer;
@@ -18,13 +18,14 @@ public class UpdateTUI extends Thread{
     public void run(){
         while (true){
             try {
-                synchronized (this){
+
+                tui.updateIdleUI();
+                synchronized (writer){
+                    writer.clearScreen();
+                    writer.print(tui.getIdleUI());
+                }
+                synchronized (this) {
                     wait(15000);
-                    tui.updateIdleUI();
-                    synchronized (writer){
-                        writer.clearScreen();
-                        writer.print(tui.getIdleUI());
-                    }
                 }
             } catch (RemoteException e) {
                 throw new RuntimeException(e);

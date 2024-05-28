@@ -17,9 +17,6 @@ import java.rmi.RemoteException;
 import java.util.UUID;
 
 public class GUIController extends UserInterface {
-    protected View view;
-    protected UUID myID;
-    protected String myName;
     protected Stage stage;
     protected Scene scene;
     protected Parent root;
@@ -34,18 +31,18 @@ public class GUIController extends UserInterface {
     }
     public void changeScene(String pathXML, ActionEvent event) throws IOException, InvalidUserId {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(pathXML));
-        Parent root = loader.load();
+        root = loader.load();
         GUIController c = loader.getController();
         c.setView(view);
         c.setMyId(myID);
         c.setMyName(myName);
         c.init();
-        Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
+        stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
         stage.setScene(scene);
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        stage.setHeight(screenBounds.getHeight());
-        stage.setWidth(screenBounds.getWidth());
+//        stage.setHeight(screenBounds.getHeight());
+//        stage.setWidth(screenBounds.getWidth());
         stage.centerOnScreen();
         stage.show();
     }
