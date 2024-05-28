@@ -77,6 +77,8 @@ public class InGameController extends GUIController {
     private Map<ImageView,Integer> handCardsId = new HashMap<>();
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
+    private boolean returnButtonPresent= false;
+
     public void init() throws RemoteException, InvalidUserId {
         deckBox.setVisible(false);
         hideDeckButton.setVisible(false);
@@ -92,7 +94,7 @@ public class InGameController extends GUIController {
             sp.getChildren().add(label);
             playerListBox.getChildren().add(sp);
             //makes label clickable
-            //label.setOnMouseClicked(this::showEnemyField);
+            label.setOnMouseClicked(this::showEnemyField);
 
 
         }
@@ -376,7 +378,6 @@ public class InGameController extends GUIController {
             Map<Coordinates, Card> field = view.getPlayersField(username);
             List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
 
-            Button returnToMyFieldButton = new Button("Return");
 
             //saves the old field and sets it invisible
             Pane oldCenter = (Pane) borderPane.getCenter();
@@ -412,17 +413,26 @@ public class InGameController extends GUIController {
                 newImageView.setTranslateX(c.x*155.5);
                 newImageView.setTranslateY(c.y*79.5);
             }
-
-            playerListBox.getChildren().add(returnToMyFieldButton);
+            if(!returnButtonPresent) {
+                Button returnToMyFieldButton = new Button("Return");
+                playerListBox.getChildren().add(returnToMyFieldButton);
+                returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent, oldFirstChild, newHugeStackPane));
+                returnButtonPresent=true;
+            }
             ((Pane) borderPane.getCenter()).getChildren().add(newHugeStackPane);
 
-            returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent, oldFirstChild, newHugeStackPane));
+
+
         }catch (RemoteException e){
             //ERROR MESSAGE
         }
     }
     private void returnToMyField(MouseEvent event,Node oldField,Node newField){
-
+        Pane oldCenter = (Pane) borderPane.getCenter();
+        oldCenter.getChildren().remove(newField);
+        oldField.setVisible(true);
+        playerListBox.getChildren().remove(event.getSource());
+        returnButtonPresent=false;
     }
 
 }
