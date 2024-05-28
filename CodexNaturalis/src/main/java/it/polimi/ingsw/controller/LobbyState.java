@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
@@ -67,5 +68,15 @@ public class LobbyState extends GameState{
             game.startGame();
         }
         return identity;
+    }
+
+    @Override
+    public void addToGlobalChat(String message) throws IllegalOperationException {
+        throw new IllegalOperationException("write message");
+    }
+
+    @Override
+    public void addMessage(String name, String message, UUID userID) throws IllegalOperationException {
+        throw new IllegalOperationException("write message");
     }
 }

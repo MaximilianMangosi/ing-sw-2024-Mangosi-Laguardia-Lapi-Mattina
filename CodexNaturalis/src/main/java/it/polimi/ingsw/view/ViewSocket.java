@@ -416,6 +416,16 @@ public class  ViewSocket implements View{
     }
 
     @Override
+    public void sendPrivateMessage(String receiver, String message, UUID sender) throws RemoteException, IllegalOperationException {
+
+    }
+
+    @Override
+    public List<String> getPrivateChat(String receiver, UUID uuid) throws RemoteException {
+        return null;
+    }
+
+    @Override
     public void sendChatMessage(String message) throws IOException, ClassNotFoundException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException {
       output.writeObject(new ChatMessage(message));
       ServerMessage reply = readMessage();

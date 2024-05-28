@@ -1,5 +1,6 @@
 package it.polimi.ingsw.messages.clientmessages;
 
+import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.messages.servermessages.SuccessMessage;
 import it.polimi.ingsw.messages.servermessages.UpdateChatMessage;
 import it.polimi.ingsw.server.ClientHandler;
@@ -17,7 +18,11 @@ public class ChatMessage extends ClientMessage {
     @Override
     public void processMessage(ClientHandler clientHandler) throws IOException {
         ViewRMI view = clientHandler.getController().getView();
-        view.sendChatMessage(chatMessage);
+        try {
+            view.sendChatMessage(chatMessage);
+        } catch (IllegalOperationException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println(view.getChatList());
         clientHandler.answerClient(new SuccessMessage());
         clientHandler.broadCast(new UpdateChatMessage(view.getChatList()));
