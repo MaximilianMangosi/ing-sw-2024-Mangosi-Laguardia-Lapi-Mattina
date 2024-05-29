@@ -48,7 +48,7 @@ public class ClientHandler implements Runnable{
             new Thread(this::RMIToSocketDispatcher).start();
             handleConnection();
         } catch (IOException e) {
-            System.out.println("client" + client.getInetAddress() + "connection dropped\n");
+            System.out.println("client" + client.getInetAddress() + " connection dropped\n");
         }
 
         try{
@@ -77,7 +77,6 @@ public class ClientHandler implements Runnable{
                 viewUpdater.sendAll(newMsg);
             } catch (IOException e) {
                 System.out.println("RMIToSocketDispatcher stopped");
-                System.exit(1);
             }
         }
     }
@@ -152,5 +151,9 @@ public class ClientHandler implements Runnable{
 
     public void sendTo(UUID id, ServerMessage message) throws IOException {
         viewUpdater.sendTo(message, id);
+    }
+
+    public void removeClient(UUID myID) {
+        viewUpdater.removeClient(myID);
     }
 }

@@ -176,14 +176,12 @@ public class TextUserInterface extends UserInterface {
                             }
                         }
                     }
-                    if (view.isRMI()) {
-                        PingPongRMI td1 = new PingPongRMI((ViewRMIInterface) view, myID);
-                        td1.start();
-                    }
-                    else{
+                    if(!view.isRMI()){
                         ServerHandler td2= new ServerHandler((ViewSocket) view,tuiUpdater,myID);
                         td2.start();
                     }
+                    PingPong td1 = new PingPong( view, myID);
+                    td1.start();
                     tuiUpdater.start();
                     break;
                 case "choose-goal":

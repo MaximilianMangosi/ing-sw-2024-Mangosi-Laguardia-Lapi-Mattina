@@ -153,9 +153,9 @@ public class Controller {
         view.updatePlayersList();
         view.initializeFieldBuildingHelper(playerName);
         changeState();
+        addMessage(new PlayersListMessage((getPlayersList())));
         try {
             if(view.isGameStarted()){
-                System.out.println("partita iniziata");
                 GameStartMessage gameStartMessage = new GameStartMessage(getPublicGoals(),getVisibleCards(),getCurrentPlayer());
                 addMessage(gameStartMessage);
             }
@@ -191,7 +191,7 @@ public class Controller {
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
         
-       handlePlayCardSocketUpdate(userId);
+        handlePlayCardSocketUpdate(userId);
 
         currentState=currentState.nextState();
     }
@@ -340,12 +340,8 @@ public class Controller {
      * @param userID the users' identifier who's closing the game
      */
     public synchronized void closeGame(UUID userID) throws RemoteException {
+        String username= getUserIDs().get(userID).getName();
         currentState.closeGame(userID);
-        if(getUserIDs().size()<2){
-            List<UUID> id = new ArrayList<>(currentState.userIDs.keySet());
-            view.setWinner(currentState.getPlayerFromUid(id.getFirst()).getName());
-            deleteGameFromGameManager();
-        }
         view.updatePlayersList();
         view.updatePlayersHands();
         view.updatePrivateGoals();
@@ -353,11 +349,20 @@ public class Controller {
         view.updateCurrentPlayer();
         view.updatePlayersPoints();
 
-        String username= getUserIDs().get(userID).getName();
         addMessage(new PlayersListMessage(getPlayersList()));
         addMessage(new RemoveFieldMessage(username));
         addMessage(new TurnMessage(getCurrentPlayer()));
         addMessage(new PointsMessage(getPlayersPoints()));
+
+        if(getUserIDs().size()<2){
+            List<UUID> id = new ArrayList<>(currentState.userIDs.keySet());
+            String winner=currentState.getPlayerFromUid(id.getFirst()).getName();
+            view.setWinner(winner);
+            view.setIsGameEnded();
+            addMessage(new GameEndMessage(winner));
+            deleteGameFromGameManager();
+        }
+
     }
 
     /**

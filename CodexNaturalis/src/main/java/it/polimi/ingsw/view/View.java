@@ -80,8 +80,7 @@ public interface View {
     Reign getTopOfGoldCardDeck() throws RemoteException;
     boolean amIPinged(UUID id) throws RemoteException;
 
-    void pong(UUID myID)throws RemoteException;
-
+    void pong(UUID myID) throws IOException, ClassNotFoundException;
     List<String> getChatList() throws RemoteException;
 
     void sendChatMessage(String message) throws IOException, ClassNotFoundException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException;
