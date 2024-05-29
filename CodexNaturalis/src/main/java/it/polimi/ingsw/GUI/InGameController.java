@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
+import it.polimi.ingsw.model.gamelogic.Player;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
@@ -22,18 +23,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
 import javax.management.monitor.MonitorSettingException;
 import java.beans.EventHandler;
+import java.io.File;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InGameController extends GUIController {
     @FXML
@@ -77,6 +76,8 @@ public class InGameController extends GUIController {
     private Map<ImageView,Integer> handCardsId = new HashMap<>();
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
+    private boolean returnButtonPresent= false;
+
     public void init() throws RemoteException, InvalidUserId {
         deckBox.setVisible(false);
         hideDeckButton.setVisible(false);
@@ -92,13 +93,21 @@ public class InGameController extends GUIController {
             sp.getChildren().add(label);
             playerListBox.getChildren().add(sp);
             //makes label clickable
-            //label.setOnMouseClicked(this::showEnemyField);
+            label.setOnMouseClicked(this::showEnemyField);
 
 
         }
+        fieldPane.setOnDragOver(this::handleDragOver);
+        fieldPane.setOnDragDropped(this::handleDragDropped);
         updateHand(getHand());
         for(Node cardStack: handBox.getChildren() ){
             cardStack.setOnMouseClicked(this::flipCard);
+
+            ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handlePickUpCard);
+            ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handlePickUpCard);
+            ((StackPane) cardStack).getChildren().getFirst().setOnDragDone(this::handleDragDone);
+            ((StackPane) cardStack).getChildren().get(1).setOnDragDone(this::handleDragDone);
+
         }
         int i=0;
         for (Goal g: view.getPublicGoals()){
@@ -129,6 +138,8 @@ public class InGameController extends GUIController {
         scView.setFitHeight(150);
         scView.setOnMouseClicked(mouseEvent -> handleClickCard(mouseEvent,new Coordinates(0,0)));
         fieldPane.getChildren().add(scView);
+
+
 
 
         checkGameInfo();
@@ -346,6 +357,7 @@ public class InGameController extends GUIController {
         scoreboardButton.setVisible(true);
     }
     public void flipCard(MouseEvent e){
+        System.out.println("clickeda ùù asda");
         StackPane cardPane= (StackPane) e.getSource();
         for( Node cardView: cardPane.getChildren()){
             cardView.setVisible(!cardView.isVisible());
@@ -367,46 +379,122 @@ public class InGameController extends GUIController {
 
     }
     //
-    private void showEnemyField(MouseEvent event) throws RemoteException {
+    private void showEnemyField(MouseEvent event)  {
         //fetch the other player's hand
-        Label l =(Label) event.getSource();
-        String username = l.getText();
+        try {
+            Label l = (Label) event.getSource();
+            String username = l.getText();
 
-        Map <Coordinates, Card> field=  view.getPlayersField(username);
-        List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
+            Map<Coordinates, Card> field = view.getPlayersField(username);
+            List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
 
-        Button returnToMyFieldButton = new Button("Return");
 
-        //saves the old field and sets it invisible
-        Pane oldCenter = (Pane) borderPane.getCenter();
-        Node oldFirstChild = oldCenter.getChildren().getFirst();
-        oldFirstChild.setVisible(false);
-        //build a new field
-        StackPane newFieldPane = new StackPane();
-        newFieldPane.setPrefWidth(2408);
-        newFieldPane.setPrefHeight(1610);
-        newFieldPane.setLayoutX(-240);
-        newFieldPane.setLayoutY(-390);
+            //saves the old field and sets it invisible
+            Pane oldCenter = (Pane) borderPane.getCenter();
+            Node oldFirstChild = oldCenter.getChildren().getFirst();
+            oldFirstChild.setVisible(false);
+            //build a new field
+            StackPane newFieldPane = new StackPane();
+            newFieldPane.setPrefWidth(2408);
+            newFieldPane.setPrefHeight(1610);
+            newFieldPane.setLayoutX(-240);
+            newFieldPane.setLayoutY(-390);
 
-        AnchorPane newAnchor = new AnchorPane(newFieldPane);
-        newAnchor.setPrefWidth(2400);
-        newAnchor.setPrefHeight(1566);
-        ScrollPane newScrollPane = new ScrollPane(newAnchor);
-        newScrollPane.setPrefWidth(200);
-        newScrollPane.setPrefHeight(200);
+            AnchorPane newAnchor = new AnchorPane(newFieldPane);
+            newAnchor.setPrefWidth(2400);
+            newAnchor.setPrefHeight(1566);
+            ScrollPane newScrollPane = new ScrollPane(newAnchor);
+            newScrollPane.setPrefWidth(200);
+            newScrollPane.setPrefHeight(200);
 
-        StackPane newHugeStackPane = new StackPane(newScrollPane);
-        newHugeStackPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        newHugeStackPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+            StackPane newHugeStackPane = new StackPane(newScrollPane);
+            newHugeStackPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+            newHugeStackPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+            //adds the enemy card
+            int id;
+            for (Coordinates c :fieldBuildingHelper){
+                //load the image
+                id = field.get(c).getId();
+                Image i = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+                ImageView newImageView = new ImageView(i);
+                newFieldPane.getChildren().add(newImageView);
+                newImageView.setFitWidth(200);
+                newImageView.setFitHeight(150);
+                newImageView.setTranslateX(c.x*155.5);
+                newImageView.setTranslateY(c.y*79.5);
+            }
+            if(!returnButtonPresent) {
+                Button returnToMyFieldButton = new Button("Return");
+                playerListBox.getChildren().add(returnToMyFieldButton);
+                returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent, oldFirstChild, newHugeStackPane));
+                returnButtonPresent=true;
+            }
+            ((Pane) borderPane.getCenter()).getChildren().add(newHugeStackPane);
 
-        playerListBox.getChildren().add(returnToMyFieldButton);
-        ((Pane) borderPane.getCenter()).getChildren().add(newHugeStackPane);
 
-        returnToMyFieldButton.setOnMouseClicked(MouseEvent->returnToMyField(MouseEvent,oldFirstChild,newHugeStackPane));
 
+        }catch (RemoteException e){
+            //TODO ERROR MESSAGE
+        }
     }
     private void returnToMyField(MouseEvent event,Node oldField,Node newField){
+        Pane oldCenter = (Pane) borderPane.getCenter();
+        oldCenter.getChildren().remove(newField);
+        oldField.setVisible(true);
+        playerListBox.getChildren().remove(event.getSource());
+        returnButtonPresent=false;
+    }
+    private void handlePickUpCard(MouseEvent event){
+        Dragboard db=((Node) event.getSource()).startDragAndDrop(TransferMode.MOVE);
+        ClipboardContent cpc = new ClipboardContent();
+        cpc.putImage(((ImageView)event.getSource()).getImage());
+        db.setContent(cpc);
+        event.consume();
+    }
+    private void handleDragOver(DragEvent e)  {
+        try{
+            double hover_x = e.getX()-1204;
+            double hover_y = e.getY()-805;
+            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
+            List<Coordinates> avlbPositions = view.showPlayersLegalPositions(myID);
+
+            if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
+                e.acceptTransferModes(TransferMode.MOVE);
+            }
+            e.consume();
+        }catch (InvalidUserId invalidUserId){
+
+        }catch (RemoteException remoteException){
+
+        }
 
     }
+    private void  handleDragDropped(DragEvent e){
+        try{
+            String p= view.getCurrentPlayer();
+            Dragboard db = e.getDragboard();
+            double hover_x = e.getX()-1204;
+            double hover_y = e.getY()-805;
 
+            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
+            ImageView newCardImage =new ImageView(db.getImage());
+            newCardImage.setFitWidth(200);
+            newCardImage.setFitHeight(150);
+            newCardImage.setTranslateX(newCoordinate.x*155.5);
+            newCardImage.setTranslateY(newCoordinate.y * 79.5);
+
+            fieldPane.getChildren().add(newCardImage);
+            e.setDropCompleted(true);
+        }catch (RemoteException ex){
+
+        }
+
+
+    }
+    private void handleDragDone(DragEvent e ){
+        if (e.getTransferMode() == TransferMode.MOVE) {
+            handBox.getChildren().remove(((ImageView)e.getSource()).getParent());
+        }
+        e.consume();
+    }
 }

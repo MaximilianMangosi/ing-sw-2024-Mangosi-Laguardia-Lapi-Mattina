@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
@@ -39,5 +40,15 @@ public class TerminalState extends GameState{
     @Override
     public boolean isGameStarted() {
         return true;
+    }
+
+    @Override
+    public void addToGlobalChat(String message) throws IllegalOperationException {
+        throw new IllegalOperationException("write message");
+    }
+
+    @Override
+    public void addMessage(String name, String message, UUID userID) throws IllegalOperationException {
+        throw new IllegalOperationException("write message");
     }
 }

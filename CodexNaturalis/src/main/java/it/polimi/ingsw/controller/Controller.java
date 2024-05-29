@@ -27,6 +27,24 @@ public class Controller {
     private ConcurrentHashMap <UUID,Boolean> pingMap= new ConcurrentHashMap<>();
     private BlockingQueue<ServerMessage> messageQueue = new LinkedBlockingQueue<>();
     private ViewRMI view;
+
+    public List<String> getGlobalChat(){
+        return currentState.game.getGlobalChat();
+    }
+
+    public List<String> getPrivateChat(String name, UUID userID){
+        return currentState.game.getPlayers().stream().filter(p -> p.getName().equals(currentState.userIDs.get(userID).getName())).findAny().get().getPrivateChat(name);
+    }
+
+    public void addToGlobalChat(String message) throws IllegalOperationException {
+        currentState.addToGlobalChat(message);
+        view.updateGlobalChat();
+    }
+
+    public void addMessage(String name, String message, UUID userID) throws IllegalOperationException {
+        currentState.addMessage(name,message, userID);
+        view.updatePrivateChat();
+    }
     /**
      * constructor of Controller, creates a new GameState
      * @author Giorgio Mattina

@@ -15,12 +15,22 @@ import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class GameState {
     protected Game game;
     protected HashMap<UUID, Player> userIDs=new HashMap<>() ;
     protected GameManager gameManager;
+
+
+    public void addToGlobalChat(String message) throws IllegalOperationException {
+        game.addToGlobalChat(message);
+    }
+
+    public void addMessage(String name, String message, UUID userID) throws IllegalOperationException {
+        game.getPlayers().stream().filter(p -> p.getName().equals(userIDs.get(userID).getName())).findAny().get().getPrivateChat(name).add(message);
+    }
 
     /**
      * @param gameManager

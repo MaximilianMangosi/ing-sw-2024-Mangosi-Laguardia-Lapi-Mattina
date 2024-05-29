@@ -35,6 +35,16 @@ public class Game{
     private Player currentPlayer;
     private List<StarterCard> starterCards=new ArrayList<>();
 
+    private List<String> globalChat = new ArrayList<>();
+
+    public List<String> getGlobalChat(){
+        return globalChat;
+    }
+
+    public void addToGlobalChat(String message){
+        globalChat.add(message);
+    }
+
 
     /**
      * constructor of class Game

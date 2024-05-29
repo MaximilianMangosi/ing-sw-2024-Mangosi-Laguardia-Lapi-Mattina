@@ -83,5 +83,10 @@ public interface View {
     void pong(UUID myID) throws IOException, ClassNotFoundException;
     List<String> getChatList() throws RemoteException;
 
+
+    public void sendPrivateMessage(String receiver, String message, UUID sender) throws RemoteException, IllegalOperationException;
+
+    public List<String> getPrivateChat(String receiver, UUID uuid) throws RemoteException;
+
     void sendChatMessage(String message) throws IOException, ClassNotFoundException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException;
 }

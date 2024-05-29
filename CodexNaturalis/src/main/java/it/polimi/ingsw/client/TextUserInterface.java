@@ -341,19 +341,50 @@ public class TextUserInterface extends UserInterface {
                     tuiUpdater.interrupt();
                     outWriter.print("You quit the game, type 'start-game' to restart playing\n");
                     break;
-                case "show-chat":
-                    List<String> chatShow = view.getChatList();
-                    for (String chats : chatShow){
-                        outWriter.print(chats);
+                case "open-global-chat":
+                    Thread t2 = new Thread(this::printGlobalChat);
+                    t2.start();
+
+                    while(true) {
+                        outWriter.print("Write your message: ");
+
+                        //TODO: add color
+                        String message = s.nextLine();
+                        if (message.equals("-close")){
+                            t2.interrupt();
+                            break;
+                        }
+                        view.sendChatMessage(myName + ": " + message);
+                        outWriter.print("If you wish to exit write -close");
                     }
                     break;
-                case "write-chat":
-                    List<String> chatWrite = view.getChatList();
-                    for (String chats : chatWrite){
-                        outWriter.print(chats);
+                case "open-private-chat":
+                    while(true) {
+                        outWriter.print("Who do you want to message with? ");
+                        String name = s.nextLine();
+                        if (!view.getPlayersList().contains(name)) {
+                            outWriter.print(name + " does not exist");
+                        }if (name.equals(myName)){
+                            outWriter.print("You can not write a message to yourself");
+                        }else {
+                            Thread t1 = new Thread(()->printChat(name));
+                            t1.start();
+                            while(true) {
+                                outWriter.print("Write your message: ");
+
+                                //TODO: add color
+                                String message = s.nextLine();
+                                if (message.equals("-close")){
+                                    t1.interrupt();
+                                    break;
+                                }
+                                message =  myName + ":" + message;
+                                view.sendPrivateMessage(name, message, myID);
+                                outWriter.print("If you wish to exit write -close");
+                            }
+                            break;
+                        }
                     }
-                    outWriter.print("Write your message: ");
-                    view.sendChatMessage(myName + ": " + s.nextLine());
                     break;
                 default:
                     outWriter.print("Unknown command");
@@ -361,7 +392,42 @@ public class TextUserInterface extends UserInterface {
         }
     }
 
+    private void printGlobalChat() {
+        try {
+            while (true){
+                outWriter.clearScreen();
+                List<String> chat = view.getChatList();
+                for (String chats : chat){
+                    outWriter.print(chats);
+                }
+                Thread.sleep(10000);
+            }
+        }catch (RemoteException e){
+            outWriter.print("connection error");
+            System.exit(1);
+        } catch (InterruptedException e) {
 
+        }
+    }
+
+    private void printChat(String name){
+        try {
+            while (true){
+
+                outWriter.clearScreen();
+                List<String> chat = view.getPrivateChat(name, myID);
+                for (String chats : chat){
+                    outWriter.print(chats);
+                }
+                Thread.sleep(10000);
+            }
+        }catch (RemoteException e){
+            outWriter.print("connection error");
+            System.exit(1);
+        } catch (InterruptedException e) {
+
+        }
+    }
 
     /**
      * reads from terminal the choice of the position, then returns the Coordinates of that choice
