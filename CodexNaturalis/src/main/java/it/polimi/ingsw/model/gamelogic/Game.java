@@ -174,13 +174,14 @@ public class Game{
         Player player;
         //Mi manca un attimo come funziona APP ,cioè devo fare una copia dei mazzi da APP e poi fare lo shuffle
         String[] colorArray={"Red","Blue","Yellow","Green"};
-        List<String> Colors= new ArrayList<String>(List.of(colorArray));
+        List<String> colors= new ArrayList<String>(List.of(colorArray));
 
 
         shuffle(resourceCardDeck);
         shuffle(goldCardDeck);
         shuffle(listOfGoal);
         shuffle(starterCards);
+        shuffle(colors);
         Resource[] resourceArray={Reign.ANIMAL,Reign.MUSHROOM,Reign.BUG,Reign.PLANTS, Tool.PHIAL,Tool.FEATHER,Tool.SCROLL};
         publicGoals[0] = listOfGoal.removeFirst();
         publicGoals[1]=listOfGoal.removeFirst();
@@ -188,7 +189,7 @@ public class Game{
         for (i = 0; i < numOfPlayers; i++) {
 
             player = listOfPlayers.get(i);
-            player.setColor(Colors.get(i));
+            player.setColor(colors.get(i));
             player.setPoints(0);
             //initialize the player's resource counter to 0
             for (Resource resource: resourceArray){
@@ -211,10 +212,11 @@ public class Game{
                 goalOptions[k]=listOfGoal.removeFirst();
             }
             player.setGoalOptions(goalOptions);
-
-
-            //aggiungere posizione della starter card
-
+            //initialize private chats
+            for (Player p: listOfPlayers){
+                if(!p.getName().equals(player.getName()))
+                    player.setPrivateChat(p.getName(),new ArrayList<>());
+            }
 
 
         }

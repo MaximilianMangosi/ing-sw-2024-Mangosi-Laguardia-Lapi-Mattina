@@ -4,17 +4,32 @@ import it.polimi.ingsw.view.ViewSocket;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class UpdateChatMessage extends ServerMessage{
+    private final String user;
+    private  UUID updateReceiver;
     private final List<String> messages;
 
-    public UpdateChatMessage(List<String> messages){
+    public UpdateChatMessage(String user,List<String> messages){
         this.messages =new ArrayList<>(messages);
+        this.user=user;
+    }
+    public UpdateChatMessage(UUID receiver,String user,List<String> messages){
+        this.messages =new ArrayList<>(messages);
+        this.user=user;
+        this.updateReceiver=receiver;
     }
 
     @Override
     public void processMessage(ViewSocket view) {
-        System.out.println(messages);
-        view.getGameData().setChatData(messages);
+        if(user.equals("global"))
+            view.getGameData().setChatData(messages);
+        else
+            view.getGameData().setPrivateChat(user,messages);
+    }
+
+    public UUID getReceiver() {
+        return updateReceiver;
     }
 }

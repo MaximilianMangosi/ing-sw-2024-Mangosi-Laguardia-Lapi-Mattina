@@ -13,12 +13,12 @@ import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.ViewRMIInterface;
 import it.polimi.ingsw.view.ViewSocket;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Class that handles the displaying of the TUI and communicate with the server
@@ -342,23 +342,28 @@ public class TextUserInterface extends UserInterface {
                     outWriter.print("You quit the game, type 'start-game' to restart playing\n");
                     break;
                 case "open-global-chat":
-                    Thread t2 = new Thread(this::printGlobalChat);
+                    outWriter.print("Write -close to exit from chat");
+                    outWriter.print("Write -m to enter write mode");
+                    AtomicBoolean stop2= new AtomicBoolean(false);
+                    Thread t2 = new Thread(()->printGlobalChat(stop2));
                     t2.start();
-
                     while(true) {
                         outWriter.print("Write your message: ");
-
                         //TODO: add color
+                        if(s.nextLine().equals("-m")) {
+                            stop2.set(true);
+                        }
                         String message = s.nextLine();
                         if (message.equals("-close")){
                             t2.interrupt();
                             break;
                         }
                         view.sendChatMessage(myName + ": " + message);
-                        outWriter.print("If you wish to exit write -close");
+                        stop2.set(false);
                     }
                     break;
                 case "open-private-chat":
+
                     while(true) {
                         outWriter.print("Who do you want to message with? ");
                         String name = s.nextLine();
@@ -367,20 +372,26 @@ public class TextUserInterface extends UserInterface {
                         }if (name.equals(myName)){
                             outWriter.print("You can not write a message to yourself");
                         }else {
-                            Thread t1 = new Thread(()->printChat(name));
+                            outWriter.print("Write -close to exit from chat");
+                            outWriter.print("Write -m to enter write mode");
+                            AtomicBoolean stop1=new AtomicBoolean(false);
+                            Thread t1 = new Thread(()->printChat(name,stop1));
                             t1.start();
                             while(true) {
-                                outWriter.print("Write your message: ");
 
                                 //TODO: add color
+                                if(s.nextLine().equals("-m")) {
+                                    stop1.set(true);
+                                }
                                 String message = s.nextLine();
+
                                 if (message.equals("-close")){
                                     t1.interrupt();
                                     break;
                                 }
-                                message =  myName + ":" + message;
+                                message =  myName + ": " + message;
                                 view.sendPrivateMessage(name, message, myID);
-                                outWriter.print("If you wish to exit write -close");
+                                stop1.set(false);
                             }
                             break;
                         }
@@ -392,41 +403,46 @@ public class TextUserInterface extends UserInterface {
         }
     }
 
-    private void printGlobalChat() {
+    private void printGlobalChat(AtomicBoolean stop) {
         try {
             while (true){
-                outWriter.clearScreen();
-                List<String> chat = view.getChatList();
-                for (String chats : chat){
-                    outWriter.print(chats);
+                if(!stop.get()) {
+                    outWriter.clearScreen();
+                    List<String> chat = view.getChatList();
+                    if(chat!=null) {
+                        for (String chats : chat) {
+                            outWriter.print(chats);
+                        }
+                    }
+                    Thread.sleep(1500);
                 }
-                Thread.sleep(10000);
             }
         }catch (RemoteException e){
             outWriter.print("connection error");
             System.exit(1);
-        } catch (InterruptedException e) {
-
+        } catch (InterruptedException ignored) {
         }
     }
 
-    private void printChat(String name){
+    private void printChat(String name, AtomicBoolean stop){
         try {
             while (true){
 
-                outWriter.clearScreen();
-                List<String> chat = view.getPrivateChat(name, myID);
-                for (String chats : chat){
-                    outWriter.print(chats);
+                if (!stop.get()) {
+                    outWriter.clearScreen();
+                    List<String> chat = getPrivateChat(name);
+                    if(chat!=null) {
+                        for (String chats : chat) {
+                            outWriter.print(chats);
+                        }
+                    }
+                    Thread.sleep(1500);
                 }
-                Thread.sleep(10000);
             }
         }catch (RemoteException e){
             outWriter.print("connection error");
             System.exit(1);
-        } catch (InterruptedException e) {
-
-        }
+        } catch (InterruptedException ignored) {}
     }
 
     /**

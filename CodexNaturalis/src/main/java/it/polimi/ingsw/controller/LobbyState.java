@@ -76,7 +76,7 @@ public class LobbyState extends GameState{
     }
 
     @Override
-    public void addMessage(String name, String message, UUID userID) throws IllegalOperationException {
+    public void addMessage(String receiver, String message, UUID userID) throws IllegalOperationException {
         throw new IllegalOperationException("write message");
     }
 }

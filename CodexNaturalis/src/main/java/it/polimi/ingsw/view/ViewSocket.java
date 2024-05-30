@@ -407,11 +407,12 @@ public class  ViewSocket implements View{
 
     @Override
     public synchronized void pong(UUID myID) throws IOException, ClassNotFoundException {
-      output.writeObject(new PongMessage(myID));
+        output.writeObject(new PongMessage(myID));
         ServerMessage reply = readMessage();
         try {
             reply.processMessage();
-        } catch (UnacceptableNumOfPlayersException | OnlyOneGameException | IllegalOperationException | NoGameExistsException | PlayerNameNotUniqueException | IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException | InvalidCardException | HandNotFullException | InvalidUserId | InvalidGoalException | HandFullException | DeckEmptyException | InvalidChoiceException ignore) {}
+        } catch (UnacceptableNumOfPlayersException | OnlyOneGameException | IllegalOperationException | NoGameExistsException | PlayerNameNotUniqueException | IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException | InvalidCardException | HandNotFullException | InvalidUserId | InvalidGoalException | HandFullException | DeckEmptyException | InvalidChoiceException ignore) {
+        }
     }
 
     @Override
@@ -420,12 +421,30 @@ public class  ViewSocket implements View{
     }
 
     @Override
+    public synchronized void sendPrivateMessage(String receiver, String message, UUID sender) throws IOException, ClassNotFoundException {
+      output.writeObject(new PrivateChatMessage(message,receiver,sender));
+      ServerMessage reply = readMessage();
+      try {
+            reply.processMessage();
+      } catch (UnacceptableNumOfPlayersException | OnlyOneGameException | IllegalOperationException | NoGameExistsException | PlayerNameNotUniqueException | IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException | InvalidCardException | HandNotFullException | InvalidUserId | InvalidGoalException | HandFullException | DeckEmptyException | InvalidChoiceException ignore) {}
+
+
+    }
+
+    @Override
+    @Deprecated
+    public List<String> getPrivateChat(String receiver, UUID uuid) {
+        return null;
+    }
+    public List<String> getPrivateChat(String user)  {
+        return gd.getPrivateChat(user);
+    }
+
+    @Override
     public synchronized void sendChatMessage(String message) throws IOException, ClassNotFoundException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException {
-        synchronized (output) {
-            output.writeObject(new ChatMessage(message));
-        }
+        output.writeObject(new ChatMessage(message));
         ServerMessage reply = readMessage();
-      reply.processMessage();
+        reply.processMessage();
     }
 
     public GameData getGameData() {

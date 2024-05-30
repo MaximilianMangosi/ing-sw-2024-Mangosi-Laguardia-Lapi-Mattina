@@ -30,6 +30,18 @@ public class GameData {
     private StarterCard starterCard;
     private List<Card> visibleCards;
     private List<String> chatData = new ArrayList<>(250);
+    private Map<String,List<String>> privateChats = new HashMap<>();
+
+
+
+
+
+    public void setPrivateChat(String user,List<String> chat){
+        privateChats.put(user,chat);
+    }
+    public List<String> getPrivateChat(String user){
+        return privateChats.get(user);
+    }
 
     public  List<String> getChatData(){
         return  chatData;

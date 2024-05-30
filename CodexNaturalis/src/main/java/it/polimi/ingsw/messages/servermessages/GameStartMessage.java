@@ -12,12 +12,14 @@ public class GameStartMessage extends ServerMessage{
     private Goal[] publicGoals;
     private List<Card> visibleCards;
     private String currentPlayer;
+    private List<String> globalChat;
 
 
-    public GameStartMessage(Goal[] publicGoals,List<Card> visibleCards ,String currentPlayer) {
+    public GameStartMessage(Goal[] publicGoals,List<Card> visibleCards ,String currentPlayer,List<String> chat) {
         this.publicGoals = publicGoals;
         this.visibleCards=visibleCards;
         this.currentPlayer=currentPlayer;
+        this.globalChat=chat;
     }
 
     @Override
@@ -26,5 +28,6 @@ public class GameStartMessage extends ServerMessage{
         view.getGameData().setPublicGoals(publicGoals);
         view.getGameData().setVisibleCards(visibleCards);
         view.getGameData().setCurrentPlayer(currentPlayer);
+        view.getGameData().setChatData(globalChat);
     }
 }

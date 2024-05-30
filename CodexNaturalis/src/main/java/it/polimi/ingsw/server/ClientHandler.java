@@ -73,8 +73,13 @@ public class ClientHandler implements Runnable{
                         sendTo(id, new GoalOptionsMessage(controller.getGoalOptions().get(id)));
                         sendTo(id, new StarterCardMessage(controller.getPlayersStarterCards().get(id)));
                     }
-                }
-                viewUpdater.sendAll(newMsg);
+                    viewUpdater.sendAll(newMsg);
+                } else if (newMsg instanceof UpdateChatMessage) {
+                    UUID receiver = ((UpdateChatMessage) newMsg).getReceiver();
+                    sendTo(receiver,newMsg);
+                } else
+                    viewUpdater.sendAll(newMsg);
+
             } catch (IOException e) {
                 System.out.println("RMIToSocketDispatcher stopped");
             }

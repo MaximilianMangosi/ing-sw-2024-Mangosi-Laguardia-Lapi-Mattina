@@ -28,8 +28,14 @@ public abstract class GameState {
         game.addToGlobalChat(message);
     }
 
-    public void addMessage(String name, String message, UUID userID) throws IllegalOperationException {
-        game.getPlayers().stream().filter(p -> p.getName().equals(userIDs.get(userID).getName())).findAny().get().getPrivateChat(name).add(message);
+    public void addMessage(String receiver, String message, UUID userID) throws IllegalOperationException {
+        //add Message to sender chat
+       userIDs.get(userID).addMessage(receiver,message);
+       //add Message to receiver Chat
+       UUID receiverID= userIDs.entrySet().stream().filter(e->e.getValue().getName().equals(receiver)).findAny().get().getKey();
+       String senderName= userIDs.get(userID).getName();
+       userIDs.get(receiverID).addMessage(senderName,message);
+
     }
 
     /**
