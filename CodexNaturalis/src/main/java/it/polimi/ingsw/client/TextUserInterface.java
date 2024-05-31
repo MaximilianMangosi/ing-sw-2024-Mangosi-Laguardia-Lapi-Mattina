@@ -349,15 +349,8 @@ public class TextUserInterface extends UserInterface {
                     t2.start();
                     while(true) {
                         outWriter.print("Write your message: ");
-                        //TODO: add color
-                        if(s.nextLine().equals("-m")) {
-                            stop2.set(true);
-                        }
-                        String message = s.nextLine();
-                        if (message.equals("-close")){
-                            t2.interrupt();
-                            break;
-                        }
+                        String message = promptForChat(stop2,t2);
+                        if(message==null) break;
                         view.sendChatMessage(myName + ": " + message);
                         stop2.set(false);
                     }
@@ -380,16 +373,8 @@ public class TextUserInterface extends UserInterface {
                             while(true) {
 
                                 //TODO: add color
-                                if(s.nextLine().equals("-m")) {
-                                    stop1.set(true);
-                                }
-                                String message = s.nextLine();
-
-                                if (message.equals("-close")){
-                                    t1.interrupt();
-                                    break;
-                                }
-                                message =  myName + ": " + message;
+                                String message = promptForChat(stop1, t1);
+                                if (message == null) break;
                                 view.sendPrivateMessage(name, message, myID);
                                 stop1.set(false);
                             }
@@ -401,6 +386,19 @@ public class TextUserInterface extends UserInterface {
                     outWriter.print("Unknown command");
             }
         }
+    }
+
+    private String promptForChat(AtomicBoolean stop1, Thread t1) {
+        String mode = s.nextLine();
+        if(mode.equals("-m")) {
+            stop1.set(true);
+        } else if (mode.equals("-c")) {
+            t1.interrupt();
+            return null;
+        }
+
+        String message = myName + ": "+ s.nextLine();
+        return message;
     }
 
     private void printGlobalChat(AtomicBoolean stop) {

@@ -29,12 +29,7 @@ public abstract class GameState {
     }
 
     public void addMessage(String receiver, String message, UUID userID) throws IllegalOperationException {
-        //add Message to sender chat
        userIDs.get(userID).addMessage(receiver,message);
-       //add Message to receiver Chat
-       UUID receiverID= userIDs.entrySet().stream().filter(e->e.getValue().getName().equals(receiver)).findAny().get().getKey();
-       String senderName= userIDs.get(userID).getName();
-       userIDs.get(receiverID).addMessage(senderName,message);
 
     }
 

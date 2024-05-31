@@ -23,6 +23,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     private boolean isGameStarted;
     private boolean isGameEnded;
     private Map<String, Integer> playersPoints;
+    private Map<String,String> playerToColor;
     private String winner;
     private int numOfResourceCards;
     private int numOfGoldCards;
@@ -70,9 +71,18 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         playersPoints=controller.getPlayersPoints();
     }
 
+    public void updatePlayersColor(){
+        playerToColor=controller.getPlayerToColor();
+    }
+
     @Override
     public boolean isRMI() throws RemoteException {
         return true;
+    }
+
+    @Override
+    public String getPlayerColor(String player) throws RemoteException {
+        return playerToColor.get(player);
     }
 
     /**

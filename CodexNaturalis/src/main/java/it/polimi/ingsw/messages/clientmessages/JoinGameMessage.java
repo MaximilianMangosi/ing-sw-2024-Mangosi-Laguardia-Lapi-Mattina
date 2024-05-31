@@ -60,7 +60,7 @@ public class JoinGameMessage extends ClientMessage {
                            clientHandler.sendTo(id, new UpdateChatMessage(p,c.getPrivateChat(p,id)));
                    }
                }
-               GameStartMessage gameStartMessage = new GameStartMessage(c.getPublicGoals(),c.getVisibleCards(),c.getCurrentPlayer(),c.getGlobalChat());
+               GameStartMessage gameStartMessage = new GameStartMessage(c.getPublicGoals(),c.getVisibleCards(),c.getCurrentPlayer(),c.getGlobalChat(),c.getPlayerToColor());
                clientHandler.broadCast(gameStartMessage);
            }
            PlayersListMessage playersListMessage = new PlayersListMessage(c.getPlayersList());

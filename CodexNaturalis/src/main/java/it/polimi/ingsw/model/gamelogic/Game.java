@@ -213,9 +213,12 @@ public class Game{
             }
             player.setGoalOptions(goalOptions);
             //initialize private chats
-            for (Player p: listOfPlayers){
-                if(!p.getName().equals(player.getName()))
-                    player.setPrivateChat(p.getName(),new ArrayList<>());
+            for (int p=i+1;p<numOfPlayers;p++){
+                List<String>chat=new ArrayList<>();
+                // both player share the same list
+                player.setPrivateChat(listOfPlayers.get(p).getName(),chat);
+                listOfPlayers.get(p).setPrivateChat(player.getName(),chat);
+
             }
 
 

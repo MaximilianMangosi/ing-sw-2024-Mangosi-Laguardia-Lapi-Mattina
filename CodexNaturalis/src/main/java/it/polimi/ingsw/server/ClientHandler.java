@@ -76,7 +76,8 @@ public class ClientHandler implements Runnable{
                     viewUpdater.sendAll(newMsg);
                 } else if (newMsg instanceof UpdateChatMessage) {
                     UUID receiver = ((UpdateChatMessage) newMsg).getReceiver();
-                    sendTo(receiver,newMsg);
+                    if(getAllClients().containsKey(receiver))
+                        sendTo(receiver,newMsg);
                 } else
                     viewUpdater.sendAll(newMsg);
 

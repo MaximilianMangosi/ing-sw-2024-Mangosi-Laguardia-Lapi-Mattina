@@ -37,8 +37,15 @@ public class Client {
         int connectionChoice= 0;
         while (connectionChoice!=1 && connectionChoice!=2 ) {
             System.out.println("Choose how to connect to Server.\n1)Socket\n2)RMI");
-            connectionChoice = s.nextInt();
-            s.nextLine();
+            try {
+                connectionChoice = s.nextInt();
+                s.nextLine();
+            } catch (InputMismatchException e) {
+                s.nextLine();
+                System.out.println("\033c");
+                System.out.println("Insert only numbers please");
+
+            }
         }
         try{
             GameData gameData= new GameData();

@@ -27,6 +27,9 @@ public interface ViewRMIInterface extends Remote,View  {
     @Override
     boolean isRMI() throws RemoteException;
 
+    @Override
+     String getPlayerColor(String player) throws RemoteException;
+
     public Map<String, Integer> getPlayersPoints() throws RemoteException;
     public int getNumOfResourceCards() throws RemoteException;
     public int getNumOfGoldCards()  throws RemoteException;

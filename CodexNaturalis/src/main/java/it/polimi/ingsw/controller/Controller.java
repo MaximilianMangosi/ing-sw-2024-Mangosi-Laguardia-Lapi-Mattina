@@ -37,17 +37,21 @@ public class Controller {
     }
 
     public void addToGlobalChat(String message) throws IllegalOperationException {
-        currentState.addToGlobalChat(message);
-        view.updateGlobalChat();
-        addToQueue(new UpdateChatMessage("global",getGlobalChat()));
+        if (!message.isBlank()) {
+            currentState.addToGlobalChat(message);
+            view.updateGlobalChat();
+            addToQueue(new UpdateChatMessage("global",getGlobalChat()));
+        }
     }
 
     public void addMessage(String name, String message, UUID userID) throws IllegalOperationException {
-        currentState.addMessage(name,message, userID);
-        view.updatePrivateChat();
-        UUID receiverID =getUserIDs().entrySet().stream().filter(entry->entry.getValue().getName().equals(name)).findAny().get().getKey();
-        String senderName=getUserIDs().get(userID).getName();
-        addToQueue(new UpdateChatMessage(receiverID,senderName,getPrivateChat(name,userID)));
+        if(!message.isBlank()) {
+            currentState.addMessage(name, message, userID);
+            view.updatePrivateChat();
+            UUID receiverID = getUserIDs().entrySet().stream().filter(entry -> entry.getValue().getName().equals(name)).findAny().get().getKey();
+            String senderName = getUserIDs().get(userID).getName();
+            addToQueue(new UpdateChatMessage(receiverID, senderName, getPrivateChat(name, userID)));
+        }
     }
     /**
      * constructor of Controller, creates a new GameState
@@ -178,7 +182,8 @@ public class Controller {
         addToQueue(new PlayersListMessage((getPlayersList())));
         try {
             if(view.isGameStarted()){
-                GameStartMessage gameStartMessage = new GameStartMessage(getPublicGoals(),getVisibleCards(),getCurrentPlayer(),getGlobalChat());
+                view.updatePlayersColor();
+                GameStartMessage gameStartMessage = new GameStartMessage(getPublicGoals(),getVisibleCards(),getCurrentPlayer(),getGlobalChat(),getPlayerToColor());
                 addToQueue(gameStartMessage);
             }
         } catch (RemoteException ignore){}
@@ -467,12 +472,7 @@ public class Controller {
      * @return list of the player's names
      */
     public List<String> getPlayersList(){
-        List<String> names = new ArrayList<>();
-        Set<UUID> set=currentState.userIDs.keySet();
-        for (UUID id :set){
-            names.add(currentState.getPlayerFromUid(id).getName());
-        }
-        return names;
+        return currentState.game.getPlayers().stream().map(Player::getName).toList();
     }
 
     /**
@@ -608,4 +608,11 @@ public class Controller {
     }
 
 
+    public Map<String, String> getPlayerToColor() {
+        Map<String,String> colorMap=new HashMap<>();
+        for (Player p:currentState.userIDs.values()){
+            colorMap.put(p.getName(),p.getCheck());
+        }
+        return colorMap;
+    }
 }

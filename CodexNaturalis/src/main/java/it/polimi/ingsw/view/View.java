@@ -52,6 +52,7 @@ public interface View {
     public String getWinner() throws RemoteException;
     public StarterCard getStarterCard(UUID userId) throws RemoteException;
     public StarterCard getStarterCard() throws RemoteException;
+    String getPlayerColor(String player) throws RemoteException;
 
     //CONTROLLER
     public  UUID bootGame(int numOfPlayers, String playerName) throws OnlyOneGameException, UnacceptableNumOfPlayersException, ClassNotFoundException, IllegalOperationException, IOException, InvalidGoalException, HandNotFullException, HandFullException, InvalidChoiceException, NoGameExistsException, IsNotYourTurnException, InvalidUserId, RequirementsNotMetException, PlayerNameNotUniqueException, IllegalPositionException, InvalidCardException, DeckEmptyException;
