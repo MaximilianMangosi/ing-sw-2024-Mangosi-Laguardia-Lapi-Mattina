@@ -3,19 +3,15 @@ package it.polimi.ingsw.GUI;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
-import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
-import it.polimi.ingsw.model.gamelogic.Player;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import javafx.application.Platform;
-import javafx.beans.Observable;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -27,9 +23,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
-import javax.management.monitor.MonitorSettingException;
 import java.beans.EventHandler;
-import java.io.File;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -103,8 +97,8 @@ public class InGameController extends GUIController {
         for(Node cardStack: handBox.getChildren() ){
             cardStack.setOnMouseClicked(this::flipCard);
 
-            ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handlePickUpCard);
-            ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handlePickUpCard);
+            ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handleDragDetected);
+            ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handleDragDetected);
             ((StackPane) cardStack).getChildren().getFirst().setOnDragDone(this::handleDragDone);
             ((StackPane) cardStack).getChildren().get(1).setOnDragDone(this::handleDragDone);
 
@@ -444,18 +438,21 @@ public class InGameController extends GUIController {
         playerListBox.getChildren().remove(event.getSource());
         returnButtonPresent=false;
     }
-    private void handlePickUpCard(MouseEvent event){
+    private void handleDragDetected(MouseEvent event){
         Dragboard db=((Node) event.getSource()).startDragAndDrop(TransferMode.MOVE);
         ClipboardContent cpc = new ClipboardContent();
         cpc.putImage(((ImageView)event.getSource()).getImage());
         db.setContent(cpc);
-        event.consume();
+        selectedCardToPlay= (ImageView) event.getSource();
+
     }
     private void handleDragOver(DragEvent e)  {
         try{
             double hover_x = e.getX()-1204;
             double hover_y = e.getY()-805;
-            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
+            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
+//            System.out.println((int) Math.round(hover_x/155.5));
+//            System.out.println( (int) Math.round(hover_y/79.5));
             List<Coordinates> avlbPositions = view.showPlayersLegalPositions(myID);
 
             if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
@@ -474,19 +471,61 @@ public class InGameController extends GUIController {
             String p= view.getCurrentPlayer();
             Dragboard db = e.getDragboard();
             double hover_x = e.getX()-1204;
-            double hover_y = e.getY()-805;
-
-            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
+//            double hover_y = 805-e.getY();
+//            System.out.println(hover_x);
+//            System.out.println(hover_y);
+//            Coordinates newStandardCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
+//            StackPane parent=(StackPane) selectedCardToPlay.getParent();
+//            if(parent.getChildren().getFirst().isVisible()){
+//                view.playCardBack(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
+//            }else{
+//                view.playCardFront(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
+//            }
+//
+//            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), -(int) Math.round(hover_y/79.5));
             ImageView newCardImage =new ImageView(db.getImage());
             newCardImage.setFitWidth(200);
             newCardImage.setFitHeight(150);
             newCardImage.setTranslateX(newCoordinate.x*155.5);
             newCardImage.setTranslateY(newCoordinate.y * 79.5);
-
             fieldPane.getChildren().add(newCardImage);
             e.setDropCompleted(true);
         }catch (RemoteException ex){
 
+        } catch (InvalidGoalException ex) {
+            throw new RuntimeException(ex);
+        } catch (HandFullException ex) {
+            throw new RuntimeException(ex);
+        } catch (InvalidChoiceException ex) {
+            throw new RuntimeException(ex);
+        } catch (IsNotYourTurnException ex) {
+            throw new RuntimeException(ex);
+        } catch (UnacceptableNumOfPlayersException ex) {
+            throw new RuntimeException(ex);
+        } catch (OnlyOneGameException ex) {
+            throw new RuntimeException(ex);
+        } catch (PlayerNameNotUniqueException ex) {
+            throw new RuntimeException(ex);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        } catch (IllegalOperationException ex) {
+            throw new RuntimeException(ex);
+        } catch (InvalidCardException ex) {
+            throw new RuntimeException(ex);
+        } catch (DeckEmptyException ex) {
+            throw new RuntimeException(ex);
+        } catch (HandNotFullException ex) {
+            throw new RuntimeException(ex);
+        } catch (InvalidUserId ex) {
+            throw new RuntimeException(ex);
+        } catch (NoGameExistsException ex) {
+            throw new RuntimeException(ex);
+        } catch (RequirementsNotMetException ex) {
+            throw new RuntimeException(ex);
+        } catch (IllegalPositionException ex) {
+            throw new RuntimeException(ex);
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
         }
 
 
