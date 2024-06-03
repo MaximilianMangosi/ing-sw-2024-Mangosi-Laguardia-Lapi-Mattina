@@ -29,6 +29,9 @@ public class Player {
     public Map<String, List<String>> getPrivateChats (){
         return privateChat;
     }
+    public void setPrivateChat(String user, List<String> chat){
+        privateChat.put(user,chat);
+    }
 
     public void addMessage(String name, String message){
         privateChat.get(name).add(message);

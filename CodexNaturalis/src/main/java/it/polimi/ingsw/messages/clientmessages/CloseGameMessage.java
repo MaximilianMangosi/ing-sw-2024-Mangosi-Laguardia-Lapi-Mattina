@@ -34,5 +34,6 @@ public class CloseGameMessage extends ClientMessage{
         clientHandler.broadCast(new RemoveFieldMessage(username));
         clientHandler.broadCast(new TurnMessage(c.getCurrentPlayer()));
         clientHandler.broadCast(new PointsMessage(c.getPlayersPoints()));
+        clientHandler.removeClient(myID);
     }
 }

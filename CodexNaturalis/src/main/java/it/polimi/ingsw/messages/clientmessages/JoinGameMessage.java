@@ -7,6 +7,7 @@ import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
 import it.polimi.ingsw.messages.exceptionmessages.NoGameExistsMessage;
 import it.polimi.ingsw.messages.exceptionmessages.PlayerNameNotUniqueMessage;
 import it.polimi.ingsw.messages.servermessages.*;
+import it.polimi.ingsw.model.gamelogic.Player;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.server.ClientHandler;
@@ -14,6 +15,7 @@ import it.polimi.ingsw.server.ClientHandler;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
@@ -53,8 +55,12 @@ public class JoinGameMessage extends ClientMessage {
                    clientHandler.sendTo(id,new HandMessage(c.getPlayersHands().get(id)));
                    clientHandler.sendTo(id,new GoalOptionsMessage(c.getGoalOptions().get(id)));
                    clientHandler.sendTo(id,new StarterCardMessage(c.getPlayersStarterCards().get(id)));
+                   for (String p: c.getPlayersList()){
+                       if(!p.equals(username))
+                           clientHandler.sendTo(id, new UpdateChatMessage(p,c.getPrivateChat(p,id)));
+                   }
                }
-               GameStartMessage gameStartMessage = new GameStartMessage(c.getPublicGoals(),c.getVisibleCards(),c.getCurrentPlayer());
+               GameStartMessage gameStartMessage = new GameStartMessage(c.getPublicGoals(),c.getVisibleCards(),c.getCurrentPlayer(),c.getGlobalChat(),c.getPlayerToColor());
                clientHandler.broadCast(gameStartMessage);
            }
            PlayersListMessage playersListMessage = new PlayersListMessage(c.getPlayersList());

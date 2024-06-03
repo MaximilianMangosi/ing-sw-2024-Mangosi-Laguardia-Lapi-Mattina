@@ -27,6 +27,9 @@ public interface ViewRMIInterface extends Remote,View  {
     @Override
     boolean isRMI() throws RemoteException;
 
+    @Override
+     String getPlayerColor(String player) throws RemoteException;
+
     public Map<String, Integer> getPlayersPoints() throws RemoteException;
     public int getNumOfResourceCards() throws RemoteException;
     public int getNumOfGoldCards()  throws RemoteException;
@@ -51,6 +54,7 @@ public interface ViewRMIInterface extends Remote,View  {
 
     public String getWinner() throws RemoteException;
     public StarterCard getStarterCard(UUID userId) throws RemoteException;
+    public List<String> getPrivateChat(String receiver, UUID uuid) throws RemoteException;
 
     //CONTROLLER
     public  UUID bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException;
@@ -84,4 +88,11 @@ public interface ViewRMIInterface extends Remote,View  {
 
     @Override
     void sendChatMessage(String message) throws RemoteException, IllegalOperationException;
+
+    @Override
+     List<String> getPrivateChat(String user) throws RemoteException;
+
+    @Override
+    void sendPrivateMessage(String receiver, String message, UUID sender) throws RemoteException, IllegalOperationException;
+
 }

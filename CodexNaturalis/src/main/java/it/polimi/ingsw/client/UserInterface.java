@@ -37,5 +37,10 @@ public abstract class UserInterface{
             return view.showPrivateGoal(myID);
         return view.showPrivateGoal();
     }
+    public  List<String> getPrivateChat(String user) throws RemoteException {
+        if(view.isRMI())
+            return view.getPrivateChat(user,myID);
+        return view.getPrivateChat(user);
+    }
 
 }

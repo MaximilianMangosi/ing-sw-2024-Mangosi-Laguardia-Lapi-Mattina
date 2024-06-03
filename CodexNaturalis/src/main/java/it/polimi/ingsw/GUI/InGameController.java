@@ -11,6 +11,9 @@ import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -22,13 +25,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import java.beans.EventHandler;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.lang.Integer.parseInt;
 
 public class InGameController extends GUIController {
+    private final AtomicBoolean stopHandleOverlap = new AtomicBoolean(false);
     @FXML
     private HBox playerListBox;
     @FXML
@@ -58,6 +67,16 @@ public class InGameController extends GUIController {
     @FXML
     private VBox scoreboardBox;
     @FXML
+    private ImageView redCheck;
+    @FXML
+    private ImageView blueCheck;
+    @FXML
+    private ImageView yellowCheck;
+    @FXML
+    private ImageView greenCheck;
+    private List<ImageView> imageChecks=new ArrayList<>();
+
+    @FXML
     private StackPane fieldPane;
     @FXML
     private Button scoreboardButton;
@@ -71,6 +90,11 @@ public class InGameController extends GUIController {
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
     private boolean returnButtonPresent= false;
+    private final PauseTransition hideError = new PauseTransition(Duration.seconds(3));
+    private final Map<Integer,Coordinates> scoreMap=new HashMap<>();
+
+    private Timeline overlapAnimation;
+
 
     public void init() throws RemoteException, InvalidUserId {
         deckBox.setVisible(false);
@@ -78,6 +102,10 @@ public class InGameController extends GUIController {
         scoreboardBox.setVisible(false);
         hideScoreboardButton.setVisible(false);
         errorMsg.setVisible(false);
+        hideError.setOnFinished(event -> errorMsg.setVisible(false));
+
+        initializeScoreMap();
+
         for (String p : view.getPlayersList()) {
             StackPane sp = new StackPane();
             Label label = new Label(p);
@@ -141,24 +169,28 @@ public class InGameController extends GUIController {
 
     }
 
+    private void initializeScoreMap() {
 
+        Scanner file= new Scanner(getClass().getResourceAsStream("/scoreboard-coordinates.txt"));
+        while(file.hasNext()){
+            String[] line=file.nextLine().split(" ");
+            int score=parseInt(line[0]);
+            String[] cord=line[1].split(",");
+            scoreMap.put(score,new Coordinates(parseInt(cord[0]),parseInt(cord[1])));
+        }
+    }
 
 
 
     private void drawFromDeck(int i) {
+        System.out.println("deck clicked");
         try {
             view.drawFromDeck(myID,i);
         } catch (IOException e) {
-            errorMsg.setVisible(true);
-            errorMsg.setText("Connection Error");
-            try {Thread.sleep(3000);} catch (InterruptedException ignore) {}
+           showErrorMsg("CONNECTION ERROR");
             System.exit(1);
         } catch (IsNotYourTurnException | HandFullException | IllegalOperationException | InvalidChoiceException |DeckEmptyException e) {
-            errorMsg.setVisible(true);
-            errorMsg.setText(e.getMessage());
-
-            try {Thread.sleep(3000);} catch (InterruptedException ignore) {}
-            errorMsg.setVisible(false);
+            showErrorMsg(e.getMessage());
 
         }catch (InvalidGoalException | InvalidUserId | HandNotFullException | NoGameExistsException |
                 RequirementsNotMetException | UnacceptableNumOfPlayersException | OnlyOneGameException |
@@ -189,7 +221,7 @@ public class InGameController extends GUIController {
                 //decks
 
                     Reign newTopResource = view.getTopOfResourceCardDeck();
-                    if(!newTopResource.equals(oldTopResource)){
+                    if(newTopResource!=oldTopResource){
                         Platform.runLater(() -> {
                             updateTopResource(newTopResource);
                         });
@@ -197,7 +229,7 @@ public class InGameController extends GUIController {
                         oldTopResource = newTopResource;
                     }
                     Reign newTopGold = view.getTopOfGoldCardDeck();
-                    if(!newTopGold.equals(oldTopGold)){
+                    if(newTopGold!=oldTopGold){
                         Platform.runLater(() -> {
                             updateTopGold(newTopGold);
                         });
@@ -206,8 +238,11 @@ public class InGameController extends GUIController {
                     }
                 //hand
                     List<Card> newHand= getHand();
-                    if(!newHand.equals(oldHand))
+                    if(!newHand.equals(oldHand)){
                         Platform.runLater(()->updateHand(newHand));
+                        System.out.println("hand update");
+                    }
+
                     oldHand=newHand;
 
                 //current player
@@ -217,19 +252,60 @@ public class InGameController extends GUIController {
                         oldCurrentPlayer = newCurrentPlayer;
                     }
                 } catch (RemoteException | InvalidUserId e) {
-                    errorMsg.setVisible(true);
-                    errorMsg.setText("Connection Error");
-                    try {Thread.sleep(3000);} catch (InterruptedException ignore) {}
+                    showErrorMsg("CONNECTION ERROR");
                     System.exit(1);
                 }
 
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         }).start();
+    }
+    private void updateScoreboard(){
+        try{
+            //reset imageView list to handle disconnections
+            imageChecks= new ArrayList<>();
+            for (Map.Entry<String,Integer> scoreboard:view.getPlayersPoints().entrySet()){
+                String playerColor = view.getPlayerColor(scoreboard.getKey());
+                switch (playerColor){
+                    case "Red"->{
+                        System.out.println("Red");
+                        redCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
+                        redCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
+                        redCheck.setVisible(true);
+                        imageChecks.add(redCheck);
+                    }
+                    case "Blue"->{
+                        System.out.println("B");
+                        blueCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
+                        blueCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
+                        blueCheck.setVisible(true);
+                        imageChecks.add(blueCheck);
+                    }
+                    case "Yellow"->{
+                        System.out.println("Y");
+                       yellowCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
+                        yellowCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
+                        yellowCheck.setVisible(true);
+                        imageChecks.add(yellowCheck);
+                    }
+                    case"Green"->{
+                        System.out.println("G");
+                        greenCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
+                        greenCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
+                        greenCheck.setVisible(true);
+                        imageChecks.add(greenCheck);
+                    }
+                }
+            }
+        } catch (RemoteException e) {
+            showErrorMsg("connection error");
+            System.exit(1);
+        }
+
     }
 
     private void updateVisibleCards(List<Card> newCards) {
@@ -260,24 +336,20 @@ public class InGameController extends GUIController {
         });
     }
     public void drawVisibleCard(int choice)  {
+        System.out.println("visible card clicked");
         try {
             view.drawVisibleCard(myID,choice);
 
         } catch (IOException e) {
-            errorMsg.setVisible(true);
-            errorMsg.setText("Connection Error");
-            try {Thread.sleep(3000);} catch (InterruptedException ignore) {}
+           showErrorMsg("CONNECTION ERROR");
             System.exit(1);
         } catch (IsNotYourTurnException | HandFullException | IllegalOperationException | InvalidChoiceException e) {
-            errorMsg.setVisible(true);
-            errorMsg.setText(e.getMessage());
-
-            try {Thread.sleep(3000);} catch (InterruptedException ignore) {}
-            errorMsg.setVisible(false);
+           showErrorMsg(e.getMessage());
         }catch (InvalidGoalException | InvalidUserId | HandNotFullException | NoGameExistsException |
                 RequirementsNotMetException | UnacceptableNumOfPlayersException | OnlyOneGameException |
                 PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException | DeckEmptyException |
-                ClassNotFoundException ignore){}
+                ClassNotFoundException ignore){
+        }
     }
     private  void updateTopResource(Reign newTop){
         Image img;
@@ -333,11 +405,47 @@ public class InGameController extends GUIController {
 
     }
     public void showScoreboard(){
+        updateScoreboard();
+        handleCheckOverlap();
         scoreboardButton.setVisible(false);
         scoreboardBox.setVisible(true);
         scoreboardBox.setLayoutX(0);
         hideScoreboardButton.setVisible(true);
+
     }
+
+    private void handleCheckOverlap() {
+        List<ImageView> checksOverlapping = imageChecks.stream().filter(this::overlaps).toList();
+        System.out.println(checksOverlapping.size());
+        List<Node> scoreboard= ((StackPane) checksOverlapping.getFirst().getParent()).getChildren();
+        AtomicInteger i= new AtomicInteger();
+
+        if(checksOverlapping.isEmpty())
+            return;
+        //Every second puts the checks that overlaps another one on the top of the stack pane
+        overlapAnimation = new Timeline(new KeyFrame(Duration.seconds(2),actionEvent ->  {
+             ImageView check=checksOverlapping.get(i.get());
+             scoreboard.remove(check);
+             scoreboard.addLast(check);
+             i.set((i.get() + 1) % checksOverlapping.size());
+        }));
+        overlapAnimation.setCycleCount(Timeline.INDEFINITE);// animation cycles until stopped by pressing the button that closes the scoreboard
+        overlapAnimation.play();
+
+    }
+
+    private boolean overlaps(ImageView image) {
+        for (ImageView img: imageChecks){
+            if(!image.equals(img)){
+                if(image.getX()==img.getX()&& image.getY()==img.getY())
+                    return true;
+            }
+        }
+        return false;
+        //return imageChecks.stream().filter(i->!i.equals(image)).map(i->new Coordinates((int) i.getX(), (int) i.getY())).noneMatch(c->c.x==image.getX() && c.y==image.getX());
+
+    }
+
     public void hideDeck(){
         hideDeckButton.setVisible(false);
         deckBox.setLayoutX(-541);
@@ -346,12 +454,13 @@ public class InGameController extends GUIController {
     }
     public void hideScoreboard(){
         hideScoreboardButton.setVisible(false);
+        imageChecks.forEach(i->i.setVisible(false));
         scoreboardBox.setLayoutX(1920);
         scoreboardBox.setVisible(false);
         scoreboardButton.setVisible(true);
+        overlapAnimation.stop();
     }
     public void flipCard(MouseEvent e){
-        System.out.println("clickeda ùù asda");
         StackPane cardPane= (StackPane) e.getSource();
         for( Node cardView: cardPane.getChildren()){
             cardView.setVisible(!cardView.isVisible());
@@ -459,9 +568,7 @@ public class InGameController extends GUIController {
                 e.acceptTransferModes(TransferMode.MOVE);
             }
             e.consume();
-        }catch (InvalidUserId invalidUserId){
-
-        }catch (RemoteException remoteException){
+        }catch (InvalidUserId | RemoteException invalidUserId){
 
         }
 
@@ -535,5 +642,11 @@ public class InGameController extends GUIController {
             handBox.getChildren().remove(((ImageView)e.getSource()).getParent());
         }
         e.consume();
+    }
+    private void showErrorMsg(String message) {
+        errorMsg.setText(message.toUpperCase(Locale.ROOT));
+        errorMsg.setVisible(true);
+        hideError.play();
+
     }
 }

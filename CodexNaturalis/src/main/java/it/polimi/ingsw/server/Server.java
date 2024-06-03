@@ -56,7 +56,7 @@ public class Server {
             ViewUpdater viewUpdater = new ViewUpdater();
             UpdateViewSocket t3= new UpdateViewSocket(viewUpdater);
             t1.start();
-            //t2.start();
+            t2.start();
             t3.start();
 
             while (true){

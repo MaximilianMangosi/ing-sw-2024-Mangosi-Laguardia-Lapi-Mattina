@@ -30,4 +30,7 @@ public class ViewUpdater  {
         clients.get(userId).writeObject(message);
     }
 
+    public void removeClient(UUID myID) {
+        clients.remove(myID);
+    }
 }

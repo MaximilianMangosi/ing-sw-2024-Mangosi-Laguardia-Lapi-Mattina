@@ -17,7 +17,7 @@ public class DisconnectionHandler extends Thread{
         while (true){
             controller.ping();
             try {
-                sleep(90000);
+                sleep(60000);
             } catch (InterruptedException ignored){}
             try {
                 controller.checkPong();

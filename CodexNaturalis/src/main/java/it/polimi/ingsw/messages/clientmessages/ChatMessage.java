@@ -23,8 +23,7 @@ public class ChatMessage extends ClientMessage {
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(view.getChatList());
         clientHandler.answerClient(new SuccessMessage());
-        clientHandler.broadCast(new UpdateChatMessage(view.getChatList()));
+        clientHandler.broadCast(new UpdateChatMessage("global",view.getChatList()));
     }
 }

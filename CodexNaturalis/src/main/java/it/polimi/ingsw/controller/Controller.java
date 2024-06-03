@@ -33,17 +33,25 @@ public class Controller {
     }
 
     public List<String> getPrivateChat(String name, UUID userID){
-        return currentState.game.getPlayers().stream().filter(p -> p.getName().equals(currentState.userIDs.get(userID).getName())).findAny().get().getPrivateChat(name);
+        return getUserIDs().get(userID).getPrivateChat(name);
     }
 
     public void addToGlobalChat(String message) throws IllegalOperationException {
-        currentState.addToGlobalChat(message);
-        view.updateGlobalChat();
+        if (!message.isBlank()) {
+            currentState.addToGlobalChat(message);
+            view.updateGlobalChat();
+            addToQueue(new UpdateChatMessage("global",getGlobalChat()));
+        }
     }
 
     public void addMessage(String name, String message, UUID userID) throws IllegalOperationException {
-        currentState.addMessage(name,message, userID);
-        view.updatePrivateChat();
+        if(!message.isBlank()) {
+            currentState.addMessage(name, message, userID);
+            view.updatePrivateChat();
+            UUID receiverID = getUserIDs().entrySet().stream().filter(entry -> entry.getValue().getName().equals(name)).findAny().get().getKey();
+            String senderName = getUserIDs().get(userID).getName();
+            addToQueue(new UpdateChatMessage(receiverID, senderName, getPrivateChat(name, userID)));
+        }
     }
     /**
      * constructor of Controller, creates a new GameState
@@ -117,7 +125,7 @@ public class Controller {
      *@author Giuseppe Laguardia
      * @param msg the message needed to send to the server
      */
-    public void addMessage(ServerMessage msg){
+    public void addToQueue(ServerMessage msg){
         try {
             messageQueue.put(msg);
         }catch (InterruptedException ignore){}
@@ -150,7 +158,7 @@ public class Controller {
         UUID userID= currentState.BootGame(numOfPlayers,playerName);
         view.updatePlayersList();
         view.initializeFieldBuildingHelper(playerName);
-        addMessage(new PlayersListMessage(getPlayersList()));
+        addToQueue(new PlayersListMessage(getPlayersList()));
         pingMap.put(userID,true);
         changeState();
         return userID;
@@ -171,11 +179,12 @@ public class Controller {
         view.updatePlayersList();
         view.initializeFieldBuildingHelper(playerName);
         changeState();
+        addToQueue(new PlayersListMessage((getPlayersList())));
         try {
             if(view.isGameStarted()){
-                System.out.println("partita iniziata");
-                GameStartMessage gameStartMessage = new GameStartMessage(getPublicGoals(),getVisibleCards(),getCurrentPlayer());
-                addMessage(gameStartMessage);
+                view.updatePlayersColor();
+                GameStartMessage gameStartMessage = new GameStartMessage(getPublicGoals(),getVisibleCards(),getCurrentPlayer(),getGlobalChat(),getPlayerToColor());
+                addToQueue(gameStartMessage);
             }
         } catch (RemoteException ignore){}
         pingMap.put(userID,true);
@@ -201,7 +210,7 @@ public class Controller {
             String winnerName = currentState.game.getWinner().getName();
             view.setWinner(winnerName);
             view.setIsGameEnded();
-            addMessage(new GameEndMessage(winnerName));
+            addToQueue(new GameEndMessage(winnerName));
         }
         view.updatePlayersHands();
         view.updatePlayersField();
@@ -209,7 +218,7 @@ public class Controller {
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
         
-       handlePlayCardSocketUpdate(userId);
+        handlePlayCardSocketUpdate(userId);
 
         currentState=currentState.nextState();
     }
@@ -233,7 +242,7 @@ public class Controller {
             String winnerName = currentState.game.getWinner().getName();
             view.setWinner(winnerName);
             view.setIsGameEnded();
-            addMessage(new GameEndMessage(winnerName));
+            addToQueue(new GameEndMessage(winnerName));
         }
         view.updatePlayersHands();
         view.updatePlayersField();
@@ -252,9 +261,9 @@ public class Controller {
     private void handlePlayCardSocketUpdate(UUID userId) {
         String playerName = getUserIDs().get(userId).getName();
         try {
-            addMessage(new FieldMessage(getPlayersField().get(playerName),getView().getFieldBuildingHelper(playerName),playerName));
-            addMessage(new PointsMessage(getPlayersPoints()));
-            addMessage(new TurnMessage(getCurrentPlayer()));
+            addToQueue(new FieldMessage(getPlayersField().get(playerName),getView().getFieldBuildingHelper(playerName),playerName));
+            addToQueue(new PointsMessage(getPlayersPoints()));
+            addToQueue(new TurnMessage(getCurrentPlayer()));
         } catch (RemoteException ignore) {}
     }
 
@@ -273,7 +282,7 @@ public class Controller {
         view.updatePlayersField();
         view.updatePlayersLegalPosition();
         String player = getUserIDs().get(userId).getName();
-        addMessage(new FieldMessage(getPlayersField().get(player),getView().getFieldBuildingHelper(player), player));
+        addToQueue(new FieldMessage(getPlayersField().get(player),getView().getFieldBuildingHelper(player), player));
 
         currentState=currentState.nextState();
     }
@@ -312,14 +321,14 @@ public class Controller {
 
         view.updatePlayersHands();
         view.updateCurrentPlayer();
-        addMessage(new TurnMessage(getCurrentPlayer()));
+        addToQueue(new TurnMessage(getCurrentPlayer()));
         if(choice==0){
             view.updateNumOfResourceCards();
-            addMessage(new NumOfResourceCardsMessage(getNumOfResourceCards()));
+            addToQueue(new NumOfResourceCardsMessage(getNumOfResourceCards()));
         }
         else {
             view.updateNumOfGoldCards();
-            addMessage(new NumOfGoldCardsMessage(getNumOfGoldCards()));
+            addToQueue(new NumOfGoldCardsMessage(getNumOfGoldCards()));
         }
 
         currentState=currentState.nextState();
@@ -343,10 +352,10 @@ public class Controller {
         view.updateNumOfGoldCards();
         view.updateNumOfResourceCards();
 
-        addMessage(new TurnMessage(getCurrentPlayer()));
-        addMessage(new VisibleCardMessage(getVisibleCards()));
-        addMessage(new NumOfGoldCardsMessage(getNumOfGoldCards()));
-        addMessage(new NumOfResourceCardsMessage(getNumOfResourceCards()));
+        addToQueue(new TurnMessage(getCurrentPlayer()));
+        addToQueue(new VisibleCardMessage(getVisibleCards()));
+        addToQueue(new NumOfGoldCardsMessage(getNumOfGoldCards()));
+        addToQueue(new NumOfResourceCardsMessage(getNumOfResourceCards()));
 
 
         currentState=currentState.nextState();
@@ -358,12 +367,8 @@ public class Controller {
      * @param userID the users' identifier who's closing the game
      */
     public synchronized void closeGame(UUID userID) throws RemoteException {
+        String username= getUserIDs().get(userID).getName();
         currentState.closeGame(userID);
-        if(getUserIDs().size()<2){
-            List<UUID> id = new ArrayList<>(currentState.userIDs.keySet());
-            view.setWinner(currentState.getPlayerFromUid(id.getFirst()).getName());
-            deleteGameFromGameManager();
-        }
         view.updatePlayersList();
         view.updatePlayersHands();
         view.updatePrivateGoals();
@@ -371,11 +376,20 @@ public class Controller {
         view.updateCurrentPlayer();
         view.updatePlayersPoints();
 
-        String username= getUserIDs().get(userID).getName();
-        addMessage(new PlayersListMessage(getPlayersList()));
-        addMessage(new RemoveFieldMessage(username));
-        addMessage(new TurnMessage(getCurrentPlayer()));
-        addMessage(new PointsMessage(getPlayersPoints()));
+        addToQueue(new PlayersListMessage(getPlayersList()));
+        addToQueue(new RemoveFieldMessage(username));
+        addToQueue(new TurnMessage(getCurrentPlayer()));
+        addToQueue(new PointsMessage(getPlayersPoints()));
+
+        if(getUserIDs().size()<2){
+            List<UUID> id = new ArrayList<>(currentState.userIDs.keySet());
+            String winner=currentState.getPlayerFromUid(id.getFirst()).getName();
+            view.setWinner(winner);
+            view.setIsGameEnded();
+            addToQueue(new GameEndMessage(winner));
+            deleteGameFromGameManager();
+        }
+
     }
 
     /**
@@ -424,11 +438,20 @@ public class Controller {
         //the method will return hands
         Map<UUID,List<Card>> hands = new HashMap<>();
         //save the keyset of all the player's UUIDs
-        Set<UUID> set=currentState.userIDs.keySet();
+        Set<UUID> set=getUserIDs().keySet();
         for (UUID id : set){
             hands.put(id,currentState.getPlayerFromUid(id).getHand());
         }
         return hands;
+    }
+    public  Map<UUID,Map<String,List<String>>> getAllPrivateChat(){
+        Map<UUID,Map<String,List<String>>> privateChats= new HashMap<>();
+        for (Map.Entry<UUID, Player> entry : getUserIDs().entrySet()){
+            UUID id = entry.getKey();
+            Player player = entry.getValue();
+            privateChats.put(id, player.getPrivateChats());
+        }
+        return privateChats;
     }
 
     /**
@@ -445,16 +468,14 @@ public class Controller {
     }
 
     /**
+     * gets the list of the player in game, if the game is started the list is sorted by turn order, otherwise is in insertion order
      * @author Giorgio Mattina, Maximilian Mangosi
      * @return list of the player's names
      */
     public List<String> getPlayersList(){
-        List<String> names = new ArrayList<>();
-        Set<UUID> set=currentState.userIDs.keySet();
-        for (UUID id :set){
-            names.add(currentState.getPlayerFromUid(id).getName());
-        }
-        return names;
+        if(currentState.game!=null)
+            return currentState.game.getPlayers().stream().map(Player::getName).toList();
+        return  getUserIDs().values().stream().map(Player::getName).toList();
     }
 
     /**
@@ -590,4 +611,11 @@ public class Controller {
     }
 
 
+    public Map<String, String> getPlayerToColor() {
+        Map<String,String> colorMap=new HashMap<>();
+        for (Player p:currentState.userIDs.values()){
+            colorMap.put(p.getName(),p.getCheck());
+        }
+        return colorMap;
+    }
 }

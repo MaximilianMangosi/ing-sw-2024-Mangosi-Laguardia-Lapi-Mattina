@@ -178,13 +178,35 @@
             </HBox>
          </children>
       </VBox>
-      <VBox fx:id="scoreboardBox" alignment="CENTER_LEFT" layoutX="-541.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="541.0" style="-fx-background-color: dbd3a9; -fx-border-color: d9be4a; -fx-border-width: 10;">
+      <VBox fx:id="scoreboardBox" alignment="CENTER_LEFT" layoutX="-553.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="541.0" style="-fx-background-color: dbd3a9; -fx-border-color: d9be4a; -fx-border-width: 10;">
          <children>
-            <ImageView fitHeight="1091.0" fitWidth="541.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../../../../Desktop/politecnico/anno%203/PROVA%20FINALE%20(INGEGNERIA%20DEL%20SOFTWARE)/Introduzione/Regolamenti%20e%20materiale%20grafico/1709659529364-fc3762d4-a9b8-4f88-9f1f-cc7a7a1a8700_1.jpg" />
-               </image>
-            </ImageView>
+            <StackPane>
+               <children>
+                  <ImageView fitHeight="1091.0" fitWidth="541.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../scoreboard.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="greenCheck" fitHeight="86.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true" translateX="-1.0" translateY="-317.0" visible="false">
+                     <image>
+                        <Image url="@../../../../Checks/green.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="blueCheck" fitHeight="150.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true" translateX="-1.0" translateY="-317.0" visible="false">
+                     <image>
+                        <Image url="@../../../../Checks/blue.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="yellowCheck" fitHeight="86.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true" translateX="-1.0" translateY="-317.0" visible="false">
+                     <image>
+                        <Image url="@../../../../Checks/yellow.png" />
+                     </image></ImageView>
+                  <ImageView fx:id="redCheck" fitHeight="86.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true" translateX="-1.0" translateY="-317.0" visible="false">
+                     <image>
+                        <Image url="@../../../../Checks/red.png" />
+                     </image></ImageView>
+               </children>
+            </StackPane>
          </children>
       </VBox>
       <Button fx:id="hideScoreboardButton" layoutX="541.0" mnemonicParsing="false" onAction="#hideScoreboard" text="X" />

@@ -7,17 +7,22 @@ import it.polimi.ingsw.view.ViewSocket;
 
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Map;
 
 public class GameStartMessage extends ServerMessage{
     private Goal[] publicGoals;
     private List<Card> visibleCards;
     private String currentPlayer;
+    private List<String> globalChat;
+    private Map<String,String> playerToColor;
 
 
-    public GameStartMessage(Goal[] publicGoals,List<Card> visibleCards ,String currentPlayer) {
+    public GameStartMessage(Goal[] publicGoals,List<Card> visibleCards ,String currentPlayer,List<String> chat,Map<String,String> playerToColor) {
         this.publicGoals = publicGoals;
         this.visibleCards=visibleCards;
         this.currentPlayer=currentPlayer;
+        this.globalChat=chat;
+        this.playerToColor = playerToColor;
     }
 
     @Override
@@ -26,5 +31,7 @@ public class GameStartMessage extends ServerMessage{
         view.getGameData().setPublicGoals(publicGoals);
         view.getGameData().setVisibleCards(visibleCards);
         view.getGameData().setCurrentPlayer(currentPlayer);
+        view.getGameData().setChatData(globalChat);
+        view.getGameData().setPlayerToColor(playerToColor);
     }
 }
