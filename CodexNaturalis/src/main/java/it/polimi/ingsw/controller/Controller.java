@@ -468,11 +468,14 @@ public class Controller {
     }
 
     /**
+     * gets the list of the player in game, if the game is started the list is sorted by turn order, otherwise is in insertion order
      * @author Giorgio Mattina, Maximilian Mangosi
      * @return list of the player's names
      */
     public List<String> getPlayersList(){
-        return currentState.game.getPlayers().stream().map(Player::getName).toList();
+        if(currentState.game!=null)
+            return currentState.game.getPlayers().stream().map(Player::getName).toList();
+        return  getUserIDs().values().stream().map(Player::getName).toList();
     }
 
     /**

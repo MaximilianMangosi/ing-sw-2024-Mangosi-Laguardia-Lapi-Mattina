@@ -222,6 +222,12 @@ public class  ViewSocket implements View{
     public StarterCard getStarterCard() throws RemoteException {
         return gd.getStarterCard();
     }
+
+    @Override
+    public String getPlayerColor(String player) {
+        return gd.getPlayerToColor(player);
+    }
+
     private ServerMessage readMessage() throws IOException, ClassNotFoundException {
         ServerMessage reply;
         reply = (ServerMessage) input.readObject();
