@@ -578,61 +578,62 @@ public class InGameController extends GUIController {
             String p= view.getCurrentPlayer();
             Dragboard db = e.getDragboard();
             double hover_x = e.getX()-1204;
-//            double hover_y = 805-e.getY();
-//            System.out.println(hover_x);
-//            System.out.println(hover_y);
-//            Coordinates newStandardCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
-//            StackPane parent=(StackPane) selectedCardToPlay.getParent();
-//            if(parent.getChildren().getFirst().isVisible()){
-//                view.playCardBack(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
-//            }else{
-//                view.playCardFront(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
-//            }
-//
-//            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), -(int) Math.round(hover_y/79.5));
+            double hover_y = e.getY()-805;
+            System.out.println((int) Math.round(hover_x/155.5));
+            System.out.println((int) -Math.round(hover_y/79.5));
+            Coordinates newStandardCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
+            StackPane parent=(StackPane) selectedCardToPlay.getParent();
+            if(parent.getChildren().getFirst().isVisible()){
+                view.playCardBack(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
+            }else{
+                view.playCardFront(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
+            }
+
+            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
             ImageView newCardImage =new ImageView(db.getImage());
             newCardImage.setFitWidth(200);
             newCardImage.setFitHeight(150);
+
+            fieldPane.getChildren().add(newCardImage);
             newCardImage.setTranslateX(newCoordinate.x*155.5);
             newCardImage.setTranslateY(newCoordinate.y * 79.5);
-            fieldPane.getChildren().add(newCardImage);
             e.setDropCompleted(true);
         }catch (RemoteException ex){
 
         } catch (InvalidGoalException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (HandFullException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (InvalidChoiceException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (IsNotYourTurnException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (UnacceptableNumOfPlayersException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (OnlyOneGameException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (PlayerNameNotUniqueException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (IllegalOperationException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (InvalidCardException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (DeckEmptyException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (HandNotFullException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (InvalidUserId ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (NoGameExistsException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (RequirementsNotMetException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (IllegalPositionException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         } catch (ClassNotFoundException ex) {
-            throw new RuntimeException(ex);
+            showErrorMsg(ex.getMessage());
         }
 
 
