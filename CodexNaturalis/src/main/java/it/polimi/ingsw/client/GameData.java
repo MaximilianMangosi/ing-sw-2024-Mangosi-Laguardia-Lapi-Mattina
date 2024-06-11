@@ -5,10 +5,7 @@ import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameData {
 
@@ -32,7 +29,15 @@ public class GameData {
     private List<String> chatData = new ArrayList<>(250);
     private Map<String,List<String>> privateChats = new HashMap<>();
     private Map<String,String> playerToColor;
+    private Map<UUID,List<String>> joinableGames =new HashMap<>();
 
+    public Map<UUID, List<String>> getJoinableGames() {
+        return joinableGames;
+    }
+
+    public void setJoinableGames(Map<UUID, List<String>> joinableGames) {
+        this.joinableGames = joinableGames;
+    }
 
     public String getPlayerToColor(String player) {
         return playerToColor.get(player);

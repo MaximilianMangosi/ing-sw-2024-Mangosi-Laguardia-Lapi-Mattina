@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.view.ViewRMI;
 import it.polimi.ingsw.model.gamecards.GameBox;
 import it.polimi.ingsw.model.gamelogic.GameManager;
+import it.polimi.ingsw.view.ViewRMIContainer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -14,15 +15,19 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
     public static void main(String[] argv) {
         GameBox gb = new GameBox();
-        //GAMEBOX SETUP
+        //GAME BOX SETUP
         try {
             gameBoxSetup(gb);
         } catch (IOException e) {
-            System.out.println("Error occurred during json file's reading:\n "+e.getMessage());
+            System.out.println("Error occurred during json file's reading:\n " + e.getMessage());
             return;
         }
 
@@ -33,37 +38,34 @@ public class Server {
             gameManager.setGameBox(gb);
             System.out.println("GameBox ready");
 
-            //Controller and View setup
-            Controller controller = new Controller(gameManager);
-            ViewRMI view = controller.getView();
+            //View setup
+            ViewRMIContainer viewRMIContainer = new ViewRMIContainer(gameManager);
 
             // export View
             Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind("ViewRMI", view);
+            registry.rebind("ViewRMI", viewRMIContainer);
             System.out.println("Remote View has been correctly exported");
 
             ServerSocket commandSocket;
 
             try {
                 commandSocket = new ServerSocket(2323);
-
             } catch (IOException e) {
                 System.out.println("cannot open server commandSocket");
                 return;
             }
-            CloseGame t1 = new CloseGame(controller);
-            DisconnectionHandler t2=new DisconnectionHandler(controller);
-            ViewUpdater viewUpdater = new ViewUpdater();
-            UpdateViewSocket t3= new UpdateViewSocket(viewUpdater);
-            t1.start();
-            t2.start();
-            t3.start();
-
+//            CloseGame t1 = new CloseGame(controller);
+//            DisconnectionHandler t2=new DisconnectionHandler(controller);
+//
+//
+//            t1.start();
+//            t2.start();
+            ConcurrentHashMap<UUID,ViewUpdater> viewUpdaterMap=new ConcurrentHashMap<>();
+            new UpdateViewSocket(viewUpdaterMap).start();
             while (true){
                 try {
-
                     Socket client = commandSocket.accept();
-                    ClientHandler clientHandler = new ClientHandler(client,controller,viewUpdater);
+                    ClientHandler clientHandler = new ClientHandler(client,viewRMIContainer,viewUpdaterMap);
                     Thread thread = new Thread(clientHandler, "server_" + client.getInetAddress());
                     thread.start();
 
@@ -71,7 +73,7 @@ public class Server {
                     System.out.println("connection dropped");
                 }
             }
-        } catch (RemoteException ex) {
+       } catch (RemoteException ex) {
             System.out.println("Connection error unable to export object:\n" + ex.getMessage());}
     }
 

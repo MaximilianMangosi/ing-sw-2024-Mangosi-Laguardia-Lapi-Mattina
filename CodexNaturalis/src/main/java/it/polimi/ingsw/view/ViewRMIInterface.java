@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -8,14 +9,10 @@ import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
-import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.model.gamelogic.exceptions.*;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -24,10 +21,8 @@ public interface ViewRMIInterface extends Remote,View  {
 
     //VIEW
 
-    @Override
     boolean isRMI() throws RemoteException;
 
-    @Override
      String getPlayerColor(String player) throws RemoteException;
 
     public Map<String, Integer> getPlayersPoints() throws RemoteException;
@@ -57,8 +52,8 @@ public interface ViewRMIInterface extends Remote,View  {
     public List<String> getPrivateChat(String receiver, UUID uuid) throws RemoteException;
 
     //CONTROLLER
-    public  UUID bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException;
-    public UUID joinGame(String playerName) throws RemoteException, NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException;
+    public UUID[] bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException, PlayerNameNotUniqueException;
+    public UUID joinGame(UUID gameId,String playerName) throws RemoteException, PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID;
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId;
     public void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId;
     public void chooseStarterCardSide(boolean isFront, UUID userId) throws RemoteException, InvalidUserId, IllegalOperationException,InvalidUserId;
@@ -95,4 +90,5 @@ public interface ViewRMIInterface extends Remote,View  {
     @Override
     void sendPrivateMessage(String receiver, String message, UUID sender) throws RemoteException, IllegalOperationException;
 
+    Controller getController() throws RemoteException;
 }

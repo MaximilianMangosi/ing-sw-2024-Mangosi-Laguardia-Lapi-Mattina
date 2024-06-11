@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
  */
 public class DisconnectionHandler extends Thread{
     private Controller controller;
-    DisconnectionHandler(Controller controller){
+    public DisconnectionHandler(Controller controller){
         this.controller=controller;
     }
     @Override

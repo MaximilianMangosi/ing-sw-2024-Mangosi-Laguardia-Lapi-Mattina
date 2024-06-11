@@ -8,12 +8,8 @@ import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
-import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
-import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.ViewSocket;
+import it.polimi.ingsw.model.gamelogic.exceptions.*;
+import it.polimi.ingsw.view.*;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -33,11 +29,9 @@ public class TextUserInterface extends UserInterface {
     private final Scanner s=new Scanner(System.in);
 
     /**
-     * TextUserInterface's constructor: sets the View from witch the user will communicate with the server and creates the thread that handles the CLI
-     * @param view View to communicate with servers.
+     * TextUserInterface's constructor: sets the View from witch the user will communicate with the server and creates the thread that handles the CLI.
      */
-    public TextUserInterface(View view) {
-        this.view = view;
+    public TextUserInterface() {
         tuiUpdater=new UpdateTUI(outWriter,this);
     }
 
@@ -142,48 +136,47 @@ public class TextUserInterface extends UserInterface {
      * given the command the user want to execute, it asks the user for the parameters it needs to perform that operation
      */
 
-    public void execCmd(String cmd) throws IOException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, HandNotFullException, InvalidCardException, InvalidGoalException, ClassNotFoundException, NoGameExistsException, RequirementsNotMetException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalPositionException, DeckEmptyException {
+    public void execCmd(String cmd) throws IOException, IllegalOperationException, InvalidUserId, HandFullException, InvalidChoiceException, IsNotYourTurnException, HandNotFullException, InvalidCardException, InvalidGoalException, ClassNotFoundException, NoGameExistsException, RequirementsNotMetException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalPositionException, DeckEmptyException, InvalidGameID {
 
         boolean error = true;
         synchronized (outWriter) {
             switch (cmd){
-                case "start-game":
-                    try {
-                        joinGame();
-                        
-                    }catch (PlayerNameNotUniqueException e) {
-                        outWriter.print(e.getMessage());
-                        handleNameNotUnique();
-                    }catch (NoGameExistsException e){
-                        outWriter.print(e.getMessage());
-                        while (error) {
-                            try {
-                                int numPlayers = promptForNumPlayers();
-                                myID = view.bootGame(numPlayers, myName);
-                                error = false;
-                            } catch (UnacceptableNumOfPlayersException ex1) {
-                                outWriter.print(ex1.getMessage());
-                            } catch (OnlyOneGameException ex) {
-                                outWriter.print(ex.getMessage());
-                                try {
-                                    view.joinGame(myName);
-                                    error = false;
-                                } catch (PlayerNameNotUniqueException e1) {
-                                    outWriter.print(e1.getMessage());
-                                    error = handleNameNotUnique();
-                                } catch (NoGameExistsException ignore) {
-                                }
-                            }
-                        }
-                    }
-                    if(!view.isRMI()){
-                        ServerHandler td2= new ServerHandler((ViewSocket) view,tuiUpdater,myID);
-                        td2.start();
-                    }
-                    PingPong td1 = new PingPong( view, myID);
-                    td1.start();
-                    tuiUpdater.start();
-                    break;
+//                case "start-game":
+//                    try {
+//                       // joinGame();
+//                    }catch (PlayerNameNotUniqueException e) {
+//                        outWriter.print(e.getMessage());
+//                        handleNameNotUnique();
+//                    }catch (NoGameExistsException e){
+//                        outWriter.print(e.getMessage());
+//                        while (error) {
+//                            try {
+//                                int numPlayers = promptForNumPlayers();
+//                                //myID = view.bootGame(numPlayers, myName);
+//                                error = false;
+//                            } catch (UnacceptableNumOfPlayersException ex1) {
+//                                outWriter.print(ex1.getMessage());
+//                            } catch (OnlyOneGameException ex) {
+////                                outWriter.print(ex.getMessage());
+////                                try {
+////                                    view.joinGame(myName, );
+////                                    error = false;
+////                                } catch (PlayerNameNotUniqueException e1) {
+////                                    outWriter.print(e1.getMessage());
+////                                    error = handleNameNotUnique();
+////                                } catch (NoGameExistsException ignore) {
+////                                }
+//                            }
+//                        }
+//                    }
+//                    if(!view.isRMI()){
+//                        ServerHandler td2= new ServerHandler((ViewSocket) view,tuiUpdater,myID);
+//                        td2.start();
+//                    }
+//                    PingPong td1 = new PingPong( view, myID);
+//                    td1.start();
+//                    tuiUpdater.start();
+//                    break;
                 case "choose-goal":
                     outWriter.print("Here are your goals, choose one (1,2)");
                     Goal[] myGoals = getGoalOptions();
@@ -465,29 +458,53 @@ public class TextUserInterface extends UserInterface {
      * @throws RemoteException
      * @throws IllegalOperationException
      */
-    private boolean handleNameNotUnique() throws IOException, IllegalOperationException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
-        while (true){
-            try {
-                joinGame();
-                return false;
-            } catch (PlayerNameNotUniqueException ex) {
-                outWriter.print(ex.getMessage());
-            } catch (NoGameExistsException ignore) {
-            }
-        }
-    }
+//    private boolean handleNameNotUnique() throws IOException, IllegalOperationException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
+//        while (true){
+//            try {
+//                joinGame();
+//                return false;
+//            } catch (PlayerNameNotUniqueException ex) {
+//                outWriter.print(ex.getMessage());
+//            } catch (NoGameExistsException ignore) {
+//            }
+//        }
+//    }
 
     private int promptForNumPlayers() {
         outWriter.print("Insert number of players");
-        int numPlayers = s.nextInt();
-        s.nextLine();
+        int numPlayers = 0;
+        boolean error=true;
+        while (error) {
+            try {
+                numPlayers = s.nextInt();
+                s.nextLine();
+                error=false;
+            } catch (InputMismatchException e) {
+                s.nextLine();
+                outWriter.print("Please insert only a number");
+            }
+
+        }
         return numPlayers;
     }
 
-    private void joinGame() throws IOException, NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
-        outWriter.print("Insert username");
-        myName = s.nextLine();
-        myID=view.joinGame(myName);
+    private void joinGame(UUID gameID, ViewRMIContainerInterface viewContainer) throws InvalidGameID {
+        boolean error=true;
+        promptForUsername();
+        while (error) {
+            try {
+                myID=viewContainer.joinGame(gameID,myName);
+                view=viewContainer.getView(gameID);
+                error=false;
+            } catch (PlayerNameNotUniqueException e) {
+               outWriter.print(e.getMessage());
+               promptForUsername();
+            } catch (IllegalOperationException ignore) {} catch (RemoteException e) {
+                outWriter.print("Connection error");
+                System.exit(1);
+            }
+        }
+
     }
 
     private Integer promptForChosenDeck() throws RemoteException {
@@ -640,5 +657,144 @@ public class TextUserInterface extends UserInterface {
             }
         }
 
+    }
+
+    public void startGameRMI(ViewRMIContainerInterface viewContainer) {
+        try {
+            //show all waiting games
+            Map<UUID, List<String>> views = viewContainer.getJoinableGames();
+            if(views.isEmpty()){
+                outWriter.print("Currently there isn't any game hosted, let's create a new one");
+                bootGame(viewContainer);
+            } else {
+                outWriter.print("If you want join one of this game insert the corresponding number");
+                Map<Integer, UUID> choiceViewMap = showJoinableGames(views);
+                outWriter.print("If you want to create a new game press enter");
+                String choice = s.nextLine();
+                if (choice.isBlank()) {
+                    bootGame(viewContainer);
+                } else {
+                    boolean error = true;
+                    while (error) {
+                        try {
+                            int choiceInt = Integer.parseInt(choice);
+                            UUID gameID = choiceViewMap.get(choiceInt);
+                            if (gameID != null) {
+                                joinGame(gameID, viewContainer);
+                                error = false;
+                            }
+                        } catch (NumberFormatException e) {
+                            outWriter.print("Please insert a number");
+                        } catch (InvalidGameID e) {
+                            outWriter.print(e.getMessage());
+                            outWriter.print("The game chosen is been closed");
+                            startGameRMI(viewContainer);
+                        }
+                    }
+                }
+            }
+        } catch (RemoteException e) {
+            System.out.println("Connection error");
+            System.exit(1);
+        }
+        PingPong td1 = new PingPong( view, myID);
+        td1.start();
+        tuiUpdater.start();
+    }
+
+    private Map<Integer, UUID> showJoinableGames(Map<UUID, List<String>> views) throws RemoteException {
+        Map<Integer,UUID> choiceViewMap=new HashMap<>();
+        int i=1;
+        for (Map.Entry<UUID, List<String>> entry : views.entrySet()) {
+            outWriter.print(String.format("Game %d:", i));
+            outWriter.print(view.getPlayersList());
+            choiceViewMap.put(i, entry.getKey());
+            i++;
+        }
+        return choiceViewMap;
+    }
+
+    private void bootGame(ViewRMIContainerInterface viewContainer) throws RemoteException {
+        boolean error=true;
+        promptForUsername();
+        int numOfPlayers=promptForNumPlayers();
+        while (error) {
+            try {
+                UUID[] ids= viewContainer.bootGame(numOfPlayers,myName);
+                myID=ids[1];
+                view=  viewContainer.getView(ids[0]);
+                error=false;
+            } catch (UnacceptableNumOfPlayersException e) {
+                outWriter.print(e.getMessage());
+                numOfPlayers = promptForNumPlayers();
+            } catch (PlayerNameNotUniqueException e1) {
+                outWriter.print(e1.getMessage());
+                promptForUsername();
+            } catch (IllegalOperationException | InvalidGameID ignore) {}
+        }
+    }
+    private void bootGame(ViewSocket viewSocket) throws IOException, ClassNotFoundException {
+        boolean error=true;
+        promptForUsername();
+        int numOfPlayers=promptForNumPlayers();
+        while (error) {
+            try {
+                UUID[] ids= viewSocket.bootGame(numOfPlayers,myName);
+                myID=ids[1];
+                error=false;
+            } catch (UnacceptableNumOfPlayersException e) {
+                outWriter.print(e.getMessage());
+                numOfPlayers = promptForNumPlayers();
+            } catch (PlayerNameNotUniqueException e1) {
+                outWriter.print(e1.getMessage());
+                promptForUsername();
+            } catch (IllegalOperationException | InvalidGameID ignore) {}
+        }
+    }
+
+    private void  promptForUsername() {
+        outWriter.print("Insert username");
+        myName = s.nextLine();
+        while (myName.isBlank() ) {
+            outWriter.print("Username cannot be blank,please insert another one");
+            myName = s.nextLine();
+        }
+    }
+
+    public void startGameSocket() throws IOException, ClassNotFoundException {
+        ViewSocket viewSocket = (ViewSocket) view;
+        Map<UUID, List<String>> joinableGames = viewSocket.getJoinableGames();
+        if(joinableGames.isEmpty()){
+            outWriter.print("Currently there isn't any game hosted, let's create a new one");
+            bootGame(viewSocket);
+        } else {
+            outWriter.print("If you want join one of this game insert the corresponding number");
+            Map<Integer, UUID> choiceViewMap = showJoinableGames(joinableGames);
+            outWriter.print("If you want to create a new game press enter");
+            String choice = s.nextLine();
+            if (choice.isBlank()) {
+                bootGame(viewSocket);
+            } else {
+                boolean error = true;
+                while (error) {
+                    try {
+                        int choiceInt = Integer.parseInt(choice);
+                        UUID gameID = choiceViewMap.get(choiceInt);
+                        if (gameID != null) {
+                            viewSocket.joinGame(gameID, myName);
+                            error = false;
+                        }
+                    } catch (NumberFormatException e) {
+                        outWriter.print("Please insert a number");
+                    } catch (InvalidGameID e) {
+                        outWriter.print(e.getMessage());
+                        outWriter.print("The game chosen is been closed");
+                        startGameSocket();
+                    } catch (PlayerNameNotUniqueException e) {
+                        throw new RuntimeException(e);
+                    } catch (IllegalOperationException ignore) {}
+                }
+            }
+        }
     }
 }

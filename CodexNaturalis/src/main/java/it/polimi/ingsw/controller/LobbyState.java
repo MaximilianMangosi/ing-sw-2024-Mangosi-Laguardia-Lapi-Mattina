@@ -3,10 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
-import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.model.gamelogic.exceptions.*;
 
 import java.util.UUID;
 
@@ -20,20 +17,20 @@ public class LobbyState extends GameState{
     }
     /**
      * generates a unique UUID object for the new plauer, calls bootGame
-     * @author Giorgio Mattina
+     *
      * @param numOfPlayers number of players
-     * @param playerName the nickname chosen by the player
+     * @param playerName   the nickname chosen by the player
      * @return the userId for identification
      * @throws UnacceptableNumOfPlayersException
+     * @author Giorgio Mattina
      */
-    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, OnlyOneGameException {
-
+    public UUID[] bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException {
         UUID identity = UUID.randomUUID();
         Player newPlayer = new Player(playerName);
-        gameManager.bootGame(numOfPlayers,newPlayer);
+        UUID gameID= gameManager.bootGame(numOfPlayers,newPlayer);
         userIDs.put(identity,newPlayer);
 
-        return identity;
+        return new UUID[]{gameID,identity};
 
     }
 
@@ -54,17 +51,15 @@ public class LobbyState extends GameState{
      * add the new player to the game, and create a new unique userID
      * @param playerName the username of the player
      * @return the created User id
-     * @throws NoGameExistsException if there is no game already
      * @throws PlayerNameNotUniqueException if the username (playerName) is already used
      */
-    public UUID joinGame(String playerName) throws NoGameExistsException, PlayerNameNotUniqueException {
+    public UUID joinGame(UUID gameID,String playerName) throws  PlayerNameNotUniqueException, InvalidGameID {
         UUID identity = UUID.randomUUID();
         Player newPlayer = new Player(playerName);
-        boolean isGameFull=gameManager.joinGame(newPlayer);
+        boolean isGameFull=gameManager.joinGame(gameID,newPlayer);
         userIDs.put(identity,newPlayer);
         if(isGameFull){
-            game=gameManager.getGameWaiting();
-            gameManager.setGameWaiting(null);// gameWaiting must be null to host multiple game on the server
+            game=gameManager.getGameWaiting(gameID);
             game.startGame();
         }
         return identity;

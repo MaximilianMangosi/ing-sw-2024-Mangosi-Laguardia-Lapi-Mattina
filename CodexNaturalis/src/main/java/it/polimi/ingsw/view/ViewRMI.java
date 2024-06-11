@@ -9,8 +9,8 @@ import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
+import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
@@ -47,6 +47,11 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
 
     public void sendPrivateMessage(String receiver, String message, UUID sender) throws IllegalOperationException ,RemoteException{
         controller.addMessage(receiver, message, sender);
+    }
+
+    @Override
+    public Controller getController() throws RemoteException {
+        return controller;
     }
 
     public List<String> getPrivateChat(String receiver, UUID uuid) throws RemoteException{
@@ -307,21 +312,21 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     }
 
     /**
-     * @author Riccardo Lapi
      * @param numOfPlayers the numbers of player for the new created game
-     * @param playerName the username of the caller user
+     * @param playerName   the username of the caller user
      * @return the uid of the caller user
      * @throws RemoteException
      * @throws UnacceptableNumOfPlayersException
      * @throws PlayerNameNotUniqueException
      * @throws IllegalOperationException
+     * @author Riccardo Lapi
      */
     @Override
-    public synchronized UUID bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException {
+    public synchronized UUID[] bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
         return controller.bootGame(numOfPlayers, playerName);
     }
-    public synchronized UUID joinGame(String playerName) throws NoGameExistsException, PlayerNameNotUniqueException, IllegalOperationException {
-        return controller.joinGame(playerName);
+    public synchronized UUID joinGame(UUID gameId,String playerName) throws  PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID {
+        return controller.joinGame(gameId,playerName);
     }
     /**
      * @author Riccardo Lapi

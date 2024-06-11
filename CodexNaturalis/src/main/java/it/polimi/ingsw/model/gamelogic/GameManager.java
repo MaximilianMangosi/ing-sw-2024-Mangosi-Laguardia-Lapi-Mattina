@@ -1,26 +1,24 @@
 package it.polimi.ingsw.model.gamelogic;
 import it.polimi.ingsw.model.gamecards.GameBox;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
+import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GameManager {
-    private Map<String,Game> gameInProcess= new HashMap<>();
-    private Game gameWaiting;
+    private Map<UUID,Game> gameInProcess= new HashMap<>();
+    private Map<UUID,Game> gamesWaiting=new HashMap<>();
     private GameBox gameBox;
-    private Map<String,Integer> playerToGame=new HashMap<>();
+    private final Map<String, UUID> playerToGame=new HashMap<>();
 
     public GameManager() {
     }
-    public Game getGameWaiting(){
-        return gameWaiting;
+    public Game getGameWaiting(UUID gameID) throws InvalidGameID {
+        return Optional.ofNullable(gamesWaiting.get(gameID)).orElseThrow(InvalidGameID::new);
     }
-    public void setGameWaiting(Game game){
-        gameWaiting=game;
+    public void addGameWaiting(UUID gameID,Game game){
+        gamesWaiting.put(gameID,game);
     }
     public GameBox getGameBox() {
         return gameBox;
@@ -31,33 +29,36 @@ public class GameManager {
     }
 
     /**
-     * creates a new game if there aren't any pending otherwise joins the pending one
+     * creates a new game if there aren't any pending, otherwise joins the pending one
      * @author Giuseppe Lagurdia
      * @param numOfPlayers the number of player that can join the game, if there is already a game waiting for player this parameter is ignored
      * @param newPlayer the Player object joining/creating a game
-     * @throws UnacceptableNumOfPlayersException if numOfPlayer less than 2
+     * @return the game's id
+     * @throws UnacceptableNumOfPlayersException if numOfPlayer less than 2 or more than 4
      */
-    public void bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumOfPlayersException, OnlyOneGameException {
-        if(gameWaiting == null){
-            if(numOfPlayers<2 || numOfPlayers>4)
-                throw new UnacceptableNumOfPlayersException();
-            gameWaiting = new Game(newPlayer,numOfPlayers,gameBox);
-        }else{
-            throw new OnlyOneGameException();
-        }
+    public UUID bootGame(int numOfPlayers, Player newPlayer) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException {
+        if(numOfPlayers<2 || numOfPlayers>4)
+            throw new UnacceptableNumOfPlayersException();
+        if(isPlayerNameTaken(newPlayer.getName()))
+            throw  new PlayerNameNotUniqueException();
+        UUID gameID=UUID.randomUUID();
+        gamesWaiting.put(gameID,new Game(newPlayer,numOfPlayers,gameBox));
+        playerToGame.put(newPlayer.getName(),gameID);
+        return gameID;
+
     }
 
-    private boolean isPlayerNameUnique(String playerName) {
-        return gameWaiting.getPlayers().stream().noneMatch(p -> p.getName().equals(playerName));
+    private boolean isPlayerNameTaken(String playerName) {
+        return playerToGame.keySet().stream().anyMatch(p -> p.equals(playerName));
     }
 
     /**
      * @author Riccardo Lapi
-     * remove the given game from the gameInProcess
-     * @param gameId the gameId
+     * remove the given game from  gameInProcess
+     * @param game the game to be removed
      */
-    public void deleteGame(String gameId){
-        gameInProcess.remove(gameId);
+    public void deleteGame(Game game){
+        gameInProcess.entrySet().removeIf(e->e.getValue().equals(game));
     }
 
     /**
@@ -69,19 +70,17 @@ public class GameManager {
         playerToGame.remove(nickName);
     }
 
-    public boolean joinGame(Player newPlayer) throws NoGameExistsException, PlayerNameNotUniqueException {
-        if(gameWaiting==null){
-            throw new NoGameExistsException();
-        }
+    public boolean joinGame(UUID gameID,Player newPlayer) throws PlayerNameNotUniqueException, InvalidGameID {
 
-        if(!isPlayerNameUnique(newPlayer.getName()))
+        if(isPlayerNameTaken(newPlayer.getName()))
             throw new PlayerNameNotUniqueException();
 
-        gameWaiting.addPlayer(newPlayer);
-        playerToGame.put(newPlayer.getName(),gameWaiting.hashCode());
+        Game game = gamesWaiting.get(gameID);
+        game.addPlayer(newPlayer);
+        playerToGame.put(newPlayer.getName(),gameID);
 
-        if(gameWaiting.getPlayers().size()==gameWaiting.getNumOfPlayers()){
-            gameInProcess.put(String.valueOf(gameWaiting.hashCode()),gameWaiting);
+        if(game.getPlayers().size()==game.getNumOfPlayers()){
+            gameInProcess.put(gameID,game);
             return true;
         }
         return false;

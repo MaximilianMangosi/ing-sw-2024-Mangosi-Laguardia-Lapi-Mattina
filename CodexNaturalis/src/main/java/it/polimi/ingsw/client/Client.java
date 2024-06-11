@@ -5,13 +5,9 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
-import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
-import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.ViewRMIInterface;
-import it.polimi.ingsw.view.ViewSocket;
+import it.polimi.ingsw.model.gamelogic.GameManager;
+import it.polimi.ingsw.model.gamelogic.exceptions.*;
+import it.polimi.ingsw.view.*;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -34,6 +30,7 @@ public class Client {
     public static void main(String[] args) {
         View view;
         Scanner s=new Scanner(System.in);
+        TextUserInterface tui= new TextUserInterface();
         int connectionChoice= 0;
         while (connectionChoice!=1 && connectionChoice!=2 ) {
             System.out.println("Choose how to connect to Server.\n1)Socket\n2)RMI");
@@ -47,25 +44,24 @@ public class Client {
 
             }
         }
+        System.out.println("\033c");
+        System.out.println("Welcome to Codex Naturalis! \n Press Any Key To Start");
+        System.out.print("\n\n");
+        s.nextLine();
+        System.out.println("Lets' start! Type 'start-game' to start a game");
         try{
             GameData gameData= new GameData();
             if(connectionChoice==1) {
                 Socket server;
                 server = new Socket( InetAddress.getLocalHost(),2323);
                 view=new ViewSocket(server.getOutputStream(),server.getInputStream(),gameData);
+                tui.setView(view);
+                tui.startGameSocket();
             }else {
                 Registry registry = LocateRegistry.getRegistry(1099);
-                view = (ViewRMIInterface) registry.lookup("ViewRMI");
+                ViewRMIContainerInterface viewContainer = (ViewRMIContainerInterface) registry.lookup("ViewRMI");
+                tui.startGameRMI(viewContainer);
             }
-
-            System.out.println("\033c");
-            System.out.println("Welcome to Codex Naturalis! \n Press Any Key To Start \n");
-            System.out.println("\n\n");
-            s.nextLine();
-            System.out.println("Lets' start! Type 'start-game' to start a game\n");
-
-            TextUserInterface tui= new TextUserInterface(view);
-
 
             //noinspection InfiniteLoopStatement
             while (true) {
@@ -77,13 +73,13 @@ public class Client {
                         HandNotFullException | InvalidCardException | InvalidGoalException | InvalidChoiceException |
                         NoGameExistsException | RequirementsNotMetException | UnacceptableNumOfPlayersException |
                         OnlyOneGameException | PlayerNameNotUniqueException | IllegalPositionException |
-                        DeckEmptyException e) {
+                        DeckEmptyException | InvalidGameID e) {
                     System.out.println(e.getMessage());
                 }
             }
         }catch (RemoteException | NotBoundException e){
             System.out.println("Connection error");
-        }catch (IOException e){
+        }catch (IOException | ClassNotFoundException e){
             System.out.println("Server not reachable");
         }
     }

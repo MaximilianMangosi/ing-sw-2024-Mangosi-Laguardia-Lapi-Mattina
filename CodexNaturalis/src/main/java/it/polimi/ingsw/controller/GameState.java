@@ -9,13 +9,9 @@ import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
-import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.model.gamelogic.exceptions.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 public abstract class GameState {
@@ -82,7 +78,7 @@ public abstract class GameState {
         if (game.getCurrentPlayer().getHand().size() < 3) {
             throw new HandNotFullException();
         }
-        //cheks if given position is in the availablePosition list
+        //checks if given position is in the availablePosition list
         if (!game.getCurrentPlayer().getAvailablePositions().contains(position)) {
             throw new IllegalPositionException();
         }
@@ -90,10 +86,11 @@ public abstract class GameState {
 
     /**
      * Default implementation for bootGame throws always IllegalOperationException, must be overridden by the subclasses if this method is legal in that state
-     * @author Giuseppe Laguardia
+     *
      * @throws IllegalOperationException if in this state this action cannot be performed
+     * @author Giuseppe Laguardia
      */
-    public  UUID BootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException {
+    public UUID[] bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
         throw new IllegalOperationException("boot-game");
     }
     /**
@@ -164,10 +161,7 @@ public abstract class GameState {
      * and remove ecah player in the current game from the GameManager playerToGame Map
      */
     public void deleteGameFromGameManager(){
-
-        String gameHash = String.valueOf(game.hashCode());
-        gameManager.deleteGame(gameHash);
-
+        gameManager.deleteGame(game);
         for(Player player : game.getPlayers()){
             gameManager.deletePlayerFromPlayersToGame(player.getName());
         }
@@ -198,7 +192,7 @@ public abstract class GameState {
      * @throws NoGameExistsException
      * @throws PlayerNameNotUniqueException
      */
-    public UUID joinGame(String playerName) throws IllegalOperationException, NoGameExistsException,PlayerNameNotUniqueException {
+    public UUID joinGame(UUID gameId,String playerName) throws IllegalOperationException,PlayerNameNotUniqueException, InvalidGameID {
         throw new IllegalOperationException("joinGame");
     }
 

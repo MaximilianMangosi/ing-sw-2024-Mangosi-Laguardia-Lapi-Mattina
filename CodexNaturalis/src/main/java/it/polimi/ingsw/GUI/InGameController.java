@@ -7,10 +7,7 @@ import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
-import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.model.gamelogic.exceptions.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
@@ -194,8 +191,8 @@ public class InGameController extends GUIController {
 
         }catch (InvalidGoalException | InvalidUserId | HandNotFullException | NoGameExistsException |
                 RequirementsNotMetException | UnacceptableNumOfPlayersException | OnlyOneGameException |
-                PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException  |
-                ClassNotFoundException ignore){}
+                PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException |
+                ClassNotFoundException | InvalidGameID ignore){}
     }
 //JL
     private void checkGameInfo(){
@@ -348,7 +345,7 @@ public class InGameController extends GUIController {
         }catch (InvalidGoalException | InvalidUserId | HandNotFullException | NoGameExistsException |
                 RequirementsNotMetException | UnacceptableNumOfPlayersException | OnlyOneGameException |
                 PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException | DeckEmptyException |
-                ClassNotFoundException ignore){
+                ClassNotFoundException | InvalidGameID ignore){
         }
     }
     private  void updateTopResource(Reign newTop){
@@ -416,7 +413,6 @@ public class InGameController extends GUIController {
 
     private void handleCheckOverlap() {
         List<ImageView> checksOverlapping = imageChecks.stream().filter(this::overlaps).toList();
-        System.out.println(checksOverlapping.size());
         List<Node> scoreboard= ((StackPane) checksOverlapping.getFirst().getParent()).getChildren();
         AtomicInteger i= new AtomicInteger();
 
@@ -437,7 +433,7 @@ public class InGameController extends GUIController {
     private boolean overlaps(ImageView image) {
         for (ImageView img: imageChecks){
             if(!image.equals(img)){
-                if(image.getX()==img.getX()&& image.getY()==img.getY())
+                if(image.getX()==img.getX() && image.getY()==img.getY())
                     return true;
             }
         }

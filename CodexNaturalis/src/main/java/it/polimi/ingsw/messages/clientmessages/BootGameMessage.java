@@ -4,13 +4,20 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
 import it.polimi.ingsw.messages.exceptionmessages.OnlyOneGameMessage;
+import it.polimi.ingsw.messages.exceptionmessages.PlayerNameNotUniqueMessage;
 import it.polimi.ingsw.messages.exceptionmessages.UnacceptableNumOfPlayersMessage;
 import it.polimi.ingsw.messages.servermessages.PlayersListMessage;
 import it.polimi.ingsw.messages.servermessages.ServerMessage;
 import it.polimi.ingsw.messages.servermessages.UserIDMessage;
+import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
+import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.server.ClientHandler;
+import it.polimi.ingsw.server.ViewUpdater;
+import it.polimi.ingsw.view.ViewRMI;
+import it.polimi.ingsw.view.ViewRMIContainer;
+
 import java.io.IOException;
 import java.io.Serial;
 import java.util.UUID;
@@ -39,13 +46,16 @@ public class BootGameMessage extends ClientMessage{
      */
     public void processMessage( ClientHandler clientHandler) throws IOException {
         try {
-            Controller c= clientHandler.getController();
-            UUID newId =c.bootGame(numPlayers,username);
-            c.getView().initializeFieldBuildingHelper(username);
-            UserIDMessage answer = new UserIDMessage(newId);
+            ViewRMIContainer viewContainer= clientHandler.getViewContainer();
+            UUID[] ids =viewContainer.bootGame(numPlayers,username);
+            Controller c= viewContainer.getController(ids[0]);
+            clientHandler.setController(c);
+            clientHandler.addViewUpdater(ids[0],new ViewUpdater());
+
+            UserIDMessage answer = new UserIDMessage(ids[1]);
             PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
             clientHandler.answerClient(answer);
-            Thread.sleep(100);
+            Thread.sleep(100); // maybe better with atomic boolean
             clientHandler.broadCast(msg);
         } catch (UnacceptableNumOfPlayersException e) {
             UnacceptableNumOfPlayersMessage answer = new UnacceptableNumOfPlayersMessage();
@@ -55,10 +65,10 @@ public class BootGameMessage extends ClientMessage{
             IllegalOperationMessage answer = new IllegalOperationMessage(new IllegalOperationException("Illegal Operation\n"));
             clientHandler.answerClient(answer);
 
-        } catch (OnlyOneGameException e) {
-            OnlyOneGameMessage answer = new OnlyOneGameMessage();
-            clientHandler.answerClient(answer);
-        } catch (InterruptedException ignore) {}
+        }catch (PlayerNameNotUniqueException e) {
+            clientHandler.answerClient(new PlayerNameNotUniqueMessage());
+        } catch (InterruptedException | InvalidGameID ignore) {}
+
     }
 
 }

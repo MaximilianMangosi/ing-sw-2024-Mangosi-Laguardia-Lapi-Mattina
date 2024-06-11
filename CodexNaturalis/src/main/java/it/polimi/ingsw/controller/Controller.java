@@ -12,10 +12,9 @@ import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.Player;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
-import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.model.gamelogic.exceptions.*;
+import it.polimi.ingsw.server.CloseGame;
+import it.polimi.ingsw.server.DisconnectionHandler;
 import it.polimi.ingsw.view.ViewRMI;
 
 import java.rmi.RemoteException;
@@ -154,14 +153,18 @@ public class Controller {
      * @throws PlayerNameNotUniqueException if playerName is already taken by another user
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
-    public  UUID bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException,  IllegalOperationException, OnlyOneGameException {
-        UUID userID= currentState.BootGame(numOfPlayers,playerName);
+    public UUID[] bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
+        UUID[] IDs= currentState.bootGame(numOfPlayers,playerName);
+
         view.updatePlayersList();
         view.initializeFieldBuildingHelper(playerName);
         addToQueue(new PlayersListMessage(getPlayersList()));
-        pingMap.put(userID,true);
+        pingMap.put(IDs[1],true);
+
+        new CloseGame(this).start();
+        new DisconnectionHandler(this).start();
         changeState();
-        return userID;
+        return IDs;
     }
 
     /**
@@ -174,8 +177,8 @@ public class Controller {
      * @throws IllegalOperationException
      * @throws PlayerNameNotUniqueException
      */
-    public UUID joinGame(String playerName) throws NoGameExistsException, IllegalOperationException, PlayerNameNotUniqueException {
-        UUID userID= currentState.joinGame(playerName);
+    public UUID joinGame(UUID gameId,String playerName) throws  IllegalOperationException, PlayerNameNotUniqueException, InvalidGameID {
+        UUID userID= currentState.joinGame(gameId,playerName);
         view.updatePlayersList();
         view.initializeFieldBuildingHelper(playerName);
         changeState();

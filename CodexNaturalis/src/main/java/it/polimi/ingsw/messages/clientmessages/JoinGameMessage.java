@@ -8,6 +8,7 @@ import it.polimi.ingsw.messages.exceptionmessages.NoGameExistsMessage;
 import it.polimi.ingsw.messages.exceptionmessages.PlayerNameNotUniqueMessage;
 import it.polimi.ingsw.messages.servermessages.*;
 import it.polimi.ingsw.model.gamelogic.Player;
+import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.server.ClientHandler;
@@ -23,14 +24,16 @@ public class JoinGameMessage extends ClientMessage {
     @Serial
     private static final long serialVersionUID= -337423706076800830L;
      private String username;
+     private UUID gameId;
 
     /**
      * Constructor of JoinGameMessage
      * @author Giorgio Mattina
      * @param username
      */
-    public JoinGameMessage(String username){
+    public JoinGameMessage(UUID gameId,String username){
          this.username=username;
+         this.gameId=gameId;
      }
 
     /**
@@ -39,12 +42,11 @@ public class JoinGameMessage extends ClientMessage {
      * @param clientHandler
      */
     @Override
-    public void processMessage ( ClientHandler clientHandler) throws IOException {
+    public void processMessage(ClientHandler clientHandler) throws IOException {
        try {
-           Controller c= clientHandler.getController();
-           UUID newId =c.joinGame(username);
-           c.getView().initializeFieldBuildingHelper(username);
-
+           Controller c= clientHandler.getViewContainer().getController(gameId);
+           UUID newId =c.joinGame(gameId,username);
+           clientHandler.setMyViewUpdater(gameId);
            UserIDMessage idMessage = new UserIDMessage(newId);
            clientHandler.answerClient(idMessage);
 
@@ -66,9 +68,6 @@ public class JoinGameMessage extends ClientMessage {
            PlayersListMessage playersListMessage = new PlayersListMessage(c.getPlayersList());
            clientHandler.broadCast(playersListMessage);
 
-       } catch (NoGameExistsException e) {
-           NoGameExistsMessage answer = new NoGameExistsMessage();
-           clientHandler.answerClient(answer);
        } catch (PlayerNameNotUniqueException e) {
            PlayerNameNotUniqueMessage answer = new PlayerNameNotUniqueMessage();
            clientHandler.answerClient(answer);
@@ -76,6 +75,8 @@ public class JoinGameMessage extends ClientMessage {
            IllegalOperationMessage answer = new IllegalOperationMessage(e);
            clientHandler.answerClient(answer);
        } catch (InterruptedException ignore) {}
+       catch (InvalidGameID e) {
+       }
     }
 
 }

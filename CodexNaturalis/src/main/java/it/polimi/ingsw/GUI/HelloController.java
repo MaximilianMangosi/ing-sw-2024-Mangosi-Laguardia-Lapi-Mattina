@@ -1,36 +1,23 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.client.GameData;
-import it.polimi.ingsw.client.ServerHandler;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
-import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.model.gamelogic.exceptions.*;
 import it.polimi.ingsw.view.ViewRMIInterface;
 import it.polimi.ingsw.view.ViewSocket;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.UUID;
 
 public class HelloController extends GUIController {
     private boolean isSocketSelected = true;
@@ -105,7 +92,7 @@ public class HelloController extends GUIController {
 
         try {
 
-            myID = view.joinGame(myName);
+            myID = view.joinGame(null,myName );
             view.initializeFieldBuildingHelper(myName);
             changeScene("waiting-room.fxml", event);
 
@@ -113,6 +100,8 @@ public class HelloController extends GUIController {
             // handleNameNotUnique();
         } catch (NoGameExistsException e) {
             playerNum.setVisible(true);
+        } catch (InvalidGameID e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -120,12 +109,12 @@ public class HelloController extends GUIController {
     private void createNewGame(int numOfPlayers, ActionEvent event) throws IOException, InvalidUserId {
 
             try {
-                myID = view.bootGame(numOfPlayers, myName);
+                myID = view.bootGame(numOfPlayers, myName)[0];
                 view.initializeFieldBuildingHelper(myName);
             } catch (UnacceptableNumOfPlayersException ignore) {
             } catch (OnlyOneGameException ex) {
                 try {
-                    view.joinGame(myName);
+                    view.joinGame(null,myName );
                     view.initializeFieldBuildingHelper(myName);
                 } catch (PlayerNameNotUniqueException e1) {
                     return;
@@ -133,13 +122,14 @@ public class HelloController extends GUIController {
                          InvalidGoalException | HandNotFullException | HandFullException | InvalidChoiceException |
                          IsNotYourTurnException | InvalidUserId | RequirementsNotMetException |
                          UnacceptableNumOfPlayersException | OnlyOneGameException | IllegalPositionException |
-                         InvalidCardException | DeckEmptyException ignore) {
+                         InvalidCardException | DeckEmptyException | InvalidGameID ignore) {
 
                 }
             }catch (HandFullException | ClassNotFoundException | IllegalOperationException | IOException |
                     InvalidGoalException | HandNotFullException | InvalidChoiceException | NoGameExistsException |
                     IsNotYourTurnException | InvalidUserId | RequirementsNotMetException |
-                    PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException | DeckEmptyException h){
+                    PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException |
+                    DeckEmptyException | InvalidGameID h){
                 return;
             }
 

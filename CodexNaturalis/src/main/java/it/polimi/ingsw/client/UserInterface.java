@@ -43,4 +43,9 @@ public abstract class UserInterface{
         return view.getPrivateChat(user);
     }
 
+
+    public void setView(View view) {
+        this.view=view;
+    }
+
 }

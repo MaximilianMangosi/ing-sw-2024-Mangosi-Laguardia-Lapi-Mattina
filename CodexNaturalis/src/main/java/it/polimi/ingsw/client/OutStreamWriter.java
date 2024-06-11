@@ -131,4 +131,9 @@ public class OutStreamWriter {
         }
 
     }
+
+    public void print(List<String> playersList) {
+        System.out.println(playersList);
+
+    }
 }

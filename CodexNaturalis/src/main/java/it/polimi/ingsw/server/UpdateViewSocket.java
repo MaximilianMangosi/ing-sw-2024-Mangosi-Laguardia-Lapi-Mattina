@@ -8,16 +8,17 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Thread that keeps listening to port 3232 for new UUIDs, then adds them to ViewUpdater object
  */
 public class UpdateViewSocket extends Thread{
-    ServerSocket  UVSocket;
-    ViewUpdater viewUpdater;
+    private ServerSocket  UVSocket;
+    private ConcurrentHashMap <UUID,ViewUpdater> viewUpdaterMap;
 
-    public UpdateViewSocket(ViewUpdater viewUpdater) {
-        this.viewUpdater = viewUpdater;
+    public UpdateViewSocket(ConcurrentHashMap<UUID, ViewUpdater> viewUpdaterMap) {
+        this.viewUpdaterMap = viewUpdaterMap;
     }
 
     @Override
@@ -32,8 +33,10 @@ public class UpdateViewSocket extends Thread{
                 Socket client= UVSocket.accept();
                 ObjectInputStream input= new ObjectInputStream(client.getInputStream());
                 ObjectOutputStream output= new ObjectOutputStream(client.getOutputStream());
-                UUID userID= (UUID) input.readObject();
-                viewUpdater.addClient(userID,output);
+                UUID[]ids= (UUID[]) input.readObject();
+                ViewUpdater viewUpdater=viewUpdaterMap.get(ids[0]);
+                assert viewUpdater!=null;
+                viewUpdater.addClient(ids[1],output);
                 System.out.println("Client added");
 
             } catch (IOException e) {
