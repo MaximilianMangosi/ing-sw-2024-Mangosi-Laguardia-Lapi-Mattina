@@ -647,7 +647,7 @@ public class TextUserInterface extends UserInterface {
                 if(chosenCardInt==0){
                     StarterCard st = getStarterCard();
                     artist.show(st);
-                    outWriter.print(artist.getMatrix(),st.IsFront());//todo update with showStarterCard
+                    outWriter.print(artist.getMatrix(),st.isFront());//todo update with showStarterCard
                 }
                 else{
                     Coordinates chosenCardPosition=fieldBuildingHelper.get(chosenCardInt);

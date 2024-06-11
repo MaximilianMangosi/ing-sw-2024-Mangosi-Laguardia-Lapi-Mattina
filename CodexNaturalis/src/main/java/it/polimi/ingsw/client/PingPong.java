@@ -13,7 +13,7 @@ import java.util.UUID;
 public class PingPong extends  Thread{
     View view;
     UUID myID;
-    PingPong(View view, UUID id){
+    public PingPong(View view, UUID id){
        this.view=view;
        myID=id;
     }

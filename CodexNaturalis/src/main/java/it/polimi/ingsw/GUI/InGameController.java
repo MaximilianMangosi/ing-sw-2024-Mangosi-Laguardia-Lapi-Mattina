@@ -3,6 +3,7 @@ package it.polimi.ingsw.GUI;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
+import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
@@ -122,8 +123,8 @@ public class InGameController extends GUIController {
         for(Node cardStack: handBox.getChildren() ){
             cardStack.setOnMouseClicked(this::flipCard);
 
-            ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handlePickUpCard);
-            ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handlePickUpCard);
+            ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handleDragDetected);
+            ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handleDragDetected);
             ((StackPane) cardStack).getChildren().getFirst().setOnDragDone(this::handleDragDone);
             ((StackPane) cardStack).getChildren().get(1).setOnDragDone(this::handleDragDone);
 
@@ -148,8 +149,16 @@ public class InGameController extends GUIController {
         visibleCard3.setOnMouseClicked(mouseEvent -> drawVisibleCard(2));
         visibleCard4.setOnMouseClicked(mouseEvent -> drawVisibleCard(3));
 
+        StarterCard stc = getStarterCard();
         id= getStarterCard().getId();
-        Image scPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+        Image scPng;
+        if(stc.isFront()){
+
+             scPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+        }else{
+             scPng= new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
+        }
+
 
 
         ImageView scView=new ImageView(scPng);
@@ -183,6 +192,8 @@ public class InGameController extends GUIController {
         System.out.println("deck clicked");
         try {
             view.drawFromDeck(myID,i);
+            List<Card> newHand= getHand();
+            updateHand(newHand);
         } catch (IOException e) {
            showErrorMsg("CONNECTION ERROR");
             System.exit(1);
@@ -233,31 +244,17 @@ public class InGameController extends GUIController {
 
                         oldTopGold = newTopGold;
                     }
-                //hand
-                    List<Card> newHand= getHand();
-                    if(!newHand.equals(oldHand)){
-                        Platform.runLater(()->updateHand(newHand));
-                        System.out.println("hand update");
-                    }
-
-                    oldHand=newHand;
-
                 //current player
                     String newCurrentPlayer=view.getCurrentPlayer();
                     if(!view.getCurrentPlayer().equals(oldCurrentPlayer)){
                         Platform.runLater(() -> updateCurrentPlayer(newCurrentPlayer));
                         oldCurrentPlayer = newCurrentPlayer;
                     }
-                } catch (RemoteException | InvalidUserId e) {
+                } catch (RemoteException e) {
                     showErrorMsg("CONNECTION ERROR");
                     System.exit(1);
                 }
 
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
             }
         }).start();
     }
@@ -336,7 +333,9 @@ public class InGameController extends GUIController {
         System.out.println("visible card clicked");
         try {
             view.drawVisibleCard(myID,choice);
-
+            List<Card> newHand= getHand();
+            updateHand(newHand);
+            System.out.println("hand update");
         } catch (IOException e) {
            showErrorMsg("CONNECTION ERROR");
             System.exit(1);
@@ -375,13 +374,36 @@ public class InGameController extends GUIController {
             int id = card.getId();
             Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
             Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
-            StackPane cardStack = (StackPane) handBox.getChildren().get(newHand.indexOf(card));
-            ImageView backView= (ImageView) cardStack.getChildren().getFirst();
-            ImageView frontView= (ImageView) cardStack.getChildren().get(1);
-            backView.setImage(backPng);
-            frontView.setImage(frontPng);
-            backView.setVisible(false);
+            if(handBox.getChildren().size() <3){
+                StackPane cardStack = new StackPane();
+                cardStack.setPrefWidth(275);
+                cardStack.setPrefHeight(193);
+                ImageView frontImage = new ImageView(frontPng);
+                ImageView backImage = new ImageView(backPng);
+                frontImage.setFitHeight(193);
+                frontImage.setFitWidth(275);
+                backImage.setFitHeight(193);
+                backImage.setFitWidth(275);
 
+
+
+                cardStack.getChildren().add(backImage);
+                cardStack.getChildren().add(frontImage);
+                handBox.getChildren().add(cardStack);
+                ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handleDragDetected);
+                ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handleDragDetected);
+                ((StackPane) cardStack).getChildren().getFirst().setOnDragDone(this::handleDragDone);
+                ((StackPane) cardStack).getChildren().get(1).setOnDragDone(this::handleDragDone);
+
+                cardStack.setOnMouseClicked(this::flipCard);
+            }else {
+                StackPane cardStack = (StackPane) handBox.getChildren().get(newHand.indexOf(card));
+                ImageView backView = (ImageView) cardStack.getChildren().getFirst();
+                ImageView frontView = (ImageView) cardStack.getChildren().get(1);
+                backView.setImage(backPng);
+                frontView.setImage(frontPng);
+                backView.setVisible(false);
+            }
         }
     }
     public void placeCard( Coordinates position){
@@ -413,20 +435,25 @@ public class InGameController extends GUIController {
 
     private void handleCheckOverlap() {
         List<ImageView> checksOverlapping = imageChecks.stream().filter(this::overlaps).toList();
-        List<Node> scoreboard= ((StackPane) checksOverlapping.getFirst().getParent()).getChildren();
-        AtomicInteger i= new AtomicInteger();
+        System.out.println(checksOverlapping.size());
+        try {
+            List<Node> scoreboard= ((StackPane) checksOverlapping.getFirst().getParent()).getChildren();
+            AtomicInteger i= new AtomicInteger();
 
-        if(checksOverlapping.isEmpty())
-            return;
-        //Every second puts the checks that overlaps another one on the top of the stack pane
-        overlapAnimation = new Timeline(new KeyFrame(Duration.seconds(2),actionEvent ->  {
-             ImageView check=checksOverlapping.get(i.get());
-             scoreboard.remove(check);
-             scoreboard.addLast(check);
-             i.set((i.get() + 1) % checksOverlapping.size());
-        }));
-        overlapAnimation.setCycleCount(Timeline.INDEFINITE);// animation cycles until stopped by pressing the button that closes the scoreboard
-        overlapAnimation.play();
+            if(checksOverlapping.isEmpty())
+                return;
+            //Every second puts the checks that overlaps another one on the top of the stack pane
+            overlapAnimation = new Timeline(new KeyFrame(Duration.seconds(2),actionEvent ->  {
+                 ImageView check=checksOverlapping.get(i.get());
+                 scoreboard.remove(check);
+                 scoreboard.addLast(check);
+                 i.set((i.get() + 1) % checksOverlapping.size());
+            }));
+            overlapAnimation.setCycleCount(Timeline.INDEFINITE);// animation cycles until stopped by pressing the button that closes the scoreboard
+            overlapAnimation.play();
+        } catch (NoSuchElementException ignore) {
+
+        }
 
     }
 
@@ -543,18 +570,21 @@ public class InGameController extends GUIController {
         playerListBox.getChildren().remove(event.getSource());
         returnButtonPresent=false;
     }
-    private void handlePickUpCard(MouseEvent event){
+    private void handleDragDetected(MouseEvent event){
         Dragboard db=((Node) event.getSource()).startDragAndDrop(TransferMode.MOVE);
         ClipboardContent cpc = new ClipboardContent();
         cpc.putImage(((ImageView)event.getSource()).getImage());
         db.setContent(cpc);
-        event.consume();
+        selectedCardToPlay= (ImageView) event.getSource();
+
     }
     private void handleDragOver(DragEvent e)  {
         try{
             double hover_x = e.getX()-1204;
             double hover_y = e.getY()-805;
-            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
+            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
+//            System.out.println((int) Math.round(hover_x/155.5));
+//            System.out.println( (int) Math.round(hover_y/79.5));
             List<Coordinates> avlbPositions = view.showPlayersLegalPositions(myID);
 
             if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
@@ -572,18 +602,61 @@ public class InGameController extends GUIController {
             Dragboard db = e.getDragboard();
             double hover_x = e.getX()-1204;
             double hover_y = e.getY()-805;
+            System.out.println((int) Math.round(hover_x/155.5));
+            System.out.println((int) -Math.round(hover_y/79.5));
+            Coordinates newStandardCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
+            StackPane parent=(StackPane) selectedCardToPlay.getParent();
+            if(parent.getChildren().getFirst().isVisible()){
+                view.playCardBack(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
+            }else{
+                view.playCardFront(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
+            }
 
             Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
             ImageView newCardImage =new ImageView(db.getImage());
             newCardImage.setFitWidth(200);
             newCardImage.setFitHeight(150);
-            newCardImage.setTranslateX(newCoordinate.x*155.5);
-            newCardImage.setTranslateY(newCoordinate.y * 79.5);
 
             fieldPane.getChildren().add(newCardImage);
+            newCardImage.setTranslateX(newCoordinate.x*155.5);
+            newCardImage.setTranslateY(newCoordinate.y * 79.5);
             e.setDropCompleted(true);
         }catch (RemoteException ex){
 
+        } catch (InvalidGoalException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (HandFullException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (InvalidChoiceException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (IsNotYourTurnException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (UnacceptableNumOfPlayersException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (OnlyOneGameException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (PlayerNameNotUniqueException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (IOException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (IllegalOperationException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (InvalidCardException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (DeckEmptyException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (HandNotFullException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (InvalidUserId ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (NoGameExistsException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (RequirementsNotMetException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (IllegalPositionException ex) {
+            showErrorMsg(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            showErrorMsg(ex.getMessage());
         }
 
 
@@ -592,6 +665,7 @@ public class InGameController extends GUIController {
         if (e.getTransferMode() == TransferMode.MOVE) {
             handBox.getChildren().remove(((ImageView)e.getSource()).getParent());
         }
+
         e.consume();
     }
     private void showErrorMsg(String message) {
