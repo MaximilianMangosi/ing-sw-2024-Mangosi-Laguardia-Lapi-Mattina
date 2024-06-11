@@ -42,6 +42,7 @@ public class Server {
             ViewRMIContainer viewRMIContainer = new ViewRMIContainer(gameManager);
 
             // export View
+            System.setProperty("java.rmi.server.hostname", "192.168.1.8");
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("ViewRMI", viewRMIContainer);
             System.out.println("Remote View has been correctly exported");
