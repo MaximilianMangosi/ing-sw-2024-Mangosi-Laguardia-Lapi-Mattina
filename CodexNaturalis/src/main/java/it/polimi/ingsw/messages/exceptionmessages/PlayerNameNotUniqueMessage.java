@@ -17,7 +17,7 @@ public class PlayerNameNotUniqueMessage extends ExceptionMessage{
     }
 
     @Override
-    public void processMessage() throws UnacceptableNumOfPlayersException, OnlyOneGameException, IllegalOperationException, NoGameExistsException, PlayerNameNotUniqueException {
+    public void processMessage() throws UnacceptableNumOfPlayersException, IllegalOperationException,  PlayerNameNotUniqueException {
         throw new PlayerNameNotUniqueException();
     }
 }

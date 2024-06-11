@@ -13,8 +13,5 @@ public class OnlyOneGameMessage extends ExceptionMessage{
     public void processMessage(ViewSocket view) {
 
     }
-    @Override
-    public void processMessage() throws UnacceptableNumOfPlayersException, OnlyOneGameException {
-        throw new OnlyOneGameException();
-    }
+
 }

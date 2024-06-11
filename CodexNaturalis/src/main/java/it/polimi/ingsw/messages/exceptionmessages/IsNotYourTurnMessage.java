@@ -19,7 +19,7 @@ public class IsNotYourTurnMessage extends ExceptionMessage{
     }
 
     @Override
-    public void processMessage() throws UnacceptableNumOfPlayersException, OnlyOneGameException, IllegalOperationException, NoGameExistsException, PlayerNameNotUniqueException, IsNotYourTurnException {
+    public void processMessage() throws UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException, IsNotYourTurnException {
         throw  new IsNotYourTurnException();
     }
 }

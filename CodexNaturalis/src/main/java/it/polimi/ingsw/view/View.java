@@ -75,7 +75,7 @@ public interface View {
 
     Reign getTopOfGoldCardDeck() throws RemoteException;
     boolean amIPinged(UUID id) throws RemoteException;
-    void pong(UUID myID) throws IOException, ClassNotFoundException, InvalidGameID;
+    void pong(UUID myID) throws IOException, ClassNotFoundException;
     List<String> getChatList() throws RemoteException;
     public void sendPrivateMessage(String receiver, String message, UUID sender) throws IOException, IllegalOperationException, ClassNotFoundException;
     public List<String> getPrivateChat(String receiver, UUID uuid) throws RemoteException;

@@ -4,10 +4,7 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
-import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
-import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.model.gamelogic.exceptions.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -84,7 +81,7 @@ public class ChooseSideController extends GUIController {
             handBox.getChildren().add(cardView);
         }
     }
-    public void chooseFront() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
+    public void chooseFront() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, InvalidGameID {
         view.chooseStarterCardSide(true,myID);
         starterCardBox.getChildren().remove(1);
         sealedCards++;
@@ -93,7 +90,7 @@ public class ChooseSideController extends GUIController {
         }
 
     }
-    public void chooseBack() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
+    public void chooseBack() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, InvalidGameID {
         view.chooseStarterCardSide(false,myID);
         starterCardBox.getChildren().removeFirst();
         sealedCards++;
@@ -102,7 +99,7 @@ public class ChooseSideController extends GUIController {
         }
     }
 
-    public void choosePrivateGoal1() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
+    public void choosePrivateGoal1() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, InvalidGameID {
         view.chooseGoal(myID,view.showPlayerGoalOptions(myID)[0]);
         privateGoalBox.getChildren().remove(1);
         sealedCards++;
@@ -111,7 +108,7 @@ public class ChooseSideController extends GUIController {
         }
     }
 
-    public void choosePrivateGoal2() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
+    public void choosePrivateGoal2() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, InvalidGameID {
         view.chooseGoal(myID,view.showPlayerGoalOptions(myID)[1]);
         privateGoalBox.getChildren().removeFirst();
         sealedCards++;

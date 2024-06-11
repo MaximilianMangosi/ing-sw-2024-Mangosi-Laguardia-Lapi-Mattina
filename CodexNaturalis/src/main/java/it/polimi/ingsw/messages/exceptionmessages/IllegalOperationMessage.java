@@ -20,7 +20,7 @@ public class IllegalOperationMessage  extends ExceptionMessage{
     }
 
     @Override
-    public void processMessage() throws UnacceptableNumOfPlayersException, OnlyOneGameException, IllegalOperationException {
+    public void processMessage() throws UnacceptableNumOfPlayersException, IllegalOperationException {
         throw exception;
     }
 }

@@ -15,9 +15,4 @@ public class NoGameExistsMessage extends ExceptionMessage{
     public void processMessage(ViewSocket view) {
 
     }
-
-    @Override
-    public void processMessage() throws UnacceptableNumOfPlayersException, OnlyOneGameException, IllegalOperationException, NoGameExistsException {
-        throw  new NoGameExistsException();
-    }
 }

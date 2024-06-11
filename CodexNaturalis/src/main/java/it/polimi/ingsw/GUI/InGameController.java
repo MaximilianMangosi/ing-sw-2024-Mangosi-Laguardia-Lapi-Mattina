@@ -622,40 +622,13 @@ public class InGameController extends GUIController {
             newCardImage.setTranslateY(newCoordinate.y * 79.5);
             e.setDropCompleted(true);
         }catch (RemoteException ex){
-
-        } catch (InvalidGoalException ex) {
             showErrorMsg(ex.getMessage());
-        } catch (HandFullException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (InvalidChoiceException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (IsNotYourTurnException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (UnacceptableNumOfPlayersException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (OnlyOneGameException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (PlayerNameNotUniqueException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (IOException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (IllegalOperationException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (InvalidCardException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (DeckEmptyException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (HandNotFullException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (InvalidUserId ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (NoGameExistsException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (RequirementsNotMetException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (IllegalPositionException ex) {
-            showErrorMsg(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
+            System.exit(1);
+        } catch (InvalidGoalException | HandFullException | InvalidChoiceException | IsNotYourTurnException |
+                 UnacceptableNumOfPlayersException | OnlyOneGameException | PlayerNameNotUniqueException | IOException |
+                 IllegalOperationException | InvalidCardException | DeckEmptyException | HandNotFullException |
+                 InvalidUserId | NoGameExistsException | RequirementsNotMetException | IllegalPositionException |
+                 ClassNotFoundException | InvalidGameID ex) {
             showErrorMsg(ex.getMessage());
         }
 

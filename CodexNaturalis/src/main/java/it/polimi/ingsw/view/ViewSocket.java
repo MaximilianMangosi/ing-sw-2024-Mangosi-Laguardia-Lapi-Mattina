@@ -422,12 +422,15 @@ public class  ViewSocket implements View{
     }
 
     @Override
-    public synchronized void pong(UUID myID) throws IOException, ClassNotFoundException, InvalidGameID {
+    public synchronized void pong(UUID myID) throws IOException, ClassNotFoundException {
         output.writeObject(new PongMessage(myID));
         ServerMessage reply = readMessage();
         try {
             reply.processMessage();
-        } catch (UnacceptableNumOfPlayersException| IllegalOperationException  | PlayerNameNotUniqueException | IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException | InvalidCardException | HandNotFullException | InvalidUserId | InvalidGoalException | HandFullException | DeckEmptyException | InvalidChoiceException ignore) {
+        } catch (UnacceptableNumOfPlayersException | IllegalOperationException | PlayerNameNotUniqueException |
+                 IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException |
+                 InvalidCardException | HandNotFullException | InvalidUserId | InvalidGoalException |
+                 HandFullException | DeckEmptyException | InvalidChoiceException | InvalidGameID ignore) {
         }
     }
 

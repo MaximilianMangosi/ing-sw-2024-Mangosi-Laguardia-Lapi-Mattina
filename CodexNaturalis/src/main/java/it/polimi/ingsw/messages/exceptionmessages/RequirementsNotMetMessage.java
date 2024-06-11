@@ -17,7 +17,7 @@ public class RequirementsNotMetMessage extends ExceptionMessage {
     }
 
     @Override
-    public void processMessage() throws UnacceptableNumOfPlayersException, OnlyOneGameException, IllegalOperationException, NoGameExistsException, PlayerNameNotUniqueException, IsNotYourTurnException, RequirementsNotMetException {
+    public void processMessage() throws UnacceptableNumOfPlayersException, IllegalOperationException,  PlayerNameNotUniqueException, IsNotYourTurnException, RequirementsNotMetException {
         throw new RequirementsNotMetException();
     }
 }
