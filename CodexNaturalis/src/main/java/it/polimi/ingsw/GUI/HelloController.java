@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.client.GameData;
+import it.polimi.ingsw.client.PingPong;
 import it.polimi.ingsw.client.ServerHandler;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
@@ -96,6 +97,7 @@ public class HelloController extends GUIController {
                 Registry registry = LocateRegistry.getRegistry(1099);
                 view = (ViewRMIInterface) registry.lookup("ViewRMI");
             }
+
         } catch (Exception e) {
             //
             return;
@@ -107,6 +109,7 @@ public class HelloController extends GUIController {
 
             myID = view.joinGame(myName);
             view.initializeFieldBuildingHelper(myName);
+            new PingPong(view,myID).start();
             changeScene("waiting-room.fxml", event);
 
         } catch (PlayerNameNotUniqueException e) {
@@ -142,7 +145,7 @@ public class HelloController extends GUIController {
                     PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException | DeckEmptyException h){
                 return;
             }
-
+            new PingPong(view,myID).start();
             changeScene("waiting-room.fxml", event);
 
     }

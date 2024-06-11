@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.gamecards.cards;
 
-import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 import it.polimi.ingsw.model.gamecards.resources.Tool;
@@ -114,7 +113,7 @@ public abstract class Card implements Serializable {
      * @author Giuseppe Laguardia
      * returns the value of isFront
      */
-    public boolean IsFront() {
+    public boolean isFront() {
         return isFront;
     }
     /**

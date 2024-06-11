@@ -64,7 +64,7 @@ public class LobbyState extends GameState{
         userIDs.put(identity,newPlayer);
         if(isGameFull){
             game=gameManager.getGameWaiting();
-            gameManager.setGameWaiting(null);// gameWaiting must be null to host multiple game on the server
+            //gameManager.setGameWaiting(null);// gameWaiting must be null to host multiple game on the server
             game.startGame();
         }
         return identity;
