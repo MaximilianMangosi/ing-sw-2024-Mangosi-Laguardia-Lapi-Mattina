@@ -707,7 +707,7 @@ public class TextUserInterface extends UserInterface {
         int i=1;
         for (Map.Entry<UUID, List<String>> entry : views.entrySet()) {
             outWriter.print(String.format("Game %d:", i));
-            outWriter.print(view.getPlayersList());
+            outWriter.print(entry.getValue());
             choiceViewMap.put(i, entry.getKey());
             i++;
         }
