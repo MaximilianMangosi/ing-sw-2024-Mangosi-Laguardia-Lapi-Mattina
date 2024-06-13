@@ -90,7 +90,7 @@ public abstract class GameState {
      * @throws IllegalOperationException if in this state this action cannot be performed
      * @author Giuseppe Laguardia
      */
-    public UUID[] bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
+    public GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
         throw new IllegalOperationException("boot-game");
     }
     /**

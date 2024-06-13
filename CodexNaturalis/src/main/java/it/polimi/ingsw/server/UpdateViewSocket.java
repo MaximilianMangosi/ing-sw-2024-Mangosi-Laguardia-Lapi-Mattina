@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.controller.GameKey;
 import it.polimi.ingsw.messages.servermessages.UserIDMessage;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class UpdateViewSocket extends Thread{
     private ServerSocket  UVSocket;
-    private ConcurrentHashMap <UUID,ViewUpdater> viewUpdaterMap;
+    private final ConcurrentHashMap <UUID,ViewUpdater> viewUpdaterMap;
 
     public UpdateViewSocket(ConcurrentHashMap<UUID, ViewUpdater> viewUpdaterMap) {
         this.viewUpdaterMap = viewUpdaterMap;
@@ -30,13 +31,13 @@ public class UpdateViewSocket extends Thread{
         }
         while (true){
             try {
-                Socket client= UVSocket.accept();
+                Socket client = UVSocket.accept();
                 ObjectInputStream input= new ObjectInputStream(client.getInputStream());
                 ObjectOutputStream output= new ObjectOutputStream(client.getOutputStream());
-                UUID[]ids= (UUID[]) input.readObject();
-                ViewUpdater viewUpdater=viewUpdaterMap.get(ids[0]);
+                GameKey gameKey= (GameKey) input.readObject();
+                ViewUpdater viewUpdater=viewUpdaterMap.get(gameKey.gameID());
                 assert viewUpdater!=null;
-                viewUpdater.addClient(ids[1],output);
+                viewUpdater.addClient(gameKey.userID(),output);
                 System.out.println("Client added");
 
             } catch (IOException e) {

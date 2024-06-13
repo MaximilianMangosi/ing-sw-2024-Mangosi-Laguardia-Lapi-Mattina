@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.controller.GameKey;
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
@@ -13,6 +14,7 @@ import java.util.UUID;
 public abstract class UserInterface{
     protected  View view;
     protected UUID myID;
+    protected UUID gameID;
     protected String myName;
 
     public List<Card> getHand() throws RemoteException, InvalidUserId {

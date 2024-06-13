@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.client.GameData;
+import it.polimi.ingsw.controller.GameKey;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
@@ -109,7 +110,9 @@ public class HelloController extends GUIController {
     private void createNewGame(int numOfPlayers, ActionEvent event) throws IOException, InvalidUserId {
 
             try {
-                myID = view.bootGame(numOfPlayers, myName)[0];
+               GameKey gameKey= view.bootGame(numOfPlayers, myName);
+               myID=gameKey.userID();
+               gameID=gameKey.gameID();
                 view.initializeFieldBuildingHelper(myName);
             } catch (UnacceptableNumOfPlayersException ignore) {
             } catch (OnlyOneGameException ex) {

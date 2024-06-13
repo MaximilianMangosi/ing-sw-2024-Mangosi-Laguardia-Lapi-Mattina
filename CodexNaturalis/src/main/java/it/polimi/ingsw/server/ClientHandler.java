@@ -51,7 +51,6 @@ public class ClientHandler implements Runnable{
         System.out.println("Connected to "+client.getInetAddress());
 
         try {
-            new Thread(this::RMIToSocketDispatcher).start();
             handleConnection();
         } catch (IOException e) {
             System.out.println("client" + client.getInetAddress() + " connection dropped\n");
@@ -63,47 +62,6 @@ public class ClientHandler implements Runnable{
 
     }
 
-    /**
-     * Retrieves a message from Remote view and send to the Socket clients
-     * @author Giuseppe Laguardia
-     */
-    private void RMIToSocketDispatcher(){
-        while (true) {
-            try {
-                if(shouldStop())
-                    break;
-                ServerMessage newMsg=controller.retrieveMessage();
-                if(newMsg instanceof GameStartMessage) {
-                    for (UUID id : getAllClients().keySet()) {
-                        sendTo(id, new HandMessage(controller.getPlayersHands().get(id)));
-                        sendTo(id, new GoalOptionsMessage(controller.getGoalOptions().get(id)));
-                        sendTo(id, new StarterCardMessage(controller.getPlayersStarterCards().get(id)));
-                    }
-                    myViewUpdater.sendAll(newMsg);
-                } else if (newMsg instanceof UpdateChatMessage) {
-                    UUID receiver = ((UpdateChatMessage) newMsg).getReceiver();
-                    if(getAllClients().containsKey(receiver))
-                        sendTo(receiver,newMsg);
-                } else
-                    myViewUpdater.sendAll(newMsg);
-
-            } catch (IOException e) {
-                System.out.println("RMIToSocketDispatcher stopped");
-            }
-        }
-    }
-
-    /**
-     * check if a RMIToSocketDispatcher thread should continue
-     * @return true if there is at least a player using RMI, false otherwise
-     * @throws RemoteException if a connection error occurs
-     */
-    private boolean shouldStop() throws RemoteException {
-        // if there is player in game are more than the players using socket then at least one of them is using RMI and the thread must continue
-        int numOfPlayersInGame= controller.getPlayersList().size();
-        int numOfSocketPlayers= myViewUpdater.getClients().size();
-        return  controller.getView().isGameStarted() && numOfPlayersInGame <= numOfSocketPlayers;
-    }
 
     /**
      * reads from input and calls processMessage on the Message object
@@ -182,6 +140,7 @@ public class ClientHandler implements Runnable{
         if(myViewUpdater==null){
             myViewUpdater=new ViewUpdater();
             addViewUpdater(gameID,myViewUpdater);
+            new RMIToSocketDispatcher(controller,myViewUpdater).start();
         }
     }
 

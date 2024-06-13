@@ -1,11 +1,13 @@
 package it.polimi.ingsw.messages.clientmessages;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.GameKey;
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
 import it.polimi.ingsw.messages.exceptionmessages.OnlyOneGameMessage;
 import it.polimi.ingsw.messages.exceptionmessages.PlayerNameNotUniqueMessage;
 import it.polimi.ingsw.messages.exceptionmessages.UnacceptableNumOfPlayersMessage;
+import it.polimi.ingsw.messages.servermessages.GameKeyMessage;
 import it.polimi.ingsw.messages.servermessages.PlayersListMessage;
 import it.polimi.ingsw.messages.servermessages.ServerMessage;
 import it.polimi.ingsw.messages.servermessages.UserIDMessage;
@@ -14,6 +16,8 @@ import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.server.ClientHandler;
+import it.polimi.ingsw.server.CloseGame;
+import it.polimi.ingsw.server.DisconnectionHandler;
 import it.polimi.ingsw.server.ViewUpdater;
 import it.polimi.ingsw.view.ViewRMI;
 import it.polimi.ingsw.view.ViewRMIContainer;
@@ -47,16 +51,17 @@ public class BootGameMessage extends ClientMessage{
     public void processMessage( ClientHandler clientHandler) throws IOException {
         try {
             ViewRMIContainer viewContainer= clientHandler.getViewContainer();
-            UUID[] ids =viewContainer.bootGame(numPlayers,username);
-            Controller c= viewContainer.getController(ids[0]);
+            GameKey gameKey =viewContainer.bootGame(numPlayers,username);
+            Controller c= viewContainer.getController(gameKey.gameID());
             clientHandler.setController(c);
-            clientHandler.addViewUpdater(ids[0],new ViewUpdater());
-
-            UserIDMessage answer = new UserIDMessage(ids[1]);
+            clientHandler.addViewUpdater(gameKey.gameID(),new ViewUpdater());
+            GameKeyMessage answer = new GameKeyMessage(gameKey);
             PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
             clientHandler.answerClient(answer);
             Thread.sleep(100); // maybe better with atomic boolean
             clientHandler.broadCast(msg);
+            new CloseGame(c).start();
+            new DisconnectionHandler(c).start();
         } catch (UnacceptableNumOfPlayersException e) {
             UnacceptableNumOfPlayersMessage answer = new UnacceptableNumOfPlayersMessage();
             clientHandler.answerClient(answer);

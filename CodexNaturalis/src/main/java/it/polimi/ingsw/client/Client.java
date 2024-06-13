@@ -58,10 +58,11 @@ public class Client {
                 tui.setView(view);
                 tui.startGameSocket();
             }else {
-                Registry registry = LocateRegistry.getRegistry("192.168.1.8",1099);
+                Registry registry = LocateRegistry.getRegistry(1099);
                 ViewRMIContainerInterface viewContainer = (ViewRMIContainerInterface) registry.lookup("ViewRMI");
                 tui.startGameRMI(viewContainer);
             }
+
 
             //noinspection InfiniteLoopStatement
             while (true) {

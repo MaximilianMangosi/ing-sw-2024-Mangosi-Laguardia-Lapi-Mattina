@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.controller.GameKey;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -678,7 +679,7 @@ public class TextUserInterface extends UserInterface {
                     while (error) {
                         try {
                             int choiceInt = Integer.parseInt(choice);
-                            UUID gameID = choiceViewMap.get(choiceInt);
+                            gameID = choiceViewMap.get(choiceInt);
                             if (gameID != null) {
                                 joinGame(gameID, viewContainer);
                                 error = false;
@@ -697,8 +698,7 @@ public class TextUserInterface extends UserInterface {
             System.out.println("Connection error");
             System.exit(1);
         }
-        PingPong td1 = new PingPong( view, myID);
-        td1.start();
+        new PingPong(view,myID).start();
         tuiUpdater.start();
     }
 
@@ -720,9 +720,10 @@ public class TextUserInterface extends UserInterface {
         int numOfPlayers=promptForNumPlayers();
         while (error) {
             try {
-                UUID[] ids= viewContainer.bootGame(numOfPlayers,myName);
-                myID=ids[1];
-                view=  viewContainer.getView(ids[0]);
+               GameKey gameKey= viewContainer.bootGame(numOfPlayers,myName);
+                myID=gameKey.userID();
+                gameID= gameKey.gameID();
+                view=  viewContainer.getView(gameID);
                 error=false;
             } catch (UnacceptableNumOfPlayersException e) {
                 outWriter.print(e.getMessage());
@@ -739,8 +740,9 @@ public class TextUserInterface extends UserInterface {
         int numOfPlayers=promptForNumPlayers();
         while (error) {
             try {
-                UUID[] ids= viewSocket.bootGame(numOfPlayers,myName);
-                myID=ids[1];
+                GameKey gameKey= viewSocket.bootGame(numOfPlayers,myName);
+                myID=gameKey.userID();
+                gameID=gameKey.gameID();
                 error=false;
             } catch (UnacceptableNumOfPlayersException e) {
                 outWriter.print(e.getMessage());
@@ -779,7 +781,7 @@ public class TextUserInterface extends UserInterface {
                 while (error) {
                     try {
                         int choiceInt = Integer.parseInt(choice);
-                        UUID gameID = choiceViewMap.get(choiceInt);
+                        gameID = choiceViewMap.get(choiceInt);
                         if (gameID != null) {
                             viewSocket.joinGame(gameID, myName);
                             error = false;
@@ -796,5 +798,8 @@ public class TextUserInterface extends UserInterface {
                 }
             }
         }
+        new ServerHandler(viewSocket,tuiUpdater,new GameKey(gameID,myID)).start();
+        new PingPong(view,myID).start();
+
     }
 }

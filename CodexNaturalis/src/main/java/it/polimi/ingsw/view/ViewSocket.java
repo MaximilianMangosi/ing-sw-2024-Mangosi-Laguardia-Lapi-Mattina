@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.GameData;
+import it.polimi.ingsw.controller.GameKey;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.messages.servermessages.*;
 import it.polimi.ingsw.messages.clientmessages.*;
@@ -247,7 +248,7 @@ public class  ViewSocket implements View{
      * @throws IllegalOperationException         when in the current phase of the game bootGame is not admissible
      */
     @Override
-    public synchronized UUID[] bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, ClassNotFoundException, IllegalOperationException, PlayerNameNotUniqueException, IOException, InvalidGameID {
+    public synchronized GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, ClassNotFoundException, IllegalOperationException, PlayerNameNotUniqueException, IOException, InvalidGameID {
         BootGameMessage message = new BootGameMessage(numOfPlayers,playerName);
         output.writeObject(message);
         ServerMessage reply = readMessage();
@@ -256,9 +257,8 @@ public class  ViewSocket implements View{
         } catch (IsNotYourTurnException | InvalidChoiceException | DeckEmptyException | RequirementsNotMetException |
                  IllegalPositionException | InvalidCardException | HandNotFullException | InvalidUserId |
                  InvalidGoalException | HandFullException ignore) {}
-        // if processMessage didn't throw an exception then the reply of the server is an UserIDMessage
-        UUID myID = ((UserIDMessage) reply).getYourID();
-        return new UUID[]{myID};
+        // if processMessage didn't throw an exception then the reply of the server is a GameKeyMessage
+       return  ((GameKeyMessage) reply).getGameKey();
     }
 
 

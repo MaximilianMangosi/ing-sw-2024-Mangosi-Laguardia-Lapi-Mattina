@@ -42,7 +42,7 @@ public class Server {
             ViewRMIContainer viewRMIContainer = new ViewRMIContainer(gameManager);
 
             // export View
-            System.setProperty("java.rmi.server.hostname", "192.168.1.8");
+            //System.setProperty("java.rmi.server.hostname", "192.168.1.8");
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("ViewRMI", viewRMIContainer);
             System.out.println("Remote View has been correctly exported");
@@ -55,12 +55,6 @@ public class Server {
                 System.out.println("cannot open server commandSocket");
                 return;
             }
-//            CloseGame t1 = new CloseGame(controller);
-//            DisconnectionHandler t2=new DisconnectionHandler(controller);
-//
-//
-//            t1.start();
-//            t2.start();
             ConcurrentHashMap<UUID,ViewUpdater> viewUpdaterMap=new ConcurrentHashMap<>();
             new UpdateViewSocket(viewUpdaterMap).start();
             while (true){

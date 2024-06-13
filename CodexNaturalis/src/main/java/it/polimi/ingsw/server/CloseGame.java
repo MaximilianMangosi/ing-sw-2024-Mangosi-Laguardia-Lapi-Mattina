@@ -27,7 +27,7 @@ public class CloseGame extends Thread{
                         shouldWait = false;
                     } else {
                         controller.deleteGameFromGameManager();
-                        shouldWait = true;
+                        break;
                     }
                 }
             }

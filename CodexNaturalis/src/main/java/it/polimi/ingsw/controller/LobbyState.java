@@ -24,13 +24,13 @@ public class LobbyState extends GameState{
      * @throws UnacceptableNumOfPlayersException
      * @author Giorgio Mattina
      */
-    public UUID[] bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException {
+    public GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException {
         UUID identity = UUID.randomUUID();
         Player newPlayer = new Player(playerName);
         UUID gameID= gameManager.bootGame(numOfPlayers,newPlayer);
         userIDs.put(identity,newPlayer);
 
-        return new UUID[]{gameID,identity};
+        return new GameKey(gameID, identity);
 
     }
 

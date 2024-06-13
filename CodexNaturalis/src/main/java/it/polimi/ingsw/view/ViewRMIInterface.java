@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.GameKey;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -52,7 +53,7 @@ public interface ViewRMIInterface extends Remote,View  {
     public List<String> getPrivateChat(String receiver, UUID uuid) throws RemoteException;
 
     //CONTROLLER
-    public UUID[] bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException, PlayerNameNotUniqueException;
+    public GameKey bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, OnlyOneGameException, PlayerNameNotUniqueException;
     public UUID joinGame(UUID gameId,String playerName) throws RemoteException, PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID;
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId;
     public void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId;
@@ -91,4 +92,8 @@ public interface ViewRMIInterface extends Remote,View  {
     void sendPrivateMessage(String receiver, String message, UUID sender) throws RemoteException, IllegalOperationException;
 
     Controller getController() throws RemoteException;
+
+    void deleteView() throws RemoteException;
+
+    void setViewContainer(ViewRMIContainer viewRMIContainer) throws RemoteException;
 }

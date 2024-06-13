@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.GameKey;
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.exceptions.*;
@@ -8,10 +9,11 @@ import it.polimi.ingsw.model.gamelogic.exceptions.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ViewRMIContainer extends UnicastRemoteObject implements ViewRMIContainerInterface {
-    private Map<UUID,ViewRMI> views= new HashMap<>();
-    private Map<UUID,List<String >> joinableGames= new HashMap<>();
+    private ConcurrentHashMap<UUID,ViewRMI> views= new ConcurrentHashMap<>();
+    private ConcurrentHashMap<UUID,List<String >> joinableGames= new ConcurrentHashMap<>();
     private GameManager gameManager;
 
     public Set<Map.Entry<UUID, ViewRMI>> getAllViews()throws RemoteException{
@@ -34,17 +36,18 @@ public class ViewRMIContainer extends UnicastRemoteObject implements ViewRMICont
         return getView(gameID).getController();
     }
 
-    public UUID[] bootGame(int numOfPlayers,String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
+    public GameKey bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
         Controller controller=new Controller(gameManager);
         ViewRMI view = controller.getView();
         //UnicastRemoteObject.exportObject(view,0);
-        UUID[] ids=view.bootGame(numOfPlayers,playerName);
-        UUID gameID = ids[0];
+        view.setViewContainer(this);
+        GameKey gameKey=view.bootGame(numOfPlayers,playerName);
+        UUID gameID = gameKey.gameID();
 
         views.put(gameID,view);
         joinableGames.put(gameID,view.getPlayersList());
 
-        return ids;
+        return gameKey;
 
     }
     public UUID joinGame(UUID gameID,String playerName) throws RemoteException, PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID {
@@ -54,5 +57,9 @@ public class ViewRMIContainer extends UnicastRemoteObject implements ViewRMICont
             joinableGames.remove(gameID);
         return userID;
 
+    }
+
+    public void removeView(ViewRMI viewRMI) {
+        views.values().remove(viewRMI);
     }
 }

@@ -375,26 +375,26 @@ public class InGameController extends GUIController {
             Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
             Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
             if(handBox.getChildren().size() <3){
+                StackPane template= (StackPane) handBox.getChildren().getFirst();
+                double templateHeight=template.getHeight();
+                double templateWidth= template.getWidth();
                 StackPane cardStack = new StackPane();
-                cardStack.setPrefWidth(275);
-                cardStack.setPrefHeight(193);
+                cardStack.setPrefWidth(templateWidth);
+                cardStack.setPrefHeight(templateHeight);
                 ImageView frontImage = new ImageView(frontPng);
                 ImageView backImage = new ImageView(backPng);
-                frontImage.setFitHeight(193);
-                frontImage.setFitWidth(275);
-                backImage.setFitHeight(193);
-                backImage.setFitWidth(275);
-
-
+                frontImage.setFitHeight(templateHeight);
+                frontImage.setFitWidth(templateWidth);
+                backImage.setFitHeight(templateHeight);
+                backImage.setFitWidth(templateWidth);
 
                 cardStack.getChildren().add(backImage);
                 cardStack.getChildren().add(frontImage);
                 handBox.getChildren().add(cardStack);
-                ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handleDragDetected);
-                ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handleDragDetected);
-                ((StackPane) cardStack).getChildren().getFirst().setOnDragDone(this::handleDragDone);
-                ((StackPane) cardStack).getChildren().get(1).setOnDragDone(this::handleDragDone);
-
+                cardStack.getChildren().getFirst().setOnDragDetected(this::handleDragDetected);
+                cardStack.getChildren().get(1).setOnDragDetected(this::handleDragDetected);
+                cardStack.getChildren().getFirst().setOnDragDone(this::handleDragDone);
+                cardStack.getChildren().get(1).setOnDragDone(this::handleDragDone);
                 cardStack.setOnMouseClicked(this::flipCard);
             }else {
                 StackPane cardStack = (StackPane) handBox.getChildren().get(newHand.indexOf(card));

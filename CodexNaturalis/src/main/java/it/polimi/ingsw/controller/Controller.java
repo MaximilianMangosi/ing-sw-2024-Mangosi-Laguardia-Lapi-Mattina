@@ -59,7 +59,7 @@ public class Controller {
      */
     public Controller( GameManager gameManager) throws RemoteException {
         currentState=new LobbyState(gameManager);
-        view = new ViewRMI(this);
+        view=new ViewRMI(this);
     }
 
 
@@ -137,7 +137,7 @@ public class Controller {
      */
     public ServerMessage retrieveMessage(){
         try {
-            return messageQueue.take();
+            return messageQueue.poll(5,TimeUnit.MINUTES);
         } catch (InterruptedException ignore) {}
         return null;
     }
@@ -145,26 +145,27 @@ public class Controller {
     /**
      * call the BootGame method on currentState to create a new game if there aren't any pending otherwise joins the pending one.
      * After that updates the view
-     * @author Giuseppe Laguardia
+     *
      * @param numOfPlayers the number of players wanted for the game, if there is another game pending thi parameter is ignored
-     * @param playerName the name chosen by the user for the game
+     * @param playerName   the name chosen by the user for the game
      * @return the user's identifier
      * @throws UnacceptableNumOfPlayersException if numOfPlayers is out of range [2,4]
-     * @throws PlayerNameNotUniqueException if playerName is already taken by another user
-     * @throws IllegalOperationException if in this state this action cannot be performed
+     * @throws PlayerNameNotUniqueException      if playerName is already taken by another user
+     * @throws IllegalOperationException         if in this state this action cannot be performed
+     * @author Giuseppe Laguardia
      */
-    public UUID[] bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
-        UUID[] IDs= currentState.bootGame(numOfPlayers,playerName);
+    public GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
+        GameKey gameKey= currentState.bootGame(numOfPlayers,playerName);
 
         view.updatePlayersList();
         view.initializeFieldBuildingHelper(playerName);
         addToQueue(new PlayersListMessage(getPlayersList()));
-        pingMap.put(IDs[1],true);
+        pingMap.put(gameKey.gameID(),true);
 
         new CloseGame(this).start();
         new DisconnectionHandler(this).start();
         changeState();
-        return IDs;
+        return gameKey;
     }
 
     /**
@@ -402,7 +403,7 @@ public class Controller {
      */
     public synchronized void deleteGameFromGameManager() throws RemoteException {
         currentState.deleteGameFromGameManager();
-        view= new ViewRMI(this);
+        view.deleteView();
     }
 
     /**

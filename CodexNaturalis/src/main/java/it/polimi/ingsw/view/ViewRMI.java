@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.GameKey;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -10,7 +11,6 @@ import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
@@ -20,6 +20,7 @@ import java.util.*;
 
 public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     private final Controller controller;
+    private ViewRMIContainer viewContainer;
     private boolean isGameStarted;
     private boolean isGameEnded;
     private Map<String, Integer> playersPoints;
@@ -40,6 +41,11 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     private HashMap<String, List<Coordinates>> fieldBuildingHelper=new HashMap<>();
     private List<String> globalChat = new ArrayList<>(250);
     private Map<UUID, Map<String, List<String>>> privateChat = new HashMap<>();
+
+    public ViewRMI(Controller controller) throws RemoteException {
+        this.controller=controller;
+    }
+
 
     public void sendChatMessage(String message) throws IllegalOperationException, RemoteException {
         controller.addToGlobalChat(message);
@@ -64,9 +70,6 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         return null;
     }
 
-    public ViewRMI(Controller controller) throws RemoteException {
-        this.controller=controller;
-    }
 
     /**
      * updates PlayersPoints, calling the controller
@@ -322,7 +325,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @author Riccardo Lapi
      */
     @Override
-    public synchronized UUID[] bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
+    public synchronized GameKey bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
         return controller.bootGame(numOfPlayers, playerName);
     }
     public synchronized UUID joinGame(UUID gameId,String playerName) throws  PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID {
@@ -656,6 +659,14 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     public void updateStarterCardMap() {
         starterCardMap=controller.getPlayersStarterCards();
     }
-   
 
+    @Override
+    public void deleteView() throws RemoteException {
+        viewContainer.removeView(this);
+    }
+
+
+    public void setViewContainer(ViewRMIContainer viewRMIContainer)  {
+        viewContainer=viewRMIContainer;
+    }
 }
