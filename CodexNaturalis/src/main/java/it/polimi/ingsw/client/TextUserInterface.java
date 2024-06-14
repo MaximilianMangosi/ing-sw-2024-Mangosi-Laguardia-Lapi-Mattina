@@ -345,7 +345,7 @@ public class TextUserInterface extends UserInterface {
                         outWriter.print("Write your message: ");
                         String message = promptForChat(stop2,t2);
                         if(message==null) break;
-                        view.sendChatMessage(myName + ": " + message);
+                        view.sendChatMessage(message);
                         stop2.set(false);
                     }
                     break;
@@ -365,7 +365,6 @@ public class TextUserInterface extends UserInterface {
                             Thread t1 = new Thread(()->printChat(name,stop1));
                             t1.start();
                             while(true) {
-
                                 //TODO: add color
                                 String message = promptForChat(stop1, t1);
                                 if (message == null) break;
@@ -382,7 +381,7 @@ public class TextUserInterface extends UserInterface {
         }
     }
 
-    private String promptForChat(AtomicBoolean stop1, Thread t1) {
+    private String promptForChat(AtomicBoolean stop1, Thread t1) throws RemoteException {
         String mode = s.nextLine();
         if(mode.equals("-m")) {
             stop1.set(true);
@@ -390,9 +389,9 @@ public class TextUserInterface extends UserInterface {
             t1.interrupt();
             return null;
         }
+        String color=view.getPlayerColor(myName);
 
-        String message = myName + ": "+ s.nextLine();
-        return message;
+        return myName + ": "+ s.nextLine();
     }
 
     private void printGlobalChat(AtomicBoolean stop) {
@@ -406,7 +405,7 @@ public class TextUserInterface extends UserInterface {
                             outWriter.print(chats);
                         }
                     }
-                    Thread.sleep(1500);
+                    Thread.sleep(3000);
                 }
             }
         }catch (RemoteException e){
@@ -428,7 +427,7 @@ public class TextUserInterface extends UserInterface {
                             outWriter.print(chats);
                         }
                     }
-                    Thread.sleep(1500);
+                    Thread.sleep(3000);
                 }
             }
         }catch (RemoteException e){

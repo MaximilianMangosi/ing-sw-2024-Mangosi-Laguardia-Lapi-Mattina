@@ -11,13 +11,14 @@ import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.ViewSocket;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HandMessage extends ServerMessage{
     List<Card> newHand;
 
     public HandMessage(List<Card> newHand) {
-        this.newHand = newHand;
+        this.newHand = new ArrayList<>(newHand);
     }
 
     @Override

@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.view.ViewSocket;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

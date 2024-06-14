@@ -9,7 +9,7 @@ public class PointsMessage extends ServerMessage{
     HashMap<String,Integer> newPoints;
 
     public PointsMessage(HashMap<String, Integer> newPoints) {
-        this.newPoints = newPoints;
+        this.newPoints = new HashMap<>(newPoints);
     }
 
     @Override

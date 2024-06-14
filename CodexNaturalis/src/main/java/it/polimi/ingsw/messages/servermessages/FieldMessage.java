@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.view.ViewSocket;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,8 @@ public class FieldMessage extends ServerMessage{
 
 
     public FieldMessage(Map<Coordinates, Card> newField, List<Coordinates> newFieldBuilderHelper, String player) {
-        this.newField = newField;
-        this.newFieldBuilderHelper = newFieldBuilderHelper;
+        this.newField = new HashMap<>(newField);
+        this.newFieldBuilderHelper = new ArrayList<>(newFieldBuilderHelper);
         this.player=player;
     }
 
@@ -27,7 +28,6 @@ public class FieldMessage extends ServerMessage{
         GameData gd = view.getGameData();
         gd.setPlayerField(player,newField);
         gd.setFieldBuilderHelper(player,newFieldBuilderHelper);
-
 
     }
 }

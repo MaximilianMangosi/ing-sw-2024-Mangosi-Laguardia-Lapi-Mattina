@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.gamecards.goals.StairGoal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 
+import javax.swing.plaf.PanelUI;
 import java.util.*;
 import java.util.List;
 
@@ -363,4 +364,5 @@ public class TUIAsciiArtist implements CardDisplay {
     public void resetMatrix() {
         matrix=new String[5][46];
     }
+
 }

@@ -39,7 +39,6 @@ public class ViewRMIContainer extends UnicastRemoteObject implements ViewRMICont
     public GameKey bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
         Controller controller=new Controller(gameManager);
         ViewRMI view = controller.getView();
-        //UnicastRemoteObject.exportObject(view,0);
         view.setViewContainer(this);
         GameKey gameKey=view.bootGame(numOfPlayers,playerName);
         UUID gameID = gameKey.gameID();
