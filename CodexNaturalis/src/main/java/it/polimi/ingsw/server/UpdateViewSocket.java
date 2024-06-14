@@ -36,7 +36,7 @@ public class UpdateViewSocket extends Thread{
                 ObjectOutputStream output= new ObjectOutputStream(client.getOutputStream());
                 GameKey gameKey= (GameKey) input.readObject();
                 ViewUpdater viewUpdater=viewUpdaterMap.get(gameKey.gameID());
-                assert viewUpdater!=null;
+
                 viewUpdater.addClient(gameKey.userID(),output);
                 System.out.println("Client added");
 

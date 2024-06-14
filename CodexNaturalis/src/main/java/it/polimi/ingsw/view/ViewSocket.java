@@ -251,7 +251,7 @@ public class  ViewSocket implements View{
     public synchronized GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, ClassNotFoundException, IllegalOperationException, PlayerNameNotUniqueException, IOException, InvalidGameID {
         BootGameMessage message = new BootGameMessage(numOfPlayers,playerName);
         output.writeObject(message);
-        ServerMessage reply = readMessage();
+        ServerMessage reply = readMessage(); // this should be a GameKeyMessage from the server
         try {
             reply.processMessage();
         } catch (IsNotYourTurnException | InvalidChoiceException | DeckEmptyException | RequirementsNotMetException |
