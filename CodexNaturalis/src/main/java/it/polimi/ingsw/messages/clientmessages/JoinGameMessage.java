@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
+import it.polimi.ingsw.messages.exceptionmessages.InvalidGameIDMessage;
 import it.polimi.ingsw.messages.exceptionmessages.NoGameExistsMessage;
 import it.polimi.ingsw.messages.exceptionmessages.PlayerNameNotUniqueMessage;
 import it.polimi.ingsw.messages.servermessages.*;
@@ -45,6 +46,7 @@ public class JoinGameMessage extends ClientMessage {
     public void processMessage(ClientHandler clientHandler) throws IOException {
        try {
            Controller c= clientHandler.getViewContainer().getController(gameId);
+           clientHandler.setController(c);
            UUID newId =c.joinGame(gameId,username);
            clientHandler.setMyViewUpdater(gameId);
            UserIDMessage idMessage = new UserIDMessage(newId);
@@ -57,8 +59,10 @@ public class JoinGameMessage extends ClientMessage {
                    clientHandler.sendTo(id,new HandMessage(c.getPlayersHands().get(id)));
                    clientHandler.sendTo(id,new GoalOptionsMessage(c.getGoalOptions().get(id)));
                    clientHandler.sendTo(id,new StarterCardMessage(c.getPlayersStarterCards().get(id)));
+
+                   String playerName=c.getUserIDs().get(id).getName();
                    for (String p: c.getPlayersList()){
-                       if(!p.equals(username))
+                       if(!p.equals(playerName))
                            clientHandler.sendTo(id, new UpdateChatMessage(p,c.getPrivateChat(p,id)));
                    }
                }
@@ -74,9 +78,10 @@ public class JoinGameMessage extends ClientMessage {
        } catch (IllegalOperationException e) {
            IllegalOperationMessage answer = new IllegalOperationMessage(e);
            clientHandler.answerClient(answer);
+       } catch (InvalidGameID e) {
+           InvalidGameIDMessage answer=new InvalidGameIDMessage();
+           clientHandler.answerClient(answer);
        } catch (InterruptedException ignore) {}
-       catch (InvalidGameID e) {
-       }
     }
 
 }

@@ -146,5 +146,10 @@ public class ClientHandler implements Runnable{
 
     public void addViewUpdater(UUID gameID,ViewUpdater viewUpdater) {
         viewUpdaterMap.put(gameID,viewUpdater);
+        myViewUpdater=viewUpdater;
+    }
+
+    public ViewUpdater getViewUpdater() {
+        return myViewUpdater;
     }
 }

@@ -447,7 +447,7 @@ public class TextUserInterface extends UserInterface {
     private Coordinates promptForChosenPosition() throws RemoteException, InvalidUserId {
         int chosenPositionI = s.nextInt();
         s.nextLine();
-        List<Coordinates> availableCoordinates = view.showPlayersLegalPositions(myID);
+        List<Coordinates> availableCoordinates = getPlayersLegalPositions();
         Coordinates chosenPosition = availableCoordinates.get(chosenPositionI);
         return chosenPosition;
     }
@@ -631,7 +631,7 @@ public class TextUserInterface extends UserInterface {
         List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
         artist.show(field,fieldBuildingHelper);
         if(availablePosition) {
-            artist.addAvailablePosToField(view.showPlayersLegalPositions(myID));
+            artist.addAvailablePosToField(getPlayersLegalPositions());
             outWriter.print(artist.getAsciiField(), fieldBuildingHelper);
             return;
         }
@@ -686,6 +686,7 @@ public class TextUserInterface extends UserInterface {
                             }
                         } catch (NumberFormatException e) {
                             outWriter.print("Please insert a number");
+                            choice=s.nextLine();
                         } catch (InvalidGameID e) {
                             outWriter.print(e.getMessage());
                             outWriter.print("The game chosen is been closed");
@@ -783,23 +784,26 @@ public class TextUserInterface extends UserInterface {
                         int choiceInt = Integer.parseInt(choice);
                         gameID = choiceViewMap.get(choiceInt);
                         if (gameID != null) {
-                            viewSocket.joinGame(gameID, myName);
+                            promptForUsername();
+                            myID=viewSocket.joinGame(gameID, myName);
                             error = false;
                         }
                     } catch (NumberFormatException e) {
                         outWriter.print("Please insert a number");
+                        choice=s.nextLine();
                     } catch (InvalidGameID e) {
                         outWriter.print(e.getMessage());
                         outWriter.print("The game chosen is been closed");
                         startGameSocket();
                     } catch (PlayerNameNotUniqueException e) {
-                        throw new RuntimeException(e);
+                        outWriter.print(e.getMessage());
                     } catch (IllegalOperationException ignore) {}
                 }
             }
         }
         new ServerHandler(viewSocket,tuiUpdater,new GameKey(gameID,myID)).start();
         new PingPong(view,myID).start();
+        tuiUpdater.start();
 
     }
 }

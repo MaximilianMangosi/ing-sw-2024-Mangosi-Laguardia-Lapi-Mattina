@@ -15,10 +15,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
 import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
-import it.polimi.ingsw.server.ClientHandler;
-import it.polimi.ingsw.server.CloseGame;
-import it.polimi.ingsw.server.DisconnectionHandler;
-import it.polimi.ingsw.server.ViewUpdater;
+import it.polimi.ingsw.server.*;
 import it.polimi.ingsw.view.ViewRMI;
 import it.polimi.ingsw.view.ViewRMIContainer;
 
@@ -48,7 +45,7 @@ public class BootGameMessage extends ClientMessage{
      * @author Giorgio Mattina
      * @param clientHandler the object that called processMessage
      */
-    public void processMessage( ClientHandler clientHandler) throws IOException {
+    public void processMessage(ClientHandler clientHandler) throws IOException {
         try {
             ViewRMIContainer viewContainer= clientHandler.getViewContainer();
             GameKey gameKey =viewContainer.bootGame(numPlayers,username);
@@ -56,10 +53,11 @@ public class BootGameMessage extends ClientMessage{
             clientHandler.setController(c);
             clientHandler.addViewUpdater(gameKey.gameID(),new ViewUpdater());
             GameKeyMessage answer = new GameKeyMessage(gameKey);
-            PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
             clientHandler.answerClient(answer);
             Thread.sleep(100); // maybe better with atomic boolean
+            PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
             clientHandler.broadCast(msg);
+            new RMIToSocketDispatcher(c,clientHandler.getViewUpdater()).start();
             new CloseGame(c).start();
             new DisconnectionHandler(c).start();
         } catch (UnacceptableNumOfPlayersException e) {

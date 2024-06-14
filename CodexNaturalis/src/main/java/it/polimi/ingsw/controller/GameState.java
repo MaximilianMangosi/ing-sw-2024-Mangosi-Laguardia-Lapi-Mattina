@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.gamelogic.Player;
 import it.polimi.ingsw.model.gamelogic.exceptions.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class GameState {
@@ -196,4 +197,7 @@ public abstract class GameState {
         throw new IllegalOperationException("joinGame");
     }
 
+    public List<String> getPrivateChat(String name, UUID userID) {
+        return userIDs.get(userID).getPrivateChat(name);
+    }
 }

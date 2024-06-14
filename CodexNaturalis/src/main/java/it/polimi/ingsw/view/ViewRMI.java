@@ -349,7 +349,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     @Override
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId {
         controller.playCardFront(selectedCard, position, userId);
-        updateFieldBuildingHelper(position,controller.getUserIDs().get(userId).getName());
+
     }
 
     /**
@@ -370,7 +370,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     @Override
     public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId {
         controller.playCardBack(selectedCard, position, userId);
-        updateFieldBuildingHelper(position, controller.getUserIDs().get(userId).getName());
+
     }
 
     public void updateFieldBuildingHelper(Coordinates position, String username)  {
@@ -388,9 +388,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      */
     @Override
     public void chooseStarterCardSide(boolean isFront, UUID userId) throws RemoteException, InvalidUserId, IllegalOperationException, InvalidUserId {
-        controller.chooseStarterCardSide(isFront, userId);
-        updateFieldBuildingHelper(new Coordinates(0,0),controller.getUserIDs().get(userId).getName());
-    }
+        controller.chooseStarterCardSide(isFront, userId);}
 
     /**
      * @author Riccardo Lapi
@@ -404,7 +402,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      */
     @Override
     public void chooseGoal(UUID userId, Goal newGoal) throws RemoteException, InvalidGoalException, InvalidUserId, IllegalOperationException, InvalidUserId {
-        controller.ChooseGoal(userId, newGoal);
+        controller.chooseGoal(userId, newGoal);
     }
 
     /**

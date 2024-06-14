@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.GameKey;
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
+import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
@@ -43,6 +44,11 @@ public abstract class UserInterface{
         if(view.isRMI())
             return view.getPrivateChat(user,myID);
         return view.getPrivateChat(user);
+    }
+    public List<Coordinates> getPlayersLegalPositions() throws RemoteException, InvalidUserId {
+        if(view.isRMI())
+            return view.showPlayersLegalPositions(myID);
+        return view.showPlayersLegalPositions();
     }
 
 

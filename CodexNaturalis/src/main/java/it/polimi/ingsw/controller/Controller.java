@@ -32,7 +32,7 @@ public class Controller {
     }
 
     public List<String> getPrivateChat(String name, UUID userID){
-        return getUserIDs().get(userID).getPrivateChat(name);
+        return currentState.getPrivateChat( name,userID);
     }
 
     public void addToGlobalChat(String message) throws IllegalOperationException {
@@ -85,6 +85,7 @@ public class Controller {
             UUID userID=entry.getKey();
             if(!entry.getValue()){
                 closeGame(userID);
+                System.out.println("player kicked");
                 kickedPlayers.add(userID);
             }
         }
@@ -160,7 +161,7 @@ public class Controller {
         view.updatePlayersList();
         view.initializeFieldBuildingHelper(playerName);
         addToQueue(new PlayersListMessage(getPlayersList()));
-        pingMap.put(gameKey.gameID(),true);
+        pingMap.put(gameKey.userID(),true);
 
         new CloseGame(this).start();
         new DisconnectionHandler(this).start();
@@ -221,11 +222,18 @@ public class Controller {
         view.updatePlayersPoints();
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
+        view.updateFieldBuildingHelper(position,getPlayer(userId).getName());
+
         
         handlePlayCardSocketUpdate(userId);
 
         currentState=currentState.nextState();
     }
+
+    public Player getPlayer(UUID userId) {
+        return currentState.userIDs.get(userId);
+    }
+
     /**
      * Calls playCardBack on currentState to play a Card on back side.
      * After that updates the view.
@@ -252,7 +260,7 @@ public class Controller {
         view.updatePlayersField();
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
-
+        view.updateFieldBuildingHelper(position,getPlayer(userId).getName());
         handlePlayCardSocketUpdate(userId);
 
         currentState=currentState.nextState();
@@ -280,12 +288,14 @@ public class Controller {
      * @throws InvalidUserId if the given userId isn't associate to any Player
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
-    public synchronized void chooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId, IllegalOperationException, RemoteException {
+    public  void chooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId, IllegalOperationException, RemoteException {
         currentState.chooseStarterCardSide(isFront,userId);
         view.updateStarterCardMap();
         view.updatePlayersField();
         view.updatePlayersLegalPosition();
-        String player = getUserIDs().get(userId).getName();
+
+        String player = getPlayer(userId).getName();
+        view.updateFieldBuildingHelper(new Coordinates(0,0),player);
         addToQueue(new FieldMessage(getPlayersField().get(player),getView().getFieldBuildingHelper(player), player));
 
         currentState=currentState.nextState();
@@ -302,7 +312,7 @@ public class Controller {
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
 
-    public synchronized void ChooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId, IllegalOperationException {
+    public synchronized void chooseGoal(UUID userId, Goal newGoal) throws InvalidGoalException, InvalidUserId, IllegalOperationException {
         currentState.chooseGoal(userId,newGoal);
         view.updatePrivateGoals();
 

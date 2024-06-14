@@ -40,7 +40,7 @@ public class ChooseGoalMessage extends ClientMessage{
     public void processMessage(ClientHandler clientHandler) throws IOException {
         try{
             Controller c = clientHandler.getController();
-            c.ChooseGoal(userId,goal);
+            c.chooseGoal(userId,goal);
             clientHandler.answerClient(new SuccessMessage());
             clientHandler.sendTo(userId,new ChosenGoalMessage(goal));
         } catch (InvalidGoalException e) {
