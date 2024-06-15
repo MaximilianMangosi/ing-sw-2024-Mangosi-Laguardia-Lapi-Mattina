@@ -30,7 +30,6 @@ public class HelloController extends GUIController {
     private TextField usernameField;
     @FXML
     private VBox playerNum;
-
     @FXML
     private Button selectSocketButton;
     @FXML
