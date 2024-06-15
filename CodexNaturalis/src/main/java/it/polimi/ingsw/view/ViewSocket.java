@@ -248,7 +248,7 @@ public class  ViewSocket implements View{
      * @throws IllegalOperationException         when in the current phase of the game bootGame is not admissible
      */
     @Override
-    public synchronized GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, ClassNotFoundException, IllegalOperationException, PlayerNameNotUniqueException, IOException, InvalidGameID {
+    public synchronized GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, ClassNotFoundException, IllegalOperationException, IOException, PlayerNameNotUniqueException {
         BootGameMessage message = new BootGameMessage(numOfPlayers,playerName);
         output.writeObject(message);
         ServerMessage reply = readMessage(); // this should be a GameKeyMessage from the server
@@ -256,14 +256,14 @@ public class  ViewSocket implements View{
             reply.processMessage();
         } catch (IsNotYourTurnException | InvalidChoiceException | DeckEmptyException | RequirementsNotMetException |
                  IllegalPositionException | InvalidCardException | HandNotFullException | InvalidUserId |
-                 InvalidGoalException | HandFullException ignore) {}
+                 InvalidGoalException | HandFullException | InvalidGameID ignore) {}
         // if processMessage didn't throw an exception then the reply of the server is a GameKeyMessage
        return  ((GameKeyMessage) reply).getGameKey();
     }
 
 
     @Override
-    public synchronized UUID joinGame(UUID gameId,String playerName) throws IOException, ClassNotFoundException,PlayerNameNotUniqueException, InvalidGameID,IllegalOperationException {
+    public synchronized UUID joinGame(UUID gameId,String playerName) throws PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID, IOException, ClassNotFoundException {
         JoinGameMessage message = new JoinGameMessage(gameId,playerName);
         output.writeObject(message);
         ServerMessage reply = readMessage();

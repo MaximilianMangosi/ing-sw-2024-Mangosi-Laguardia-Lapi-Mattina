@@ -99,8 +99,6 @@ public class HelloController extends GUIController {
 
         } catch (PlayerNameNotUniqueException e) {
             // handleNameNotUnique();
-        } catch (NoGameExistsException e) {
-            playerNum.setVisible(true);
         } catch (InvalidGameID e) {
             throw new RuntimeException(e);
         }
@@ -115,24 +113,8 @@ public class HelloController extends GUIController {
                gameID=gameKey.gameID();
                 view.initializeFieldBuildingHelper(myName);
             } catch (UnacceptableNumOfPlayersException ignore) {
-            } catch (OnlyOneGameException ex) {
-                try {
-                    view.joinGame(null,myName );
-                    view.initializeFieldBuildingHelper(myName);
-                } catch (PlayerNameNotUniqueException e1) {
-                    return;
-                } catch (NoGameExistsException | IOException | IllegalOperationException | ClassNotFoundException |
-                         InvalidGoalException | HandNotFullException | HandFullException | InvalidChoiceException |
-                         IsNotYourTurnException | InvalidUserId | RequirementsNotMetException |
-                         UnacceptableNumOfPlayersException | OnlyOneGameException | IllegalPositionException |
-                         InvalidCardException | DeckEmptyException | InvalidGameID ignore) {
-
-                }
-            }catch (HandFullException | ClassNotFoundException | IllegalOperationException | IOException |
-                    InvalidGoalException | HandNotFullException | InvalidChoiceException | NoGameExistsException |
-                    IsNotYourTurnException | InvalidUserId | RequirementsNotMetException |
-                    PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException |
-                    DeckEmptyException | InvalidGameID h){
+            } catch (ClassNotFoundException | IllegalOperationException | IOException |
+                     PlayerNameNotUniqueException h){
                 return;
             }
 

@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.ViewRMIContainer;
+import it.polimi.ingsw.view.ViewRMIContainerInterface;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -14,9 +16,15 @@ import java.util.UUID;
 
 public abstract class UserInterface{
     protected  View view;
+    protected ViewRMIContainerInterface viewContainer;
     protected UUID myID;
     protected UUID gameID;
     protected String myName;
+    protected boolean isPlaying=false;
+
+    public void setViewContainer(ViewRMIContainerInterface viewContainer) {
+        this.viewContainer = viewContainer;
+    }
 
     public List<Card> getHand() throws RemoteException, InvalidUserId {
         if(view.isRMI())

@@ -142,42 +142,14 @@ public class TextUserInterface extends UserInterface {
         boolean error = true;
         synchronized (outWriter) {
             switch (cmd){
-//                case "start-game":
-//                    try {
-//                       // joinGame();
-//                    }catch (PlayerNameNotUniqueException e) {
-//                        outWriter.print(e.getMessage());
-//                        handleNameNotUnique();
-//                    }catch (NoGameExistsException e){
-//                        outWriter.print(e.getMessage());
-//                        while (error) {
-//                            try {
-//                                int numPlayers = promptForNumPlayers();
-//                                //myID = view.bootGame(numPlayers, myName);
-//                                error = false;
-//                            } catch (UnacceptableNumOfPlayersException ex1) {
-//                                outWriter.print(ex1.getMessage());
-//                            } catch (OnlyOneGameException ex) {
-////                                outWriter.print(ex.getMessage());
-////                                try {
-////                                    view.joinGame(myName, );
-////                                    error = false;
-////                                } catch (PlayerNameNotUniqueException e1) {
-////                                    outWriter.print(e1.getMessage());
-////                                    error = handleNameNotUnique();
-////                                } catch (NoGameExistsException ignore) {
-////                                }
-//                            }
-//                        }
-//                    }
-//                    if(!view.isRMI()){
-//                        ServerHandler td2= new ServerHandler((ViewSocket) view,tuiUpdater,myID);
-//                        td2.start();
-//                    }
-//                    PingPong td1 = new PingPong( view, myID);
-//                    td1.start();
-//                    tuiUpdater.start();
-//                    break;
+                case "start-game":
+                    if(isPlaying)
+                        outWriter.print("You are already playing a game!");
+                    else{
+                        // if user choose socket connection viewContainer is not initialized
+                       startGame(viewContainer!=null);
+                    }
+                    break;
                 case "choose-goal":
                     outWriter.print("Here are your goals, choose one (1,2)");
                     Goal[] myGoals = getGoalOptions();
@@ -193,7 +165,8 @@ public class TextUserInterface extends UserInterface {
                 case "play-card":
                     Card chosenCard = null;
                     Coordinates chosenPosition=null;
-                    boolean isChosenFront=false;
+                    boolean isChosenFront;
+
                     try {
                         chosenCard=promptForChosenCard();
                         isChosenFront = promptForSide();
@@ -333,6 +306,7 @@ public class TextUserInterface extends UserInterface {
                 case "disconnect":
                     view.closeGame(myID);
                     tuiUpdater.interrupt();
+                    isPlaying=false;
                     outWriter.print("You quit the game, type 'start-game' to restart playing\n");
                     break;
                 case "open-global-chat":
@@ -365,7 +339,6 @@ public class TextUserInterface extends UserInterface {
                             Thread t1 = new Thread(()->printChat(name,stop1));
                             t1.start();
                             while(true) {
-                                //TODO: add color
                                 String message = promptForChat(stop1, t1);
                                 if (message == null) break;
                                 view.sendPrivateMessage(name, message, myID);
@@ -389,9 +362,9 @@ public class TextUserInterface extends UserInterface {
             t1.interrupt();
             return null;
         }
-        String color=view.getPlayerColor(myName);
+        String color=artist.getAnsiColor(view.getPlayerColor(myName));
 
-        return myName + ": "+ s.nextLine();
+        return color+myName + TUIAsciiArtist.RESET + ": "+ s.nextLine();
     }
 
     private void printGlobalChat(AtomicBoolean stop) {
@@ -418,7 +391,6 @@ public class TextUserInterface extends UserInterface {
     private void printChat(String name, AtomicBoolean stop){
         try {
             while (true){
-
                 if (!stop.get()) {
                     outWriter.clearScreen();
                     List<String> chat = getPrivateChat(name);
@@ -447,29 +419,9 @@ public class TextUserInterface extends UserInterface {
         int chosenPositionI = s.nextInt();
         s.nextLine();
         List<Coordinates> availableCoordinates = getPlayersLegalPositions();
-        Coordinates chosenPosition = availableCoordinates.get(chosenPositionI);
-        return chosenPosition;
+        Coordinates coordinates = availableCoordinates.get(chosenPositionI);
+        return coordinates;
     }
-
-    /**
-     * tryes to call joinGame and catches PlayerNameNotUniqueException and NoGameExistsException
-     * @return false after calling joinGame successfully
-     * @author Giuseppe Laguardia
-     * @throws RemoteException
-     * @throws IllegalOperationException
-     */
-//    private boolean handleNameNotUnique() throws IOException, IllegalOperationException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
-//        while (true){
-//            try {
-//                joinGame();
-//                return false;
-//            } catch (PlayerNameNotUniqueException ex) {
-//                outWriter.print(ex.getMessage());
-//            } catch (NoGameExistsException ignore) {
-//            }
-//        }
-//    }
-
     private int promptForNumPlayers() {
         outWriter.print("Insert number of players");
         int numPlayers = 0;
@@ -488,21 +440,25 @@ public class TextUserInterface extends UserInterface {
         return numPlayers;
     }
 
-    private void joinGame(UUID gameID, ViewRMIContainerInterface viewContainer) throws InvalidGameID {
+    private void joinGame(boolean isRMI,UUID gameID) throws InvalidGameID {
         boolean error=true;
         promptForUsername();
         while (error) {
             try {
-                myID=viewContainer.joinGame(gameID,myName);
-                view=viewContainer.getView(gameID);
+                if (isRMI) {
+                    myID=viewContainer.joinGame(gameID,myName);
+                    view=viewContainer.getView(gameID);
+                }else {
+                    myID=view.joinGame(gameID, myName);
+                }
                 error=false;
             } catch (PlayerNameNotUniqueException e) {
                outWriter.print(e.getMessage());
                promptForUsername();
-            } catch (IllegalOperationException ignore) {} catch (RemoteException e) {
+            } catch (IOException | ClassNotFoundException e1) {
                 outWriter.print("Connection error");
                 System.exit(1);
-            }
+            }  catch (IllegalOperationException ignore) {}
         }
 
     }
@@ -659,90 +615,36 @@ public class TextUserInterface extends UserInterface {
 
     }
 
-    public void startGameRMI(ViewRMIContainerInterface viewContainer) {
-        try {
-            //show all waiting games
-            Map<UUID, List<String>> views = viewContainer.getJoinableGames();
-            if(views.isEmpty()){
-                outWriter.print("Currently there isn't any game hosted, let's create a new one");
-                bootGame(viewContainer);
-            } else {
-                outWriter.print("If you want join one of this game insert the corresponding number");
-                Map<Integer, UUID> choiceViewMap = showJoinableGames(views);
-                outWriter.print("If you want to create a new game press enter");
-                String choice = s.nextLine();
-                if (choice.isBlank()) {
-                    bootGame(viewContainer);
-                } else {
-                    boolean error = true;
-                    while (error) {
-                        try {
-                            int choiceInt = Integer.parseInt(choice);
-                            gameID = choiceViewMap.get(choiceInt);
-                            if (gameID != null) {
-                                joinGame(gameID, viewContainer);
-                                error = false;
-                            }
-                        } catch (NumberFormatException e) {
-                            outWriter.print("Please insert a number");
-                            choice=s.nextLine();
-                        } catch (InvalidGameID e) {
-                            outWriter.print(e.getMessage());
-                            outWriter.print("The game chosen is been closed");
-                            startGameRMI(viewContainer);
-                        }
-                    }
-                }
-            }
-        } catch (RemoteException e) {
-            System.out.println("Connection error");
-            System.exit(1);
-        }
-        new PingPong(view,myID).start();
-        tuiUpdater.start();
+    private String promptForGameChoice() {
+        outWriter.print("If you want join one of this game insert the corresponding number");
+        outWriter.print("If you want to create a new game press enter");
+        return s.nextLine();
     }
 
-    private Map<Integer, UUID> showJoinableGames(Map<UUID, List<String>> views) throws RemoteException {
-        Map<Integer,UUID> choiceViewMap=new HashMap<>();
+    private List<UUID> showJoinableGames(Map<UUID, List<String>> views) throws RemoteException {
+       List<UUID> joinableGames=new ArrayList<>();
         int i=1;
         for (Map.Entry<UUID, List<String>> entry : views.entrySet()) {
             outWriter.print(String.format("Game %d:", i));
             outWriter.print(entry.getValue());
-            choiceViewMap.put(i, entry.getKey());
+            joinableGames.add(entry.getKey());
             i++;
         }
-        return choiceViewMap;
+        return joinableGames;
     }
 
-    private void bootGame(ViewRMIContainerInterface viewContainer) throws RemoteException {
+
+    private void bootGame(boolean isRMI) throws IOException, ClassNotFoundException {
         boolean error=true;
         promptForUsername();
         int numOfPlayers=promptForNumPlayers();
         while (error) {
             try {
-               GameKey gameKey= viewContainer.bootGame(numOfPlayers,myName);
-                myID=gameKey.userID();
-                gameID= gameKey.gameID();
-                view=  viewContainer.getView(gameID);
-                error=false;
-            } catch (UnacceptableNumOfPlayersException e) {
-                outWriter.print(e.getMessage());
-                numOfPlayers = promptForNumPlayers();
-            } catch (PlayerNameNotUniqueException e1) {
-                outWriter.print(e1.getMessage());
-                promptForUsername();
-            } catch (IllegalOperationException | InvalidGameID ignore) {}
-        }
-    }
-    private void bootGame(ViewSocket viewSocket) throws IOException, ClassNotFoundException {
-        boolean error=true;
-        promptForUsername();
-        int numOfPlayers=promptForNumPlayers();
-        while (error) {
-            try {
-                GameKey gameKey= viewSocket.bootGame(numOfPlayers,myName);
+                GameKey gameKey= isRMI ? viewContainer.bootGame(numOfPlayers,myName):view.bootGame(numOfPlayers,myName);
                 myID=gameKey.userID();
                 gameID=gameKey.gameID();
+                if(isRMI)
+                    view=viewContainer.getView(gameID);
                 error=false;
             } catch (UnacceptableNumOfPlayersException e) {
                 outWriter.print(e.getMessage());
@@ -752,9 +654,15 @@ public class TextUserInterface extends UserInterface {
                 promptForUsername();
             } catch (IllegalOperationException | InvalidGameID ignore) {}
         }
+        isPlaying=true;
+        if (!isRMI)
+            new ServerHandler((ViewSocket) view,tuiUpdater,new GameKey(gameID,myID)).start();
+        new PingPong(view,myID).start();
+        tuiUpdater.start();
+
     }
 
-    private void  promptForUsername() {
+    private void promptForUsername() {
         outWriter.print("Insert username");
         myName = s.nextLine();
         while (myName.isBlank() ) {
@@ -763,44 +671,44 @@ public class TextUserInterface extends UserInterface {
         }
     }
 
-    public void startGameSocket() throws IOException, ClassNotFoundException {
+    public void startGame(boolean isRMI) throws IOException, ClassNotFoundException {
         ViewSocket viewSocket = (ViewSocket) view;
-        Map<UUID, List<String>> joinableGames = viewSocket.getJoinableGames();
-        if(joinableGames.isEmpty()){
+        Map<UUID, List<String>> views = isRMI? viewContainer.getJoinableGames():viewSocket.getJoinableGames();
+        if(views.isEmpty()) {
             outWriter.print("Currently there isn't any game hosted, let's create a new one");
-            bootGame(viewSocket);
-        } else {
-            outWriter.print("If you want join one of this game insert the corresponding number");
-            Map<Integer, UUID> choiceViewMap = showJoinableGames(joinableGames);
-            outWriter.print("If you want to create a new game press enter");
-            String choice = s.nextLine();
+            bootGame(isRMI);
+            return;
+        }
+        List<UUID> joinableGames = showJoinableGames(views);
+        String choice = promptForGameChoice();
+        while (choice.isBlank() || choice.equals("r")) {
             if (choice.isBlank()) {
-                bootGame(viewSocket);
-            } else {
-                boolean error = true;
-                while (error) {
-                    try {
-                        int choiceInt = Integer.parseInt(choice);
-                        gameID = choiceViewMap.get(choiceInt);
-                        if (gameID != null) {
-                            promptForUsername();
-                            myID=viewSocket.joinGame(gameID, myName);
-                            error = false;
-                        }
-                    } catch (NumberFormatException e) {
-                        outWriter.print("Please insert a number");
-                        choice=s.nextLine();
-                    } catch (InvalidGameID e) {
-                        outWriter.print(e.getMessage());
-                        outWriter.print("The game chosen is been closed");
-                        startGameSocket();
-                    } catch (PlayerNameNotUniqueException e) {
-                        outWriter.print(e.getMessage());
-                    } catch (IllegalOperationException ignore) {}
-                }
+                bootGame(isRMI);
+                return;
+            }
+            views = isRMI? viewContainer.getJoinableGames():viewSocket.getJoinableGames();
+            joinableGames = showJoinableGames(views);
+            choice = promptForGameChoice();
+        }
+        boolean error = true;
+        while (error) {
+            try {
+                int choiceInt = Integer.parseInt(choice)-1;
+                gameID = joinableGames.get(choiceInt);
+                joinGame(isRMI,gameID);
+                error = false;
+            } catch (NumberFormatException e) {
+                outWriter.print("Please insert a number");
+                choice=s.nextLine();
+            } catch (InvalidGameID e) {
+                outWriter.print(e.getMessage());
+                outWriter.print("The game chosen is been closed");
+                startGame(isRMI);
             }
         }
-        new ServerHandler(viewSocket,tuiUpdater,new GameKey(gameID,myID)).start();
+        isPlaying=true;
+        if (!isRMI)
+            new ServerHandler(viewSocket,tuiUpdater,new GameKey(gameID,myID)).start();
         new PingPong(view,myID).start();
         tuiUpdater.start();
 

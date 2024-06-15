@@ -1,11 +1,8 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.GUI.HelloApplication;
 import it.polimi.ingsw.controller.exceptions.*;
-import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
-import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.model.gamelogic.exceptions.*;
 import it.polimi.ingsw.view.*;
 
@@ -56,12 +53,15 @@ public class Client {
                 server = new Socket( InetAddress.getLocalHost(),2323);
                 view=new ViewSocket(server.getOutputStream(),server.getInputStream(),gameData);
                 tui.setView(view);
-                tui.startGameSocket();
+                tui.startGame(false);
+
             }else {
                 Registry registry = LocateRegistry.getRegistry(1099);
                 ViewRMIContainerInterface viewContainer = (ViewRMIContainerInterface) registry.lookup("ViewRMI");
-                tui.startGameRMI(viewContainer);
+                tui.setViewContainer(viewContainer);
+                tui.startGame(true);
             }
+
 
 
             //noinspection InfiniteLoopStatement

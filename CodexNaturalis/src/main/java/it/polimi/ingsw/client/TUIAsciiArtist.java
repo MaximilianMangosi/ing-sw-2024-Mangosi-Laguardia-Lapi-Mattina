@@ -46,11 +46,11 @@ public class TUIAsciiArtist implements CardDisplay {
             String angleSE = card.getResource("SE") !=null? card.getResource("SE").getSymbol() : "×";
 
             if(card.getRequirements().isEmpty()){
-                strbuilder.append(String.format(reignColor+"%s ----%c---- %s"+RESET+"\n" +
-                                                  reignColor+ "|           |"+RESET+"\n" +
-                                                 reignColor+  "|           |"+RESET+"\n" +
-                                                 reignColor+   "|           |"+RESET+"\n" +
-                                                 reignColor +"%s --------- %s"+RESET+"\n",angleNW,point, angleNE,angleSW,angleSE));
+                strbuilder.append(String.format(   reignColor+"%s ----%c---- %s"+RESET+"\n" +
+                                                   reignColor+ "|           |"+RESET+"\n" +
+                                                   reignColor+ "|           |"+RESET+"\n" +
+                                                   reignColor+ "|           |"+RESET+"\n" +
+                                                   reignColor +"%s --------- %s"+RESET+"\n",angleNW,point, angleNE,angleSW,angleSE));
 
             }else{
                 strbuilder.append(String.format(YELLOW+"%s ----%c---- %s"+RESET+"\n"+
@@ -363,6 +363,23 @@ public class TUIAsciiArtist implements CardDisplay {
      */
     public void resetMatrix() {
         matrix=new String[5][46];
+    }
+
+    /**
+     *
+     * return the ANSI escape sequence for the given check
+     * @param check a String
+     * @return a String containing a Ansi escape sequence
+     */
+    public String getAnsiColor(String check){
+        return switch (check) {
+            case "Green" -> GREEN;
+            case "Yellow" -> YELLOW;
+            case "Blue" -> BLUE;
+            case "Red" -> RED;
+            default -> RESET;
+        };
+
     }
 
 }
