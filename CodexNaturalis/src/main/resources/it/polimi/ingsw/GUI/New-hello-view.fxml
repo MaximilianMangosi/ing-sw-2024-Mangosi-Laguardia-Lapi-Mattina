@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -73,60 +72,7 @@
             </HBox>
             <StackPane alignment="TOP_RIGHT" prefHeight="297.0" prefWidth="720.0">
                <children>
-                  <HBox fx:id="selectNumPlayersOrGame" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <StackPane fx:id="numPlayersStackPane" prefHeight="289.0" prefWidth="289.0">
-                           <children>
-                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SELECT THE NUMBER OF PLAYERS:" textAlignment="CENTER" wrappingWidth="197.13671875">
-                                       <font>
-                                          <Font name="Bodoni MT Condensed" size="30.0" />
-                                       </font>
-                                    </Text>
-                                    <HBox alignment="CENTER" prefHeight="57.0" prefWidth="289.0">
-                                       <children>
-                                          <Button fx:id="twoplayersbutton" mnemonicParsing="false" onAction="#select2Players" text="2">
-                                             <HBox.margin>
-                                                <Insets left="10.0" right="10.0" />
-                                             </HBox.margin>
-                                          </Button>
-                                          <Button fx:id="threeplayersbutton" mnemonicParsing="false" onAction="#select3Players" text="3">
-                                             <HBox.margin>
-                                                <Insets left="10.0" right="10.0" />
-                                             </HBox.margin>
-                                          </Button>
-                                          <Button fx:id="fourplayersbutton" mnemonicParsing="false" onAction="#select4Players" text="4">
-                                             <HBox.margin>
-                                                <Insets left="10.0" right="10.0" />
-                                             </HBox.margin>
-                                          </Button>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </StackPane>
-                        <StackPane fx:id="joinableGamesStackPane" prefHeight="289.0" prefWidth="306.0">
-                           <children>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                                 <children>
-                                    <Accordion fx:id="listOfGames" prefHeight="249.0" prefWidth="306.0" />
-                                    <Button fx:id="refreshButton" mnemonicParsing="false" onMouseClicked="#refresh" text="Refresh" />
-                                 </children>
-                              </VBox>
-                              <Text fx:id="noGamesHosted" fill="#e11414" strokeType="OUTSIDE" strokeWidth="0.0" text="CURRENTLY NO GAMES HOSTED" textAlignment="CENTER" wrappingWidth="298.93677020072937">
-                                 <font>
-                                    <Font name="Bodoni MT Condensed" size="22.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </StackPane>
-                     </children>
-                  </HBox>
+                  <HBox fx:id="selectNumPlayersOrGame" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
                </children>
             </StackPane>
             <Button fx:id="playButton" mnemonicParsing="false" onAction="#onPlay" prefHeight="4.0" prefWidth="727.0" text="PLAY!">
@@ -139,5 +85,54 @@
             <Insets />
          </opaqueInsets>
       </VBox>
+      <StackPane fx:id="numPlayersStackPane" prefHeight="289.0" prefWidth="289.0">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SELECT THE NUMBER OF PLAYERS:" textAlignment="CENTER" wrappingWidth="197.13671875">
+                     <font>
+                        <Font name="Bodoni MT Condensed" size="30.0" />
+                     </font>
+                  </Text>
+                  <HBox alignment="CENTER" prefHeight="57.0" prefWidth="289.0">
+                     <children>
+                        <Button fx:id="twoplayersbutton" mnemonicParsing="false" onAction="#select2Players" text="2">
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="threeplayersbutton" mnemonicParsing="false" onAction="#select3Players" text="3">
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="fourplayersbutton" mnemonicParsing="false" onAction="#select4Players" text="4">
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+      <StackPane fx:id="joinableGamesStackPane" prefHeight="289.0" prefWidth="306.0">
+         <children>
+            <VBox fx:id="joinableGamesVBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button fx:id="refreshButton" mnemonicParsing="false" onMouseClicked="#refresh" text="Refresh" />
+               </children>
+            </VBox>
+            <Text fx:id="noGamesHosted" fill="#e11414" strokeType="OUTSIDE" strokeWidth="0.0" text="CURRENTLY NO GAMES HOSTED" textAlignment="CENTER" wrappingWidth="298.93677020072937">
+               <font>
+                  <Font name="Bodoni MT Condensed" size="22.0" />
+               </font>
+            </Text>
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>

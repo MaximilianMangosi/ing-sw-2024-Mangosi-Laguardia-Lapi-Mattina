@@ -46,8 +46,8 @@ public class NewHelloController extends GUIController{
     private StackPane numPlayersStackPane;
     @FXML
     private StackPane joinableGamesStackPane;
-    @FXML
-    private Accordion listOfGames;
+//    @FXML
+//    private Accordion listOfGames;
     @FXML
     private Button twoplayersbutton;
     @FXML
@@ -60,6 +60,8 @@ public class NewHelloController extends GUIController{
     private Button playButton;
     @FXML
     private Text noGamesHosted;
+    @FXML
+    private VBox joinableGamesVBox;
     private Boolean isSocketSelected;
     private int numPlayers =0;
     private String myName;
@@ -76,7 +78,7 @@ public class NewHelloController extends GUIController{
         try {
             registryIDLE= LocateRegistry.getRegistry(1099);
             viewContainerIDLE = (ViewRMIContainerInterface) registryIDLE.lookup("ViewRMI");
-        } catch (RemoteException | NotBoundException e) {
+        } catch (RemoteException | NotBoundException ignore) {
 
         }
 
@@ -98,21 +100,29 @@ public class NewHelloController extends GUIController{
     @FXML
     private void selectJoinGame(){
         playButton.setVisible(false);
-        numPlayersStackPane.setVisible(false);
-        joinableGamesStackPane.setVisible(true);
-        MouseEvent mouseEvent=new MouseEvent(MouseEvent.MOUSE_CLICKED,
-                0, 0, 0, 0,
-                MouseButton.PRIMARY,
-                1,
-                false, false, false, false,
-                true, false, false, true,
-                false, false, null);
-        refreshButton.fireEvent(mouseEvent);
+        selectNumPlayersOrGame.getChildren().addLast(joinableGamesStackPane);
+        selectNumPlayersOrGame.getChildren().removeFirst();
+
+
+        createGameButton.setDisable(false);
+        joinGameButton.setDisable(true);
+        //numPlayersStackPane.setVisible(false);
+        //joinableGamesStackPane.setVisible(true);
+
+
+
+        refresh();
     }
     @FXML
     private void selectCreateGame(){
-        joinableGamesStackPane.setVisible(false);
-        numPlayersStackPane.setVisible(true);
+        selectNumPlayersOrGame.getChildren().addFirst(numPlayersStackPane);
+        selectNumPlayersOrGame.getChildren().removeLast();
+
+
+        //joinableGamesStackPane.setVisible(false);
+        //numPlayersStackPane.setVisible(true);
+        createGameButton.setDisable(true);
+        joinGameButton.setDisable(false);
         playButton.setVisible(true);
     }
     @FXML
@@ -147,8 +157,11 @@ public class NewHelloController extends GUIController{
     @FXML
     private void refresh(){
         noGamesHosted.setVisible(false);
+        if(joinableGamesVBox.getChildren().size()>=2)
+            joinableGamesVBox.getChildren().removeFirst();
         try {
-            listOfGames.getPanes().removeAll();
+            Accordion listOfGames = new Accordion();
+            joinableGamesVBox.getChildren().addFirst(listOfGames);
             //looks for an RMI view just to get the games waiting, the view will not be used for anything else
             Map<UUID, List<String>> joinableGames = viewContainerIDLE.getJoinableGames();
             if(joinableGames.isEmpty()){
