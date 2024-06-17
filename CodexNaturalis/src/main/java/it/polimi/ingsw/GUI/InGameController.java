@@ -14,6 +14,7 @@ import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -90,7 +91,7 @@ public class InGameController extends GUIController {
     private boolean returnButtonPresent= false;
     private final PauseTransition hideError = new PauseTransition(Duration.seconds(3));
     private final Map<Integer,Coordinates> scoreMap=new HashMap<>();
-
+    private StackPane myField;
     private Timeline overlapAnimation;
 
 
@@ -116,6 +117,7 @@ public class InGameController extends GUIController {
             playerListBox.getChildren().add(sp);
             //makes label clickable
             label.setOnMouseClicked(this::showEnemyField);
+            label.setCursor(Cursor.HAND);
 
 
         }
@@ -512,67 +514,80 @@ public class InGameController extends GUIController {
     }
     //
     private void showEnemyField(MouseEvent event)  {
-        //fetch the other player's hand
-        try {
-            Label l = (Label) event.getSource();
-            String username = l.getText();
-
-            Map<Coordinates, Card> field = view.getPlayersField(username);
-            List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
-
-
-            //saves the old field and sets it invisible
-            Pane oldCenter = (Pane) borderPane.getCenter();
-            Node oldFirstChild = oldCenter.getChildren().getFirst();
-            oldFirstChild.setVisible(false);
-            //build a new field
-            StackPane newFieldPane = new StackPane();
-            newFieldPane.setPrefWidth(2408);
-            newFieldPane.setPrefHeight(1610);
-            newFieldPane.setLayoutX(-240);
-            newFieldPane.setLayoutY(-390);
-
-            AnchorPane newAnchor = new AnchorPane(newFieldPane);
-            newAnchor.setPrefWidth(2400);
-            newAnchor.setPrefHeight(1566);
-            ScrollPane newScrollPane = new ScrollPane(newAnchor);
-            newScrollPane.setPrefWidth(200);
-            newScrollPane.setPrefHeight(200);
-
-            StackPane newHugeStackPane = new StackPane(newScrollPane);
-            newHugeStackPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-            newHugeStackPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
-            //adds the enemy card
-            int id;
-            for (Coordinates c :fieldBuildingHelper){
-                //load the image
-                id = field.get(c).getId();
-                Image i = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-                ImageView newImageView = new ImageView(i);
-                newFieldPane.getChildren().add(newImageView);
-                newImageView.setFitWidth(200);
-                newImageView.setFitHeight(150);
-                newImageView.setTranslateX(c.x*155.5);
-                newImageView.setTranslateY(c.y*79.5);
-            }
-            if(!returnButtonPresent) {
-                Button returnToMyFieldButton = new Button("Return");
-                playerListBox.getChildren().add(returnToMyFieldButton);
-                returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent, oldFirstChild, newHugeStackPane));
-                returnButtonPresent=true;
-            }
-            ((Pane) borderPane.getCenter()).getChildren().add(newHugeStackPane);
-
-
-
-        }catch (RemoteException e){
-            //TODO ERROR MESSAGE
-        }
-    }
-    private void returnToMyField(MouseEvent event,Node oldField,Node newField){
         Pane oldCenter = (Pane) borderPane.getCenter();
-        oldCenter.getChildren().remove(newField);
-        oldField.setVisible(true);
+        //fetch the other player's hand
+        Label l = (Label) event.getSource();
+        String username = l.getText();
+        if(!username.equals(myName)){//if the top pane is not mine,
+            List<Node> children = oldCenter.getChildren();
+            if(oldCenter.getChildren().size()>=2)
+                oldCenter.getChildren().remove(1);
+            try {
+
+
+                Map<Coordinates, Card> field = view.getPlayersField(username);
+                List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
+
+
+                //saves the old field and sets it invisible
+                fieldPane.setVisible(false);
+
+                //build a new field
+                StackPane newFieldPane = new StackPane();
+                newFieldPane.setPrefWidth(2408);
+                newFieldPane.setPrefHeight(1610);
+                newFieldPane.setLayoutX(-240);
+                newFieldPane.setLayoutY(-390);
+
+                AnchorPane newAnchor = new AnchorPane(newFieldPane);
+                newAnchor.setPrefWidth(2400);
+                newAnchor.setPrefHeight(1566);
+                ScrollPane newScrollPane = new ScrollPane(newAnchor);
+                newScrollPane.setPrefWidth(200);
+                newScrollPane.setPrefHeight(200);
+
+                StackPane newHugeStackPane = new StackPane(newScrollPane);
+                newHugeStackPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                newHugeStackPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                //adds the enemy card
+                int id;
+                for (Coordinates c :fieldBuildingHelper){
+                    //load the image
+                    id = field.get(c).getId();
+                    Image i;
+                    if(field.get(c).isFront()) {
+                        i = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+                    }else{
+                        i = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
+                    }
+
+                    ImageView newImageView = new ImageView(i);
+                    newFieldPane.getChildren().add(newImageView);
+                    newImageView.setFitWidth(200);
+                    newImageView.setFitHeight(150);
+                    newImageView.setTranslateX(c.x*155.5);
+                    newImageView.setTranslateY(c.y*-79.5);
+                }
+                if(!returnButtonPresent) {
+                    Button returnToMyFieldButton = new Button("Return");
+                    playerListBox.getChildren().add(returnToMyFieldButton);
+                    returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent));
+                    returnButtonPresent=true;
+                }
+                ((Pane) borderPane.getCenter()).getChildren().add(newHugeStackPane);
+
+
+
+            }catch (RemoteException e){
+                //TODO ERROR MESSAGE
+            }
+        }
+
+    }
+    private void returnToMyField(MouseEvent event){
+        Pane oldCenter = (Pane) borderPane.getCenter();
+        oldCenter.getChildren().removeLast();
+        fieldPane.setVisible(true);
         playerListBox.getChildren().remove(event.getSource());
         returnButtonPresent=false;
     }
