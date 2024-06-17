@@ -1,9 +1,19 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.client.GameData;
+import it.polimi.ingsw.client.PingPong;
+import it.polimi.ingsw.client.ServerHandler;
+import it.polimi.ingsw.controller.GameKey;
+import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
+import it.polimi.ingsw.controller.exceptions.InvalidUserId;
+import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
+import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
+import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
+import it.polimi.ingsw.server.CloseGame;
 import it.polimi.ingsw.view.ViewRMIContainer;
 import it.polimi.ingsw.view.ViewRMIContainerInterface;
 import it.polimi.ingsw.view.ViewSocket;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -71,8 +81,7 @@ public class NewHelloController extends GUIController{
     private Boolean isSocketSelected;
     private int numPlayers =0;
     private String myName;
-    private Registry registryIDLE;
-    private ViewRMIContainerInterface viewContainerIDLE;
+
     private UUID chosenGame;
     private boolean isJoin;
 
@@ -82,12 +91,7 @@ public class NewHelloController extends GUIController{
         selectJoinOrCreate.setVisible(false);
         playButton.setVisible(false);
         noGamesHosted.setVisible(false);
-        try {
-            registryIDLE= LocateRegistry.getRegistry(1099);
-            viewContainerIDLE = (ViewRMIContainerInterface) registryIDLE.lookup("ViewRMI");
-        } catch (RemoteException | NotBoundException ignore) {
 
-        }
 
     }
     @FXML
@@ -113,12 +117,18 @@ public class NewHelloController extends GUIController{
     }
     @FXML
     private void selectRMI(){
-        isSocketSelected=false;
-        RMIButton.setStyle("-fx-border-color: #820933");
-        HBox parent = (HBox) RMIButton.getParent();
-        parent.getChildren().removeFirst();
-        RMIButton.setDisable(true);
-        selectJoinOrCreate.setVisible(true);
+        try {
+            isSocketSelected=false;
+            RMIButton.setStyle("-fx-border-color: #820933");
+            HBox parent = (HBox) RMIButton.getParent();
+            parent.getChildren().removeFirst();
+            RMIButton.setDisable(true);
+            selectJoinOrCreate.setVisible(true);
+            Registry registry =LocateRegistry.getRegistry(1099);
+            viewContainer=(ViewRMIContainerInterface) registry.lookup("ViewRMI");
+        } catch (RemoteException | NotBoundException e) {
+            throw new RuntimeException(e);
+        }
     }
     @FXML
     private void selectJoinGame(){
@@ -126,7 +136,7 @@ public class NewHelloController extends GUIController{
         numPlayersStackPane.setVisible(false);
         joinableGamesStackPane.setVisible(true);
         isJoin=true;
-       refresh();
+        refresh();
     }
     @FXML
     private void selectCreateGame(){
@@ -177,7 +187,7 @@ public class NewHelloController extends GUIController{
             if(isSocketSelected){
                  joinableGames =((ViewSocket)view).getJoinableGames();
             }else{
-                //gets it from the viewRMIContainer
+                joinableGames=viewContainer.getJoinableGames();
             }
             if(joinableGames.isEmpty()){
                 noGamesHosted.setVisible(true);
@@ -215,15 +225,53 @@ public class NewHelloController extends GUIController{
     }
 
     @FXML
-    private void onPlay(){
-        if(isJoin){
-            if(isSocketSelected){
+    private void onPlay(ActionEvent event){
+
+        try {
+            if(isJoin){
+                if(isSocketSelected){
+                    myID = view.joinGame(chosenGame,myName);
+                    ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(chosenGame,myID));
+                    serverHandler.start();
+
+                }else{
+                    myID= viewContainer.joinGame(chosenGame,myName);
+                    view=viewContainer.getView(chosenGame);
+
+                }
 
             }else{
-
+                if(isSocketSelected){
+                    GameKey gameKey=view.bootGame(numPlayers,myName);
+                    gameID=gameKey.gameID();
+                    myID=gameKey.userID();
+                    ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(gameID,myID));
+                    serverHandler.start();
+                }else{
+                    GameKey gameKey = viewContainer.bootGame(numPlayers,myName);
+                    myID = gameKey.userID();
+                    view=viewContainer.getView(gameKey.gameID());
+                }
             }
-        }else{
+            PingPong pingPong = new PingPong(view,myID);
+            pingPong.start();
 
+            changeScene("waiting-room.fxml",event);
+
+        } catch (PlayerNameNotUniqueException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalOperationException e) {
+            throw new RuntimeException(e);
+        } catch (InvalidGameID e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (UnacceptableNumOfPlayersException e) {
+            throw new RuntimeException(e);
+        } catch (InvalidUserId e) {
+            throw new RuntimeException(e);
         }
     }
     @FXML
