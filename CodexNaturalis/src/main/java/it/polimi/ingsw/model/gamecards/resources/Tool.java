@@ -14,7 +14,7 @@ public enum Tool implements Resource {
     EMPTY("E"),
     ;
 
-    public String symbol;
+    private String symbol;
     @Override
     public Resource getResource() {
         return this;

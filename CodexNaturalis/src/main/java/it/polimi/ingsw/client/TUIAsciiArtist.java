@@ -9,15 +9,16 @@ import it.polimi.ingsw.model.gamecards.goals.LGoal;
 import it.polimi.ingsw.model.gamecards.goals.StairGoal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
+import it.polimi.ingsw.model.gamecards.resources.Tool;
 
 import javax.swing.plaf.PanelUI;
 import java.util.*;
 import java.util.List;
 
-public class TUIAsciiArtist implements CardDisplay {
-    String[][] matrix = new String[5][46];
+public class TUIAsciiArtist {
+    private String[][] matrix = new String[5][46];
     private String[][] asciiField ;
-    private StringBuilder strbuilder;
+    private  OutStreamWriter writer;
     public static final String RESET = "\u001B[0m";
     public static final String BLACK = "\u001B[30m";
     public static final String RED = "\u001B[31m";
@@ -26,70 +27,139 @@ public class TUIAsciiArtist implements CardDisplay {
     public static final String BLUE = "\u001B[34m";
     public static final String PURPLE = "\u001B[35m";
     public static final String CYAN = "\u001B[36m";
-    public static final String WHITE = "\u001B[37m";
+    public static final String WHITE = "\u001B[97m";
 
-
+    public TUIAsciiArtist(OutStreamWriter writer) {
+        this.writer = writer;
+    }
 
     /**
-     * uses object StringBuilder to build a string in ASCII art representing parameter Card, then prints the string on System.Out
+     * write on matrix the ASCII art representing parameter Card
      * @author Giorgio Mattina
      * @param card
      */
-    @Override
-    public void show(Card card) {
-        strbuilder = new StringBuilder();
-            String reignColor = card.getReign().getColorBG();
-            char point = card.getPoints()>0? Character.forDigit(card.getPoints(),10):'-';
-            String angleNW = card.getResource("NW") !=null? card.getResource("NW").getSymbol() : "×";
-            String angleNE = card.getResource("NE") !=null? card.getResource("NE").getSymbol() : "×";
-            String angleSW = card.getResource("SW") !=null? card.getResource("SW").getSymbol() : "×";
-            String angleSE = card.getResource("SE") !=null? card.getResource("SE").getSymbol() : "×";
 
-            if(card.getRequirements().isEmpty()){
-                strbuilder.append(String.format(reignColor+"%s ----%c---- %s"+RESET+"\n" +
-                                                  reignColor+ "|           |"+RESET+"\n" +
-                                                 reignColor+  "|           |"+RESET+"\n" +
-                                                 reignColor+   "|           |"+RESET+"\n" +
-                                                 reignColor +"%s --------- %s"+RESET+"\n",angleNW,point, angleNE,angleSW,angleSE));
-
-            }else{
-                strbuilder.append(String.format(YELLOW+"%s ----%c---- %s"+RESET+"\n"+
-                                 YELLOW+"|"+reignColor+"           "+YELLOW+"|"+RESET+"\n"+
-                                  YELLOW+"|"+reignColor+"           "+YELLOW+"|"+RESET+"\n"+
-                                  YELLOW+"|"+reignColor+"           "+YELLOW+"|"+RESET+"\n"+
-                                  YELLOW+ "%s --------- %s"+RESET+"\n",angleNW,point, angleNE,angleSW,angleSE));
-                int sum=0;
-                List<Resource> req=new ArrayList<>();
-                for(Resource s : card.getRequirements().keySet().stream().sorted().toList()){
-                   for(int j = 0; j<card.getRequirements().get(s);j++)
-                       req.add(s);
-                }
-                int bottomCenter=107;
-                //regardless of the size
-                strbuilder.replace(bottomCenter,bottomCenter+1,req.removeFirst().getSymbol());
-                strbuilder.replace(bottomCenter+2,bottomCenter+3,req.removeFirst().getSymbol());
-                if(req.size()==2){
-                    strbuilder.replace(bottomCenter-1,bottomCenter,req.removeFirst().getSymbol());
-                    strbuilder.replace(bottomCenter+3,bottomCenter+4,req.removeFirst().getSymbol());
-                }else if (req.size()==3){
-                    strbuilder.replace(bottomCenter-1,bottomCenter,req.removeFirst().getSymbol());
-                    strbuilder.replace(bottomCenter+3,bottomCenter+4,req.removeFirst().getSymbol());
-                    strbuilder.replace(bottomCenter+1,bottomCenter+2,req.removeFirst().getSymbol());
-
-                }else{
-                    strbuilder.replace(bottomCenter+1,bottomCenter+2,req.removeFirst().getSymbol());
+    public void show(Card card,boolean shouldPrint) {
+        int startCol= 0;
+        String angleNW = card.getResource("NW") !=null? card.getResource("NW").getSymbol() : "×";
+        String angleNE = card.getResource("NE") !=null? card.getResource("NE").getSymbol() : "×";
+        String angleSW = card.getResource("SW") !=null? card.getResource("SW").getSymbol() : "×";
+        String angleSE = card.getResource("SE") !=null? card.getResource("SE").getSymbol() : "×";
+        boolean printBack = shouldPrint && !card.isFront();
+        if (!shouldPrint) {
+            for (int i = 0; i < matrix[0].length ; i++) {
+                if(matrix[0][i]==null){
+                    startCol=i;
+                    break;
                 }
             }
-            int center=40;
-            if (card.getPoints()==2){
-                strbuilder.replace(center,center+1,"A");
-            }
-            if(card.getTool()!=null){
-                strbuilder.replace(center,center+1,card.getTool().getSymbol());
-            }
+        }else{
+            matrix=new String[5][16];
+        }
+        if(printBack){
+            angleNW="╔";
+            angleNE="╗";
+            angleSW="╚";
+            angleSE="╝";
+        }
+        String reignColor = card.getReign().getColorBG();
+        String point = card.getPoints()>0? String.valueOf(card.getPoints()):"═";
 
-        System.out.println(strbuilder.toString());
-            //TODO invece di stampare aggiungi alla matrice
+        HashMap<Reign, Integer> requirements = card.getRequirements();
+        for(int i=1;i<14;i++){ //write first and last row
+            matrix[0][startCol+i]="═";
+            matrix[4][startCol+i]="═";
+        }
+        String color;
+        if(requirements.isEmpty()) // ResourceCard
+            color=WHITE+reignColor;
+        else //GoldCard
+            color=WHITE+YELLOW;
+        matrix[0][startCol]=color+angleNW;
+        matrix[0][startCol+14]=angleNE+RESET;
+
+        for (int i=1;i<4;i++){
+            matrix[i][startCol]=color+"║"+reignColor;
+            for (int j = 1; j < 14; j++) {
+                matrix[i][startCol+j]=" ";
+            }
+            matrix[i][startCol+14]=color+"║"+RESET;
+        }
+        //adding spaces between cards
+        matrix[0][startCol+15]=" ";
+        matrix[4][startCol]=color+angleSW;
+        matrix[4][startCol+14]=angleSE+RESET;
+        if (!printBack) {
+            Tool tool = card.getTool();
+            if(card.getPoints()==2) //GoldCardAngles
+                matrix[1][startCol+7]="A";
+            else if (tool !=null) { //GoldCardTool
+                matrix[1][startCol+7]=tool.getSymbol();
+
+            }
+            List<Resource> requirementsList=new ArrayList<>();
+            for(Resource s : requirements.keySet().stream().sorted().toList()){
+               for(int j = 0; j< requirements.get(s); j++)
+                   requirementsList.add(s);
+            }
+            switch (requirementsList.size()){
+                case 3->{
+                    int i=startCol+6;
+                    for (Resource req:requirementsList){
+                        matrix[3][i]=req.getSymbol();
+                        i++;
+                    }
+                }
+                case 4->{
+                    int i=startCol+5;
+                    for (Resource req:requirementsList){
+                        if(i==startCol+7) {
+                            matrix[3][i+1]=req.getSymbol();
+                            i+=2;
+                            continue;
+                        }
+                        matrix[3][i]=req.getSymbol();
+                        i++;
+                    }
+                }
+                case 5->{
+                    int i=startCol+5;
+                    for (Resource req:requirementsList){
+                        matrix[3][i]=req.getSymbol();
+                        i++;
+                    }
+                }
+            }
+        }
+        if(card.getPoints()>0)
+            matrix[0][startCol+7]=point;
+        if(shouldPrint)
+            writer.print(matrix);
+
+
+    }
+
+
+    public void show(List<Card> cards){
+        if(cards.size()<=3){ //show Hand
+            matrix=new String[5][48];
+            for (Card card: cards){
+                show(card,false);
+            }
+            writer.print(matrix);
+        }
+        else {
+            matrix=new String[5][32];
+            show(cards.getFirst(),false);
+            show(cards.get(1),false);
+            writer.print(matrix);
+            writer.print("\n");
+            matrix=new  String[5][32];
+            show(cards.get(2),false);
+            show(cards.get(3),false);
+            writer.print(matrix);
+
+        }
     }
 
     /**
@@ -154,6 +224,7 @@ public class TUIAsciiArtist implements CardDisplay {
             }
             k+=15;
         }
+        writer.print(matrix);
 
     }
 
@@ -249,6 +320,7 @@ public class TUIAsciiArtist implements CardDisplay {
                 }
             }
         }
+        writer.print(matrix);
     }
 
     /**
@@ -284,7 +356,7 @@ public class TUIAsciiArtist implements CardDisplay {
                     }
                 }
                 matrix[i][26] += RESET;
-            }else if( i==4 ){//the last row
+            }else {//the last row
                 for ( j=0;j<27;j++){
                     if(j==0 || j==14){
                         matrix[i][j]=YELLOW+"╚"+YELLOW;
@@ -363,6 +435,23 @@ public class TUIAsciiArtist implements CardDisplay {
      */
     public void resetMatrix() {
         matrix=new String[5][46];
+    }
+
+    /**
+     *
+     * return the ANSI escape sequence for the given check
+     * @param check a String
+     * @return a String containing a Ansi escape sequence
+     */
+    public String getAnsiColor(String check){
+        return switch (check) {
+            case "Green" -> GREEN;
+            case "Yellow" -> YELLOW;
+            case "Blue" -> BLUE;
+            case "Red" -> RED;
+            default -> RESET;
+        };
+
     }
 
 }

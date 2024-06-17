@@ -106,6 +106,8 @@ public class InGameController extends GUIController {
 
         for (String p : view.getPlayersList()) {
             StackPane sp = new StackPane();
+            String color=view.getPlayerColor(p);
+            sp.setStyle("-fx-background-color: "+color);
             Label label = new Label(p);
             label.setFont(new Font("Bodoni MT Condensed", 40));
             if (view.getCurrentPlayer().equals(p))
@@ -249,6 +251,11 @@ public class InGameController extends GUIController {
                     if(!view.getCurrentPlayer().equals(oldCurrentPlayer)){
                         Platform.runLater(() -> updateCurrentPlayer(newCurrentPlayer));
                         oldCurrentPlayer = newCurrentPlayer;
+                    }
+
+                    //game finished
+                    if(view.isGameEnded()){
+                     //   changeScene("victory.xml", );
                     }
                 } catch (RemoteException e) {
                     showErrorMsg("CONNECTION ERROR");

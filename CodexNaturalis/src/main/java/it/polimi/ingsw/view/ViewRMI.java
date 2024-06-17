@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -325,10 +326,10 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @author Riccardo Lapi
      */
     @Override
-    public synchronized GameKey bootGame(int numOfPlayers, String playerName) throws RemoteException, UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException {
+    public synchronized GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException,RemoteException {
         return controller.bootGame(numOfPlayers, playerName);
     }
-    public synchronized UUID joinGame(UUID gameId,String playerName) throws  PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID {
+    public synchronized UUID joinGame(UUID gameId,String playerName) throws PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID,RemoteException {
         return controller.joinGame(gameId,playerName);
     }
     /**

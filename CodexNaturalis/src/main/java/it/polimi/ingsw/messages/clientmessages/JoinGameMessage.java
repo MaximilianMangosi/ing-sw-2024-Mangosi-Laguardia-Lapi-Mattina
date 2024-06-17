@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
 import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.server.ClientHandler;
+import it.polimi.ingsw.view.ViewRMIContainer;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -45,9 +46,11 @@ public class JoinGameMessage extends ClientMessage {
     @Override
     public void processMessage(ClientHandler clientHandler) throws IOException {
        try {
-           Controller c= clientHandler.getViewContainer().getController(gameId);
+           ViewRMIContainer container= clientHandler.getViewContainer();
+           Controller c = container.getController(gameId);
+
            clientHandler.setController(c);
-           UUID newId =c.joinGame(gameId,username);
+           UUID newId =container.joinGame(gameId,username);
            clientHandler.setMyViewUpdater(gameId);
            UserIDMessage idMessage = new UserIDMessage(newId);
            clientHandler.answerClient(idMessage);

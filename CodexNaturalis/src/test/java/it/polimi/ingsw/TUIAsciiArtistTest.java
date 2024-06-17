@@ -1,9 +1,11 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.client.OutStreamWriter;
 import it.polimi.ingsw.client.TUIAsciiArtist;
 import it.polimi.ingsw.model.gamecards.GameBox;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.GoldCard;
+import it.polimi.ingsw.model.gamecards.cards.GoldCardAngles;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
@@ -25,7 +27,7 @@ import static java.util.Collections.shuffle;
 
 
 public class TUIAsciiArtistTest {
-    public TUIAsciiArtist artist=new TUIAsciiArtist();
+    public TUIAsciiArtist artist=new TUIAsciiArtist(new OutStreamWriter());
     public Game game;
     public GameBox gb = new GameBox();
     private void fillList(ArrayList<String> jsonsList,int numOfJson,String path) throws IOException {
@@ -104,9 +106,11 @@ public class TUIAsciiArtistTest {
     @Test
     public void showCardTest (){
         List<Card> deck =new ArrayList<>(gb.getGoldCardSet());
-        for (int i =0 ; i< 10;i++){
-            artist.show(deck.get(i));
-        }
+        shuffle(deck);
+        deck= deck.stream().limit(4).toList();
+        artist.show(deck);
+        artist.show(deck.getLast(),true);
+
     }
     @Test
     public void showGoalTest (){
