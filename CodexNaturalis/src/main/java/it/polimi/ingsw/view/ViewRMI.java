@@ -326,10 +326,10 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @author Riccardo Lapi
      */
     @Override
-    public synchronized GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, ClassNotFoundException, IllegalOperationException, IOException, PlayerNameNotUniqueException {
+    public synchronized GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException,RemoteException {
         return controller.bootGame(numOfPlayers, playerName);
     }
-    public synchronized UUID joinGame(UUID gameId,String playerName) throws PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID {
+    public synchronized UUID joinGame(UUID gameId,String playerName) throws PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID,RemoteException {
         return controller.joinGame(gameId,playerName);
     }
     /**

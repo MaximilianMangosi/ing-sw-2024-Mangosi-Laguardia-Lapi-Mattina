@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Giuseppe Laguardia
  */
 public class TextUserInterface extends UserInterface {
-    private final TUIAsciiArtist artist = new TUIAsciiArtist();
+    private final TUIAsciiArtist artist;
     private final UpdateTUI tuiUpdater;
     private final OutStreamWriter outWriter = new OutStreamWriter();
 
@@ -34,6 +34,7 @@ public class TextUserInterface extends UserInterface {
      */
     public TextUserInterface() {
         tuiUpdater=new UpdateTUI(outWriter,this);
+        artist=new TUIAsciiArtist(outWriter);
     }
 
     /**
@@ -154,7 +155,6 @@ public class TextUserInterface extends UserInterface {
                     outWriter.print("Here are your goals, choose one (1,2)");
                     Goal[] myGoals = getGoalOptions();
                     artist.show(myGoals);
-                    outWriter.print(artist.getMatrix());
                     String myGoal = s.nextLine();
                     Goal goal = Objects.equals(myGoal, "1") ? myGoals[0] : myGoals[1];
                     view.chooseGoal(myID, goal);
@@ -244,9 +244,7 @@ public class TextUserInterface extends UserInterface {
                    break;
                 case "draw-card-visible":
                     List<Card> visibleCard= view.getVisibleCards();
-                    for(Card card:visibleCard){
-                        artist.show(card);
-                    }
+                    artist.show(visibleCard);
                     while (error) {
                         try {
                             outWriter.print("Which card do you want to draw? (0, 1, 2, 3)");
@@ -254,7 +252,7 @@ public class TextUserInterface extends UserInterface {
                             view.drawVisibleCard(myID,chosenDrawCard);
                             error=false;
                         } catch (InvalidChoiceException e) {
-                            outWriter.print(e+"[0,3]");
+                            outWriter.print(e.getMessage()+"[0,3]");
                         }
                     }
                     showHand();
@@ -270,15 +268,12 @@ public class TextUserInterface extends UserInterface {
                 case "show-my-goal":
                    Goal privateGoal= getPrivateGoal();
                    artist.show(new Goal[]{privateGoal});
-                   outWriter.print(artist.getMatrix());
                    outWriter.print("Press enter to continue");
                    s.nextLine();
                    artist.resetMatrix();
                    break;
                 case "show-public-goal":
                    artist.show(view.getPublicGoals());
-                   outWriter.print(artist.getMatrix());
-
                    outWriter.print("Press enter to continue");
                    s.nextLine();
                    artist.resetMatrix();
@@ -500,9 +495,7 @@ public class TextUserInterface extends UserInterface {
     private void showHand() throws RemoteException, InvalidUserId {
         List<Card> hand ;
         hand=getHand();
-        for(Card card:hand){
-            artist.show(card);
-        }
+        artist.show(hand);
     }
 
     /**
@@ -607,7 +600,7 @@ public class TextUserInterface extends UserInterface {
                 }
                 else{
                     Coordinates chosenCardPosition=fieldBuildingHelper.get(chosenCardInt);
-                    artist.show(field.get(chosenCardPosition));
+                    artist.show(field.get(chosenCardPosition),true);
                 }
 
             }

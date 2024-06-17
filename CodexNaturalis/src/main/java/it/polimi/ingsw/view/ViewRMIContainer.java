@@ -40,16 +40,8 @@ public class ViewRMIContainer extends UnicastRemoteObject implements ViewRMICont
         Controller controller=new Controller(gameManager);
         ViewRMI view = controller.getView();
         view.setViewContainer(this);
-        GameKey gameKey= null;
-        try {
-            gameKey = view.bootGame(numOfPlayers,playerName);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException(e);
-        }
+        GameKey gameKey= view.bootGame(numOfPlayers,playerName);
         UUID gameID = gameKey.gameID();
-
         views.put(gameID,view);
         joinableGames.put(gameID,view.getPlayersList());
 
@@ -57,13 +49,16 @@ public class ViewRMIContainer extends UnicastRemoteObject implements ViewRMICont
 
     }
     public UUID joinGame(UUID gameID,String playerName) throws RemoteException, PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID {
-        ViewRMIInterface view=  getView(gameID);
+        ViewRMIInterface view =  getView(gameID);
         UUID userID = view.joinGame(gameID,playerName);
+        joinableGames.put(gameID,view.getPlayersList());
         if(view.isGameStarted())
             joinableGames.remove(gameID);
         return userID;
 
     }
+
+
 
     public void removeView(ViewRMI viewRMI) {
         views.values().remove(viewRMI);
