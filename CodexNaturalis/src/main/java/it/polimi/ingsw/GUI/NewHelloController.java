@@ -80,8 +80,6 @@ public class NewHelloController extends GUIController{
     private VBox joinableGamesVBox;
     private Boolean isSocketSelected;
     private int numPlayers =0;
-    private String myName;
-
     private UUID chosenGame;
     private boolean isJoin;
 
@@ -228,35 +226,37 @@ public class NewHelloController extends GUIController{
     private void onPlay(ActionEvent event){
 
         try {
-            if(isJoin){
-                if(isSocketSelected){
-                    myID = view.joinGame(chosenGame,myName);
-                    ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(chosenGame,myID));
-                    serverHandler.start();
+            if (myName!=null) {
+                if(isJoin){
+                    if(isSocketSelected){
+                        myID = view.joinGame(chosenGame,myName);
+                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(chosenGame,myID));
+                        serverHandler.start();
+
+                    }else{
+                        myID= viewContainer.joinGame(chosenGame,myName);
+                        view=viewContainer.getView(chosenGame);
+
+                    }
 
                 }else{
-                    myID= viewContainer.joinGame(chosenGame,myName);
-                    view=viewContainer.getView(chosenGame);
-
+                    if(isSocketSelected){
+                        GameKey gameKey=view.bootGame(numPlayers,myName);
+                        gameID=gameKey.gameID();
+                        myID=gameKey.userID();
+                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(gameID,myID));
+                        serverHandler.start();
+                    }else{
+                        GameKey gameKey = viewContainer.bootGame(numPlayers,myName);
+                        myID = gameKey.userID();
+                        view=viewContainer.getView(gameKey.gameID());
+                    }
                 }
+                PingPong pingPong = new PingPong(view,myID);
+                pingPong.start();
 
-            }else{
-                if(isSocketSelected){
-                    GameKey gameKey=view.bootGame(numPlayers,myName);
-                    gameID=gameKey.gameID();
-                    myID=gameKey.userID();
-                    ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(gameID,myID));
-                    serverHandler.start();
-                }else{
-                    GameKey gameKey = viewContainer.bootGame(numPlayers,myName);
-                    myID = gameKey.userID();
-                    view=viewContainer.getView(gameKey.gameID());
-                }
+                changeScene("waiting-room.fxml",event);
             }
-            PingPong pingPong = new PingPong(view,myID);
-            pingPong.start();
-
-            changeScene("waiting-room.fxml",event);
 
         } catch (PlayerNameNotUniqueException e) {
             throw new RuntimeException(e);

@@ -338,11 +338,11 @@ public class Controller {
         addToQueue(new TurnMessage(getCurrentPlayer()));
         if(choice==0){
             view.updateNumOfResourceCards();
-            addToQueue(new NumOfResourceCardsMessage(getNumOfResourceCards()));
+            addToQueue(new ResourcesDeckMessage(getNumOfResourceCards(),getTopOfResourceCardDeck()));
         }
         else {
             view.updateNumOfGoldCards();
-            addToQueue(new NumOfGoldCardsMessage(getNumOfGoldCards()));
+            addToQueue(new GoldsDeckMessage(getNumOfGoldCards(),getTopOfGoldCardDeck()));
         }
 
         currentState=currentState.nextState();
@@ -368,8 +368,8 @@ public class Controller {
 
         addToQueue(new TurnMessage(getCurrentPlayer()));
         addToQueue(new VisibleCardMessage(getVisibleCards()));
-        addToQueue(new NumOfGoldCardsMessage(getNumOfGoldCards()));
-        addToQueue(new NumOfResourceCardsMessage(getNumOfResourceCards()));
+        addToQueue(new GoldsDeckMessage(getNumOfGoldCards(),getTopOfGoldCardDeck()));
+        addToQueue(new ResourcesDeckMessage(getNumOfResourceCards(),getTopOfResourceCardDeck()));
 
 
         currentState=currentState.nextState();

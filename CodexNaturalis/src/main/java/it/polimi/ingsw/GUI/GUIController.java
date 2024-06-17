@@ -20,9 +20,7 @@ public class GUIController extends UserInterface {
     protected Stage stage;
     protected Scene scene;
     protected Parent root;
-    public void setView(View view){
-        this.view = view;
-    }
+
     public void setMyId(UUID myId){
         this.myID = myId;
     }
@@ -41,8 +39,8 @@ public class GUIController extends UserInterface {
         scene = new Scene(root);
         stage.setScene(scene);
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-//        stage.setHeight(screenBounds.getHeight());
-//        stage.setWidth(screenBounds.getWidth());
+        stage.setHeight(screenBounds.getHeight());
+        stage.setWidth(screenBounds.getWidth());
         stage.centerOnScreen();
         stage.show();
     }

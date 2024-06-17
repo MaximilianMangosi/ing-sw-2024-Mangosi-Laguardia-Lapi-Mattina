@@ -31,6 +31,7 @@ public class CloseGame extends Thread{
                     }
                 }
             }
+            System.out.println("CloseGame Thread deleted game");
         } catch( RemoteException| InterruptedException e ) {
             System.out.println("game crash in close game thread");
         }

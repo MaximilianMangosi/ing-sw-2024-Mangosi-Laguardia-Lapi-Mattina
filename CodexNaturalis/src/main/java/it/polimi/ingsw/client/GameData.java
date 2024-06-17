@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.resources.Reign;
 
 import java.util.*;
 
@@ -15,6 +16,8 @@ public class GameData {
     private String winner;
     private int numOfResourceCards;
     private int numOfGoldCards;
+    private Reign topOfGoldsDeck;
+    private Reign topOfResourcesDeck;
     private List<Card> hand;
     private HashMap<String, Map<Coordinates, Card>> playersField=new HashMap<String, Map<Coordinates, Card>>();
     private List<Coordinates> legalPositions;
@@ -204,4 +207,19 @@ public class GameData {
     }
 
 
+    public Reign getTopOfGoldsDeck() {
+        return topOfGoldsDeck;
+    }
+
+    public void setTopOfGoldsDeck(Reign topOfGoldsDeck) {
+        this.topOfGoldsDeck = topOfGoldsDeck;
+    }
+
+    public Reign getTopOfResourcesDeck() {
+        return topOfResourcesDeck;
+    }
+
+    public void setTopOfResourcesDeck(Reign topOfResourcesDeck) {
+        this.topOfResourcesDeck = topOfResourcesDeck;
+    }
 }

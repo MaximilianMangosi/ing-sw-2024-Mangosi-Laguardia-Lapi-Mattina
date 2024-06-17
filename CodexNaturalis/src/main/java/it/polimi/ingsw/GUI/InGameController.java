@@ -215,7 +215,6 @@ public class InGameController extends GUIController {
             List<Card> oldVisibleCards = new ArrayList<>();
             Reign oldTopResource=null;
             Reign oldTopGold=null;
-            List<Card> oldHand=new ArrayList<>();
 
             String oldCurrentPlayer = "";
 
@@ -592,7 +591,7 @@ public class InGameController extends GUIController {
             Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
 //            System.out.println((int) Math.round(hover_x/155.5));
 //            System.out.println( (int) Math.round(hover_y/79.5));
-            List<Coordinates> avlbPositions = view.showPlayersLegalPositions(myID);
+            List<Coordinates> avlbPositions = getPlayersLegalPositions();
 
             if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
                 e.acceptTransferModes(TransferMode.MOVE);

@@ -48,7 +48,6 @@ public class JoinGameMessage extends ClientMessage {
        try {
            ViewRMIContainer container= clientHandler.getViewContainer();
            Controller c = container.getController(gameId);
-
            clientHandler.setController(c);
            UUID newId =container.joinGame(gameId,username);
            clientHandler.setMyViewUpdater(gameId);
@@ -72,6 +71,7 @@ public class JoinGameMessage extends ClientMessage {
                GameStartMessage gameStartMessage = new GameStartMessage(c.getPublicGoals(),c.getVisibleCards(),c.getCurrentPlayer(),c.getGlobalChat(),c.getPlayerToColor());
                clientHandler.broadCast(gameStartMessage);
            }
+           System.out.println(c.getPlayersList());
            PlayersListMessage playersListMessage = new PlayersListMessage(c.getPlayersList());
            clientHandler.broadCast(playersListMessage);
 

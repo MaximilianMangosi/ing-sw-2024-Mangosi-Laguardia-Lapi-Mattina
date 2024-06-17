@@ -28,8 +28,8 @@ public class  ViewSocket implements View{
     /**
      * Constructs a ViewSocket with the specified output stream, input stream, and game data.
      * @author Giuseppe Laguardia
-     * @param output    The output stream.
-     * @param input     The input stream.
+     * @param output  The output stream.
+     * @param input   The input stream.
      * @param gameData  The game data.
      * @throws IOException if an I/O error occurs.
      */
@@ -408,12 +408,12 @@ public class  ViewSocket implements View{
 
     @Override
     public Reign getTopOfResourceCardDeck() {
-        return null;
+        return gd.getTopOfResourcesDeck();
     }
 
     @Override
     public Reign getTopOfGoldCardDeck() {
-        return null;
+        return gd.getTopOfGoldsDeck();
     }
 
     @Override
@@ -430,8 +430,7 @@ public class  ViewSocket implements View{
         } catch (UnacceptableNumOfPlayersException | IllegalOperationException | PlayerNameNotUniqueException |
                  IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException |
                  InvalidCardException | HandNotFullException | InvalidUserId | InvalidGoalException |
-                 HandFullException | DeckEmptyException | InvalidChoiceException | InvalidGameID ignore) {
-        }
+                 HandFullException | DeckEmptyException | InvalidChoiceException | InvalidGameID ignore) {}
     }
 
     @Override
@@ -449,8 +448,6 @@ public class  ViewSocket implements View{
                IsNotYourTurnException | RequirementsNotMetException | IllegalPositionException | InvalidCardException |
                HandNotFullException | InvalidUserId | InvalidGoalException | HandFullException | DeckEmptyException |
                InvalidChoiceException | InvalidGameID ignore) {}
-
-
     }
 
     @Override

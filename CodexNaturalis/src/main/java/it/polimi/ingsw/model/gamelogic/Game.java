@@ -281,17 +281,17 @@ public class Game{
         var drawCard = visibleCards.remove(choice);
         currentPlayer.addCardToHand(drawCard);
         if (!(goldCardDeck.isEmpty() && resourceCardDeck.isEmpty())) {
-            if (drawCard instanceof GoldCard) { //TODO  remove instanceof
+            if (!drawCard.getRequirements().isEmpty()) {
                 try {
-                    visibleCards.add(goldCardDeck.removeFirst());
+                    visibleCards.add(choice,goldCardDeck.removeFirst());
                 } catch (NoSuchElementException e) {
-                    visibleCards.add(resourceCardDeck.removeFirst());
+                    visibleCards.add(choice,resourceCardDeck.removeFirst());
                 }
             } else {
                 try {
-                    visibleCards.add(resourceCardDeck.removeFirst());
+                    visibleCards.add(choice,resourceCardDeck.removeFirst());
                 } catch (NoSuchElementException e) {
-                    visibleCards.add(goldCardDeck.removeFirst());
+                    visibleCards.add(choice,goldCardDeck.removeFirst());
                 }
             }
         }

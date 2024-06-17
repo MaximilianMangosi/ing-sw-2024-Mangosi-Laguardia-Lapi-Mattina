@@ -45,8 +45,8 @@ public class DrawFromDeckMessage extends ClientMessage{
             clientHandler.sendTo(userId,handMessage);
             clientHandler.broadCast(new TurnMessage(c.getCurrentPlayer()));
             if(chosenDeck==0)
-                clientHandler.broadCast(new NumOfResourceCardsMessage(c.getNumOfResourceCards()));
-            else clientHandler.broadCast(new NumOfGoldCardsMessage(c.getNumOfGoldCards()));
+                clientHandler.broadCast(new ResourcesDeckMessage(c.getNumOfResourceCards(),c.getTopOfResourceCardDeck()));
+            else clientHandler.broadCast(new GoldsDeckMessage(c.getNumOfGoldCards(),c.getTopOfGoldCardDeck()));
         } catch (IsNotYourTurnException e) {
             IsNotYourTurnMessage answer =new IsNotYourTurnMessage();
             clientHandler.answerClient(answer);

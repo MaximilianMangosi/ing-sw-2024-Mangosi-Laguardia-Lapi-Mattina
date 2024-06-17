@@ -41,7 +41,8 @@ public class WaitingRoomController extends GUIController{
             while (true) {
                 Platform.runLater(()->{
                     try {
-                        createPlayerLables(view.getPlayersList());
+                        List<String> playersList = view.getPlayersList();
+                        createPlayerLables(playersList);
                         if (view.isGameStarted()){
                             flag.set(true);
                         }
@@ -71,11 +72,13 @@ public class WaitingRoomController extends GUIController{
     }
 
     private void createPlayerLables(List<String> names) {
-        playersContainer.getChildren().clear();
-        for (String name : names) {
-            Label label = new Label(name);
-            label.setStyle("-fx-font-size: 20px");
-            playersContainer.getChildren().add(label);
+        if (names!=null) {
+            playersContainer.getChildren().clear();
+            for (String name : names) {
+                Label label = new Label(name);
+                label.setStyle("-fx-font-size: 20px");
+                playersContainer.getChildren().add(label);
+            }
         }
     }
 }

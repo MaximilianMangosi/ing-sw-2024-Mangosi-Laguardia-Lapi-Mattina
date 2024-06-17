@@ -44,8 +44,8 @@ public class DrawVisibleMessage extends ClientMessage{
             clientHandler.sendTo(userId,new HandMessage(c.getPlayersHands().get(userId)));
             clientHandler.broadCast(new TurnMessage(c.getCurrentPlayer()));
             clientHandler.broadCast(new VisibleCardMessage(c.getVisibleCards()));
-            clientHandler.broadCast(new NumOfGoldCardsMessage(c.getNumOfGoldCards()));
-            clientHandler.broadCast(new NumOfResourceCardsMessage(c.getNumOfResourceCards()));
+            clientHandler.broadCast(new GoldsDeckMessage(c.getNumOfGoldCards(),c.getTopOfGoldCardDeck()));
+            clientHandler.broadCast(new ResourcesDeckMessage(c.getNumOfResourceCards(),c.getTopOfResourceCardDeck()));
         } catch (IsNotYourTurnException e) {
             clientHandler.answerClient(new IsNotYourTurnMessage());
         } catch (HandFullException e) {

@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
+import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamelogic.exceptions.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,33 +47,31 @@ public class ChooseSideController extends GUIController {
 
     public void init() throws InvalidUserId, RemoteException {
         startButton.setVisible(false);
-        int id = view.showPlayerGoalOptions(myID)[0].getId();
-        System.out.println(id);
+        Goal[] goalOptions = getGoalOptions();
+        int id = goalOptions[0].getId();
         Image privateOption1 = new Image(String.valueOf(getClass().getResource("/CardsFront/"+id+".png")));
         privateGoal1.setImage(privateOption1);
 
-        id = view.showPlayerGoalOptions(myID)[1].getId();
+        id = goalOptions[1].getId();
         System.out.println(id);
         Image privateOption2 = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
         privateGoal2.setImage(privateOption2);
 
         id = view.getPublicGoals()[0].getId();
-        System.out.println(id);
         Image publicOption1 = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
         publicGoal1.setImage(publicOption1);
         id = view.getPublicGoals()[1].getId();
-        System.out.println(id);
         Image publicOption2 = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
         publicGoal2.setImage(publicOption2);
 
-        id = view.getStarterCard(myID).getId();
+        id =getStarterCard().getId();
         Image starterCardFr = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
         frontImage.setImage(starterCardFr);
 
         Image starterCardBk = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
         backImage.setImage(starterCardBk);
         handBox.getChildren().clear();
-        for (Card card : view.showPlayerHand(myID)) {
+        for (Card card : getHand()) {
             id = card.getId();
             Image cardPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
             ImageView cardView = new ImageView(cardPng);
@@ -100,7 +99,7 @@ public class ChooseSideController extends GUIController {
     }
 
     public void choosePrivateGoal1() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, InvalidGameID {
-        view.chooseGoal(myID,view.showPlayerGoalOptions(myID)[0]);
+        view.chooseGoal(myID,getGoalOptions()[0]);
         privateGoalBox.getChildren().remove(1);
         sealedCards++;
         if (sealedCards==2){
@@ -109,7 +108,7 @@ public class ChooseSideController extends GUIController {
     }
 
     public void choosePrivateGoal2() throws InvalidUserId, IOException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, InvalidGameID {
-        view.chooseGoal(myID,view.showPlayerGoalOptions(myID)[1]);
+        view.chooseGoal(myID,getGoalOptions()[1]);
         privateGoalBox.getChildren().removeFirst();
         sealedCards++;
         if (sealedCards==2){
