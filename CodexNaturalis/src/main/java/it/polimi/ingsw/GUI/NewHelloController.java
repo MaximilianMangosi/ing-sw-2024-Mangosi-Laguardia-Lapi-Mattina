@@ -1,7 +1,9 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.client.GameData;
 import it.polimi.ingsw.view.ViewRMIContainer;
 import it.polimi.ingsw.view.ViewRMIContainerInterface;
+import it.polimi.ingsw.view.ViewSocket;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -10,6 +12,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.effect.Effect;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -18,6 +21,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -68,6 +74,7 @@ public class NewHelloController extends GUIController{
     private Registry registryIDLE;
     private ViewRMIContainerInterface viewContainerIDLE;
     private UUID chosenGame;
+    private boolean isJoin;
 
     public void initialize(){
         joinableGamesStackPane.setVisible(false);
@@ -85,45 +92,48 @@ public class NewHelloController extends GUIController{
     }
     @FXML
     private void selectSocket(){
-        isSocketSelected=true;
-        socketButton.setStyle("-fx-border-color: #820933");
-        RMIButton.setStyle("-fx-background-color:  #e5a78a");
-        selectJoinOrCreate.setVisible(true);
+
+        try {
+            isSocketSelected=true;
+            socketButton.setStyle("-fx-border-color: #820933");
+            RMIButton.setStyle("-fx-background-color:  #e5a78a");
+            HBox parent = (HBox) socketButton.getParent();
+            parent.getChildren().removeLast();
+            socketButton.setDisable(true);
+            selectJoinOrCreate.setVisible(true);
+
+            //Opens Socket
+            Socket server;
+            server = new Socket( InetAddress.getLocalHost(),2323);
+            view=new ViewSocket(server.getOutputStream(),server.getInputStream(),new GameData());
+        } catch (IOException |ClassNotFoundException e) {
+            //TODO error message
+        }
+
     }
     @FXML
     private void selectRMI(){
         isSocketSelected=false;
         RMIButton.setStyle("-fx-border-color: #820933");
-        socketButton.setStyle("-fx-background-color:  #e5a78a");
+        HBox parent = (HBox) RMIButton.getParent();
+        parent.getChildren().removeFirst();
+        RMIButton.setDisable(true);
         selectJoinOrCreate.setVisible(true);
     }
     @FXML
     private void selectJoinGame(){
         playButton.setVisible(false);
-        selectNumPlayersOrGame.getChildren().addLast(joinableGamesStackPane);
-        selectNumPlayersOrGame.getChildren().removeFirst();
-
-
-        createGameButton.setDisable(false);
-        joinGameButton.setDisable(true);
-        //numPlayersStackPane.setVisible(false);
-        //joinableGamesStackPane.setVisible(true);
-
-
-
-        refresh();
+        numPlayersStackPane.setVisible(false);
+        joinableGamesStackPane.setVisible(true);
+        isJoin=true;
+       refresh();
     }
     @FXML
     private void selectCreateGame(){
-        selectNumPlayersOrGame.getChildren().addFirst(numPlayersStackPane);
-        selectNumPlayersOrGame.getChildren().removeLast();
-
-
-        //joinableGamesStackPane.setVisible(false);
-        //numPlayersStackPane.setVisible(true);
-        createGameButton.setDisable(true);
-        joinGameButton.setDisable(false);
+        joinableGamesStackPane.setVisible(false);
+        numPlayersStackPane.setVisible(true);
         playButton.setVisible(true);
+        isJoin=false;
     }
     @FXML
     private void select2Players(){
@@ -162,8 +172,13 @@ public class NewHelloController extends GUIController{
         try {
             Accordion listOfGames = new Accordion();
             joinableGamesVBox.getChildren().addFirst(listOfGames);
+            Map<UUID, List<String>> joinableGames;
             //looks for an RMI view just to get the games waiting, the view will not be used for anything else
-            Map<UUID, List<String>> joinableGames = viewContainerIDLE.getJoinableGames();
+            if(isSocketSelected){
+                 joinableGames =((ViewSocket)view).getJoinableGames();
+            }else{
+                //gets it from the viewRMIContainer
+            }
             if(joinableGames.isEmpty()){
                 noGamesHosted.setVisible(true);
                 return;
@@ -188,6 +203,7 @@ public class NewHelloController extends GUIController{
 
                     newGame.setOnMouseClicked(mouseEvent -> chooseThisGame(mouseEvent,entry.getKey()));
                     listOfGames.getPanes().add(newGame);
+
                     i++;
                 }
             }
@@ -200,10 +216,27 @@ public class NewHelloController extends GUIController{
 
     @FXML
     private void onPlay(){
+        if(isJoin){
+            if(isSocketSelected){
 
+            }else{
+
+            }
+        }else{
+
+        }
     }
     @FXML
     private void chooseThisGame(MouseEvent e,UUID id){
+        TitledPane child = (TitledPane) e.getSource();
+        Accordion father =(Accordion)  child.getParent();
+        int i=1;
+        for ( TitledPane n : father.getPanes()){
+            n.setText(String.valueOf(i));
+            i++;
+        }
+        child.setText(child.getText()+"/SELECTED!/");
         this.chosenGame=id;
+        playButton.setVisible(true);
     }
 }
