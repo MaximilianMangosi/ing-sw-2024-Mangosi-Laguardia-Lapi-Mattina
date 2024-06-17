@@ -307,6 +307,7 @@ public class Game{
 
         //add counter of resources
         StarterCard starterCard = player.getStarterCard();
+        starterCard.setIsFront(isFront);
         player.addCardToMap(starterCard, new Coordinates(0,0));
         if(isFront) {
             player.updateResourceCounter(starterCard.getCardResources());
@@ -316,7 +317,9 @@ public class Game{
             player.updateResourceCounter(starterCard.getBackResources());
         }
         //update availablePosition list
-        player.checkAvailablePositions(new Coordinates(0,0), starterCard);
+        if (isFront) {
+            player.checkAvailablePositions(new Coordinates(0,0), starterCard);
+        }
     }
 
     /**
@@ -367,7 +370,7 @@ public class Game{
         coverAngle(position);
 
         //update availablePosition list
-        currentPlayer.checkAvailablePositions(position,selectedCard);
+       // currentPlayer.checkAvailablePositions(position,selectedCard);
         currentPlayer.removeFromHand(selectedCard);
     }
 

@@ -18,6 +18,15 @@ public abstract class Card implements Serializable {
     private int id;
     private boolean isFront;
 
+    public Card(Card other) {
+        this.NW=other.NW;
+        this.NE=other.NE;
+        this.SW=other.SW;
+        this.SE=other.SE;
+        this.id=other.id;
+        this.isFront=other.isFront;
+    }
+
     /**
      * gets the image ID of the Card, used in GUI
      * @return the int that identifies the card jpg

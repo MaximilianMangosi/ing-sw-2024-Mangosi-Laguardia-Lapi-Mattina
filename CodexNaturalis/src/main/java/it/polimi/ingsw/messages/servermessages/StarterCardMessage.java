@@ -13,7 +13,7 @@ import it.polimi.ingsw.view.ViewSocket;
 public class StarterCardMessage extends ServerMessage{
     private StarterCard starterCard;
     public StarterCardMessage(StarterCard starterCard) {
-        this.starterCard = starterCard;
+        this.starterCard = new StarterCard(starterCard);
     }
 
     @Override

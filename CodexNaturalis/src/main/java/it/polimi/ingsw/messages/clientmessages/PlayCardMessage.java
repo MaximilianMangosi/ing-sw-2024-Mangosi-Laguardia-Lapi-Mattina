@@ -57,9 +57,6 @@ public class PlayCardMessage extends ClientMessage{
             }
             String playerName = c.getUserIDs().get(userId).getName();
             clientHandler.sendTo(userId,new HandMessage(c.getPlayersHands().get(userId)));
-            System.out.println(playerName);
-            System.out.println(c.getPlayersField().get(playerName));
-            System.out.println(c.getView().getFieldBuildingHelper(playerName));
             clientHandler.broadCast(new FieldMessage( c.getPlayersField().get(playerName),c.getView().getFieldBuildingHelper(playerName),playerName));
             clientHandler.broadCast(new PointsMessage( c.getPlayersPoints()));
             clientHandler.broadCast(new TurnMessage(c.getCurrentPlayer()));

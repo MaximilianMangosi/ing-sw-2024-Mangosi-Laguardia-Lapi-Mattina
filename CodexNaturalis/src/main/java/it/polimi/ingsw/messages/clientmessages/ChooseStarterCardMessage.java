@@ -7,6 +7,7 @@ import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
 import it.polimi.ingsw.messages.exceptionmessages.InvalidUserIdMessage;
 import it.polimi.ingsw.messages.servermessages.FieldMessage;
 import it.polimi.ingsw.messages.servermessages.LegalPositionMessage;
+import it.polimi.ingsw.messages.servermessages.StarterCardMessage;
 import it.polimi.ingsw.messages.servermessages.SuccessMessage;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -42,8 +43,8 @@ public class ChooseStarterCardMessage extends ClientMessage{
             Controller c = clientHandler.getController();
             String playerName = c.getUserIDs().get(userId).getName();
             c.chooseStarterCardSide(isFront,userId);
-
             clientHandler.answerClient(new SuccessMessage());
+            clientHandler.sendTo(userId,new StarterCardMessage(c.getPlayersStarterCards().get(userId)));
             clientHandler.broadCast(new FieldMessage(c.getPlayersField().get(playerName),c.getView().getFieldBuildingHelper(playerName),playerName));
             clientHandler.sendTo(userId,new LegalPositionMessage(c.getPlayersLegalPositions().get(userId)));
         } catch (InvalidUserId e) {

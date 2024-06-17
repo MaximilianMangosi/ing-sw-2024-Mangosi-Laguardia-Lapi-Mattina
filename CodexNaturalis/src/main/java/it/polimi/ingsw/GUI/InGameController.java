@@ -14,7 +14,9 @@ import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -90,8 +92,9 @@ public class InGameController extends GUIController {
     private boolean returnButtonPresent= false;
     private final PauseTransition hideError = new PauseTransition(Duration.seconds(3));
     private final Map<Integer,Coordinates> scoreMap=new HashMap<>();
-
+    private StackPane myField;
     private Timeline overlapAnimation;
+    private StackPane removedStack;
 
 
     public void init() throws RemoteException, InvalidUserId {
@@ -116,6 +119,7 @@ public class InGameController extends GUIController {
             playerListBox.getChildren().add(sp);
             //makes label clickable
             label.setOnMouseClicked(this::showEnemyField);
+            label.setCursor(Cursor.HAND);
 
 
         }
@@ -124,7 +128,6 @@ public class InGameController extends GUIController {
         updateHand(getHand());
         for(Node cardStack: handBox.getChildren() ){
             cardStack.setOnMouseClicked(this::flipCard);
-
             ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handleDragDetected);
             ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handleDragDetected);
             ((StackPane) cardStack).getChildren().getFirst().setOnDragDone(this::handleDragDone);
@@ -155,26 +158,15 @@ public class InGameController extends GUIController {
         id= getStarterCard().getId();
         Image scPng;
         if(stc.isFront()){
-
              scPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
         }else{
              scPng= new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
         }
-
-
-
         ImageView scView=new ImageView(scPng);
         scView.setFitWidth(200);
         scView.setFitHeight(150);
-        scView.setOnMouseClicked(mouseEvent -> handleClickCard(mouseEvent,new Coordinates(0,0)));
         fieldPane.getChildren().add(scView);
-
-
-
-
         checkGameInfo();
-
-
     }
 
     private void initializeScoreMap() {
@@ -215,6 +207,7 @@ public class InGameController extends GUIController {
             List<Card> oldVisibleCards = new ArrayList<>();
             Reign oldTopResource=null;
             Reign oldTopGold=null;
+            List<Card> oldHand= new ArrayList<>();
 
             String oldCurrentPlayer = "";
 
@@ -247,9 +240,15 @@ public class InGameController extends GUIController {
                     }
                 //current player
                     String newCurrentPlayer=view.getCurrentPlayer();
-                    if(!view.getCurrentPlayer().equals(oldCurrentPlayer)){
+                    if(!newCurrentPlayer.equals(oldCurrentPlayer)){
                         Platform.runLater(() -> updateCurrentPlayer(newCurrentPlayer));
                         oldCurrentPlayer = newCurrentPlayer;
+                    }
+                    //hand
+                    List<Card> newHand=getHand();
+                    if (!newHand.equals(oldHand)){
+                        Platform.runLater(()->updateHand(newHand));
+                        oldHand=newHand;
                     }
 
                     //game finished
@@ -259,6 +258,7 @@ public class InGameController extends GUIController {
                 } catch (RemoteException e) {
                     showErrorMsg("CONNECTION ERROR");
                     System.exit(1);
+                } catch (InvalidUserId ignore) {
                 }
 
             }
@@ -336,12 +336,9 @@ public class InGameController extends GUIController {
         });
     }
     public void drawVisibleCard(int choice)  {
-        System.out.println("visible card clicked");
         try {
             view.drawVisibleCard(myID,choice);
-            List<Card> newHand= getHand();
-            updateHand(newHand);
-            System.out.println("hand update");
+            updateHand(getHand());
         } catch (IOException e) {
            showErrorMsg("CONNECTION ERROR");
             System.exit(1);
@@ -380,36 +377,21 @@ public class InGameController extends GUIController {
             int id = card.getId();
             Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
             Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
-            if(handBox.getChildren().size() <3){
-                StackPane template= (StackPane) handBox.getChildren().getFirst();
-                double templateHeight=template.getHeight();
-                double templateWidth= template.getWidth();
-                StackPane cardStack = new StackPane();
-                cardStack.setPrefWidth(templateWidth);
-                cardStack.setPrefHeight(templateHeight);
-                ImageView frontImage = new ImageView(frontPng);
-                ImageView backImage = new ImageView(backPng);
-                frontImage.setFitHeight(templateHeight);
-                frontImage.setFitWidth(templateWidth);
-                backImage.setFitHeight(templateHeight);
-                backImage.setFitWidth(templateWidth);
+            StackPane cardStack;
 
-                cardStack.getChildren().add(backImage);
-                cardStack.getChildren().add(frontImage);
-                handBox.getChildren().add(cardStack);
-                cardStack.getChildren().getFirst().setOnDragDetected(this::handleDragDetected);
-                cardStack.getChildren().get(1).setOnDragDetected(this::handleDragDetected);
-                cardStack.getChildren().getFirst().setOnDragDone(this::handleDragDone);
-                cardStack.getChildren().get(1).setOnDragDone(this::handleDragDone);
-                cardStack.setOnMouseClicked(this::flipCard);
-            }else {
-                StackPane cardStack = (StackPane) handBox.getChildren().get(newHand.indexOf(card));
-                ImageView backView = (ImageView) cardStack.getChildren().getFirst();
-                ImageView frontView = (ImageView) cardStack.getChildren().get(1);
-                backView.setImage(backPng);
-                frontView.setImage(frontPng);
-                backView.setVisible(false);
+            try {
+                cardStack = (StackPane) handBox.getChildren().get(newHand.indexOf(card));
+            } catch (IndexOutOfBoundsException e) {
+                cardStack=removedStack;
+                handBox.getChildren().add(newHand.indexOf(card),cardStack);
             }
+            ImageView backView = (ImageView) cardStack.getChildren().getFirst();
+            ImageView frontView = (ImageView) cardStack.getChildren().get(1);
+            backView.setImage(backPng);
+            frontView.setImage(frontPng);
+            frontView.setVisible(true);
+            backView.setVisible(false);
+
         }
     }
     public void placeCard( Coordinates position){
@@ -512,67 +494,80 @@ public class InGameController extends GUIController {
     }
     //
     private void showEnemyField(MouseEvent event)  {
-        //fetch the other player's hand
-        try {
-            Label l = (Label) event.getSource();
-            String username = l.getText();
-
-            Map<Coordinates, Card> field = view.getPlayersField(username);
-            List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
-
-
-            //saves the old field and sets it invisible
-            Pane oldCenter = (Pane) borderPane.getCenter();
-            Node oldFirstChild = oldCenter.getChildren().getFirst();
-            oldFirstChild.setVisible(false);
-            //build a new field
-            StackPane newFieldPane = new StackPane();
-            newFieldPane.setPrefWidth(2408);
-            newFieldPane.setPrefHeight(1610);
-            newFieldPane.setLayoutX(-240);
-            newFieldPane.setLayoutY(-390);
-
-            AnchorPane newAnchor = new AnchorPane(newFieldPane);
-            newAnchor.setPrefWidth(2400);
-            newAnchor.setPrefHeight(1566);
-            ScrollPane newScrollPane = new ScrollPane(newAnchor);
-            newScrollPane.setPrefWidth(200);
-            newScrollPane.setPrefHeight(200);
-
-            StackPane newHugeStackPane = new StackPane(newScrollPane);
-            newHugeStackPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-            newHugeStackPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
-            //adds the enemy card
-            int id;
-            for (Coordinates c :fieldBuildingHelper){
-                //load the image
-                id = field.get(c).getId();
-                Image i = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-                ImageView newImageView = new ImageView(i);
-                newFieldPane.getChildren().add(newImageView);
-                newImageView.setFitWidth(200);
-                newImageView.setFitHeight(150);
-                newImageView.setTranslateX(c.x*155.5);
-                newImageView.setTranslateY(c.y*79.5);
-            }
-            if(!returnButtonPresent) {
-                Button returnToMyFieldButton = new Button("Return");
-                playerListBox.getChildren().add(returnToMyFieldButton);
-                returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent, oldFirstChild, newHugeStackPane));
-                returnButtonPresent=true;
-            }
-            ((Pane) borderPane.getCenter()).getChildren().add(newHugeStackPane);
-
-
-
-        }catch (RemoteException e){
-            //TODO ERROR MESSAGE
-        }
-    }
-    private void returnToMyField(MouseEvent event,Node oldField,Node newField){
         Pane oldCenter = (Pane) borderPane.getCenter();
-        oldCenter.getChildren().remove(newField);
-        oldField.setVisible(true);
+        //fetch the other player's hand
+        Label l = (Label) event.getSource();
+        String username = l.getText();
+        if(!username.equals(myName)){//if the top pane is not mine,
+            List<Node> children = oldCenter.getChildren();
+            if(oldCenter.getChildren().size()>=2)
+                oldCenter.getChildren().remove(1);
+            try {
+
+
+                Map<Coordinates, Card> field = view.getPlayersField(username);
+                List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
+
+
+                //saves the old field and sets it invisible
+                fieldPane.setVisible(false);
+
+                //build a new field
+                StackPane newFieldPane = new StackPane();
+                newFieldPane.setPrefWidth(2408);
+                newFieldPane.setPrefHeight(1610);
+                newFieldPane.setLayoutX(-240);
+                newFieldPane.setLayoutY(-390);
+
+                AnchorPane newAnchor = new AnchorPane(newFieldPane);
+                newAnchor.setPrefWidth(2400);
+                newAnchor.setPrefHeight(1566);
+                ScrollPane newScrollPane = new ScrollPane(newAnchor);
+                newScrollPane.setPrefWidth(200);
+                newScrollPane.setPrefHeight(200);
+
+                StackPane newHugeStackPane = new StackPane(newScrollPane);
+                newHugeStackPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                newHugeStackPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                //adds the enemy card
+                int id;
+                for (Coordinates c :fieldBuildingHelper){
+                    //load the image
+                    id = field.get(c).getId();
+                    Image i;
+                    if(field.get(c).isFront()) {
+                        i = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+                    }else{
+                        i = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
+                    }
+
+                    ImageView newImageView = new ImageView(i);
+                    newFieldPane.getChildren().add(newImageView);
+                    newImageView.setFitWidth(200);
+                    newImageView.setFitHeight(150);
+                    newImageView.setTranslateX(c.x*155.5);
+                    newImageView.setTranslateY(c.y*-79.5);
+                }
+                if(!returnButtonPresent) {
+                    Button returnToMyFieldButton = new Button("Return");
+                    playerListBox.getChildren().add(returnToMyFieldButton);
+                    returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent));
+                    returnButtonPresent=true;
+                }
+                ((Pane) borderPane.getCenter()).getChildren().add(newHugeStackPane);
+
+
+
+            }catch (RemoteException e){
+                //TODO ERROR MESSAGE
+            }
+        }
+
+    }
+    private void returnToMyField(MouseEvent event){
+        Pane oldCenter = (Pane) borderPane.getCenter();
+        oldCenter.getChildren().removeLast();
+        fieldPane.setVisible(true);
         playerListBox.getChildren().remove(event.getSource());
         returnButtonPresent=false;
     }
@@ -608,8 +603,6 @@ public class InGameController extends GUIController {
             Dragboard db = e.getDragboard();
             double hover_x = e.getX()-1204;
             double hover_y = e.getY()-805;
-            System.out.println((int) Math.round(hover_x/155.5));
-            System.out.println((int) -Math.round(hover_y/79.5));
             Coordinates newStandardCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
             StackPane parent=(StackPane) selectedCardToPlay.getParent();
             if(parent.getChildren().getFirst().isVisible()){
@@ -642,7 +635,8 @@ public class InGameController extends GUIController {
     }
     private void handleDragDone(DragEvent e ){
         if (e.getTransferMode() == TransferMode.MOVE) {
-            handBox.getChildren().remove(((ImageView)e.getSource()).getParent());
+            removedStack = (StackPane) ((ImageView) e.getSource()).getParent();
+            handBox.getChildren().remove(removedStack);
         }
 
         e.consume();

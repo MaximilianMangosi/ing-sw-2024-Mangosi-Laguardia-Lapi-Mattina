@@ -11,10 +11,10 @@ import java.util.List;
 public class StarterCard extends Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private final Reign BackNW;
-    private final Reign BackNE;
-    private final Reign BackSW;
-    private final Reign BackSE;
+    private final Reign backNW;
+    private final Reign backNE;
+    private final Reign backSW;
+    private final Reign backSE;
     private final List<Reign> centralResources;
 
     /**
@@ -31,12 +31,22 @@ public class StarterCard extends Card implements Serializable {
      */
     public StarterCard(Resource NW, Resource NE, Resource SW, Resource SE, Reign backNW, Reign backNE, Reign backSW, Reign backSE, ArrayList<Reign> centralResources, int id) {
         super(NW, NE, SW, SE, id);
-        BackNW = backNW;
-        BackNE = backNE;
-        BackSW = backSW;
-        BackSE = backSE;
+        this.backNW = backNW;
+        this.backNE = backNE;
+        this.backSW = backSW;
+        this.backSE = backSE;
         this.centralResources = centralResources;
     }
+
+    public StarterCard(StarterCard starterCard) {
+         super(starterCard);
+        backNW = starterCard.backNW;
+        backNE = starterCard.backNE;
+        backSW = starterCard.backSW;
+        backSE = starterCard.backSE;
+        this.centralResources = starterCard.centralResources;
+    }
+
     /**
      * Resource getter
      * @author Giuseppe Laguardia
@@ -46,13 +56,13 @@ public class StarterCard extends Card implements Serializable {
 
     public Reign getResourceBack(String angle) {
         if(angle.equals("NW"))
-            return BackNW;
+            return backNW;
         if(angle.equals("SW"))
-            return BackSW;
+            return backSW;
         if (angle.equals("NE"))
-            return BackNE;
+            return backNE;
         if(angle.equals("SE"))
-            return BackSE;
+            return backSE;
         return null;
     }
 
@@ -92,7 +102,7 @@ public class StarterCard extends Card implements Serializable {
         if(other==this)
             return true;
         if(other instanceof StarterCard temp)
-            return super.equals(temp) && BackNW==temp.BackNW && BackNE==temp.BackNE && BackSW==temp.BackSW && BackSE==temp.BackSE;
+            return super.equals(temp) && backNW==temp.backNW && backNE ==temp.backNE && backSW ==temp.backSW && backSE==temp.backSE;
         return false;
 
     }

@@ -188,7 +188,7 @@ public class Controller {
         try {
             if(view.isGameStarted()){
                 view.updatePlayersColor();
-                GameStartMessage gameStartMessage = new GameStartMessage(getPublicGoals(),getVisibleCards(),getCurrentPlayer(),getGlobalChat(),getPlayerToColor());
+                GameStartMessage gameStartMessage = new GameStartMessage(this);
                 addToQueue(gameStartMessage);
             }
         } catch (RemoteException ignore){}
@@ -288,7 +288,7 @@ public class Controller {
      * @throws InvalidUserId if the given userId isn't associate to any Player
      * @throws IllegalOperationException if in this state this action cannot be performed
      */
-    public  void chooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId, IllegalOperationException, RemoteException {
+    public void chooseStarterCardSide(boolean isFront, UUID userId) throws InvalidUserId, IllegalOperationException, RemoteException {
         currentState.chooseStarterCardSide(isFront,userId);
         view.updateStarterCardMap();
         view.updatePlayersField();
