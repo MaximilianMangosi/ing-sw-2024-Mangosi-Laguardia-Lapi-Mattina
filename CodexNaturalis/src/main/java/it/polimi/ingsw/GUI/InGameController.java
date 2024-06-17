@@ -252,6 +252,11 @@ public class InGameController extends GUIController {
                         Platform.runLater(() -> updateCurrentPlayer(newCurrentPlayer));
                         oldCurrentPlayer = newCurrentPlayer;
                     }
+
+                    //game finished
+                    if(view.isGameEnded()){
+                     //   changeScene("victory.xml", );
+                    }
                 } catch (RemoteException e) {
                     showErrorMsg("CONNECTION ERROR");
                     System.exit(1);
