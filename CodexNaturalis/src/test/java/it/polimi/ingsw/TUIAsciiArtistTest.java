@@ -119,20 +119,8 @@ public class TUIAsciiArtistTest {
         Goal[] options = new Goal[2];
         options[0] = deck.removeFirst();
         options[1] = deck.removeFirst();
-        for (int i=0;i<3;i++){
-            artist.show(options);
-        }
-       String[][] matrix= artist.getMatrix();
-        for (String[] row : matrix){
-            for(String cell: row) {
-                if(cell != null)
-                    System.out.print(cell);
-                else {
-                    System.out.print(" ");
-                }
-            }
-            System.out.println(" \u001B[0m");
-        }
+
+        artist.show(options);
 
     }
     @Test

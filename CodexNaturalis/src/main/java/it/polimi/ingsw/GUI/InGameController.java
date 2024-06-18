@@ -13,13 +13,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -86,6 +85,8 @@ public class InGameController extends GUIController {
     private Button hideScoreboardButton;
     @FXML
     private Button hideDeckButton;
+    @FXML
+    private Button quitButton;
     private Map<ImageView,Integer> handCardsId = new HashMap<>();
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
@@ -212,7 +213,6 @@ public class InGameController extends GUIController {
             String oldCurrentPlayer = "";
 
             while(true){
-
                 //visible cards
                 try {
                     List<Card> newVisibleCards = view.getVisibleCards();
@@ -338,6 +338,7 @@ public class InGameController extends GUIController {
     public void drawVisibleCard(int choice)  {
         try {
             view.drawVisibleCard(myID,choice);
+            view.drawVisibleCard(myID,choice);
             updateHand(getHand());
         } catch (IOException e) {
            showErrorMsg("CONNECTION ERROR");
@@ -351,32 +352,37 @@ public class InGameController extends GUIController {
         }
     }
     private  void updateTopResource(Reign newTop){
-        Image img;
-        switch (newTop) {
-            case MUSHROOM -> img= new Image(getClass().getResourceAsStream("/CardsBack/1.png"));
-            case PLANTS -> img= new Image(getClass().getResourceAsStream("/CardsBack/17.png"));
-            case ANIMAL -> img= new Image(getClass().getResourceAsStream("/CardsBack/23.png"));
-            case BUG -> img= new Image(getClass().getResourceAsStream("/CardsBack/36.png"));
-            default ->   img=new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
+        Image img = new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
+        if (newTop!=null) {
+            switch (newTop) {
+                case MUSHROOM -> img = new Image(getClass().getResourceAsStream("/CardsBack/1.png"));
+                case PLANTS -> img = new Image(getClass().getResourceAsStream("/CardsBack/17.png"));
+                case ANIMAL -> img = new Image(getClass().getResourceAsStream("/CardsBack/23.png"));
+                case BUG -> img = new Image(getClass().getResourceAsStream("/CardsBack/36.png"));
+                default -> img = new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
+            }
         }
         resourceCardDeck.setImage(img);
     }
     private void updateTopGold(Reign newTop){
-        Image img;
-        switch (newTop) {
-            case MUSHROOM -> img= new Image(getClass().getResourceAsStream("/CardsBack/41.png"));
-            case PLANTS -> img= new Image(getClass().getResourceAsStream("/CardsBack/57.png"));
-            case ANIMAL -> img= new Image(getClass().getResourceAsStream("/CardsBack/63.png"));
-            case BUG -> img= new Image(getClass().getResourceAsStream("/CardsBack/76.png"));
-            default ->   img=new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
+        Image img = new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
+        if (newTop!=null) {
+            switch (newTop) {
+                case MUSHROOM -> img= new Image(getClass().getResourceAsStream("/CardsBack/41.png"));
+                case PLANTS -> img= new Image(getClass().getResourceAsStream("/CardsBack/57.png"));
+                case ANIMAL -> img= new Image(getClass().getResourceAsStream("/CardsBack/63.png"));
+                case BUG -> img= new Image(getClass().getResourceAsStream("/CardsBack/76.png"));
+
+            }
         }
         goldCardDeck.setImage(img);
+
     }
     private void updateHand(List<Card> newHand){
         for(Card card: newHand){
             int id = card.getId();
-            Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-            Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
+            Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"),275,193,false,false);
+            Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"),275,193,false,false);
             StackPane cardStack;
 
             try {
@@ -490,6 +496,21 @@ public class InGameController extends GUIController {
         } else {
             placeCard(new Coordinates(coordinates.x+1,coordinates.y+1 ));
         }
+
+    }
+    public void quitGame(ActionEvent e ){
+        Alert alert= new Alert(Alert.AlertType.CONFIRMATION,"If you quit you can't come back. Are you Sure?", ButtonType.OK,ButtonType.CANCEL);
+        Optional<ButtonType> response= alert.showAndWait();
+        response.ifPresent(r->{
+            if(r==ButtonType.OK) {
+                try {
+                    view.closeGame(myID);
+                } catch (ClassNotFoundException | IOException ex) {
+                   showErrorMsg("connection error");
+                   System.exit(1);
+                }
+            }
+        });
 
     }
     //

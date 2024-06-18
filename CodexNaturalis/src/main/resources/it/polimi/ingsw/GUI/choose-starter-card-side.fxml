@@ -158,7 +158,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <Label alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="845.0" style="-fx-background-color: #ebdcaa;" text="HAND">
+            <Label alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="845.0" text="HAND">
                <font>
                   <Font name="Bodoni MT Condensed" size="38.0" />
                </font>

@@ -446,7 +446,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws InvalidUserId
      */
     @Override
-    public void closeGame(UUID userID) throws RemoteException, InvalidUserId {
+    public void closeGame(UUID userID) throws RemoteException{
         controller.closeGame(userID);
     }
 

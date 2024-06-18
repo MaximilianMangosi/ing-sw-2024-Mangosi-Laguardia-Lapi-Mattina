@@ -4,10 +4,10 @@
     "SW": "e",
     "SE": "m",
     "isFront": false,
-    "BackNW": "pl",
-    "BackNE": "a",
-    "BackSW": "m",
-    "BackSE": "b",
+    "backNW": "pl",
+    "backNE": "a",
+    "backSW": "m",
+    "backSE": "b",
     "centralResources": [
         "m"
     ],

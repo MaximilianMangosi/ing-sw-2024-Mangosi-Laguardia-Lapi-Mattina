@@ -217,7 +217,6 @@ public class TextUserInterface extends UserInterface {
                 case "choose-starter-card-side":
                     outWriter.print("Which side for the starter card? (f for front, b or any for back)");
                     artist.show(getStarterCard());
-                    outWriter.print(artist.getMatrix());
                     boolean isChosenFrontStart = s.nextLine().equals("f");
                     view.chooseStarterCardSide(isChosenFrontStart, myID);
                     outWriter.print("Starter card chosen");
@@ -346,6 +345,8 @@ public class TextUserInterface extends UserInterface {
                 default:
                     outWriter.print("Unknown command");
             }
+            updateIdleUI();
+            printIdleUI();
         }
     }
 

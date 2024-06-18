@@ -62,7 +62,7 @@ public interface ViewRMIInterface extends Remote,View  {
     public void chooseGoal(UUID userId, Goal newGoal) throws RemoteException, InvalidGoalException, InvalidUserId, IllegalOperationException, InvalidUserId;
     public void drawFromDeck(UUID userId,int choice) throws RemoteException, IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException, InvalidUserId;
     public void drawVisibleCard (UUID userId,int choice) throws RemoteException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException, InvalidUserId;
-    public void closeGame(UUID userID) throws RemoteException, InvalidUserId;
+    public void closeGame(UUID userID) throws RemoteException;
 
 
     public boolean isGameEnded() throws RemoteException;

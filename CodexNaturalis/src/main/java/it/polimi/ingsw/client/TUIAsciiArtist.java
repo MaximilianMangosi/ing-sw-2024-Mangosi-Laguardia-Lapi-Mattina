@@ -225,7 +225,6 @@ public class TUIAsciiArtist {
             k+=15;
         }
         writer.print(matrix);
-
     }
 
     /**
@@ -273,6 +272,7 @@ public class TUIAsciiArtist {
 
         matrix[5][0]="FRONT";
         matrix[5][14]="BACK";
+        writer.print(matrix);
     }
     /**
      * builds the background of a goalCard in the matrix
@@ -320,7 +320,6 @@ public class TUIAsciiArtist {
                 }
             }
         }
-        writer.print(matrix);
     }
 
     /**
@@ -371,6 +370,7 @@ public class TUIAsciiArtist {
 
             }
         }
+
     }
 
     /**
@@ -389,7 +389,7 @@ public class TUIAsciiArtist {
      */
     public void show (Map<Coordinates, Card> field, List<Coordinates> fieldBuildingHelper){
         int i,j;
-        asciiField = new String[240][880];
+        matrix = new String[240][880];
         for (Coordinates coordinate : fieldBuildingHelper){
             Card card = field.get(coordinate);
             String color = card.getReign()!=null? card.getReign().getColorBG():YELLOW;
@@ -399,17 +399,18 @@ public class TUIAsciiArtist {
             i = 120 - 2*(y);
             for (int k = i-1; k<=i+1; k++){
                 for (int h = j-6 ; h<=j+4; h++){ //h is off-center for Ansi escape sequence reasons
-                    asciiField[k][h] = " "+color;
+                    matrix[k][h] = " "+color;
                 }
             }
-            asciiField[i][j] = color+fieldBuildingHelper.indexOf(coordinate);
+            matrix[i][j] = color+fieldBuildingHelper.indexOf(coordinate);
         }
+
 
     }
 
     /**
      * @author Riccardo Lapi
-     * add the available postions of the player inside the asciiField
+     * add the available postions of the player inside the matrix
      * @param availablePositions List of position where the user can play the card
      */
     public void addAvailablePosToField(List<Coordinates> availablePositions ){
@@ -417,7 +418,7 @@ public class TUIAsciiArtist {
         for(Coordinates coordinates : availablePositions){
             int j = 440 + 10*(coordinates.x);
             int i = 120 - 2*(coordinates.y);
-            asciiField[i][j] = String.valueOf(availablePositions.indexOf(coordinates));
+            matrix[i][j] = String.valueOf(availablePositions.indexOf(coordinates));
         }
     }
 

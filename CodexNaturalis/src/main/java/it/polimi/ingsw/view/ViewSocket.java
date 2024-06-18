@@ -374,11 +374,16 @@ public class  ViewSocket implements View{
     }
 
     @Override
-    public synchronized void closeGame(UUID userID) throws IOException, InvalidUserId, ClassNotFoundException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, InvalidGameID {
-        CloseGameMessage message= new CloseGameMessage(userID);
+    public synchronized void closeGame(UUID userID) throws ClassNotFoundException,IOException{
+    CloseGameMessage message= new CloseGameMessage(userID);
         output.writeObject(message);
         ServerMessage reply = readMessage();
-        reply.processMessage();
+        try {
+            reply.processMessage();
+        } catch (UnacceptableNumOfPlayersException | InvalidGameID | InvalidChoiceException | DeckEmptyException |
+                 IllegalOperationException | PlayerNameNotUniqueException | IsNotYourTurnException |
+                 RequirementsNotMetException | IllegalPositionException | InvalidCardException | HandNotFullException |
+                 InvalidUserId | InvalidGoalException | HandFullException ignore) {}
     }
 
     @Override
