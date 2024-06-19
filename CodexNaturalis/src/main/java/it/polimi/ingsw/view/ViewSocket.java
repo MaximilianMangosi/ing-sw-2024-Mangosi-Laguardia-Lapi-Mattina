@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamelogic.exceptions.*;
 
 import java.io.*;
+import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -22,6 +23,7 @@ import java.util.*;
  * A View implementation using Socket, used to interact with the server to send commands and receive data
  */
 public class  ViewSocket implements View{
+    private final String serverAddress;
     private final ObjectOutputStream output;
     private final ObjectInputStream input;
     private final GameData gd;
@@ -33,9 +35,10 @@ public class  ViewSocket implements View{
      * @param gameData  The game data.
      * @throws IOException if an I/O error occurs.
      */
-    public ViewSocket(OutputStream output, InputStream input, GameData gameData) throws IOException, ClassNotFoundException {
-        this.output = new ObjectOutputStream(output);
-        this.input = new ObjectInputStream(input);
+    public ViewSocket(Socket server, GameData gameData) throws IOException, ClassNotFoundException {
+        this.serverAddress=server.getInetAddress().getHostAddress();
+        this.output = new ObjectOutputStream(server.getOutputStream());
+        this.input = new ObjectInputStream(server.getInputStream());
         this.gd=gameData;
         // get joinable games from server
         readMessage().processMessage(this);
@@ -477,5 +480,9 @@ public class  ViewSocket implements View{
 
     public Map<UUID, List<String>> getJoinableGames() {
       return gd.getJoinableGames();
+    }
+
+    public String getServerAddress() {
+       return serverAddress;
     }
 }

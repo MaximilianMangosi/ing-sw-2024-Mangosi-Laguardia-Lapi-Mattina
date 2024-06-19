@@ -107,7 +107,7 @@ public class NewHelloController extends GUIController{
             //Opens Socket
             Socket server;
             server = new Socket( InetAddress.getLocalHost(),2323);
-            view=new ViewSocket(server.getOutputStream(),server.getInputStream(),new GameData());
+            view=new ViewSocket(server,new GameData());
         } catch (IOException |ClassNotFoundException e) {
             //TODO error message
         }
@@ -230,7 +230,8 @@ public class NewHelloController extends GUIController{
                 if(isJoin){
                     if(isSocketSelected){
                         myID = view.joinGame(chosenGame,myName);
-                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(chosenGame,myID));
+                        String serverAddress= ((ViewSocket)view ).getServerAddress();
+                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(chosenGame,myID),serverAddress);
                         serverHandler.start();
 
                     }else{
@@ -244,7 +245,8 @@ public class NewHelloController extends GUIController{
                         GameKey gameKey=view.bootGame(numPlayers,myName);
                         gameID=gameKey.gameID();
                         myID=gameKey.userID();
-                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(gameID,myID));
+                        String serverAddress= ((ViewSocket)view ).getServerAddress();
+                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(gameID,myID),serverAddress);
                         serverHandler.start();
                     }else{
                         GameKey gameKey = viewContainer.bootGame(numPlayers,myName);

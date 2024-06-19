@@ -77,7 +77,7 @@ public class HelloController extends GUIController {
             if (isSocketSelected) {
                 Socket server;
                 server = new Socket("localhost", 2323);
-                view = new ViewSocket(server.getOutputStream(), server.getInputStream(), gameData);
+                view = new ViewSocket(server, gameData);
                 //ServerHandler t1 = new ServerHandler((ViewSocket) view,);
             } else {
                 Registry registry = LocateRegistry.getRegistry(1099);

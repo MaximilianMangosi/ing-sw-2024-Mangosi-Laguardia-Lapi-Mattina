@@ -25,6 +25,8 @@ public class Client {
      * @param args
      */
     public static void main(String[] args) {
+
+        String serverAddress=args[0];
         View view;
         Scanner s=new Scanner(System.in);
         TextUserInterface tui= new TextUserInterface();
@@ -50,13 +52,14 @@ public class Client {
             GameData gameData= new GameData();
             if(connectionChoice==1) {
                 Socket server;
-                server = new Socket( InetAddress.getLocalHost(),2323);
-                view=new ViewSocket(server.getOutputStream(),server.getInputStream(),gameData);
+                server = new Socket( serverAddress,2323);;
+
+                view=new ViewSocket(server,gameData);
                 tui.setView(view);
                 tui.startGame(false);
 
             }else {
-                Registry registry = LocateRegistry.getRegistry(1099);
+                Registry registry = LocateRegistry.getRegistry(serverAddress,1099);
                 ViewRMIContainerInterface viewContainer = (ViewRMIContainerInterface) registry.lookup("ViewRMI");
                 tui.setViewContainer(viewContainer);
                 tui.startGame(true);
