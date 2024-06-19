@@ -27,11 +27,11 @@ public class CloseGame extends Thread{
                         shouldWait = false;
                     } else {
                         controller.deleteGameFromGameManager();
-                        break;
+                        System.out.println("CloseGame Thread deleted game");
+                        return;
                     }
                 }
             }
-            System.out.println("CloseGame Thread deleted game");
         } catch( RemoteException| InterruptedException e ) {
             System.out.println("game crash in close game thread");
         }

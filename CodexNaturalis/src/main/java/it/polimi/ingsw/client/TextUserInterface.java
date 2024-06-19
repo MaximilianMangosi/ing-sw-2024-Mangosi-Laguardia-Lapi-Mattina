@@ -216,7 +216,7 @@ public class TextUserInterface extends UserInterface {
                     break;
                 case "choose-starter-card-side":
                     outWriter.print("Which side for the starter card? (f for front, b or any for back)");
-                    artist.show(getStarterCard());
+                    artist.show(getStarterCard(),true);
                     boolean isChosenFrontStart = s.nextLine().equals("f");
                     view.chooseStarterCardSide(isChosenFrontStart, myID);
                     outWriter.print("Starter card chosen");
@@ -578,13 +578,12 @@ public class TextUserInterface extends UserInterface {
     private void showField(String username,boolean availablePosition) throws InvalidUserId, RemoteException {
         Map<Coordinates, Card> field=view.getPlayersField(username);
         List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
-        artist.show(field,fieldBuildingHelper);
         if(availablePosition) {
-            artist.addAvailablePosToField(getPlayersLegalPositions());
-            outWriter.print(artist.getAsciiField(), fieldBuildingHelper);
+            List<Coordinates> availablePositions=getPlayersLegalPositions();
+            artist.show(field,fieldBuildingHelper,availablePositions);
             return;
         }
-        outWriter.print(artist.getAsciiField(), fieldBuildingHelper);
+        artist.show(field,fieldBuildingHelper);
         outWriter.print("Do you want see a card? Insert the card number or insert any other character to continue:");
         while(true) {
             int chosenCardInt= 0;
@@ -596,7 +595,7 @@ public class TextUserInterface extends UserInterface {
             }else{
                 if(chosenCardInt==0){
                     StarterCard st = getStarterCard();
-                    artist.show(st);
+                    artist.show(st,false);
                     outWriter.print(artist.getMatrix(),st.isFront());//todo update with showStarterCard
                 }
                 else{

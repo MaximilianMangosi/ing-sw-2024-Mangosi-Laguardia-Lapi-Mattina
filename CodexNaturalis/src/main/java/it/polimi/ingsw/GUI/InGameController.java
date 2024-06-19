@@ -98,76 +98,78 @@ public class InGameController extends GUIController {
     private StackPane removedStack;
 
 
-    public void init() throws RemoteException, InvalidUserId {
-        deckBox.setVisible(false);
-        hideDeckButton.setVisible(false);
-        scoreboardBox.setVisible(false);
-        hideScoreboardButton.setVisible(false);
-        errorMsg.setVisible(false);
-        hideError.setOnFinished(event -> errorMsg.setVisible(false));
+    public void init() throws RemoteException {
+        try {
+            deckBox.setVisible(false);
+            hideDeckButton.setVisible(false);
+            scoreboardBox.setVisible(false);
+            hideScoreboardButton.setVisible(false);
+            errorMsg.setVisible(false);
+            hideError.setOnFinished(event -> errorMsg.setVisible(false));
 
-        initializeScoreMap();
+            initializeScoreMap();
 
-        for (String p : view.getPlayersList()) {
-            StackPane sp = new StackPane();
-            String color=view.getPlayerColor(p);
-            sp.setStyle("-fx-background-color: "+color);
-            Label label = new Label(p);
-            label.setFont(new Font("Bodoni MT Condensed", 40));
-            if (view.getCurrentPlayer().equals(p))
-                label.setStyle("-fx-background-color: d9be4a");
-            sp.getChildren().add(label);
-            playerListBox.getChildren().add(sp);
-            //makes label clickable
-            label.setOnMouseClicked(this::showEnemyField);
-            label.setCursor(Cursor.HAND);
+            for (String p : view.getPlayersList()) {
+                StackPane sp = new StackPane();
+                String color=view.getPlayerColor(p);
+                sp.setStyle("-fx-background-color: "+color);
+                Label label = new Label(p);
+                label.setFont(new Font("Bodoni MT Condensed", 40));
+                if (view.getCurrentPlayer().equals(p))
+                    label.setStyle("-fx-background-color: d9be4a");
+                sp.getChildren().add(label);
+                playerListBox.getChildren().add(sp);
+                //makes label clickable
+                label.setOnMouseClicked(this::showEnemyField);
+                label.setCursor(Cursor.HAND);
 
 
-        }
-        fieldPane.setOnDragOver(this::handleDragOver);
-        fieldPane.setOnDragDropped(this::handleDragDropped);
-        updateHand(getHand());
-        for(Node cardStack: handBox.getChildren() ){
-            cardStack.setOnMouseClicked(this::flipCard);
-            ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handleDragDetected);
-            ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handleDragDetected);
-            ((StackPane) cardStack).getChildren().getFirst().setOnDragDone(this::handleDragDone);
-            ((StackPane) cardStack).getChildren().get(1).setOnDragDone(this::handleDragDone);
+            }
+            fieldPane.setOnDragOver(this::handleDragOver);
+            fieldPane.setOnDragDropped(this::handleDragDropped);
+            updateHand(getHand());
+            for(Node cardStack: handBox.getChildren() ){
+                cardStack.setOnMouseClicked(this::flipCard);
+                ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handleDragDetected);
+                ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handleDragDetected);
+                ((StackPane) cardStack).getChildren().getFirst().setOnDragDone(this::handleDragDone);
+                ((StackPane) cardStack).getChildren().get(1).setOnDragDone(this::handleDragDone);
 
-        }
-        int i=0;
-        for (Goal g: view.getPublicGoals()){
-            int id= g.getId();
+            }
+            int i=0;
+            for (Goal g: view.getPublicGoals()){
+                int id= g.getId();
+                Image goalPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+                ImageView goalView= (ImageView) goalsBox.getChildren().get(i);
+                goalView.setImage(goalPng);
+                i++;
+            }
+            int id = getPrivateGoal().getId();
             Image goalPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-            ImageView goalView= (ImageView) goalsBox.getChildren().get(i);
+            ImageView goalView= (ImageView) privateGoalBox.getChildren().getFirst();
             goalView.setImage(goalPng);
-            i++;
-        }
-        int id = getPrivateGoal().getId();
-        Image goalPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-        ImageView goalView= (ImageView) privateGoalBox.getChildren().getFirst();
-        goalView.setImage(goalPng);
 
-        resourceCardDeck.setOnMouseClicked(mouseEvent -> drawFromDeck(0));
-        goldCardDeck.setOnMouseClicked(mouseEvent -> drawFromDeck(1));
-        visibleCard1.setOnMouseClicked(mouseEvent -> drawVisibleCard(0));
-        visibleCard2.setOnMouseClicked(mouseEvent -> drawVisibleCard(1));
-        visibleCard3.setOnMouseClicked(mouseEvent -> drawVisibleCard(2));
-        visibleCard4.setOnMouseClicked(mouseEvent -> drawVisibleCard(3));
+            resourceCardDeck.setOnMouseClicked(mouseEvent -> drawFromDeck(0));
+            goldCardDeck.setOnMouseClicked(mouseEvent -> drawFromDeck(1));
+            visibleCard1.setOnMouseClicked(mouseEvent -> drawVisibleCard(0));
+            visibleCard2.setOnMouseClicked(mouseEvent -> drawVisibleCard(1));
+            visibleCard3.setOnMouseClicked(mouseEvent -> drawVisibleCard(2));
+            visibleCard4.setOnMouseClicked(mouseEvent -> drawVisibleCard(3));
 
-        StarterCard stc = getStarterCard();
-        id= getStarterCard().getId();
-        Image scPng;
-        if(stc.isFront()){
-             scPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-        }else{
-             scPng= new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
-        }
-        ImageView scView=new ImageView(scPng);
-        scView.setFitWidth(200);
-        scView.setFitHeight(150);
-        fieldPane.getChildren().add(scView);
-        checkGameInfo();
+            StarterCard stc = getStarterCard();
+            id= getStarterCard().getId();
+            Image scPng;
+            if(stc.isFront()){
+                 scPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+            }else{
+                 scPng= new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
+            }
+            ImageView scView=new ImageView(scPng);
+            scView.setFitWidth(200);
+            scView.setFitHeight(150);
+            fieldPane.getChildren().add(scView);
+            checkGameInfo();
+        } catch (InvalidUserId ignore) {}
     }
 
     private void initializeScoreMap() {
@@ -216,7 +218,7 @@ public class InGameController extends GUIController {
                 //visible cards
                 try {
                     List<Card> newVisibleCards = view.getVisibleCards();
-                    if(!newVisibleCards.equals(oldVisibleCards)){
+                    if(!oldVisibleCards.equals(newVisibleCards)){
                         Platform.runLater(() -> updateVisibleCards(newVisibleCards));
                         oldVisibleCards = newVisibleCards;
                     }
@@ -240,13 +242,13 @@ public class InGameController extends GUIController {
                     }
                 //current player
                     String newCurrentPlayer=view.getCurrentPlayer();
-                    if(!newCurrentPlayer.equals(oldCurrentPlayer)){
+                    if(!oldCurrentPlayer.equals(newCurrentPlayer)){
                         Platform.runLater(() -> updateCurrentPlayer(newCurrentPlayer));
                         oldCurrentPlayer = newCurrentPlayer;
                     }
                     //hand
                     List<Card> newHand=getHand();
-                    if (!newHand.equals(oldHand)){
+                    if (!oldHand.equals(newHand)){
                         Platform.runLater(()->updateHand(newHand));
                         oldHand=newHand;
                     }
@@ -505,6 +507,7 @@ public class InGameController extends GUIController {
             if(r==ButtonType.OK) {
                 try {
                     view.closeGame(myID);
+                    changeScene("New-hello-view.fxml",e);
                 } catch (ClassNotFoundException | IOException ex) {
                    showErrorMsg("connection error");
                    System.exit(1);

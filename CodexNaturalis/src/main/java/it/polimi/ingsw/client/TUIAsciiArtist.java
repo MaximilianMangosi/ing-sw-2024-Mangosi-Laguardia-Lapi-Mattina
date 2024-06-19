@@ -11,7 +11,6 @@ import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 import it.polimi.ingsw.model.gamecards.resources.Tool;
 
-import javax.swing.plaf.PanelUI;
 import java.util.*;
 import java.util.List;
 
@@ -24,10 +23,11 @@ public class TUIAsciiArtist {
     public static final String RED = "\u001B[31m";
     public static final String GREEN = "\u001B[32m";
     public static final String YELLOW = "\u001B[43m";
+    public static final String WHITE = "\u001B[47m";
     public static final String BLUE = "\u001B[34m";
     public static final String PURPLE = "\u001B[35m";
     public static final String CYAN = "\u001B[36m";
-    public static final String WHITE = "\u001B[97m";
+    public static final String LIGHT_WHITE = "\u001B[97m";
 
     public TUIAsciiArtist(OutStreamWriter writer) {
         this.writer = writer;
@@ -41,10 +41,10 @@ public class TUIAsciiArtist {
 
     public void show(Card card,boolean shouldPrint) {
         int startCol= 0;
-        String angleNW = card.getResource("NW") !=null? card.getResource("NW").getSymbol() : "×";
-        String angleNE = card.getResource("NE") !=null? card.getResource("NE").getSymbol() : "×";
-        String angleSW = card.getResource("SW") !=null? card.getResource("SW").getSymbol() : "×";
-        String angleSE = card.getResource("SE") !=null? card.getResource("SE").getSymbol() : "×";
+        String angleNW = card.getResource("NW") !=null? card.getResource("NW").getSymbol() : "╔";
+        String angleNE = card.getResource("NE") !=null? card.getResource("NE").getSymbol() : "╗";
+        String angleSW = card.getResource("SW") !=null? card.getResource("SW").getSymbol() : "╚";
+        String angleSE = card.getResource("SE") !=null? card.getResource("SE").getSymbol() : "╝";
         boolean printBack = shouldPrint && !card.isFront();
         if (!shouldPrint) {
             for (int i = 0; i < matrix[0].length ; i++) {
@@ -57,10 +57,10 @@ public class TUIAsciiArtist {
             matrix=new String[5][16];
         }
         if(printBack){
-            angleNW="╔";
-            angleNE="╗";
-            angleSW="╚";
-            angleSE="╝";
+            angleNW="■";
+            angleNE="■";
+            angleSW="■";
+            angleSE="■";
         }
         String reignColor = card.getReign().getColorBG();
         String point = card.getPoints()>0? String.valueOf(card.getPoints()):"═";
@@ -72,9 +72,9 @@ public class TUIAsciiArtist {
         }
         String color;
         if(requirements.isEmpty()) // ResourceCard
-            color=WHITE+reignColor;
+            color= LIGHT_WHITE +reignColor;
         else //GoldCard
-            color=WHITE+YELLOW;
+            color= LIGHT_WHITE +YELLOW;
         matrix[0][startCol]=color+angleNW;
         matrix[0][startCol+14]=angleNE+RESET;
 
@@ -232,48 +232,70 @@ public class TUIAsciiArtist {
      * @author Giorgio Mattina
      * @param starterCard
      */
-    public void show(StarterCard starterCard){
-        matrix = new String[6][27];
-        //Build the front of the card
-        List<Resource> centralResources = starterCard.getCentralResource();
-        int numOfCentralResources = centralResources.size();
-        buildStarterCardStructure();
-        if(numOfCentralResources== 1 ){
-
-            matrix[0][0]= YELLOW+starterCard.getResource("NW").getColorFG() + starterCard.getResource("NW").getSymbol()+RESET+YELLOW;
-            matrix[0][12]= YELLOW+starterCard.getResource("NE").getColorFG() + starterCard.getResource("NE").getSymbol()+RESET+YELLOW;
-            matrix[4][0]= YELLOW+starterCard.getResource("SW").getColorFG() + starterCard.getResource("SW").getSymbol()+RESET+YELLOW;
-            matrix[4][12]= YELLOW+starterCard.getResource("SE").getColorFG() + starterCard.getResource("SE").getSymbol()+RESET+YELLOW;
-            matrix[2][6]= centralResources.get(0).getColorFG()+ centralResources.getFirst().getSymbol();
-
-        }else if(numOfCentralResources == 2){
-
-            matrix[0][0]= YELLOW+starterCard.getResource("NW").getColorFG() + starterCard.getResource("NW").getSymbol()+RESET+YELLOW;
-            matrix[0][12]= YELLOW+starterCard.getResource("NE").getColorFG() + starterCard.getResource("NE").getSymbol()+RESET+YELLOW;
-            matrix[4][0]= YELLOW+starterCard.getResource("SW").getColorFG() + starterCard.getResource("SW").getSymbol()+RESET+YELLOW;
-            matrix[4][12]= YELLOW+starterCard.getResource("SE").getColorFG() + starterCard.getResource("SE").getSymbol()+RESET+YELLOW;
-            matrix[1][6]= centralResources.get(0).getColorFG() + centralResources.get(0).getSymbol();
-            matrix[3][6]=centralResources.get(0).getColorFG()+ centralResources.get(1).getSymbol();
-
-        }else if(numOfCentralResources == 3 ){
-
-            matrix[0][0]= YELLOW  +starterCard.getResource("NW").getColorFG()+ starterCard.getResource("NW").getSymbol()+RESET+YELLOW;
-            matrix[0][12]= YELLOW +starterCard.getResource("NE").getColorFG()+ starterCard.getResource("NE").getSymbol()+RESET+YELLOW;
-            matrix[1][6]=centralResources.get(0).getColorFG() + centralResources.get(0).getSymbol()+BLACK;
-            matrix[2][6]=centralResources.get(1).getColorFG() + centralResources.get(1).getSymbol()+BLACK;
-            matrix[3][6]=centralResources.get(2).getColorFG() + centralResources.get(2).getSymbol()+BLACK;
-        }
-        //build the back in the right half of matrix
-        matrix[0][14]= YELLOW+starterCard.getResourceBack("NW").getColorFG() + starterCard.getResourceBack("NW").getSymbol()+RESET+YELLOW;
-        matrix[0][26]= YELLOW+starterCard.getResourceBack("NE").getColorFG() + starterCard.getResourceBack("NE").getSymbol()+RESET;
-        matrix[4][14]= YELLOW+starterCard.getResourceBack("SW").getColorFG() + starterCard.getResourceBack("SW").getSymbol()+RESET+YELLOW;
-        matrix[4][26]= YELLOW+starterCard.getResourceBack("SE").getColorFG() + starterCard.getResourceBack("SE").getSymbol()+RESET;
-
-
-        matrix[5][0]="FRONT";
-        matrix[5][14]="BACK";
+    public void show(StarterCard starterCard,boolean printBothSide){
+            boolean printFront= starterCard.isFront();
+            buildStarterCardStructure(printBothSide);
+            if(printBothSide) {
+                showFront(starterCard);
+                showBack(starterCard);
+                matrix[5][0] = "FRONT";
+                matrix[5][14] = "BACK";
+            } else if (printFront) {
+                showFront(starterCard);
+            }else {
+                showBack(starterCard);
+            }
         writer.print(matrix);
     }
+
+    private void showBack(StarterCard starterCard) {
+        matrix[0][14] = YELLOW + starterCard.getResourceBack("NW").getColorFG() + starterCard.getResourceBack("NW").getSymbol() + LIGHT_WHITE ;
+        matrix[0][26] = YELLOW + starterCard.getResourceBack("NE").getColorFG() + starterCard.getResourceBack("NE").getSymbol() +RESET+ LIGHT_WHITE;
+        matrix[4][14] = YELLOW + starterCard.getResourceBack("SW").getColorFG() + starterCard.getResourceBack("SW").getSymbol() + LIGHT_WHITE ;
+        matrix[4][26] = YELLOW + starterCard.getResourceBack("SE").getColorFG() + starterCard.getResourceBack("SE").getSymbol() +RESET+ LIGHT_WHITE;
+    }
+
+    private void showFront(StarterCard starterCard) {
+        List<Resource> centralResources = starterCard.getCentralResource();
+        int numOfCentralResources = centralResources.size();
+
+        Resource NW = starterCard.getResource("NW");
+        Resource NE = starterCard.getResource("NE");
+        Optional<Resource> SW = Optional.ofNullable(starterCard.getResource("SW"));
+        Optional<Resource> SE = Optional.ofNullable(starterCard.getResource("SE"));
+
+        String angleNW = YELLOW + NW.getColorFG() + NW.getSymbol() + LIGHT_WHITE + YELLOW;
+        String angleNE = YELLOW + NE.getColorFG() + NE.getSymbol() + LIGHT_WHITE + YELLOW;
+        String angleSW = SW.map(resource -> YELLOW + resource.getColorFG() + resource.getSymbol() + LIGHT_WHITE + YELLOW).orElse("╚");
+        String angleSE = SE.map(resource -> YELLOW + resource.getColorFG() + resource.getSymbol() + LIGHT_WHITE + YELLOW).orElse("╝");
+
+        if (numOfCentralResources == 1) {
+
+            matrix[0][0] = angleNW;
+            matrix[0][12] = angleNE;
+            matrix[4][0] = angleSW;
+            matrix[4][12] = angleSE;
+            matrix[2][6] = centralResources.get(0).getColorFG() + centralResources.getFirst().getSymbol();
+
+        } else if (numOfCentralResources == 2) {
+
+            matrix[0][0] = angleNW;
+            matrix[0][12] = angleNE;
+            matrix[4][0] = angleSW;
+            matrix[4][12] = angleSE;
+            matrix[1][6] = centralResources.get(0).getColorFG() + centralResources.get(0).getSymbol();
+            matrix[3][6] = centralResources.get(0).getColorFG() + centralResources.get(1).getSymbol();
+
+        } else if (numOfCentralResources == 3) {
+
+            matrix[0][0] = angleNW;
+            matrix[0][12] = angleNE;
+            matrix[1][6] = centralResources.get(0).getColorFG() + centralResources.get(0).getSymbol() + BLACK;
+            matrix[2][6] = centralResources.get(1).getColorFG() + centralResources.get(1).getSymbol() + BLACK;
+            matrix[3][6] = centralResources.get(2).getColorFG() + centralResources.get(2).getSymbol() + BLACK;
+        }
+    }
+
     /**
      * builds the background of a goalCard in the matrix
      * @author Giorgio Mattina,Riccardo Lapi
@@ -326,13 +348,23 @@ public class TUIAsciiArtist {
      * Builds the background of the front and back of a starter card, which never changes and writes it in matrix
      * @author Giorgio Mattina
      */
-    private void buildStarterCardStructure(){
+    private void buildStarterCardStructure(boolean buildBothSide){
+        int endCol;
+        if(buildBothSide) {
+            matrix=new String[6][27];
+            endCol = 27;
+        }
+        else{
+            matrix=new String[5][15];
+            endCol=15;
+        }
+       
         int j=0;
         for (int i = 0; i<5;i++){
             if(i==0){//first row
-                for ( j=0;j<27;j++){
+                for ( j=0;j<endCol;j++){
                     if(j==0 || j==14){
-                        matrix[i][j]=YELLOW+"╔"+YELLOW;
+                        matrix[i][j]=LIGHT_WHITE+YELLOW+"╔"+YELLOW;
                     }else if(j==12 || j==26){
                         matrix[i][j]="╗"+RESET;
                     }else if(j==13){
@@ -343,9 +375,9 @@ public class TUIAsciiArtist {
                 }
 
             }else if (i==1 || i==2 || i==3){//middle rows
-                for ( j=0;j<27;j++){
+                for ( j=0;j<endCol;j++){
                     if(j==0 || j==14 || j==12 || j==26){
-                        matrix[i][j]=RESET+YELLOW+"║"+RESET;
+                        matrix[i][j]=RESET+LIGHT_WHITE+YELLOW+"║"+RESET;
 
                     }else if( j==13){
                         matrix[i][j]=RESET+" ";
@@ -356,9 +388,9 @@ public class TUIAsciiArtist {
                 }
                 matrix[i][26] += RESET;
             }else {//the last row
-                for ( j=0;j<27;j++){
+                for ( j=0;j<endCol;j++){
                     if(j==0 || j==14){
-                        matrix[i][j]=YELLOW+"╚"+YELLOW;
+                        matrix[i][j]=YELLOW+LIGHT_WHITE+"╚"+YELLOW;
                     }else if(j==12 || j==26){
                         matrix[i][j]="╝"+RESET;
                     }else if(j==13){
@@ -404,8 +436,18 @@ public class TUIAsciiArtist {
             }
             matrix[i][j] = color+fieldBuildingHelper.indexOf(coordinate);
         }
-
-
+        writer.print(matrix);
+    }
+    /**
+     * @author Giuseppe Laguardia, Giorgio Mattina, Riccardo Lapi, Maximilian Mangosi
+     * print the user field and the available positions
+     * @param field the user field
+     * @param fieldBuildingHelper List of the coordinates in order of insertion
+     * @param availablePositions List of coordinates where is legal play a card
+     */
+    public void show(Map<Coordinates, Card> field, List<Coordinates> fieldBuildingHelper,List<Coordinates> availablePositions){
+        addAvailablePosToField(availablePositions);
+        show(field,fieldBuildingHelper);
     }
 
     /**
@@ -413,7 +455,7 @@ public class TUIAsciiArtist {
      * add the available postions of the player inside the matrix
      * @param availablePositions List of position where the user can play the card
      */
-    public void addAvailablePosToField(List<Coordinates> availablePositions ){
+    private void addAvailablePosToField(List<Coordinates> availablePositions ){
 
         for(Coordinates coordinates : availablePositions){
             int j = 440 + 10*(coordinates.x);

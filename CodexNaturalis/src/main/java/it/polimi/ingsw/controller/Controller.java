@@ -397,7 +397,7 @@ public class Controller {
             addToQueue(new TurnMessage(getCurrentPlayer()));
             addToQueue(new PointsMessage(getPlayersPoints()));
 
-            if (getUserIDs().size() < 2) {
+            if ( currentState.isGameStarted() && getUserIDs().size() < 2) {
                 List<UUID> id = new ArrayList<>(currentState.userIDs.keySet());
                 String winner = currentState.getPlayerFromUid(id.getFirst()).getName();
                 view.setWinner(winner);

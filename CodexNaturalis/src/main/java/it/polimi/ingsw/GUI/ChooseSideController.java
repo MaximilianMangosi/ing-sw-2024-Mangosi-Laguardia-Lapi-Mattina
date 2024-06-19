@@ -45,9 +45,12 @@ public class ChooseSideController extends GUIController {
 
     private int sealedCards=0;
 
-    public void init() throws InvalidUserId, RemoteException {
+    public void init() throws  RemoteException {
         startButton.setVisible(false);
-        Goal[] goalOptions = getGoalOptions();
+        Goal[] goalOptions = new Goal[0];
+        try {
+            goalOptions = getGoalOptions();
+
         int id = goalOptions[0].getId();
         Image privateOption1 = new Image(String.valueOf(getClass().getResource("/CardsFront/"+id+".png")));
         privateGoal1.setImage(privateOption1);
@@ -79,6 +82,7 @@ public class ChooseSideController extends GUIController {
             cardView.setFitHeight(193);
             handBox.getChildren().add(cardView);
         }
+        } catch (InvalidUserId ignore) {}
     }
     public void chooseFront() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, InvalidGameID {
         view.chooseStarterCardSide(true,myID);

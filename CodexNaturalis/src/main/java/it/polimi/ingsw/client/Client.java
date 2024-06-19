@@ -60,6 +60,7 @@ public class Client {
                 ViewRMIContainerInterface viewContainer = (ViewRMIContainerInterface) registry.lookup("ViewRMI");
                 tui.setViewContainer(viewContainer);
                 tui.startGame(true);
+                
             }
 
 

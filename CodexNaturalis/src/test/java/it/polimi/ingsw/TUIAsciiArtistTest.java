@@ -105,7 +105,7 @@ public class TUIAsciiArtistTest {
 
     @Test
     public void showCardTest (){
-        List<Card> deck =new ArrayList<>(gb.getGoldCardSet());
+        List<Card> deck =new ArrayList<>(gb.getResourceCardSet());
         shuffle(deck);
         deck= deck.stream().limit(4).toList();
         artist.show(deck);
@@ -128,18 +128,7 @@ public class TUIAsciiArtistTest {
         List<StarterCard> deck = new ArrayList<>(gb.getStarterCardSet());
         //shuffle(deck);
         for (StarterCard s : deck) {
-            artist.show(s);
-            String[][] matrix= artist.getMatrix();
-            for (String[] row : matrix){
-                for(String cell: row) {
-                    if(cell != null)
-                        System.out.print(cell);
-                    else {
-                        System.out.print(" ");
-                    }
-                }
-                System.out.println(" \u001B[0m");
-            }
+            artist.show(s,true);
         }
 
     }

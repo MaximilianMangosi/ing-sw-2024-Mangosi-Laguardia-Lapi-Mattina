@@ -93,7 +93,7 @@ public class NewHelloController extends GUIController{
 
     }
     @FXML
-    private void selectSocket(){
+    public void selectSocket(){
 
         try {
             isSocketSelected=true;
@@ -114,7 +114,7 @@ public class NewHelloController extends GUIController{
 
     }
     @FXML
-    private void selectRMI(){
+    public void selectRMI(){
         try {
             isSocketSelected=false;
             RMIButton.setStyle("-fx-border-color: #820933");
@@ -269,8 +269,6 @@ public class NewHelloController extends GUIController{
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } catch (UnacceptableNumOfPlayersException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidUserId e) {
             throw new RuntimeException(e);
         }
     }
