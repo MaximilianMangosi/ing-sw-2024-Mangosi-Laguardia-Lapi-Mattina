@@ -648,8 +648,10 @@ public class TextUserInterface extends UserInterface {
             } catch (IllegalOperationException | InvalidGameID ignore) {}
         }
         isPlaying=true;
-        if (!isRMI)
-            new ServerHandler((ViewSocket) view,tuiUpdater,new GameKey(gameID,myID)).start();
+        if (!isRMI) {
+            String serverAddress= ((ViewSocket)view ).getServerAddress();
+            new ServerHandler((ViewSocket) view, tuiUpdater, new GameKey(gameID, myID),serverAddress).start();
+        }
         new PingPong(view,myID).start();
         tuiUpdater.start();
 
@@ -700,8 +702,10 @@ public class TextUserInterface extends UserInterface {
             }
         }
         isPlaying=true;
-        if (!isRMI)
-            new ServerHandler(viewSocket,tuiUpdater,new GameKey(gameID,myID)).start();
+        if (!isRMI) {
+            String serverAddress= ((ViewSocket)view ).getServerAddress();
+            new ServerHandler(viewSocket, tuiUpdater, new GameKey(gameID, myID),serverAddress ).start();
+        }
         new PingPong(view,myID).start();
         tuiUpdater.start();
 

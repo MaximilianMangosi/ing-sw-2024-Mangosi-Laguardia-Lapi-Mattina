@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.view.ViewRMIContainer;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -22,8 +23,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
     public static void main(String[] argv) {
-        GameBox gb = new GameBox();
+        //obtain IP address
+        Socket socket = new Socket();
+        try {
+            socket.connect(new InetSocketAddress("google.com", 80));
+        } catch (IOException e) {
+            System.out.println("Connection error");
+            return;
+        }
+        String serverAddress=socket.getLocalAddress().getHostAddress();
+        System.out.println("The server IP: "+serverAddress);
+
         //GAME BOX SETUP
+        GameBox gb = new GameBox();
         try {
             gameBoxSetup(gb);
         } catch (IOException e) {
@@ -42,7 +54,7 @@ public class Server {
             ViewRMIContainer viewRMIContainer = new ViewRMIContainer(gameManager);
 
             // export View
-            //System.setProperty("java.rmi.server.hostname", "192.168.1.8");
+            System.setProperty("java.rmi.server.hostname", serverAddress);
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("ViewRMI", viewRMIContainer);
             System.out.println("Remote View has been correctly exported");
