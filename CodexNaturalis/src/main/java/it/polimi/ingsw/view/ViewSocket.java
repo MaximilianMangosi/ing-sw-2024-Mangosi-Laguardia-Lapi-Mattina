@@ -30,8 +30,7 @@ public class  ViewSocket implements View{
     /**
      * Constructs a ViewSocket with the specified output stream, input stream, and game data.
      * @author Giuseppe Laguardia
-     * @param output  The output stream.
-     * @param input   The input stream.
+     * @param server  The server socket
      * @param gameData  The game data.
      * @throws IOException if an I/O error occurs.
      */
@@ -236,6 +235,7 @@ public class  ViewSocket implements View{
         ServerMessage reply;
         reply = (ServerMessage) input.readObject();
         //input.notifyAll();
+        System.out.println(reply.getClass());
         return reply;
     }
     /**
@@ -478,7 +478,9 @@ public class  ViewSocket implements View{
       return gd;
     }
 
-    public Map<UUID, List<String>> getJoinableGames() {
+    public Map<UUID, List<String>> getJoinableGames() throws IOException, ClassNotFoundException{
+      output.writeObject(new RequestJoinableGamesMessage());
+      readMessage().processMessage(this);
       return gd.getJoinableGames();
     }
 

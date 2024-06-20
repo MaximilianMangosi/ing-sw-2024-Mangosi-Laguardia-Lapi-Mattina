@@ -189,7 +189,7 @@ public class NewHelloController extends GUIController{
             }
             if(joinableGames.isEmpty()){
                 noGamesHosted.setVisible(true);
-                return;
+
             }else{
 
                 int i=1;
@@ -215,8 +215,8 @@ public class NewHelloController extends GUIController{
                     i++;
                 }
             }
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | ClassNotFoundException e) {
+            //todo handle connection error
         }
 
 

@@ -102,11 +102,16 @@ public abstract class Card implements Serializable {
     public List<Resource> getCardResources() {
         //cycle through the card angles and return a list with all the resources in the card
         List<Resource> cardResources = new ArrayList<>();
-        String[] angles ={"NW","NE","SW","SE"};
+        if (isFront) {
+            String[] angles ={"NW","NE","SW","SE"};
 
-        for (String angle: angles)
-            if(getResource(angle)!=null && !getResource(angle).isEmpty())
-                cardResources.add(getResource(angle));
+            for (String angle: angles)
+                if(getResource(angle)!=null && !getResource(angle).isEmpty())
+                    cardResources.add(getResource(angle));
+        }else {
+            if(getReign()!=null)
+                cardResources.add(getReign());
+        }
 
         return cardResources;
     }
@@ -127,7 +132,7 @@ public abstract class Card implements Serializable {
     }
     /**
      * @author Giuseppe Laguardia
-     * returns the reign of the card (since this is the superclass the value is null)
+     * @return the reign of the card (since this is the superclass the value is null)
      */
     public Reign getReign() {
         return null;
