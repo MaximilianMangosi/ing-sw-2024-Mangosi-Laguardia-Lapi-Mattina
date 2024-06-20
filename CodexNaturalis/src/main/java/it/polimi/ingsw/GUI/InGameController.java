@@ -68,6 +68,8 @@ public class InGameController extends GUIController {
     @FXML
     private VBox chatBox;
     @FXML
+    private VBox messageBox;
+    @FXML
     private ImageView redCheck;
     @FXML
     private ImageView blueCheck;
@@ -93,6 +95,8 @@ public class InGameController extends GUIController {
     private Button quitButton;
     @FXML
     private Button chatButton;
+    @FXML
+    private MenuButton chatMenu = new MenuButton("Global");
     private Map<ImageView,Integer> handCardsId = new HashMap<>();
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
@@ -114,6 +118,13 @@ public class InGameController extends GUIController {
             hideChatButton.setVisible(false);
             errorMsg.setVisible(false);
             hideError.setOnFinished(event -> errorMsg.setVisible(false));
+
+            for (String player : view.getPlayersList()){
+                if(!(player.equals(myName)))
+                    chatMenu.getItems().add(new MenuItem(player));
+            }
+
+
 
             initializeScoreMap();
 
@@ -697,6 +708,25 @@ public class InGameController extends GUIController {
 
     }
 
+    public void loadChat(String user){
+        messageBox.getChildren().clear();
+        List <String> chatList = new ArrayList<>();
+        //TODO: Fix the fact that the username Global could exist
+        try{
+            if (user.equals("Global")){
+                    chatList.addAll(view.getChatList());
+            }else{
+                chatList.addAll(getPrivateChat(user));
+            }
+        } catch (RemoteException e) {
+            showErrorMsg("Connection Error");
+            System.exit(1);
+        }
+        for (String message : chatList){
+            messageBox.getChildren().add(new Label(message));
+        }
+    }
+
     public void showChat(){
         scoreboardButton.setVisible(false);
         hideChatButton.setVisible(true);
@@ -704,6 +734,9 @@ public class InGameController extends GUIController {
         chatBox.setVisible(true);
         chatBox.setLayoutX(0);
 
+        for (MenuItem item : chatMenu.getItems()){
+            item.setOnAction(actionEvent->loadChat(item.getText()));
+        }
 
     }
 
