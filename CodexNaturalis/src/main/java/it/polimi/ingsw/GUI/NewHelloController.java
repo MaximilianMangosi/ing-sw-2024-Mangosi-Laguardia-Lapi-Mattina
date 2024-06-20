@@ -13,6 +13,7 @@ import it.polimi.ingsw.server.CloseGame;
 import it.polimi.ingsw.view.ViewRMIContainer;
 import it.polimi.ingsw.view.ViewRMIContainerInterface;
 import it.polimi.ingsw.view.ViewSocket;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -94,7 +95,6 @@ public class NewHelloController extends GUIController{
     }
     @FXML
     public void selectSocket(){
-
         try {
             isSocketSelected=true;
             socketButton.setStyle("-fx-border-color: #820933");
@@ -131,6 +131,11 @@ public class NewHelloController extends GUIController{
     @FXML
     private void selectJoinGame(){
         playButton.setVisible(false);
+        ObservableList<Node> children = selectNumPlayersOrGame.getChildren();
+        children.remove(numPlayersStackPane);
+        if (!children.contains(joinableGamesStackPane)) {
+            children.add(joinableGamesStackPane);
+        }
         numPlayersStackPane.setVisible(false);
         joinableGamesStackPane.setVisible(true);
         isJoin=true;
@@ -138,6 +143,10 @@ public class NewHelloController extends GUIController{
     }
     @FXML
     private void selectCreateGame(){
+        ObservableList<Node> children = selectNumPlayersOrGame.getChildren();
+        children.remove(joinableGamesStackPane);
+        if(!children.contains(numPlayersStackPane))
+            children.add(numPlayersStackPane);
         joinableGamesStackPane.setVisible(false);
         numPlayersStackPane.setVisible(true);
         playButton.setVisible(true);
@@ -175,7 +184,7 @@ public class NewHelloController extends GUIController{
     @FXML
     private void refresh(){
         noGamesHosted.setVisible(false);
-        if(joinableGamesVBox.getChildren().size()>=2)
+        if(joinableGamesVBox.getChildren().size()>2)
             joinableGamesVBox.getChildren().removeFirst();
         try {
             Accordion listOfGames = new Accordion();
@@ -189,14 +198,11 @@ public class NewHelloController extends GUIController{
             }
             if(joinableGames.isEmpty()){
                 noGamesHosted.setVisible(true);
-
             }else{
-
                 int i=1;
                 for(Map.Entry<UUID, List<String>> entry : joinableGames.entrySet()){
                     VBox playersList = new VBox();
                     StackPane playersStackPane = new StackPane(playersList);
-
                    // playersList.setAlignment(Pos.CENTER_LEFT);
                     List<String> players = entry.getValue();
                     for(String s: players){
@@ -205,13 +211,11 @@ public class NewHelloController extends GUIController{
                         name.setTabSize(18);
                         name.setStyle("-fx-font: Bodoni MT Condensed");
                         playersList.getChildren().add(name);
-
                     }
                     TitledPane newGame = new TitledPane(String.valueOf(i),playersStackPane);
 
                     newGame.setOnMouseClicked(mouseEvent -> chooseThisGame(mouseEvent,entry.getKey()));
                     listOfGames.getPanes().add(newGame);
-
                     i++;
                 }
             }
@@ -224,7 +228,6 @@ public class NewHelloController extends GUIController{
 
     @FXML
     private void onPlay(ActionEvent event){
-
         try {
             if (myName!=null) {
                 if(isJoin){
@@ -233,13 +236,10 @@ public class NewHelloController extends GUIController{
                         String serverAddress= ((ViewSocket)view ).getServerAddress();
                         ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(chosenGame,myID),serverAddress);
                         serverHandler.start();
-
                     }else{
                         myID= viewContainer.joinGame(chosenGame,myName);
                         view=viewContainer.getView(chosenGame);
-
                     }
-
                 }else{
                     if(isSocketSelected){
                         GameKey gameKey=view.bootGame(numPlayers,myName);
