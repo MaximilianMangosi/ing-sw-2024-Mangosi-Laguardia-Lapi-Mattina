@@ -66,6 +66,8 @@ public class InGameController extends GUIController {
     @FXML
     private VBox scoreboardBox;
     @FXML
+    private VBox chatBox;
+    @FXML
     private ImageView redCheck;
     @FXML
     private ImageView blueCheck;
@@ -84,9 +86,13 @@ public class InGameController extends GUIController {
     @FXML
     private Button hideScoreboardButton;
     @FXML
+    private Button hideChatButton;
+    @FXML
     private Button hideDeckButton;
     @FXML
     private Button quitButton;
+    @FXML
+    private Button chatButton;
     private Map<ImageView,Integer> handCardsId = new HashMap<>();
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
@@ -101,9 +107,11 @@ public class InGameController extends GUIController {
     public void init() throws RemoteException {
         try {
             deckBox.setVisible(false);
+            chatBox.setVisible(false);
             hideDeckButton.setVisible(false);
             scoreboardBox.setVisible(false);
             hideScoreboardButton.setVisible(false);
+            hideChatButton.setVisible(false);
             errorMsg.setVisible(false);
             hideError.setOnFinished(event -> errorMsg.setVisible(false));
 
@@ -438,6 +446,7 @@ public class InGameController extends GUIController {
         updateScoreboard();
         handleCheckOverlap();
         scoreboardButton.setVisible(false);
+        chatButton.setVisible(false);
         scoreboardBox.setVisible(true);
         scoreboardBox.setLayoutX(0);
         hideScoreboardButton.setVisible(true);
@@ -492,6 +501,7 @@ public class InGameController extends GUIController {
         scoreboardBox.setLayoutX(1920);
         scoreboardBox.setVisible(false);
         scoreboardButton.setVisible(true);
+        chatButton.setVisible(true);
         overlapAnimation.stop();
     }
     public void flipCard(MouseEvent e){
@@ -684,6 +694,30 @@ public class InGameController extends GUIController {
         errorMsg.setText(message.toUpperCase(Locale.ROOT));
         errorMsg.setVisible(true);
         hideError.play();
+
+    }
+
+    public void showChat(){
+        scoreboardButton.setVisible(false);
+        hideChatButton.setVisible(true);
+        chatButton.setVisible(false);
+        chatBox.setVisible(true);
+        chatBox.setLayoutX(0);
+
+
+    }
+
+    public void hideChat(){
+        hideScoreboardButton.setVisible(false);
+
+
+        chatBox.setLayoutX(-1080);
+        chatBox.setVisible(false);
+        hideChatButton.setVisible(false);
+        scoreboardButton.setVisible(true);
+        chatButton.setVisible(true);
+
+
 
     }
 }

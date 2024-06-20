@@ -87,35 +87,35 @@ public class Server {
 
     private static void gameBoxSetup(GameBox gb) throws IOException ,URISyntaxException{
         ArrayList<String> resourceCardJsons = new ArrayList<>();
-        String resourceCardPath = "/src/jsons/ResourceCard/ResourceCard_";
+        String resourceCardPath = "/jsons/ResourceCard/ResourceCard_";
         int numOfResourceCard = 40;
 
         ArrayList<String> goldCardJsons = new ArrayList<>();
-        String goldCardPath = "/src/jsons/GoldCard/GoldCard_";
+        String goldCardPath = "/jsons/GoldCard/GoldCard_";
         int numOfGoldCard = 16;
 
         ArrayList<String> goldCardAnglesJsons = new ArrayList<>();
-        String goldCardAnglesPath = "/src/jsons/GoldCard/GoldCardAngles/GoldCardAngles_";
+        String goldCardAnglesPath = "/jsons/GoldCard/GoldCardAngles/GoldCardAngles_";
         int numOfGoldCardAngles = 12;
 
         ArrayList<String> goldCardToolJsons = new ArrayList<>();
-        String goldCardToolPath = "/src/jsons/GoldCard/GoldCardTool/GoldCardTool_";
+        String goldCardToolPath = "/jsons/GoldCard/GoldCardTool/GoldCardTool_";
         int numOfGoldCardTool = 12;
 
         ArrayList<String> starterCardJsons = new ArrayList<>();
-        String starterCardPath = "/src/jsons/StarterCard/StarterCard_";
+        String starterCardPath = "/jsons/StarterCard/StarterCard_";
         int numOfStarterCard = 6;
 
         ArrayList<String> identicalGoalJsons = new ArrayList<>();
-        String identicalGoalPath = "/src/jsons/Goal/IdenticalGoal/IdenticalGoal_";
+        String identicalGoalPath = "/jsons/Goal/IdenticalGoal/IdenticalGoal_";
         int numOfIdenticalGoal = 7;
 
         ArrayList<String> LGoalJsons = new ArrayList<>();
-        String LGoalPath = "/src/jsons/Goal/LGoal/LGoal_";
+        String LGoalPath = "/jsons/Goal/LGoal/LGoal_";
         int numOfLGoal = 4;
 
         ArrayList<String> stairGoalJsons = new ArrayList<>();
-        String stairGoalPath = "/src/jsons/Goal/StairGoal/StairGoal_";
+        String stairGoalPath = "/jsons/Goal/StairGoal/StairGoal_";
         int numOfStairGoal = 4;
 
         fillList(resourceCardJsons, numOfResourceCard, resourceCardPath);
