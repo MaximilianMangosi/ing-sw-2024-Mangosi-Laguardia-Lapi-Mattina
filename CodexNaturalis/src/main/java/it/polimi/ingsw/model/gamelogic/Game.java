@@ -312,14 +312,14 @@ public class Game{
         if(isFront) {
             player.updateResourceCounter(starterCard.getCardResources());
             player.updateResourceCounter(starterCard.getCentralResource());
+
         }
         else{
             player.updateResourceCounter(starterCard.getBackResources());
+
         }
-        //update availablePosition list
-        if (isFront) {
-            player.checkAvailablePositions(new Coordinates(0,0), starterCard);
-        }
+        player.checkAvailablePositions(new Coordinates(0,0), starterCard);
+
     }
 
     /**

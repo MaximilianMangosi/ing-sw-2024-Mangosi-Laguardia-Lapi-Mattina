@@ -109,22 +109,7 @@ public class InGameController extends GUIController {
 
             initializeScoreMap();
 
-            for (String p : view.getPlayersList()) {
-                StackPane sp = new StackPane();
-                String color=view.getPlayerColor(p);
-                sp.setStyle("-fx-background-color: "+color);
-                Label label = new Label(p);
-                label.setFont(new Font("Bodoni MT Condensed", 40));
-                if (view.getCurrentPlayer().equals(p))
-                    label.setStyle("-fx-background-color: d9be4a");
-                sp.getChildren().add(label);
-                playerListBox.getChildren().add(sp);
-                //makes label clickable
-                label.setOnMouseClicked(this::showEnemyField);
-                label.setCursor(Cursor.HAND);
-
-
-            }
+            updatePlayersList(view.getPlayersList());
             fieldPane.setOnDragOver(this::handleDragOver);
             fieldPane.setOnDragDropped(this::handleDragDropped);
             updateHand(getHand());
@@ -172,6 +157,32 @@ public class InGameController extends GUIController {
         } catch (InvalidUserId ignore) {}
     }
 
+    public void updatePlayersList(List<String> players)  {
+        playerListBox.getChildren().clear();
+        try {
+            for (String p : players) {
+                StackPane sp = new StackPane();
+                sp.setMaxSize(p.length()*100,30);
+                String color=view.getPlayerColor(p);
+                sp.setStyle("-fx-background-color: "+color);
+                Label label = new Label(p);
+                label.setFont(new Font("Bodoni MT Condensed", 40));
+                if (view.getCurrentPlayer().equals(p))
+                    label.setStyle("-fx-background-color: d9be4a");
+                sp.getChildren().add(label);
+                playerListBox.getChildren().add(sp);
+                //makes label clickable
+                label.setOnMouseClicked(this::showEnemyField);
+                label.setCursor(Cursor.HAND);
+
+
+            }
+        } catch (RemoteException e) {
+            showErrorMsg("connectior error");
+            System.exit(1);
+        }
+    }
+
     private void initializeScoreMap() {
 
         Scanner file= new Scanner(getClass().getResourceAsStream("/scoreboard-coordinates.txt"));
@@ -211,12 +222,18 @@ public class InGameController extends GUIController {
             Reign oldTopResource=null;
             Reign oldTopGold=null;
             List<Card> oldHand= new ArrayList<>();
-
+            List<String> oldPlayersList= new ArrayList<>();
             String oldCurrentPlayer = "";
 
             while(true){
-                //visible cards
                 try {
+                    //playersList
+                    List<String> newPlayersList=view.getPlayersList();
+                    if(!oldPlayersList.equals(newPlayersList)){
+                        Platform.runLater(()->updatePlayersList(newPlayersList));
+                        oldPlayersList=newPlayersList;
+                    }
+                    //visible cards
                     List<Card> newVisibleCards = view.getVisibleCards();
                     if(!oldVisibleCards.equals(newVisibleCards)){
                         Platform.runLater(() -> updateVisibleCards(newVisibleCards));
@@ -229,7 +246,6 @@ public class InGameController extends GUIController {
                         Platform.runLater(() -> {
                             updateTopResource(newTopResource);
                         });
-
                         oldTopResource = newTopResource;
                     }
                     Reign newTopGold = view.getTopOfGoldCardDeck();
@@ -237,7 +253,6 @@ public class InGameController extends GUIController {
                         Platform.runLater(() -> {
                             updateTopGold(newTopGold);
                         });
-
                         oldTopGold = newTopGold;
                     }
                 //current player

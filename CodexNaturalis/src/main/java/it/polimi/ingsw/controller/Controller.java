@@ -618,13 +618,18 @@ public class Controller {
      * @return the top (first) card of the Resource cards deck
      */
     public Reign getTopOfResourceCardDeck() {
-        return getGame().getResourceCardDeck().getFirst().getReign();
+        if(currentState.game!=null)
+            return currentState.game.getResourceCardDeck().getFirst().getReign();
+        return null;
     }
     /**
      * @author Giuseppe Laguardia
      * @return the top (first) card of the Gold cards deck
      */
-    public Reign getTopOfGoldCardDeck() { return getGame().getGoldCardDeck().getFirst().getReign();
+    public Reign getTopOfGoldCardDeck() {
+        if(currentState.game!=null)
+            return currentState.game.getGoldCardDeck().getFirst().getReign();
+        return null;
     }
 
 
