@@ -44,10 +44,11 @@ public class Client {
             }
         }
         System.out.println("\033c");
-        System.out.println("Welcome to Codex Naturalis! \n Press Any Key To Start");
+        tui.printLogo();
+        System.out.print("\n\n");
+        System.out.println("Press Any Key To Start");
         System.out.print("\n\n");
         s.nextLine();
-        System.out.println("Lets' start! Type 'start-game' to start a game");
         try{
             GameData gameData= new GameData();
             if(connectionChoice==1) {
@@ -63,7 +64,6 @@ public class Client {
                 ViewRMIContainerInterface viewContainer = (ViewRMIContainerInterface) registry.lookup("ViewRMI");
                 tui.setViewContainer(viewContainer);
                 tui.startGame(true);
-                
             }
 
 

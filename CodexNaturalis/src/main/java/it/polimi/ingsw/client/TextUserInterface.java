@@ -710,4 +710,12 @@ public class TextUserInterface extends UserInterface {
         tuiUpdater.start();
 
     }
+    void printLogo(){
+        Scanner s= new Scanner(getClass().getResourceAsStream("/ascii-logo"));
+        System.out.println("\u001B[33m");
+        while (s.hasNext()){
+            System.out.println(s.nextLine());
+        }
+        System.out.println(TUIAsciiArtist.RESET);
+    }
 }
