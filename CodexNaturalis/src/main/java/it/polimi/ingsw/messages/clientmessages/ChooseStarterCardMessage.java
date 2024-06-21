@@ -41,14 +41,14 @@ public class ChooseStarterCardMessage extends ClientMessage{
     public void processMessage(ClientHandler clientHandler) throws IOException{
         try {
             Controller c = clientHandler.getController();
-            String playerName = c.getUserIDs().get(userId).getName();
+            String playerName = c.getPlayer(userId).getName();
             c.chooseStarterCardSide(isFront,userId);
             clientHandler.answerClient(new SuccessMessage());
             clientHandler.sendTo(userId,new StarterCardMessage(c.getPlayersStarterCards().get(userId)));
             clientHandler.broadCast(new FieldMessage(c.getPlayersField().get(playerName),c.getView().getFieldBuildingHelper(playerName),playerName));
             clientHandler.sendTo(userId,new LegalPositionMessage(c.getPlayersLegalPositions().get(userId)));
         } catch (InvalidUserId e) {
-            clientHandler.answerClient(new InvalidUserIdMessage());
+            clientHandler.closeConnection();
         } catch (IllegalOperationException e) {
             clientHandler.answerClient(new IllegalOperationMessage(e));
         }

@@ -85,7 +85,9 @@ public class Controller {
             UUID userID=entry.getKey();
             if(userID!=null && !entry.getValue()){
                 closeGame(userID);
-                System.out.println("player kicked");
+                try {
+                    System.out.println(getPlayer(userID).getName()+" kicked");
+                } catch (InvalidUserId ignore) {}
                 kickedPlayers.add(userID);
             }
         }
@@ -222,16 +224,19 @@ public class Controller {
         view.updatePlayersPoints();
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
-        view.updateFieldBuildingHelper(position,getPlayer(userId).getName());
+        try {
+            view.updateFieldBuildingHelper(position,getPlayer(userId).getName());
+        } catch (InvalidUserId ignore) {}
 
-        
+
         handlePlayCardSocketUpdate(userId);
 
         currentState=currentState.nextState();
     }
 
-    public Player getPlayer(UUID userId) {
-        return currentState.userIDs.get(userId);
+    public Player getPlayer(UUID userId) throws InvalidUserId {
+
+        return Optional.ofNullable(currentState.userIDs.get(userId)).orElseThrow(InvalidUserId::new);
     }
 
     /**
@@ -260,7 +265,9 @@ public class Controller {
         view.updatePlayersField();
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
-        view.updateFieldBuildingHelper(position,getPlayer(userId).getName());
+        try {
+            view.updateFieldBuildingHelper(position,getPlayer(userId).getName());
+        } catch (InvalidUserId ignore) {}
         handlePlayCardSocketUpdate(userId);
 
         currentState=currentState.nextState();

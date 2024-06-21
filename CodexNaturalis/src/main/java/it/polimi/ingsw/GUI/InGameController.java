@@ -363,7 +363,6 @@ public class InGameController extends GUIController {
     public void drawVisibleCard(int choice)  {
         try {
             view.drawVisibleCard(myID,choice);
-            view.drawVisibleCard(myID,choice);
             updateHand(getHand());
         } catch (IOException e) {
            showErrorMsg("CONNECTION ERROR");
