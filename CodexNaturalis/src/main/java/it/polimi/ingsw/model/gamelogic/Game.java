@@ -156,7 +156,7 @@ public class Game{
      * @return true if a player has reached at least 20 points
      */
     public boolean someoneHas20Points(){
-        return listOfPlayers.stream().anyMatch(p->p.getPoints()>=1);
+        return listOfPlayers.stream().anyMatch(p->p.getPoints()>=5);
     }
 
     /**
@@ -312,7 +312,6 @@ public class Game{
         if(isFront) {
             player.updateResourceCounter(starterCard.getCardResources());
             player.updateResourceCounter(starterCard.getCentralResource());
-
         }
         else{
             player.updateResourceCounter(starterCard.getBackResources());
@@ -370,7 +369,7 @@ public class Game{
         coverAngle(position);
 
         //update availablePosition list
-       // currentPlayer.checkAvailablePositions(position,selectedCard);
+        currentPlayer.checkAvailablePositions(position,selectedCard);
         currentPlayer.removeFromHand(selectedCard);
     }
 

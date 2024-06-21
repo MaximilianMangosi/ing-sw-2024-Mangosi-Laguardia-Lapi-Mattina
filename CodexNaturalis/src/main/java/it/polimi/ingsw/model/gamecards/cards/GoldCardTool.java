@@ -41,7 +41,7 @@ public class GoldCardTool extends GoldCard{
      * @param player current player
      */
     public void addPoints (Player player){
-        player.setPoints(player.getPoints() + player.getResourceCounter(this.getTool()));
+        player.setPoints(player.getPoints() +player.getResourceCounter(this.getTool()));
 
     }
 }

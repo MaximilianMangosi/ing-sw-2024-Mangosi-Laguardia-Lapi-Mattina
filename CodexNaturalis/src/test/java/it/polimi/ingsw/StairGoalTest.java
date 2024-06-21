@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -64,7 +65,7 @@ public class StairGoalTest {
             GameTest.fillList(identicalGoalJsons,numOfIdenticalGoal,identicalGoalPath);
             GameTest.fillList(LGoalJsons,numOfLGoal,LGoalPath);
             GameTest.fillList(stairGoalJsons,numOfStairGoal,stairGoalPath);}
-        catch (IOException e){
+        catch (IOException | URISyntaxException e){
             System.out.println("Error during json file reading:\n"+e.getMessage());
         }
 

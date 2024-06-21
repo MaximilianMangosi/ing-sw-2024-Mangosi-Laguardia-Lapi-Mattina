@@ -13,10 +13,12 @@ import it.polimi.ingsw.model.gamecards.resources.Resource;
 import it.polimi.ingsw.model.gamecards.resources.Tool;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.Player;
+import it.polimi.ingsw.server.Server;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -32,35 +34,35 @@ public class GameTest {
 
 
         ArrayList<String> resourceCardJsons=new ArrayList<>();
-        String resourceCardPath="src/jsons/ResourceCard/ResourceCard_";
+        String resourceCardPath="/jsons/ResourceCard/ResourceCard_";
         int numOfResourceCard=40;
 
         ArrayList<String> goldCardJsons=new ArrayList<>();
-        String goldCardPath="src/jsons/GoldCard/GoldCard_";
+        String goldCardPath="/jsons/GoldCard/GoldCard_";
         int numOfGoldCard=16;
 
         ArrayList<String> goldCardAnglesJsons=new ArrayList<>();
-        String goldCardAnglesPath="src/jsons/GoldCard/GoldCardAngles/GoldCardAngles_";
+        String goldCardAnglesPath="/jsons/GoldCard/GoldCardAngles/GoldCardAngles_";
         int numOfGoldCardAngles=12;
 
         ArrayList<String> goldCardToolJsons=new ArrayList<>();
-        String goldCardToolPath="src/jsons/GoldCard/GoldCardTool/GoldCardTool_";
+        String goldCardToolPath="/jsons/GoldCard/GoldCardTool/GoldCardTool_";
         int numOfGoldCardTool=12;
 
         ArrayList<String> starterCardJsons=new ArrayList<>();
-        String starterCardPath="src/jsons/StarterCard/StarterCard_";
+        String starterCardPath="/jsons/StarterCard/StarterCard_";
         int numOfStarterCard=6;
 
         ArrayList<String> identicalGoalJsons=new ArrayList<>();
-        String identicalGoalPath="src/jsons/Goal/IdenticalGoal/IdenticalGoal_";
+        String identicalGoalPath="/jsons/Goal/IdenticalGoal/IdenticalGoal_";
         int numOfIdenticalGoal=7;
 
         ArrayList<String> LGoalJsons=new ArrayList<>();
-        String LGoalPath="src/jsons/Goal/LGoal/LGoal_";
+        String LGoalPath="/jsons/Goal/LGoal/LGoal_";
         int numOfLGoal=4;
 
         ArrayList<String> stairGoalJsons=new ArrayList<>();
-        String stairGoalPath="src/jsons/Goal/StairGoal/StairGoal_";
+        String stairGoalPath="/jsons/Goal/StairGoal/StairGoal_";
         int numOfStairGoal=4;
     try{
         fillList(resourceCardJsons,numOfResourceCard,resourceCardPath);
@@ -71,7 +73,7 @@ public class GameTest {
         fillList(identicalGoalJsons,numOfIdenticalGoal,identicalGoalPath);
         fillList(LGoalJsons,numOfLGoal,LGoalPath);
         fillList(stairGoalJsons,numOfStairGoal,stairGoalPath);}
-    catch (IOException e){
+    catch (IOException | URISyntaxException e){
         System.out.println("Error during json file reading:\n"+e.getMessage());
     }
 
@@ -145,11 +147,7 @@ public class GameTest {
         p.addCardToHand(new ResourceCard(null,Reign.BUG,Tool.PHIAL,Reign.ANIMAL,0,Reign.ANIMAL, 1));
         Reign[] arr= {Reign.BUG};
         p.setStarterCard(new StarterCard(Reign.EMPTY,Reign.PLANTS,Reign.BUG,Reign.EMPTY,Reign.MUSHROOM,Reign.PLANTS,Reign.BUG,Reign.ANIMAL,new ArrayList<>(List.of(arr)), 1));
-        Resource[] resourceArray={Reign.ANIMAL,Reign.MUSHROOM,Reign.BUG,Reign.PLANTS, Tool.PHIAL,Tool.FEATHER,Tool.SCROLL};
-
-        for (Resource resource: resourceArray){
-            p.setResourceCounter(resource,0);
-        }
+        initializeResourceCounter(p);
         game.playStarterCard(p,true);
         assertEquals(1,p.getResourceCounter(Reign.PLANTS));
         assertEquals(2,p.getResourceCounter(Reign.BUG));
@@ -183,9 +181,37 @@ public class GameTest {
         assertEquals(1,p.getResourceCounter(Tool.PHIAL));
         assertEquals(0,p.getResourceCounter(Tool.SCROLL));
     }
-    public static void fillList(ArrayList<String> jsonsList,int numOfJson,String path) throws IOException {
-        for (int i = 1; i <=numOfJson; i++) {
-            jsonsList.add(Files.readString(Path.of(path+i+".json")));
+    @Test
+    public void checkRequirementsTest_Passed() throws RequirementsNotMetException {
+        Player p= new Player("Gianni");
+        game.addPlayer(p);
+        game.setCurrentPlayer(p);
+        initializeResourceCounter(p);
+        StarterCard starterCard= gb.getStarterCardSet().stream().filter(c->c.getId()==82).findAny().get();
+        p.setStarterCard(starterCard);
+        game.playStarterCard(p,true);
+        p.addCardToHand(gb.getGoldCardSet().stream().filter(c->c.getId()==41).findAny().get());
+        p.addCardToHand(gb.getResourceCardSet().stream().filter(c->c.getId()==15).findAny().get());
+        p.addCardToHand(gb.getResourceCardSet().iterator().next());
+
+        game.playCardFront(p.getHand().get(1),new Coordinates(-1,-1));
+        game.playCardFront(p.getHand().getFirst(),new Coordinates(1,1));
+
+
+    }
+
+    private void initializeResourceCounter(Player p) {
+        Resource[] resourceArray={Reign.ANIMAL,Reign.MUSHROOM,Reign.BUG,Reign.PLANTS, Tool.PHIAL,Tool.FEATHER,Tool.SCROLL};
+
+        for (Resource resource: resourceArray){
+            p.setResourceCounter(resource,0);
         }
     }
+
+    public static void fillList(ArrayList<String> jsonsList,int numOfJson,String path) throws IOException, URISyntaxException {
+        for (int i = 1; i <=numOfJson; i++) {
+            jsonsList.add(Files.readString(Path.of(Server.class.getResource(path+i+".json").toURI())));
+        }
+    }
+
 }

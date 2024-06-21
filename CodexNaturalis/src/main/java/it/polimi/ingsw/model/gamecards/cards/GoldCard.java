@@ -69,7 +69,7 @@ public class GoldCard extends Card {
      */
     public boolean checkRequirements(HashMap<Resource,Integer> resourceCounter){
         for (Reign reign : requirements.keySet()) {
-            if(requirements.get(reign) >= resourceCounter.get(reign)){
+            if(requirements.get(reign) >  resourceCounter.get(reign)){
                 return false;
             }
         }
