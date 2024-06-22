@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -257,14 +257,11 @@
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
             </ScrollPane>
-            <TextField alignment="TOP_LEFT" prefHeight="66.0" prefWidth="521.0" promptText="Write your message...">
+            <TextArea fx:id="inputChat" onKeyPressed="#onKeyEnter" onKeyReleased="#onTextChat" prefHeight="200.0" prefWidth="200.0" promptText="Write your message..." wrapText="true">
                <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </TextField>
+            </TextArea>
          </children>
       </VBox>
    </children>

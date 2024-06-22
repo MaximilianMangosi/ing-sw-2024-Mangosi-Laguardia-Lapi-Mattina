@@ -48,7 +48,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     }
 
 
-    public void sendChatMessage(String message) throws IllegalOperationException, RemoteException {
+    public void sendChatMessage(String message) throws IOException, ClassNotFoundException, IllegalOperationException {
         controller.addToGlobalChat(message);
     }
 
