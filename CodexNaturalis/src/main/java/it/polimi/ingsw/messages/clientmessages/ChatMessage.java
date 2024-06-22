@@ -22,6 +22,8 @@ public class ChatMessage extends ClientMessage {
             view.sendChatMessage(chatMessage);
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
         clientHandler.answerClient(new SuccessMessage());
         clientHandler.broadCast(new UpdateChatMessage("global",view.getChatList()));

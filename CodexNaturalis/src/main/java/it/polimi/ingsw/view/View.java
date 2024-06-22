@@ -80,5 +80,5 @@ public interface View {
     public void sendPrivateMessage(String receiver, String message, UUID sender) throws IOException, IllegalOperationException, ClassNotFoundException;
     public List<String> getPrivateChat(String receiver, UUID uuid) throws RemoteException;
     public List<String> getPrivateChat(String user) throws RemoteException;
-    void sendChatMessage(String message) throws IOException, ClassNotFoundException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, InvalidGameID;
+    void sendChatMessage(String message) throws IOException, ClassNotFoundException, IllegalOperationException;
 }
