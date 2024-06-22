@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -113,9 +114,9 @@ public class InGameController extends GUIController {
     private Timeline overlapAnimation;
     private StackPane removedStack;
     private String chatMessage;
-    AtomicBoolean updateChatBool = new AtomicBoolean(false);
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private ScheduledFuture updateChatTask;
+    private List<Coordinates> avlbPositions;
 
 
     public void init() throws RemoteException {
@@ -643,29 +644,34 @@ public class InGameController extends GUIController {
         returnButtonPresent=false;
     }
     private void handleDragDetected(MouseEvent event){
-        Dragboard db=((Node) event.getSource()).startDragAndDrop(TransferMode.MOVE);
-        ClipboardContent cpc = new ClipboardContent();
-        cpc.putImage(((ImageView)event.getSource()).getImage());
-        db.setContent(cpc);
-        selectedCardToPlay= (ImageView) event.getSource();
+
+        try {
+            avlbPositions=getPlayersLegalPositions();
+            Dragboard db=((Node) event.getSource()).startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent cpc = new ClipboardContent();
+            cpc.putImage(((ImageView)event.getSource()).getImage());
+            db.setContent(cpc);
+            selectedCardToPlay= (ImageView) event.getSource();
+        } catch (RemoteException e) {
+            showErrorMsg(e.getMessage());
+        } catch (InvalidUserId e) {
+            showErrorMsg(e.getMessage());
+        }
 
     }
     private void handleDragOver(DragEvent e)  {
-        try{
             double hover_x = e.getX()-1204;
             double hover_y = e.getY()-805;
             Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
 //            System.out.println((int) Math.round(hover_x/155.5));
 //            System.out.println( (int) Math.round(hover_y/79.5));
-            List<Coordinates> avlbPositions = getPlayersLegalPositions();
+
 
             if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
                 e.acceptTransferModes(TransferMode.MOVE);
             }
             e.consume();
-        }catch (InvalidUserId | RemoteException invalidUserId){
 
-        }
 
     }
     private void  handleDragDropped(DragEvent e){
@@ -740,7 +746,7 @@ public class InGameController extends GUIController {
             messageBox.getChildren().add(text);
         }
 
-        updateChatBool.set(true);
+
 
     }
 
@@ -762,7 +768,7 @@ public class InGameController extends GUIController {
         }
 
 
-        updateChatBool.set(true);
+
         updateChatTask = scheduler.scheduleAtFixedRate(this::updateChat, 0, 1, TimeUnit.SECONDS);
     }
 

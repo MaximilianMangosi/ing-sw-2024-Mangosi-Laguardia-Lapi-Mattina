@@ -45,8 +45,6 @@ public class UpdateViewSocket extends Thread{
             } catch (ClassNotFoundException e) {
                 System.out.println("Error reading userID of client");
             }
-
-
         }
 
     }

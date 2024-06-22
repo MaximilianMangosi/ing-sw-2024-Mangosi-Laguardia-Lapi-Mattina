@@ -172,7 +172,6 @@ public class Game{
 
 
         Player player;
-        //Mi manca un attimo come funziona APP ,cioè devo fare una copia dei mazzi da APP e poi fare lo shuffle
         String[] colorArray={"Red","Blue","Yellow","Green"};
         List<String> colors= new ArrayList<String>(List.of(colorArray));
 

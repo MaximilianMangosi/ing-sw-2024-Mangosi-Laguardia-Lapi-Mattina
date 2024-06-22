@@ -10,25 +10,33 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.NewHelloController">
+<AnchorPane prefHeight="600.0" prefWidth="720.0" style="-fx-background-color: #dbd3a9;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.NewHelloController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME TO CODEX NATURALIS" textAlignment="CENTER" wrappingWidth="181.13671875">
-               <font>
-                  <Font name="Bodoni MT Condensed" size="31.0" />
-               </font>
-            </Text>
-            <TextField fx:id="username" onKeyReleased="#changeUsername" prefHeight="25.0" prefWidth="624.0" promptText="INSERT YOUR USERNAME">
-               <VBox.margin>
-                  <Insets left="250.0" right="250.0" top="30.0" />
-               </VBox.margin>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME TO CODEX NATURALIS" textAlignment="CENTER" wrappingWidth="380.13671875">
+                           <font>
+                              <Font name="Bodoni MT Condensed" size="45.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
+            <TextField fx:id="username" onKeyReleased="#changeUsername" prefHeight="25.0" prefWidth="615.0" promptText="INSERT YOUR USERNAME">
                <font>
                   <Font name="Bodoni MT Italic" size="13.0" />
                </font>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+               <VBox.margin>
+                  <Insets left="100.0" right="100.0" />
+               </VBox.margin>
             </TextField>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
                <children>
