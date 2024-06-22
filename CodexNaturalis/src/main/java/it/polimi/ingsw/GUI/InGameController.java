@@ -179,9 +179,10 @@ public class InGameController extends GUIController {
     public void updatePlayersList(List<String> players)  {
         playerListBox.getChildren().clear();
         try {
+            int maxWidth= players.stream().max(Comparator.comparingInt(String::length)).get().length();
             for (String p : players) {
                 StackPane sp = new StackPane();
-                sp.setMaxSize(p.length()*100,30);
+                sp.setPrefWidth(maxWidth*20);
                 String color=view.getPlayerColor(p);
                 sp.setStyle("-fx-background-color: "+color);
                 Label label = new Label(p);

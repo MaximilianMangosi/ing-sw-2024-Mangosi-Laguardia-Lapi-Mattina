@@ -1,0 +1,73 @@
+Welcome to Codex Naturalis!
+
+Play and place your cards carefully to benefit from the resources and the tools to:
+    -   Play cards to win immediate points,
+    -   Fulfill endgame Goals.
+The first player to reach 20 points triggers the end of the game. Do not hesitate to cover and lose resources to develop your play area.
+
+Basic Commands
+
+Here's a list of basic commands you can use to play the game:
+
+Starting Phase:
+    1)start-game:
+        Creates or joins a game, available only when you are not playing another game
+
+    2)choose-goal:
+        Choose your personal Goal (it's secret, only you can see it) between two Goal Options, fulfill this Goal to gain points in end game.
+        Available only one time for game.
+
+    3)choose-starter-card-side
+        Choose on which side (Front or Back) play your Starter Card. Available only once for game.
+
+Main Phase:
+    1)play-card
+        Plays one of the card in your hand, you can choose where and on which side play.
+        Some cards grant points (if played on front side) but require a certain number of Resources to be played. Available once for turn.
+
+    2)draw-card-deck
+        Draws a card from one of the two deck (Gold and Resources). Available once for turn only after you have played a card.
+        During Final Turn drawing cards isn't allowed.
+
+    3)draw-card-visible:
+        Draws one of the card visible on the table. Available once for turn only after you have played a card.
+        During Final Turn drawing cards isn't allowed.
+
+
+Show Commands:
+    1)show-hand:
+        shows the card contained in your hand. Always available.
+
+    2)show-my-goal:
+        shows your private goal. Always available.
+
+    3)show-public-goals:
+        shows the public goals.Always available.
+
+    4)show-my-field:
+        shows your field, you can also see the cards in detail
+
+    5)show-field:
+        shows the player's field of your choice,you can also see the cards in detail
+
+Chat Commands:
+    1)open-private-chat:
+        opens the chat with a user, you can read a write message with him privately
+
+    2)open-global-chat
+        open the chat with all the user in game
+
+Close Commands:
+    1)disconnect:
+        Quits the game, after you quit you can't comeback
+
+    2)exit:
+        Close the program
+
+Help Commands
+    1)help-command:
+        Show this text
+    2)help-card:
+        Show the card tutorial
+
+

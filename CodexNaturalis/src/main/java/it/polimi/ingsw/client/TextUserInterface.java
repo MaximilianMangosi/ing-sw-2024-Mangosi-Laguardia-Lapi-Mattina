@@ -166,7 +166,6 @@ public class TextUserInterface extends UserInterface {
                     Card chosenCard = null;
                     Coordinates chosenPosition=null;
                     boolean isChosenFront;
-
                     try {
                         chosenCard=promptForChosenCard();
                         isChosenFront = promptForSide();
@@ -225,7 +224,7 @@ public class TextUserInterface extends UserInterface {
                     printIdleUI();
                     break;
 
-                case "draw-card-from-deck":
+                case "draw-card-deck":
                    while (error) {
                        try {
                            Integer chosenDeck = promptForChosenDeck();
@@ -271,7 +270,7 @@ public class TextUserInterface extends UserInterface {
                    s.nextLine();
                    artist.resetMatrix();
                    break;
-                case "show-public-goal":
+                case "show-public-goals":
                    artist.show(view.getPublicGoals());
                    outWriter.print("Press enter to continue");
                    s.nextLine();
@@ -302,6 +301,11 @@ public class TextUserInterface extends UserInterface {
                     tuiUpdater.interrupt();
                     isPlaying=false;
                     outWriter.print("You quit the game, type 'start-game' to restart playing\n");
+                    break;
+                case "exit":
+                    view.closeGame(myID);
+                    tuiUpdater.interrupt();
+                    System.exit(1);
                     break;
                 case "open-global-chat":
                     outWriter.print("Write -close to exit from chat");
@@ -342,12 +346,26 @@ public class TextUserInterface extends UserInterface {
                         }
                     }
                     break;
+                case "help-command":
+                    printTutorial();
+                    break;
+                case "help-card":
+                    printTutorialCard();
+                    break;
                 default:
-                    outWriter.print("Unknown command");
+                    outWriter.print("Unknown command, try help-command");
             }
             updateIdleUI();
             printIdleUI();
         }
+    }
+
+    private void printTutorialCard() {
+        Scanner s= new Scanner(getClass().getResourceAsStream("/TUI-tutorial-card.txt"));
+        while (s.hasNext()){
+            outWriter.print(s.nextLine());
+        }
+        s.close();
     }
 
     private String promptForChat(AtomicBoolean stop1, Thread t1) throws RemoteException {
@@ -712,10 +730,19 @@ public class TextUserInterface extends UserInterface {
     }
     void printLogo(){
         Scanner s= new Scanner(getClass().getResourceAsStream("/ascii-logo"));
-        System.out.println("\u001B[33m");
+        outWriter.print("\u001B[33m");
         while (s.hasNext()){
-            System.out.println(s.nextLine());
+
+            outWriter.print(s.nextLine());
         }
-        System.out.println(TUIAsciiArtist.RESET);
+        outWriter.print(TUIAsciiArtist.RESET);
+        s.close();
+    }
+    void printTutorial(){
+        Scanner s= new Scanner(getClass().getResourceAsStream("/TUI-tutorial"));
+        while (s.hasNext()){
+            outWriter.print(s.nextLine());
+        }
+        s.close();
     }
 }

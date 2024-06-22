@@ -2,20 +2,27 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.OutStreamWriter;
 import it.polimi.ingsw.client.TUIAsciiArtist;
+import it.polimi.ingsw.client.TextUserInterface;
+import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.gamecards.GameBox;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.GoldCard;
 import it.polimi.ingsw.model.gamecards.cards.GoldCardAngles;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
-import it.polimi.ingsw.model.gamecards.goals.Goal;
+import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
+import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
+import it.polimi.ingsw.model.gamecards.goals.*;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamecards.resources.Resource;
 import it.polimi.ingsw.model.gamelogic.Game;
 import it.polimi.ingsw.model.gamelogic.Player;
+import it.polimi.ingsw.model.gamelogic.exceptions.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -30,9 +37,9 @@ public class TUIAsciiArtistTest {
     public TUIAsciiArtist artist=new TUIAsciiArtist(new OutStreamWriter());
     public Game game;
     public GameBox gb = new GameBox();
-    private void fillList(ArrayList<String> jsonsList,int numOfJson,String path) throws IOException {
+    private void fillList(ArrayList<String> jsonsList,int numOfJson,String path) throws IOException, URISyntaxException {
         for (int i = 1; i <=numOfJson; i++) {
-            jsonsList.add(Files.readString(Path.of(path+i+".json")));
+            jsonsList.add(Files.readString(Path.of( getClass().getResource(path+i+".json").toURI())));
         }
     }
     @Before
@@ -40,35 +47,35 @@ public class TUIAsciiArtistTest {
 
 
         ArrayList<String> resourceCardJsons=new ArrayList<>();
-        String resourceCardPath="src/jsons/ResourceCard/ResourceCard_";
+        String resourceCardPath="/jsons/ResourceCard/ResourceCard_";
         int numOfResourceCard=40;
 
         ArrayList<String> goldCardJsons=new ArrayList<>();
-        String goldCardPath="src/jsons/GoldCard/GoldCard_";
+        String goldCardPath="/jsons/GoldCard/GoldCard_";
         int numOfGoldCard=16;
 
         ArrayList<String> goldCardAnglesJsons=new ArrayList<>();
-        String goldCardAnglesPath="src/jsons/GoldCard/GoldCardAngles/GoldCardAngles_";
+        String goldCardAnglesPath="/jsons/GoldCard/GoldCardAngles/GoldCardAngles_";
         int numOfGoldCardAngles=12;
 
         ArrayList<String> goldCardToolJsons=new ArrayList<>();
-        String goldCardToolPath="src/jsons/GoldCard/GoldCardTool/GoldCardTool_";
+        String goldCardToolPath="/jsons/GoldCard/GoldCardTool/GoldCardTool_";
         int numOfGoldCardTool=12;
 
         ArrayList<String> starterCardJsons=new ArrayList<>();
-        String starterCardPath="src/jsons/StarterCard/StarterCard_";
+        String starterCardPath="/jsons/StarterCard/StarterCard_";
         int numOfStarterCard=6;
 
         ArrayList<String> identicalGoalJsons=new ArrayList<>();
-        String identicalGoalPath="src/jsons/Goal/IdenticalGoal/IdenticalGoal_";
+        String identicalGoalPath="/jsons/Goal/IdenticalGoal/IdenticalGoal_";
         int numOfIdenticalGoal=7;
 
         ArrayList<String> LGoalJsons=new ArrayList<>();
-        String LGoalPath="src/jsons/Goal/LGoal/LGoal_";
+        String LGoalPath="/jsons/Goal/LGoal/LGoal_";
         int numOfLGoal=4;
 
         ArrayList<String> stairGoalJsons=new ArrayList<>();
-        String stairGoalPath="src/jsons/Goal/StairGoal/StairGoal_";
+        String stairGoalPath="/jsons/Goal/StairGoal/StairGoal_";
         int numOfStairGoal=4;
         try{
             fillList(resourceCardJsons,numOfResourceCard,resourceCardPath);
@@ -79,7 +86,7 @@ public class TUIAsciiArtistTest {
             fillList(identicalGoalJsons,numOfIdenticalGoal,identicalGoalPath);
             fillList(LGoalJsons,numOfLGoal,LGoalPath);
             fillList(stairGoalJsons,numOfStairGoal,stairGoalPath);}
-        catch (IOException e){
+        catch (IOException | URISyntaxException e){
             System.out.println("Error during json file reading:\n"+e.getMessage());
         }
 
@@ -105,7 +112,7 @@ public class TUIAsciiArtistTest {
 
     @Test
     public void showCardTest (){
-        List<Card> deck =new ArrayList<>(gb.getResourceCardSet());
+        List<Card> deck =new ArrayList<>(gb.getGoldCardSet());
         shuffle(deck);
         deck= deck.stream().limit(4).toList();
         artist.show(deck);
@@ -130,6 +137,23 @@ public class TUIAsciiArtistTest {
         for (StarterCard s : deck) {
             artist.show(s,true);
         }
+
+    }
+    @Test
+    public void buildTutorial() throws IOException, URISyntaxException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, InvalidGameID, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
+       Goal[] arr={ gb.getGoalSet().stream().filter(p->p instanceof DistinctGoal).findAny().get(),gb.getGoalSet().stream().filter(p->p instanceof IdenticalGoal).findAny().get()};
+        artist.show(arr);
+        FileWriter fileWriter=new FileWriter("src/main/resources/TUI-tutorial-card3");
+        for (String[]row: artist.getMatrix()){
+            for (String cell:row){
+                if(cell!=null)
+                    fileWriter.write(cell);
+                else
+                    fileWriter.write(" ");
+            }
+            fileWriter.write("\n");
+        }
+        new TextUserInterface().execCmd("help-card");
 
     }
 

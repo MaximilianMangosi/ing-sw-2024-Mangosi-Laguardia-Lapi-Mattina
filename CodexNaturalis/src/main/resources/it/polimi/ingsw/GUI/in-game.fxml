@@ -99,7 +99,7 @@
          <top>
             <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox fx:id="playerListBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" />
+                  <HBox fx:id="playerListBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="1437.0" spacing="20.0" style="-fx-background-color: #ebdcaa;" />
                   <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quitGame" prefHeight="46.0" prefWidth="70.0" style="-fx-background-color: e5a78a;" text="QUIT" textFill="#f2f2f2" translateX="900.0" translateY="-40.0">
                      <font>
                         <Font name="Bodoni MT Condensed" size="25.0" />

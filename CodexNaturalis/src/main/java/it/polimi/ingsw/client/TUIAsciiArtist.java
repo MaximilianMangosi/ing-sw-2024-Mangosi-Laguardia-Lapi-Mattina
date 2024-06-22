@@ -308,7 +308,7 @@ public class TUIAsciiArtist {
             for (int j=columnStart;j<columnStart+14;j++){
                 if(i==0){
                     if(j==columnStart){
-                        matrix[i][j]=YELLOW+"╔";
+                        matrix[i][j]=LIGHT_WHITE+YELLOW+"╔";
                     } else if (j==columnStart+13) {
                         matrix[i][j]="╗"+RESET;
                     }else{
@@ -317,23 +317,23 @@ public class TUIAsciiArtist {
                 }
                 if(i==1){
                     if(j==columnStart || j==columnStart+13){
-                        matrix[i][j]=YELLOW+ "║"+RESET;
+                        matrix[i][j]=YELLOW+LIGHT_WHITE+ "║"+RESET;
                     }else if(j==columnStart+6){
-                        matrix[i][j]= BLACK+String.valueOf(goal.getPoints())+RESET;
+                        matrix[i][j]= BLACK+goal.getPoints()+RESET;
                     }else{
                         matrix[i][j]=bgColor+" ";
                     }
                 }
                 if(i==2 || i==3){
                     if(j==columnStart || j==columnStart+13){
-                        matrix[i][j]=YELLOW+ "║"+RESET;
+                        matrix[i][j]=YELLOW+LIGHT_WHITE+ "║"+RESET;
                     }else{
                         matrix[i][j]=bgColor+" ";
                     }
                 }
                 if(i==4) {
                     if (j == columnStart) {
-                        matrix[i][j] = YELLOW + "╚";
+                        matrix[i][j] = YELLOW +LIGHT_WHITE+ "╚";
                     } else if (j == columnStart + 13) {
                         matrix[i][j] = "╝" + RESET;
                     } else {
@@ -386,7 +386,7 @@ public class TUIAsciiArtist {
                         matrix[i][j]="\u001B[103m"+" ";
                     }
                 }
-                matrix[i][26] += RESET;
+                matrix[i][endCol-1] += RESET;
             }else {//the last row
                 for ( j=0;j<endCol;j++){
                     if(j==0 || j==14){

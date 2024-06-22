@@ -30,7 +30,7 @@ public class Game{
     private List<ResourceCard> resourceCardDeck ;
     private List<GoldCard> goldCardDeck ;
     private List<Card> visibleCards=new ArrayList<>();
-    private Goal[] publicGoals=new Goal[2];// TODO setup in startGame
+    private Goal[] publicGoals=new Goal[2];
     private final List<Goal> listOfGoal= new ArrayList<>();
     private Player currentPlayer;
     private List<StarterCard> starterCards=new ArrayList<>();
