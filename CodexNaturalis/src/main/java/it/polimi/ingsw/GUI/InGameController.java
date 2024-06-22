@@ -95,6 +95,7 @@ public class InGameController extends GUIController {
     private StackPane myField;
     private Timeline overlapAnimation;
     private StackPane removedStack;
+    private List<Coordinates> avlbPositions;
 
 
     public void init() throws RemoteException, InvalidUserId {
@@ -572,29 +573,34 @@ public class InGameController extends GUIController {
         returnButtonPresent=false;
     }
     private void handleDragDetected(MouseEvent event){
-        Dragboard db=((Node) event.getSource()).startDragAndDrop(TransferMode.MOVE);
-        ClipboardContent cpc = new ClipboardContent();
-        cpc.putImage(((ImageView)event.getSource()).getImage());
-        db.setContent(cpc);
-        selectedCardToPlay= (ImageView) event.getSource();
+
+        try {
+            avlbPositions=getPlayersLegalPositions();
+            Dragboard db=((Node) event.getSource()).startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent cpc = new ClipboardContent();
+            cpc.putImage(((ImageView)event.getSource()).getImage());
+            db.setContent(cpc);
+            selectedCardToPlay= (ImageView) event.getSource();
+        } catch (RemoteException e) {
+            showErrorMsg(e.getMessage());
+        } catch (InvalidUserId e) {
+            showErrorMsg(e.getMessage());
+        }
 
     }
     private void handleDragOver(DragEvent e)  {
-        try{
             double hover_x = e.getX()-1204;
             double hover_y = e.getY()-805;
             Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
 //            System.out.println((int) Math.round(hover_x/155.5));
 //            System.out.println( (int) Math.round(hover_y/79.5));
-            List<Coordinates> avlbPositions = getPlayersLegalPositions();
+
 
             if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
                 e.acceptTransferModes(TransferMode.MOVE);
             }
             e.consume();
-        }catch (InvalidUserId | RemoteException invalidUserId){
 
-        }
 
     }
     private void  handleDragDropped(DragEvent e){
