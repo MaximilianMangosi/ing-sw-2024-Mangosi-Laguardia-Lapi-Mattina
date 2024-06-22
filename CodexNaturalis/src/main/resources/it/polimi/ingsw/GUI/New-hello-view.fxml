@@ -3,41 +3,118 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.NewHelloController">
+<AnchorPane prefHeight="600.0" prefWidth="720.0" style="-fx-background-color: #e4dcb6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.NewHelloController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME TO CODEX NATURALIS" textAlignment="CENTER" wrappingWidth="181.13671875">
-               <font>
-                  <Font name="Bodoni MT Condensed" size="31.0" />
-               </font>
-            </Text>
-            <TextField fx:id="username" onKeyReleased="#changeUsername" prefHeight="25.0" prefWidth="624.0" promptText="INSERT YOUR USERNAME">
-               <VBox.margin>
-                  <Insets left="250.0" right="250.0" top="30.0" />
-               </VBox.margin>
+            <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView blendMode="OVERLAY" cache="true" depthTest="DISABLE" fitHeight="106.0" fitWidth="114.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Icon/codex%20logo.png" />
+                           </image>
+                        </ImageView>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME TO CODEX NATURALIS" textAlignment="CENTER" wrappingWidth="478.13671875" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Bodoni MT Condensed" size="45.0" />
+                                 </font>
+                              </Text>
+                           </center>
+                           <top>
+                              <HBox prefHeight="21.0" prefWidth="479.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <ImageView fitHeight="39.0" fitWidth="121.0" layoutX="131.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../Icon/codex%20sequenza%202.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="39.0" fitWidth="121.0" layoutX="252.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../Icon/codex%20sequenza%202.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="39.0" fitWidth="121.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../Icon/codex%20sequenza%202.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="39.0" fitWidth="121.0" layoutX="252.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../Icon/codex%20sequenza%202.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                           </top>
+                           <bottom>
+                              <HBox prefHeight="27.0" prefWidth="479.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <ImageView fitHeight="39.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../Icon/codex%20sequenza%202.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="39.0" fitWidth="121.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../Icon/codex%20sequenza%202.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="39.0" fitWidth="121.0" layoutX="131.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../Icon/codex%20sequenza%202.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="39.0" fitWidth="121.0" layoutX="252.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../Icon/codex%20sequenza%202.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                           </bottom>
+                        </BorderPane>
+                        <ImageView blendMode="OVERLAY" cache="true" depthTest="DISABLE" fitHeight="106.0" fitWidth="114.0" layoutX="78.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Icon/codex%20logo.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
+            <TextField fx:id="username" onKeyReleased="#changeUsername" prefHeight="25.0" prefWidth="615.0" promptText="INSERT YOUR USERNAME">
                <font>
                   <Font name="Bodoni MT Italic" size="13.0" />
                </font>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+               <VBox.margin>
+                  <Insets left="100.0" right="100.0" />
+               </VBox.margin>
             </TextField>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="socketButton" mnemonicParsing="false" onAction="#selectSocket" prefHeight="31.0" prefWidth="90.0" text="Socket">
+                  <Button fx:id="socketButton" mnemonicParsing="false" onAction="#selectSocket" prefHeight="31.0" prefWidth="90.0" style="-fx-background-color: e5a78a;" text="Socket">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="RMIButton" mnemonicParsing="false" onAction="#selectRMI" prefHeight="31.0" prefWidth="59.0" text="RMI">
+                  <Button fx:id="RMIButton" mnemonicParsing="false" onAction="#selectRMI" prefHeight="31.0" prefWidth="59.0" style="-fx-background-color: e5a78a;" text="RMI">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
@@ -52,12 +129,12 @@
             </HBox>
             <HBox fx:id="selectJoinOrCreate" alignment="CENTER" layoutX="260.0" layoutY="124.0" prefHeight="100.0" prefWidth="256.0">
                <children>
-                  <Button fx:id="createGameButton" mnemonicParsing="false" onAction="#selectCreateGame" prefHeight="32.0" prefWidth="158.0" text="CREATE GAME">
+                  <Button fx:id="createGameButton" mnemonicParsing="false" onAction="#selectCreateGame" prefHeight="32.0" prefWidth="158.0" style="-fx-background-color: e5a78a;" text="CREATE GAME">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="joinGameButton" mnemonicParsing="false" onAction="#selectJoinGame" prefHeight="32.0" prefWidth="158.0" text="JOIN GAME">
+                  <Button fx:id="joinGameButton" mnemonicParsing="false" onAction="#selectJoinGame" prefHeight="32.0" prefWidth="158.0" style="-fx-background-color: e5a78a;" text="JOIN GAME">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
@@ -85,17 +162,17 @@
                                     </Text>
                                     <HBox alignment="CENTER" prefHeight="57.0" prefWidth="289.0">
                                        <children>
-                                          <Button fx:id="twoplayersbutton" mnemonicParsing="false" onAction="#select2Players" text="2">
+                                          <Button fx:id="twoplayersbutton" mnemonicParsing="false" onAction="#select2Players" style="-fx-background-color: e5a78a;" text="2">
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Button fx:id="threeplayersbutton" mnemonicParsing="false" onAction="#select3Players" text="3">
+                                          <Button fx:id="threeplayersbutton" mnemonicParsing="false" onAction="#select3Players" style="-fx-background-color: e5a78a;" text="3">
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Button fx:id="fourplayersbutton" mnemonicParsing="false" onAction="#select4Players" text="4">
+                                          <Button fx:id="fourplayersbutton" mnemonicParsing="false" onAction="#select4Players" style="-fx-background-color: e5a78a;" text="4">
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </HBox.margin>
@@ -121,7 +198,7 @@
                                           <Insets bottom="80.0" />
                                        </VBox.margin>
                                     </Text>
-                                    <Button fx:id="refreshButton" mnemonicParsing="false" onMouseClicked="#refresh" text="Refresh" />
+                                    <Button fx:id="refreshButton" mnemonicParsing="false" onMouseClicked="#refresh" style="-fx-background-color: e5a78a;" text="Refresh" />
                                  </children>
                               </VBox>
                            </children>
@@ -129,7 +206,7 @@
                      </children></HBox>
                </children>
             </StackPane>
-            <Button fx:id="playButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPlay" prefHeight="30.0" prefWidth="70.0" text="PLAY!">
+            <Button fx:id="playButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPlay" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: e5a78a;" text="PLAY!">
                <VBox.margin>
                   <Insets bottom="25.0" />
                </VBox.margin>

@@ -24,12 +24,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.beans.EventHandler;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -96,7 +101,9 @@ public class InGameController extends GUIController {
     @FXML
     private Button chatButton;
     @FXML
-    private MenuButton chatMenu = new MenuButton("Global");
+    private MenuButton chatMenu = new MenuButton();
+    @FXML
+    private TextArea inputChat;
     private Map<ImageView,Integer> handCardsId = new HashMap<>();
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
@@ -106,6 +113,10 @@ public class InGameController extends GUIController {
     private StackPane myField;
     private Timeline overlapAnimation;
     private StackPane removedStack;
+    private String chatMessage;
+    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private ScheduledFuture updateChatTask;
+    private List<Coordinates> avlbPositions;
 
 
     public void init() throws RemoteException {
@@ -124,7 +135,9 @@ public class InGameController extends GUIController {
                     chatMenu.getItems().add(new MenuItem(player));
             }
 
+            chatMenu.getItems().add(new MenuItem("Global"));
 
+            chatMenu.setText("Global");
 
             initializeScoreMap();
 
@@ -632,29 +645,34 @@ public class InGameController extends GUIController {
         returnButtonPresent=false;
     }
     private void handleDragDetected(MouseEvent event){
-        Dragboard db=((Node) event.getSource()).startDragAndDrop(TransferMode.MOVE);
-        ClipboardContent cpc = new ClipboardContent();
-        cpc.putImage(((ImageView)event.getSource()).getImage());
-        db.setContent(cpc);
-        selectedCardToPlay= (ImageView) event.getSource();
+
+        try {
+            avlbPositions=getPlayersLegalPositions();
+            Dragboard db=((Node) event.getSource()).startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent cpc = new ClipboardContent();
+            cpc.putImage(((ImageView)event.getSource()).getImage());
+            db.setContent(cpc);
+            selectedCardToPlay= (ImageView) event.getSource();
+        } catch (RemoteException e) {
+            showErrorMsg(e.getMessage());
+        } catch (InvalidUserId e) {
+            showErrorMsg(e.getMessage());
+        }
 
     }
     private void handleDragOver(DragEvent e)  {
-        try{
             double hover_x = e.getX()-1204;
             double hover_y = e.getY()-805;
             Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
 //            System.out.println((int) Math.round(hover_x/155.5));
 //            System.out.println( (int) Math.round(hover_y/79.5));
-            List<Coordinates> avlbPositions = getPlayersLegalPositions();
+
 
             if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
                 e.acceptTransferModes(TransferMode.MOVE);
             }
             e.consume();
-        }catch (InvalidUserId | RemoteException invalidUserId){
 
-        }
 
     }
     private void  handleDragDropped(DragEvent e){
@@ -710,6 +728,7 @@ public class InGameController extends GUIController {
 
     public void loadChat(String user){
         messageBox.getChildren().clear();
+        chatMenu.setText(user);
         List <String> chatList = new ArrayList<>();
         //TODO: Fix the fact that the username Global could exist
         try{
@@ -723,8 +742,19 @@ public class InGameController extends GUIController {
             System.exit(1);
         }
         for (String message : chatList){
-            messageBox.getChildren().add(new Label(message));
+            Text text = new Text(message);
+            text.setWrappingWidth(500);
+            messageBox.getChildren().add(text);
         }
+
+
+
+    }
+
+    public void updateChat(){
+
+        Platform.runLater(()->loadChat(chatMenu.getText()));
+
     }
 
     public void showChat(){
@@ -738,19 +768,46 @@ public class InGameController extends GUIController {
             item.setOnAction(actionEvent->loadChat(item.getText()));
         }
 
+
+
+        updateChatTask = scheduler.scheduleAtFixedRate(this::updateChat, 0, 1, TimeUnit.SECONDS);
     }
 
     public void hideChat(){
         hideScoreboardButton.setVisible(false);
-
-
         chatBox.setLayoutX(-1080);
         chatBox.setVisible(false);
         hideChatButton.setVisible(false);
         scoreboardButton.setVisible(true);
         chatButton.setVisible(true);
 
+        updateChatTask.cancel(true);
+    }
 
+    @FXML
+    private void onTextChat(){
+        chatMessage = inputChat.getText();
+    }
+    @FXML
+    private void onKeyEnter(KeyEvent event){
+        if (event.getCode() == KeyCode.ENTER){
+            sendMessage();
+        }
+    }
 
+    public void sendMessage(){
+        try {
+            if (chatMenu.getText().equals("Global")) {
+                view.sendChatMessage(myName + " : " + chatMessage);
+            } else {
+                view.sendPrivateMessage(chatMenu.getText(), myName + " : " + chatMessage, myID);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            showErrorMsg("Connection error");
+            System.exit(1);
+        } catch (IllegalOperationException e) {
+            showErrorMsg(e.getMessage());
+        }
+        inputChat.clear();
     }
 }

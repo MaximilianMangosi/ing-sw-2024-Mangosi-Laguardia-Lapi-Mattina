@@ -19,10 +19,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.effect.Effect;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -39,12 +36,10 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class NewHelloController extends GUIController{
+
     @FXML
     private TextField username;
     @FXML
@@ -109,7 +104,8 @@ public class NewHelloController extends GUIController{
             server = new Socket( InetAddress.getLocalHost(),2323);
             view=new ViewSocket(server,new GameData());
         } catch (IOException |ClassNotFoundException e) {
-            //TODO error message
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Connection Error");
+            alert.showAndWait();
         }
 
     }
@@ -125,7 +121,8 @@ public class NewHelloController extends GUIController{
             Registry registry =LocateRegistry.getRegistry(1099);
             viewContainer=(ViewRMIContainerInterface) registry.lookup("ViewRMI");
         } catch (RemoteException | NotBoundException e) {
-            throw new RuntimeException(e);
+            Alert alert = new Alert(Alert.AlertType.ERROR,e.getMessage());
+            alert.showAndWait();
         }
     }
     @FXML
@@ -220,7 +217,8 @@ public class NewHelloController extends GUIController{
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-            //todo handle connection error
+            Alert alert = new Alert(Alert.AlertType.ERROR,e.getMessage());
+            alert.showAndWait();
         }
 
 
@@ -261,7 +259,11 @@ public class NewHelloController extends GUIController{
             }
 
         } catch (PlayerNameNotUniqueException e) {
-            throw new RuntimeException(e);
+
+            username.setStyle("-fx-border-color: default");
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Choose another name,this one is already taken for this game!");
+            alert.showAndWait();
+            username.setStyle("-fx-border-color: red");
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e);
         } catch (InvalidGameID e) {
