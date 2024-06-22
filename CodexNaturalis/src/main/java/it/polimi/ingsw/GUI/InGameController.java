@@ -13,13 +13,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -67,6 +66,10 @@ public class InGameController extends GUIController {
     @FXML
     private VBox scoreboardBox;
     @FXML
+    private VBox chatBox;
+    @FXML
+    private VBox messageBox;
+    @FXML
     private ImageView redCheck;
     @FXML
     private ImageView blueCheck;
@@ -85,7 +88,15 @@ public class InGameController extends GUIController {
     @FXML
     private Button hideScoreboardButton;
     @FXML
+    private Button hideChatButton;
+    @FXML
     private Button hideDeckButton;
+    @FXML
+    private Button quitButton;
+    @FXML
+    private Button chatButton;
+    @FXML
+    private MenuButton chatMenu = new MenuButton("Global");
     private Map<ImageView,Integer> handCardsId = new HashMap<>();
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
@@ -98,76 +109,98 @@ public class InGameController extends GUIController {
     private List<Coordinates> avlbPositions;
 
 
-    public void init() throws RemoteException, InvalidUserId {
-        deckBox.setVisible(false);
-        hideDeckButton.setVisible(false);
-        scoreboardBox.setVisible(false);
-        hideScoreboardButton.setVisible(false);
-        errorMsg.setVisible(false);
-        hideError.setOnFinished(event -> errorMsg.setVisible(false));
+    public void init() throws RemoteException {
+        try {
+            deckBox.setVisible(false);
+            chatBox.setVisible(false);
+            hideDeckButton.setVisible(false);
+            scoreboardBox.setVisible(false);
+            hideScoreboardButton.setVisible(false);
+            hideChatButton.setVisible(false);
+            errorMsg.setVisible(false);
+            hideError.setOnFinished(event -> errorMsg.setVisible(false));
 
-        initializeScoreMap();
-
-        for (String p : view.getPlayersList()) {
-            StackPane sp = new StackPane();
-            String color=view.getPlayerColor(p);
-            sp.setStyle("-fx-background-color: "+color);
-            Label label = new Label(p);
-            label.setFont(new Font("Bodoni MT Condensed", 40));
-            if (view.getCurrentPlayer().equals(p))
-                label.setStyle("-fx-background-color: d9be4a");
-            sp.getChildren().add(label);
-            playerListBox.getChildren().add(sp);
-            //makes label clickable
-            label.setOnMouseClicked(this::showEnemyField);
-            label.setCursor(Cursor.HAND);
+            for (String player : view.getPlayersList()){
+                if(!(player.equals(myName)))
+                    chatMenu.getItems().add(new MenuItem(player));
+            }
 
 
-        }
-        fieldPane.setOnDragOver(this::handleDragOver);
-        fieldPane.setOnDragDropped(this::handleDragDropped);
-        updateHand(getHand());
-        for(Node cardStack: handBox.getChildren() ){
-            cardStack.setOnMouseClicked(this::flipCard);
-            ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handleDragDetected);
-            ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handleDragDetected);
-            ((StackPane) cardStack).getChildren().getFirst().setOnDragDone(this::handleDragDone);
-            ((StackPane) cardStack).getChildren().get(1).setOnDragDone(this::handleDragDone);
 
-        }
-        int i=0;
-        for (Goal g: view.getPublicGoals()){
-            int id= g.getId();
+            initializeScoreMap();
+
+            updatePlayersList(view.getPlayersList());
+            fieldPane.setOnDragOver(this::handleDragOver);
+            fieldPane.setOnDragDropped(this::handleDragDropped);
+            updateHand(getHand());
+            for(Node cardStack: handBox.getChildren() ){
+                cardStack.setOnMouseClicked(this::flipCard);
+                ((StackPane) cardStack).getChildren().getFirst().setOnDragDetected(this::handleDragDetected);
+                ((StackPane) cardStack).getChildren().get(1).setOnDragDetected(this::handleDragDetected);
+                ((StackPane) cardStack).getChildren().getFirst().setOnDragDone(this::handleDragDone);
+                ((StackPane) cardStack).getChildren().get(1).setOnDragDone(this::handleDragDone);
+
+            }
+            int i=0;
+            for (Goal g: view.getPublicGoals()){
+                int id= g.getId();
+                Image goalPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+                ImageView goalView= (ImageView) goalsBox.getChildren().get(i);
+                goalView.setImage(goalPng);
+                i++;
+            }
+            int id = getPrivateGoal().getId();
             Image goalPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-            ImageView goalView= (ImageView) goalsBox.getChildren().get(i);
+            ImageView goalView= (ImageView) privateGoalBox.getChildren().getFirst();
             goalView.setImage(goalPng);
-            i++;
-        }
-        int id = getPrivateGoal().getId();
-        Image goalPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-        ImageView goalView= (ImageView) privateGoalBox.getChildren().getFirst();
-        goalView.setImage(goalPng);
 
-        resourceCardDeck.setOnMouseClicked(mouseEvent -> drawFromDeck(0));
-        goldCardDeck.setOnMouseClicked(mouseEvent -> drawFromDeck(1));
-        visibleCard1.setOnMouseClicked(mouseEvent -> drawVisibleCard(0));
-        visibleCard2.setOnMouseClicked(mouseEvent -> drawVisibleCard(1));
-        visibleCard3.setOnMouseClicked(mouseEvent -> drawVisibleCard(2));
-        visibleCard4.setOnMouseClicked(mouseEvent -> drawVisibleCard(3));
+            resourceCardDeck.setOnMouseClicked(mouseEvent -> drawFromDeck(0));
+            goldCardDeck.setOnMouseClicked(mouseEvent -> drawFromDeck(1));
+            visibleCard1.setOnMouseClicked(mouseEvent -> drawVisibleCard(0));
+            visibleCard2.setOnMouseClicked(mouseEvent -> drawVisibleCard(1));
+            visibleCard3.setOnMouseClicked(mouseEvent -> drawVisibleCard(2));
+            visibleCard4.setOnMouseClicked(mouseEvent -> drawVisibleCard(3));
 
-        StarterCard stc = getStarterCard();
-        id= getStarterCard().getId();
-        Image scPng;
-        if(stc.isFront()){
-             scPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-        }else{
-             scPng= new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
+            StarterCard stc = getStarterCard();
+            id= getStarterCard().getId();
+            Image scPng;
+            if(stc.isFront()){
+                 scPng= new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
+            }else{
+                 scPng= new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
+            }
+            ImageView scView=new ImageView(scPng);
+            scView.setFitWidth(200);
+            scView.setFitHeight(150);
+            fieldPane.getChildren().add(scView);
+            checkGameInfo();
+        } catch (InvalidUserId ignore) {}
+    }
+
+    public void updatePlayersList(List<String> players)  {
+        playerListBox.getChildren().clear();
+        try {
+            for (String p : players) {
+                StackPane sp = new StackPane();
+                sp.setMaxSize(p.length()*100,30);
+                String color=view.getPlayerColor(p);
+                sp.setStyle("-fx-background-color: "+color);
+                Label label = new Label(p);
+                label.setFont(new Font("Bodoni MT Condensed", 40));
+                if (view.getCurrentPlayer().equals(p))
+                    label.setStyle("-fx-background-color: d9be4a");
+                sp.getChildren().add(label);
+                playerListBox.getChildren().add(sp);
+                //makes label clickable
+                label.setOnMouseClicked(this::showEnemyField);
+                label.setCursor(Cursor.HAND);
+
+
+            }
+        } catch (RemoteException e) {
+            showErrorMsg("connectior error");
+            System.exit(1);
         }
-        ImageView scView=new ImageView(scPng);
-        scView.setFitWidth(200);
-        scView.setFitHeight(150);
-        fieldPane.getChildren().add(scView);
-        checkGameInfo();
     }
 
     private void initializeScoreMap() {
@@ -209,15 +242,20 @@ public class InGameController extends GUIController {
             Reign oldTopResource=null;
             Reign oldTopGold=null;
             List<Card> oldHand= new ArrayList<>();
-
+            List<String> oldPlayersList= new ArrayList<>();
             String oldCurrentPlayer = "";
 
             while(true){
-
-                //visible cards
                 try {
+                    //playersList
+                    List<String> newPlayersList=view.getPlayersList();
+                    if(!oldPlayersList.equals(newPlayersList)){
+                        Platform.runLater(()->updatePlayersList(newPlayersList));
+                        oldPlayersList=newPlayersList;
+                    }
+                    //visible cards
                     List<Card> newVisibleCards = view.getVisibleCards();
-                    if(!newVisibleCards.equals(oldVisibleCards)){
+                    if(!oldVisibleCards.equals(newVisibleCards)){
                         Platform.runLater(() -> updateVisibleCards(newVisibleCards));
                         oldVisibleCards = newVisibleCards;
                     }
@@ -228,7 +266,6 @@ public class InGameController extends GUIController {
                         Platform.runLater(() -> {
                             updateTopResource(newTopResource);
                         });
-
                         oldTopResource = newTopResource;
                     }
                     Reign newTopGold = view.getTopOfGoldCardDeck();
@@ -236,18 +273,17 @@ public class InGameController extends GUIController {
                         Platform.runLater(() -> {
                             updateTopGold(newTopGold);
                         });
-
                         oldTopGold = newTopGold;
                     }
                 //current player
                     String newCurrentPlayer=view.getCurrentPlayer();
-                    if(!newCurrentPlayer.equals(oldCurrentPlayer)){
+                    if(!oldCurrentPlayer.equals(newCurrentPlayer)){
                         Platform.runLater(() -> updateCurrentPlayer(newCurrentPlayer));
                         oldCurrentPlayer = newCurrentPlayer;
                     }
                     //hand
                     List<Card> newHand=getHand();
-                    if (!newHand.equals(oldHand)){
+                    if (!oldHand.equals(newHand)){
                         Platform.runLater(()->updateHand(newHand));
                         oldHand=newHand;
                     }
@@ -352,32 +388,37 @@ public class InGameController extends GUIController {
         }
     }
     private  void updateTopResource(Reign newTop){
-        Image img;
-        switch (newTop) {
-            case MUSHROOM -> img= new Image(getClass().getResourceAsStream("/CardsBack/1.png"));
-            case PLANTS -> img= new Image(getClass().getResourceAsStream("/CardsBack/17.png"));
-            case ANIMAL -> img= new Image(getClass().getResourceAsStream("/CardsBack/23.png"));
-            case BUG -> img= new Image(getClass().getResourceAsStream("/CardsBack/36.png"));
-            default ->   img=new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
+        Image img = new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
+        if (newTop!=null) {
+            switch (newTop) {
+                case MUSHROOM -> img = new Image(getClass().getResourceAsStream("/CardsBack/1.png"));
+                case PLANTS -> img = new Image(getClass().getResourceAsStream("/CardsBack/17.png"));
+                case ANIMAL -> img = new Image(getClass().getResourceAsStream("/CardsBack/23.png"));
+                case BUG -> img = new Image(getClass().getResourceAsStream("/CardsBack/36.png"));
+                default -> img = new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
+            }
         }
         resourceCardDeck.setImage(img);
     }
     private void updateTopGold(Reign newTop){
-        Image img;
-        switch (newTop) {
-            case MUSHROOM -> img= new Image(getClass().getResourceAsStream("/CardsBack/41.png"));
-            case PLANTS -> img= new Image(getClass().getResourceAsStream("/CardsBack/57.png"));
-            case ANIMAL -> img= new Image(getClass().getResourceAsStream("/CardsBack/63.png"));
-            case BUG -> img= new Image(getClass().getResourceAsStream("/CardsBack/76.png"));
-            default ->   img=new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
+        Image img = new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
+        if (newTop!=null) {
+            switch (newTop) {
+                case MUSHROOM -> img= new Image(getClass().getResourceAsStream("/CardsBack/41.png"));
+                case PLANTS -> img= new Image(getClass().getResourceAsStream("/CardsBack/57.png"));
+                case ANIMAL -> img= new Image(getClass().getResourceAsStream("/CardsBack/63.png"));
+                case BUG -> img= new Image(getClass().getResourceAsStream("/CardsBack/76.png"));
+
+            }
         }
         goldCardDeck.setImage(img);
+
     }
     private void updateHand(List<Card> newHand){
         for(Card card: newHand){
             int id = card.getId();
-            Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
-            Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"));
+            Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"),275,193,false,false);
+            Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"),275,193,false,false);
             StackPane cardStack;
 
             try {
@@ -416,6 +457,7 @@ public class InGameController extends GUIController {
         updateScoreboard();
         handleCheckOverlap();
         scoreboardButton.setVisible(false);
+        chatButton.setVisible(false);
         scoreboardBox.setVisible(true);
         scoreboardBox.setLayoutX(0);
         hideScoreboardButton.setVisible(true);
@@ -470,6 +512,7 @@ public class InGameController extends GUIController {
         scoreboardBox.setLayoutX(1920);
         scoreboardBox.setVisible(false);
         scoreboardButton.setVisible(true);
+        chatButton.setVisible(true);
         overlapAnimation.stop();
     }
     public void flipCard(MouseEvent e){
@@ -491,6 +534,22 @@ public class InGameController extends GUIController {
         } else {
             placeCard(new Coordinates(coordinates.x+1,coordinates.y+1 ));
         }
+
+    }
+    public void quitGame(ActionEvent e ){
+        Alert alert= new Alert(Alert.AlertType.CONFIRMATION,"If you quit you can't come back. Are you Sure?", ButtonType.OK,ButtonType.CANCEL);
+        Optional<ButtonType> response= alert.showAndWait();
+        response.ifPresent(r->{
+            if(r==ButtonType.OK) {
+                try {
+                    view.closeGame(myID);
+                    changeScene("New-hello-view.fxml",e);
+                } catch (ClassNotFoundException | IOException ex) {
+                   showErrorMsg("connection error");
+                   System.exit(1);
+                }
+            }
+        });
 
     }
     //
@@ -651,6 +710,52 @@ public class InGameController extends GUIController {
         errorMsg.setText(message.toUpperCase(Locale.ROOT));
         errorMsg.setVisible(true);
         hideError.play();
+
+    }
+
+    public void loadChat(String user){
+        messageBox.getChildren().clear();
+        List <String> chatList = new ArrayList<>();
+        //TODO: Fix the fact that the username Global could exist
+        try{
+            if (user.equals("Global")){
+                    chatList.addAll(view.getChatList());
+            }else{
+                chatList.addAll(getPrivateChat(user));
+            }
+        } catch (RemoteException e) {
+            showErrorMsg("Connection Error");
+            System.exit(1);
+        }
+        for (String message : chatList){
+            messageBox.getChildren().add(new Label(message));
+        }
+    }
+
+    public void showChat(){
+        scoreboardButton.setVisible(false);
+        hideChatButton.setVisible(true);
+        chatButton.setVisible(false);
+        chatBox.setVisible(true);
+        chatBox.setLayoutX(0);
+
+        for (MenuItem item : chatMenu.getItems()){
+            item.setOnAction(actionEvent->loadChat(item.getText()));
+        }
+
+    }
+
+    public void hideChat(){
+        hideScoreboardButton.setVisible(false);
+
+
+        chatBox.setLayoutX(-1080);
+        chatBox.setVisible(false);
+        hideChatButton.setVisible(false);
+        scoreboardButton.setVisible(true);
+        chatButton.setVisible(true);
+
+
 
     }
 }

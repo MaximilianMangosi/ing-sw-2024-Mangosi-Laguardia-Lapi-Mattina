@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public enum Reign implements Resource, Serializable {
     @SerializedName("a")
-    ANIMAL("\u001B[104m","\u001B[36m","A"),
+    ANIMAL("\u001B[104m","\u001B[34m","A"),
     @SerializedName("m")
     MUSHROOM("\u001B[101m","\u001B[31m","M"),
     @SerializedName("b")

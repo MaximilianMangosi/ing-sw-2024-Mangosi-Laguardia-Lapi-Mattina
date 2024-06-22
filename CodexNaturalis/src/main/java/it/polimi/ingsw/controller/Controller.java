@@ -83,9 +83,11 @@ public class Controller {
         List<UUID> kickedPlayers= new ArrayList<>();
         for (Map.Entry<UUID,Boolean> entry: pingMap.entrySet() ){
             UUID userID=entry.getKey();
-            if(!entry.getValue()){
+            if(userID!=null && !entry.getValue()){
                 closeGame(userID);
-                System.out.println("player kicked");
+                try {
+                    System.out.println(getPlayer(userID).getName()+" kicked");
+                } catch (InvalidUserId ignore) {}
                 kickedPlayers.add(userID);
             }
         }
@@ -222,16 +224,19 @@ public class Controller {
         view.updatePlayersPoints();
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
-        view.updateFieldBuildingHelper(position,getPlayer(userId).getName());
+        try {
+            view.updateFieldBuildingHelper(position,getPlayer(userId).getName());
+        } catch (InvalidUserId ignore) {}
 
-        
+
         handlePlayCardSocketUpdate(userId);
 
         currentState=currentState.nextState();
     }
 
-    public Player getPlayer(UUID userId) {
-        return currentState.userIDs.get(userId);
+    public Player getPlayer(UUID userId) throws InvalidUserId {
+
+        return Optional.ofNullable(currentState.userIDs.get(userId)).orElseThrow(InvalidUserId::new);
     }
 
     /**
@@ -260,7 +265,9 @@ public class Controller {
         view.updatePlayersField();
         view.updateCurrentPlayer();
         view.updatePlayersLegalPosition();
-        view.updateFieldBuildingHelper(position,getPlayer(userId).getName());
+        try {
+            view.updateFieldBuildingHelper(position,getPlayer(userId).getName());
+        } catch (InvalidUserId ignore) {}
         handlePlayCardSocketUpdate(userId);
 
         currentState=currentState.nextState();
@@ -381,27 +388,30 @@ public class Controller {
      * @param userID the users' identifier who's closing the game
      */
     public synchronized void closeGame(UUID userID) throws RemoteException {
-        String username= getUserIDs().get(userID).getName();
-        currentState.closeGame(userID);
-        view.updatePlayersList();
-        view.updatePlayersHands();
-        view.updatePrivateGoals();
-        view.updatePlayersField();
-        view.updateCurrentPlayer();
-        view.updatePlayersPoints();
+        Optional<Player> player= Optional.ofNullable(getUserIDs().get(userID));
+        if(player.isPresent()) {
+            String username= player.get().getName();
+            currentState.closeGame(userID);
+            view.updatePlayersList();
+            view.updatePlayersHands();
+            view.updatePrivateGoals();
+            view.updatePlayersField();
+            view.updateCurrentPlayer();
+            view.updatePlayersPoints();
 
-        addToQueue(new PlayersListMessage(getPlayersList()));
-        addToQueue(new RemoveFieldMessage(username));
-        addToQueue(new TurnMessage(getCurrentPlayer()));
-        addToQueue(new PointsMessage(getPlayersPoints()));
+            addToQueue(new PlayersListMessage(getPlayersList()));
+            addToQueue(new RemoveFieldMessage(username));
+            addToQueue(new TurnMessage(getCurrentPlayer()));
+            addToQueue(new PointsMessage(getPlayersPoints()));
 
-        if(getUserIDs().size()<2){
-            List<UUID> id = new ArrayList<>(currentState.userIDs.keySet());
-            String winner=currentState.getPlayerFromUid(id.getFirst()).getName();
-            view.setWinner(winner);
-            view.setIsGameEnded();
-            addToQueue(new GameEndMessage(winner));
-            deleteGameFromGameManager();
+            if ( currentState.isGameStarted() && getUserIDs().size() < 2) {
+                List<UUID> id = new ArrayList<>(currentState.userIDs.keySet());
+                String winner = currentState.getPlayerFromUid(id.getFirst()).getName();
+                view.setWinner(winner);
+                view.setIsGameEnded();
+                addToQueue(new GameEndMessage(winner));
+                deleteGameFromGameManager();
+            }
         }
 
     }
@@ -615,13 +625,18 @@ public class Controller {
      * @return the top (first) card of the Resource cards deck
      */
     public Reign getTopOfResourceCardDeck() {
-        return getGame().getResourceCardDeck().getFirst().getReign();
+        if(currentState.game!=null)
+            return currentState.game.getResourceCardDeck().getFirst().getReign();
+        return null;
     }
     /**
      * @author Giuseppe Laguardia
      * @return the top (first) card of the Gold cards deck
      */
-    public Reign getTopOfGoldCardDeck() { return getGame().getGoldCardDeck().getFirst().getReign();
+    public Reign getTopOfGoldCardDeck() {
+        if(currentState.game!=null)
+            return currentState.game.getGoldCardDeck().getFirst().getReign();
+        return null;
     }
 
 

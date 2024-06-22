@@ -39,7 +39,7 @@ public class StarterCard extends Card implements Serializable {
     }
 
     public StarterCard(StarterCard starterCard) {
-         super(starterCard);
+        super(starterCard);
         backNW = starterCard.backNW;
         backNE = starterCard.backNE;
         backSW = starterCard.backSW;

@@ -187,10 +187,9 @@ public abstract class GameState {
     /**
      * @author Giorgio Mattina
      * abstract for the joinGame function
-     * @param playerName
+     * @param playerName the username used in game
      * @return the UUID created
      * @throws IllegalOperationException
-     * @throws NoGameExistsException
      * @throws PlayerNameNotUniqueException
      */
     public UUID joinGame(UUID gameId,String playerName) throws IllegalOperationException,PlayerNameNotUniqueException, InvalidGameID {

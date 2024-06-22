@@ -27,14 +27,23 @@ public class GUIController extends UserInterface {
     public void setMyName(String myName){
         this.myName = myName;
     }
-    public void changeScene(String pathXML, ActionEvent event) throws IOException, InvalidUserId {
+    public void changeScene(String pathXML, ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource(pathXML));
         root = loader.load();
         GUIController c = loader.getController();
-        c.setView(view);
-        c.setMyId(myID);
-        c.setMyName(myName);
-        c.init();
+        if (pathXML.equals("New-hello-view.fxml")) {
+            NewHelloController controller=(NewHelloController) c;
+            if(view.isRMI()){
+                controller.selectRMI();
+            }
+            else
+                controller.selectSocket();
+        }else{
+            c.setView(view);
+            c.setMyId(myID);
+            c.setMyName(myName);
+            c.init();
+        }
         stage = (Stage)((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -45,6 +54,6 @@ public class GUIController extends UserInterface {
         stage.show();
     }
 
-    public void init() throws RemoteException, InvalidUserId {
+    public void init() throws RemoteException{
     }
 }

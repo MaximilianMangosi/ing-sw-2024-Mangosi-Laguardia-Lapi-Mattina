@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.gamecards.resources.Reign;
 import it.polimi.ingsw.model.gamelogic.exceptions.*;
 
 import java.io.*;
+import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -22,20 +23,21 @@ import java.util.*;
  * A View implementation using Socket, used to interact with the server to send commands and receive data
  */
 public class  ViewSocket implements View{
+    private final String serverAddress;
     private final ObjectOutputStream output;
     private final ObjectInputStream input;
     private final GameData gd;
     /**
      * Constructs a ViewSocket with the specified output stream, input stream, and game data.
      * @author Giuseppe Laguardia
-     * @param output  The output stream.
-     * @param input   The input stream.
+     * @param server  The server socket
      * @param gameData  The game data.
      * @throws IOException if an I/O error occurs.
      */
-    public ViewSocket(OutputStream output, InputStream input, GameData gameData) throws IOException, ClassNotFoundException {
-        this.output = new ObjectOutputStream(output);
-        this.input = new ObjectInputStream(input);
+    public ViewSocket(Socket server, GameData gameData) throws IOException, ClassNotFoundException {
+        this.serverAddress=server.getInetAddress().getHostAddress();
+        this.output = new ObjectOutputStream(server.getOutputStream());
+        this.input = new ObjectInputStream(server.getInputStream());
         this.gd=gameData;
         // get joinable games from server
         readMessage().processMessage(this);
@@ -233,6 +235,7 @@ public class  ViewSocket implements View{
         ServerMessage reply;
         reply = (ServerMessage) input.readObject();
         //input.notifyAll();
+        System.out.println(reply.getClass());
         return reply;
     }
     /**
@@ -374,11 +377,16 @@ public class  ViewSocket implements View{
     }
 
     @Override
-    public synchronized void closeGame(UUID userID) throws IOException, InvalidUserId, ClassNotFoundException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, InvalidGameID {
-        CloseGameMessage message= new CloseGameMessage(userID);
+    public synchronized void closeGame(UUID userID) throws ClassNotFoundException,IOException{
+    CloseGameMessage message= new CloseGameMessage(userID);
         output.writeObject(message);
         ServerMessage reply = readMessage();
-        reply.processMessage();
+        try {
+            reply.processMessage();
+        } catch (UnacceptableNumOfPlayersException | InvalidGameID | InvalidChoiceException | DeckEmptyException |
+                 IllegalOperationException | PlayerNameNotUniqueException | IsNotYourTurnException |
+                 RequirementsNotMetException | IllegalPositionException | InvalidCardException | HandNotFullException |
+                 InvalidUserId | InvalidGoalException | HandFullException ignore) {}
     }
 
     @Override
@@ -470,7 +478,13 @@ public class  ViewSocket implements View{
       return gd;
     }
 
-    public Map<UUID, List<String>> getJoinableGames() {
+    public Map<UUID, List<String>> getJoinableGames() throws IOException, ClassNotFoundException{
+      output.writeObject(new RequestJoinableGamesMessage());
+      readMessage().processMessage(this);
       return gd.getJoinableGames();
+    }
+
+    public String getServerAddress() {
+       return serverAddress;
     }
 }

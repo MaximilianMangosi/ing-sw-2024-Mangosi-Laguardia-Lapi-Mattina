@@ -216,8 +216,7 @@ public class TextUserInterface extends UserInterface {
                     break;
                 case "choose-starter-card-side":
                     outWriter.print("Which side for the starter card? (f for front, b or any for back)");
-                    artist.show(getStarterCard());
-                    outWriter.print(artist.getMatrix());
+                    artist.show(getStarterCard(),true);
                     boolean isChosenFrontStart = s.nextLine().equals("f");
                     view.chooseStarterCardSide(isChosenFrontStart, myID);
                     outWriter.print("Starter card chosen");
@@ -346,6 +345,8 @@ public class TextUserInterface extends UserInterface {
                 default:
                     outWriter.print("Unknown command");
             }
+            updateIdleUI();
+            printIdleUI();
         }
     }
 
@@ -577,13 +578,12 @@ public class TextUserInterface extends UserInterface {
     private void showField(String username,boolean availablePosition) throws InvalidUserId, RemoteException {
         Map<Coordinates, Card> field=view.getPlayersField(username);
         List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
-        artist.show(field,fieldBuildingHelper);
         if(availablePosition) {
-            artist.addAvailablePosToField(getPlayersLegalPositions());
-            outWriter.print(artist.getAsciiField(), fieldBuildingHelper);
+            List<Coordinates> availablePositions=getPlayersLegalPositions();
+            artist.show(field,fieldBuildingHelper,availablePositions);
             return;
         }
-        outWriter.print(artist.getAsciiField(), fieldBuildingHelper);
+        artist.show(field,fieldBuildingHelper);
         outWriter.print("Do you want see a card? Insert the card number or insert any other character to continue:");
         while(true) {
             int chosenCardInt= 0;
@@ -595,7 +595,7 @@ public class TextUserInterface extends UserInterface {
             }else{
                 if(chosenCardInt==0){
                     StarterCard st = getStarterCard();
-                    artist.show(st);
+                    artist.show(st,false);
                     outWriter.print(artist.getMatrix(),st.isFront());//todo update with showStarterCard
                 }
                 else{
@@ -648,8 +648,10 @@ public class TextUserInterface extends UserInterface {
             } catch (IllegalOperationException | InvalidGameID ignore) {}
         }
         isPlaying=true;
-        if (!isRMI)
-            new ServerHandler((ViewSocket) view,tuiUpdater,new GameKey(gameID,myID)).start();
+        if (!isRMI) {
+            String serverAddress= ((ViewSocket)view ).getServerAddress();
+            new ServerHandler((ViewSocket) view, tuiUpdater, new GameKey(gameID, myID),serverAddress).start();
+        }
         new PingPong(view,myID).start();
         tuiUpdater.start();
 
@@ -700,10 +702,20 @@ public class TextUserInterface extends UserInterface {
             }
         }
         isPlaying=true;
-        if (!isRMI)
-            new ServerHandler(viewSocket,tuiUpdater,new GameKey(gameID,myID)).start();
+        if (!isRMI) {
+            String serverAddress= ((ViewSocket)view ).getServerAddress();
+            new ServerHandler(viewSocket, tuiUpdater, new GameKey(gameID, myID),serverAddress ).start();
+        }
         new PingPong(view,myID).start();
         tuiUpdater.start();
 
+    }
+    void printLogo(){
+        Scanner s= new Scanner(getClass().getResourceAsStream("/ascii-logo"));
+        System.out.println("\u001B[33m");
+        while (s.hasNext()){
+            System.out.println(s.nextLine());
+        }
+        System.out.println(TUIAsciiArtist.RESET);
     }
 }

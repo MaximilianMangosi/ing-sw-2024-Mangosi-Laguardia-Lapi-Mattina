@@ -205,26 +205,33 @@ public class Player {
         int y = newCardPositioned.y;
         availablePositions.remove(newCardPositioned);
         unavailablePositions.add(newCardPositioned);
-        //Verify that the angles are not nonexistent
-        if (selectedCard.getResource("NW") != null){ //NW
+        //Verify that the angles exists
+        if (selectedCard.isFront()) {
+            if (selectedCard.getResource("NW") != null){ //NW
+                updateAvailablePositions(x - 1, y + 1);
+            }else{
+                updateUnavailablePositions(x-1, y+1);
+            }
+            if (selectedCard.getResource("SW") != null) { //SW
+                updateAvailablePositions(x - 1, y - 1);
+            }else{
+                updateUnavailablePositions(x-1, y-1);
+            }
+            if (selectedCard.getResource("NE") != null) { //NE
+                updateAvailablePositions(x + 1, y + 1);
+            }else{
+                updateUnavailablePositions(x+1, y+1);
+            }
+            if (selectedCard.getResource("SE") != null) { //SE
+                updateAvailablePositions(x + 1, y - 1);
+            }else{
+                updateUnavailablePositions(x+1, y-1);
+            }
+        }else {
             updateAvailablePositions(x - 1, y + 1);
-        }else{
-            updateUnavailablePositions(x-1, y+1);
-        }
-        if (selectedCard.getResource("SW") != null) { //SW
             updateAvailablePositions(x - 1, y - 1);
-        }else{
-            updateUnavailablePositions(x-1, y-1);
-        }
-        if (selectedCard.getResource("NE") != null) { //NE
             updateAvailablePositions(x + 1, y + 1);
-        }else{
-            updateUnavailablePositions(x+1, y+1);
-        }
-        if (selectedCard.getResource("SE") != null) { //SE
             updateAvailablePositions(x + 1, y - 1);
-        }else{
-            updateUnavailablePositions(x+1, y-1);
         }
     }
 

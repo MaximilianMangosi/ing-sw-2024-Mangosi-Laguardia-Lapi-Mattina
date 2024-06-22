@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class JoinableGamesMessage extends  ServerMessage{
+public class JoinableGamesMessage extends  ServerMessage {
     Map<UUID, List<String>> joinableGames;
 
     public JoinableGamesMessage(Map<UUID, List<String>> joinableGames) {
@@ -17,6 +17,5 @@ public class JoinableGamesMessage extends  ServerMessage{
     @Override
     public void processMessage(ViewSocket view) {
         view.getGameData().setJoinableGames(joinableGames);
-
     }
 }

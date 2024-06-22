@@ -69,8 +69,6 @@ public class OutStreamWriter {
                     else {
                         System.out.print(" \u001B[0m");
                     }
-
-
                 }
                 System.out.println(" \u001B[0m");
             }

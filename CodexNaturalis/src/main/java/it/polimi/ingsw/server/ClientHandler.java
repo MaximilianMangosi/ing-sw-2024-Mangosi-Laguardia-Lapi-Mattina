@@ -152,4 +152,10 @@ public class ClientHandler implements Runnable{
     public ViewUpdater getViewUpdater() {
         return myViewUpdater;
     }
+
+    public void closeConnection() {
+        try {
+            client.close();
+        } catch (IOException ignore) {}
+    }
 }

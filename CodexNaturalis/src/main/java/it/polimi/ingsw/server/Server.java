@@ -7,8 +7,10 @@ import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.view.ViewRMIContainer;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.rmi.RemoteException;
@@ -22,11 +24,22 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
     public static void main(String[] argv) {
-        GameBox gb = new GameBox();
+        //obtain IP address
+        Socket socket = new Socket();
+        try {
+            socket.connect(new InetSocketAddress("google.com", 80));
+        } catch (IOException e) {
+            System.out.println("Connection error");
+            return;
+        }
+        String serverAddress=socket.getLocalAddress().getHostAddress();
+        System.out.println("The server IP: "+serverAddress);
+
         //GAME BOX SETUP
+        GameBox gb = new GameBox();
         try {
             gameBoxSetup(gb);
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException | NullPointerException e) {
             System.out.println("Error occurred during json file's reading:\n " + e.getMessage());
             return;
         }
@@ -42,7 +55,7 @@ public class Server {
             ViewRMIContainer viewRMIContainer = new ViewRMIContainer(gameManager);
 
             // export View
-            //System.setProperty("java.rmi.server.hostname", "192.168.1.8");
+            System.setProperty("java.rmi.server.hostname", serverAddress);
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("ViewRMI", viewRMIContainer);
             System.out.println("Remote View has been correctly exported");
@@ -72,37 +85,37 @@ public class Server {
             System.out.println("Connection error unable to export object:\n" + ex.getMessage());}
     }
 
-    private static void gameBoxSetup(GameBox gb) throws IOException {
+    private static void gameBoxSetup(GameBox gb) throws IOException ,URISyntaxException{
         ArrayList<String> resourceCardJsons = new ArrayList<>();
-        String resourceCardPath = "src/jsons/ResourceCard/ResourceCard_";
+        String resourceCardPath = "/jsons/ResourceCard/ResourceCard_";
         int numOfResourceCard = 40;
 
         ArrayList<String> goldCardJsons = new ArrayList<>();
-        String goldCardPath = "src/jsons/GoldCard/GoldCard_";
+        String goldCardPath = "/jsons/GoldCard/GoldCard_";
         int numOfGoldCard = 16;
 
         ArrayList<String> goldCardAnglesJsons = new ArrayList<>();
-        String goldCardAnglesPath = "src/jsons/GoldCard/GoldCardAngles/GoldCardAngles_";
+        String goldCardAnglesPath = "/jsons/GoldCard/GoldCardAngles/GoldCardAngles_";
         int numOfGoldCardAngles = 12;
 
         ArrayList<String> goldCardToolJsons = new ArrayList<>();
-        String goldCardToolPath = "src/jsons/GoldCard/GoldCardTool/GoldCardTool_";
+        String goldCardToolPath = "/jsons/GoldCard/GoldCardTool/GoldCardTool_";
         int numOfGoldCardTool = 12;
 
         ArrayList<String> starterCardJsons = new ArrayList<>();
-        String starterCardPath = "src/jsons/StarterCard/StarterCard_";
+        String starterCardPath = "/jsons/StarterCard/StarterCard_";
         int numOfStarterCard = 6;
 
         ArrayList<String> identicalGoalJsons = new ArrayList<>();
-        String identicalGoalPath = "src/jsons/Goal/IdenticalGoal/IdenticalGoal_";
+        String identicalGoalPath = "/jsons/Goal/IdenticalGoal/IdenticalGoal_";
         int numOfIdenticalGoal = 7;
 
         ArrayList<String> LGoalJsons = new ArrayList<>();
-        String LGoalPath = "src/jsons/Goal/LGoal/LGoal_";
+        String LGoalPath = "/jsons/Goal/LGoal/LGoal_";
         int numOfLGoal = 4;
 
         ArrayList<String> stairGoalJsons = new ArrayList<>();
-        String stairGoalPath = "src/jsons/Goal/StairGoal/StairGoal_";
+        String stairGoalPath = "/jsons/Goal/StairGoal/StairGoal_";
         int numOfStairGoal = 4;
 
         fillList(resourceCardJsons, numOfResourceCard, resourceCardPath);
@@ -125,9 +138,9 @@ public class Server {
         gb.addDistinctGoals();
     }
 
-    private static void fillList(ArrayList<String> jsonsList,int numOfJson,String path) throws IOException {
+    private static void fillList(ArrayList<String> jsonsList, int numOfJson, String path) throws IOException, URISyntaxException, NullPointerException {
         for (int i = 1; i <=numOfJson; i++) {
-            jsonsList.add(Files.readString(Path.of(path+i+".json")));
+            jsonsList.add(Files.readString(Path.of(Server.class.getResource(path+i+".json").toURI())));
         }
     }
 

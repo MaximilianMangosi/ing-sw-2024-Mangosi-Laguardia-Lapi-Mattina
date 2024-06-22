@@ -13,6 +13,7 @@ import it.polimi.ingsw.server.CloseGame;
 import it.polimi.ingsw.view.ViewRMIContainer;
 import it.polimi.ingsw.view.ViewRMIContainerInterface;
 import it.polimi.ingsw.view.ViewSocket;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -93,8 +94,7 @@ public class NewHelloController extends GUIController{
 
     }
     @FXML
-    private void selectSocket(){
-
+    public void selectSocket(){
         try {
             isSocketSelected=true;
             socketButton.setStyle("-fx-border-color: #820933");
@@ -107,14 +107,14 @@ public class NewHelloController extends GUIController{
             //Opens Socket
             Socket server;
             server = new Socket( InetAddress.getLocalHost(),2323);
-            view=new ViewSocket(server.getOutputStream(),server.getInputStream(),new GameData());
+            view=new ViewSocket(server,new GameData());
         } catch (IOException |ClassNotFoundException e) {
             //TODO error message
         }
 
     }
     @FXML
-    private void selectRMI(){
+    public void selectRMI(){
         try {
             isSocketSelected=false;
             RMIButton.setStyle("-fx-border-color: #820933");
@@ -131,6 +131,11 @@ public class NewHelloController extends GUIController{
     @FXML
     private void selectJoinGame(){
         playButton.setVisible(false);
+        ObservableList<Node> children = selectNumPlayersOrGame.getChildren();
+        children.remove(numPlayersStackPane);
+        if (!children.contains(joinableGamesStackPane)) {
+            children.add(joinableGamesStackPane);
+        }
         numPlayersStackPane.setVisible(false);
         joinableGamesStackPane.setVisible(true);
         isJoin=true;
@@ -138,6 +143,10 @@ public class NewHelloController extends GUIController{
     }
     @FXML
     private void selectCreateGame(){
+        ObservableList<Node> children = selectNumPlayersOrGame.getChildren();
+        children.remove(joinableGamesStackPane);
+        if(!children.contains(numPlayersStackPane))
+            children.add(numPlayersStackPane);
         joinableGamesStackPane.setVisible(false);
         numPlayersStackPane.setVisible(true);
         playButton.setVisible(true);
@@ -175,7 +184,7 @@ public class NewHelloController extends GUIController{
     @FXML
     private void refresh(){
         noGamesHosted.setVisible(false);
-        if(joinableGamesVBox.getChildren().size()>=2)
+        if(joinableGamesVBox.getChildren().size()>2)
             joinableGamesVBox.getChildren().removeFirst();
         try {
             Accordion listOfGames = new Accordion();
@@ -189,14 +198,11 @@ public class NewHelloController extends GUIController{
             }
             if(joinableGames.isEmpty()){
                 noGamesHosted.setVisible(true);
-                return;
             }else{
-
                 int i=1;
                 for(Map.Entry<UUID, List<String>> entry : joinableGames.entrySet()){
                     VBox playersList = new VBox();
                     StackPane playersStackPane = new StackPane(playersList);
-
                    // playersList.setAlignment(Pos.CENTER_LEFT);
                     List<String> players = entry.getValue();
                     for(String s: players){
@@ -205,18 +211,16 @@ public class NewHelloController extends GUIController{
                         name.setTabSize(18);
                         name.setStyle("-fx-font: Bodoni MT Condensed");
                         playersList.getChildren().add(name);
-
                     }
                     TitledPane newGame = new TitledPane(String.valueOf(i),playersStackPane);
 
                     newGame.setOnMouseClicked(mouseEvent -> chooseThisGame(mouseEvent,entry.getKey()));
                     listOfGames.getPanes().add(newGame);
-
                     i++;
                 }
             }
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | ClassNotFoundException e) {
+            //todo handle connection error
         }
 
 
@@ -224,27 +228,25 @@ public class NewHelloController extends GUIController{
 
     @FXML
     private void onPlay(ActionEvent event){
-
         try {
             if (myName!=null) {
                 if(isJoin){
                     if(isSocketSelected){
                         myID = view.joinGame(chosenGame,myName);
-                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(chosenGame,myID));
+                        String serverAddress= ((ViewSocket)view ).getServerAddress();
+                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(chosenGame,myID),serverAddress);
                         serverHandler.start();
-
                     }else{
                         myID= viewContainer.joinGame(chosenGame,myName);
                         view=viewContainer.getView(chosenGame);
-
                     }
-
                 }else{
                     if(isSocketSelected){
                         GameKey gameKey=view.bootGame(numPlayers,myName);
                         gameID=gameKey.gameID();
                         myID=gameKey.userID();
-                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(gameID,myID));
+                        String serverAddress= ((ViewSocket)view ).getServerAddress();
+                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(gameID,myID),serverAddress);
                         serverHandler.start();
                     }else{
                         GameKey gameKey = viewContainer.bootGame(numPlayers,myName);
@@ -269,8 +271,6 @@ public class NewHelloController extends GUIController{
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } catch (UnacceptableNumOfPlayersException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidUserId e) {
             throw new RuntimeException(e);
         }
     }

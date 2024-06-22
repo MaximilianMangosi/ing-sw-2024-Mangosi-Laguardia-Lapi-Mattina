@@ -32,7 +32,7 @@
             </TextField>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="socketButton" mnemonicParsing="false" onAction="#selectSocket" prefHeight="31.0" prefWidth="59.0" text="Socket">
+                  <Button fx:id="socketButton" mnemonicParsing="false" onAction="#selectSocket" prefHeight="31.0" prefWidth="90.0" text="Socket">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
@@ -76,7 +76,7 @@
                      <children>
                         <StackPane fx:id="numPlayersStackPane" prefHeight="289.0" prefWidth="289.0">
                            <children>
-                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" StackPane.alignment="CENTER">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SELECT THE NUMBER OF PLAYERS:" textAlignment="CENTER" wrappingWidth="197.13671875">
                                        <font>
@@ -113,20 +113,23 @@
                            <children>
                               <VBox fx:id="joinableGamesVBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                  <children>
+                                    <Text fx:id="noGamesHosted" fill="#e11414" strokeType="OUTSIDE" strokeWidth="0.0" text="CURRENTLY NO GAMES HOSTED" textAlignment="CENTER" wrappingWidth="298.93677020072937">
+                                       <font>
+                                          <Font name="Bodoni MT Condensed" size="22.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="80.0" />
+                                       </VBox.margin>
+                                    </Text>
                                     <Button fx:id="refreshButton" mnemonicParsing="false" onMouseClicked="#refresh" text="Refresh" />
                                  </children>
                               </VBox>
-                              <Text fx:id="noGamesHosted" fill="#e11414" strokeType="OUTSIDE" strokeWidth="0.0" text="CURRENTLY NO GAMES HOSTED" textAlignment="CENTER" wrappingWidth="298.93677020072937">
-                                 <font>
-                                    <Font name="Bodoni MT Condensed" size="22.0" />
-                                 </font>
-                              </Text>
                            </children>
                         </StackPane>
                      </children></HBox>
                </children>
             </StackPane>
-            <Button fx:id="playButton" mnemonicParsing="false" onAction="#onPlay" prefHeight="4.0" prefWidth="727.0" text="PLAY!">
+            <Button fx:id="playButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPlay" prefHeight="30.0" prefWidth="70.0" text="PLAY!">
                <VBox.margin>
                   <Insets bottom="25.0" />
                </VBox.margin>

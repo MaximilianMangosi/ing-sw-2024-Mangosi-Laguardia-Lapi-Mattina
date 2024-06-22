@@ -16,16 +16,19 @@ public class ServerHandler extends Thread{
     private ViewSocket view;
     private final UpdateTUI updateTUI;
     private final GameKey gameKey;
+    private final String serverAddress;
 
-    public ServerHandler(ViewSocket view, UpdateTUI tuiUpdater, GameKey gameKey) throws IOException {
+    public ServerHandler(ViewSocket view, UpdateTUI tuiUpdater, GameKey gameKey,String serverAddress) throws IOException {
         this.gameKey=gameKey;
         this.view=view;
         updateTUI=tuiUpdater;
+        this.serverAddress=serverAddress;
     }
-    public ServerHandler(ViewSocket view,GameKey gameKey) throws IOException {
+    public ServerHandler(ViewSocket view,GameKey gameKey,String serverAddress) throws IOException {
         this.gameKey=gameKey;
         this.view=view;
         updateTUI=null;
+        this.serverAddress=serverAddress;
 
     }
 
