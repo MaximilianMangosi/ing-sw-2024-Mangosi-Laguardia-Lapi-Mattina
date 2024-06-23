@@ -21,6 +21,7 @@ public abstract class UserInterface{
     protected UUID gameID;
     protected String myName;
     protected boolean isPlaying=false;
+    protected String serverAddress;
 
     public void setViewContainer(ViewRMIContainerInterface viewContainer) {
         this.viewContainer = viewContainer;
@@ -62,6 +63,9 @@ public abstract class UserInterface{
 
     public void setView(View view) {
         this.view=view;
+    }
+    public void setServerAddress(String serverAddress) {
+        this.serverAddress=serverAddress;
     }
 
 }

@@ -29,6 +29,9 @@ public class HelloApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("New-hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 720, 600);
+        String serverAddress=getParameters().getRaw().getFirst();
+        NewHelloController controller =fxmlLoader.getController();
+        controller.setServerAddress(serverAddress);
         stage.setTitle("Codex Naturalis");
         stage.setScene(scene);
         stage.setMaxWidth(1920);
@@ -38,7 +41,7 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 
 

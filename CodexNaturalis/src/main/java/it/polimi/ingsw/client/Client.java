@@ -54,8 +54,8 @@ public class Client {
             if(connectionChoice==1) {
                 Socket server;
                 server = new Socket( serverAddress,2323);;
-
                 view=new ViewSocket(server,gameData);
+                tui.setServerAddress(serverAddress);
                 tui.setView(view);
                 tui.startGame(false);
 
@@ -65,8 +65,6 @@ public class Client {
                 tui.setViewContainer(viewContainer);
                 tui.startGame(true);
             }
-
-
 
             //noinspection InfiniteLoopStatement
             while (true) {

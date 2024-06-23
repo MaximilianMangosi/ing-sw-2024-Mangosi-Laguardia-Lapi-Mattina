@@ -669,7 +669,6 @@ public class TextUserInterface extends UserInterface {
         }
         isPlaying=true;
         if (!isRMI) {
-            String serverAddress= ((ViewSocket)view ).getServerAddress();
             new ServerHandler((ViewSocket) view, tuiUpdater, new GameKey(gameID, myID),serverAddress).start();
         }
         new PingPong(view,myID).start();
@@ -723,7 +722,6 @@ public class TextUserInterface extends UserInterface {
         }
         isPlaying=true;
         if (!isRMI) {
-            String serverAddress= ((ViewSocket)view ).getServerAddress();
             new ServerHandler(viewSocket, tuiUpdater, new GameKey(gameID, myID),serverAddress ).start();
         }
         new PingPong(view,myID).start();

@@ -101,7 +101,7 @@ public class NewHelloController extends GUIController{
 
             //Opens Socket
             Socket server;
-            server = new Socket( InetAddress.getLocalHost(),2323);
+            server = new Socket(serverAddress,2323);
             view=new ViewSocket(server,new GameData());
         } catch (IOException |ClassNotFoundException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR,"Connection Error");
@@ -119,7 +119,7 @@ public class NewHelloController extends GUIController{
             parent.getChildren().removeFirst();
             RMIButton.setDisable(true);
             selectJoinOrCreate.setVisible(true);
-            Registry registry =LocateRegistry.getRegistry(1099);
+            Registry registry =LocateRegistry.getRegistry(serverAddress,1099);
             viewContainer=(ViewRMIContainerInterface) registry.lookup("ViewRMI");
         } catch (RemoteException | NotBoundException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR,"Connection error");
@@ -233,7 +233,6 @@ public class NewHelloController extends GUIController{
                 if(isJoin){
                     if(isSocketSelected){
                         myID = view.joinGame(chosenGame,myName);
-                        String serverAddress= ((ViewSocket)view ).getServerAddress();
                         ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(chosenGame,myID),serverAddress);
                         serverHandler.start();
                     }else{
@@ -245,7 +244,6 @@ public class NewHelloController extends GUIController{
                         GameKey gameKey=view.bootGame(numPlayers,myName);
                         gameID=gameKey.gameID();
                         myID=gameKey.userID();
-                        String serverAddress= ((ViewSocket)view ).getServerAddress();
                         ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(gameID,myID),serverAddress);
                         serverHandler.start();
                     }else{
@@ -291,4 +289,6 @@ public class NewHelloController extends GUIController{
         this.chosenGame=id;
         playButton.setVisible(true);
     }
+
+
 }

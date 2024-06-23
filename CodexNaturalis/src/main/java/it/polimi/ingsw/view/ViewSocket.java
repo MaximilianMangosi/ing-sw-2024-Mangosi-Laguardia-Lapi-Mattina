@@ -490,7 +490,4 @@ public class  ViewSocket implements View{
       return gd.getJoinableGames();
     }
 
-    public String getServerAddress() {
-       return serverAddress;
-    }
 }
