@@ -235,7 +235,6 @@ public class  ViewSocket implements View{
         ServerMessage reply;
         reply = (ServerMessage) input.readObject();
         //input.notifyAll();
-        System.out.println(reply.getClass());
         return reply;
     }
     /**
@@ -478,9 +477,7 @@ public class  ViewSocket implements View{
         }catch (InvalidGoalException | HandFullException | InvalidChoiceException | IsNotYourTurnException |
                 UnacceptableNumOfPlayersException | PlayerNameNotUniqueException | InvalidCardException |
                 DeckEmptyException | InvalidGameID | HandNotFullException | InvalidUserId |
-                RequirementsNotMetException | IllegalPositionException e) {
-            throw new RuntimeException(e);
-        }
+                RequirementsNotMetException | IllegalPositionException ignore) {}
     }
 
     public GameData getGameData() {

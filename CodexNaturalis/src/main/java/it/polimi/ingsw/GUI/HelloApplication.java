@@ -31,6 +31,8 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 720, 600);
         stage.setTitle("Codex Naturalis");
         stage.setScene(scene);
+        stage.setMaxWidth(1920);
+        stage.setMaxHeight(1080);
 
         stage.show();
     }

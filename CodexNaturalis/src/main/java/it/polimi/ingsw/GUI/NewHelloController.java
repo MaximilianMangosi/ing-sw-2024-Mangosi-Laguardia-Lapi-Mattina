@@ -106,6 +106,7 @@ public class NewHelloController extends GUIController{
         } catch (IOException |ClassNotFoundException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR,"Connection Error");
             alert.showAndWait();
+            System.exit(1);
         }
 
     }
@@ -121,8 +122,9 @@ public class NewHelloController extends GUIController{
             Registry registry =LocateRegistry.getRegistry(1099);
             viewContainer=(ViewRMIContainerInterface) registry.lookup("ViewRMI");
         } catch (RemoteException | NotBoundException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR,e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Connection error");
             alert.showAndWait();
+            System.exit(1);
         }
     }
     @FXML

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.client.GameData;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -41,7 +42,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static java.lang.Integer.parseInt;
 
 public class InGameController extends GUIController {
-    private final AtomicBoolean stopHandleOverlap = new AtomicBoolean(false);
     @FXML
     private HBox playerListBox;
     @FXML
@@ -83,7 +83,6 @@ public class InGameController extends GUIController {
     @FXML
     private ImageView greenCheck;
     private List<ImageView> imageChecks=new ArrayList<>();
-
     @FXML
     private StackPane fieldPane;
     @FXML
@@ -115,8 +114,11 @@ public class InGameController extends GUIController {
     private StackPane removedStack;
     private String chatMessage;
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private ScheduledFuture updateChatTask;
+    private ScheduledFuture<?> updateChatTask;
+    private AtomicBoolean gameInfoStop=new AtomicBoolean(true);
     private List<Coordinates> avlbPositions;
+
+    private final GameData gd= new GameData();
 
 
     public void init() throws RemoteException {
@@ -211,13 +213,12 @@ public class InGameController extends GUIController {
 
             }
         } catch (RemoteException e) {
-            showErrorMsg("connectior error");
+            showErrorMsg("connection error");
             System.exit(1);
         }
     }
 
     private void initializeScoreMap() {
-
         Scanner file= new Scanner(getClass().getResourceAsStream("/scoreboard-coordinates.txt"));
         while(file.hasNext()){
             String[] line=file.nextLine().split(" ");
@@ -230,7 +231,6 @@ public class InGameController extends GUIController {
 
 
     private void drawFromDeck(int i) {
-        System.out.println("deck clicked");
         try {
             view.drawFromDeck(myID,i);
             List<Card> newHand= getHand();
@@ -258,7 +258,7 @@ public class InGameController extends GUIController {
             List<String> oldPlayersList= new ArrayList<>();
             String oldCurrentPlayer = "";
 
-            while(true){
+            while(gameInfoStop.get()){
                 try {
                     //playersList
                     List<String> newPlayersList=view.getPlayersList();
@@ -318,36 +318,39 @@ public class InGameController extends GUIController {
         try{
             //reset imageView list to handle disconnections
             imageChecks= new ArrayList<>();
-            for (Map.Entry<String,Integer> scoreboard:view.getPlayersPoints().entrySet()){
-                String playerColor = view.getPlayerColor(scoreboard.getKey());
-                switch (playerColor){
-                    case "Red"->{
-                        System.out.println("Red");
-                        redCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
-                        redCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
-                        redCheck.setVisible(true);
-                        imageChecks.add(redCheck);
-                    }
-                    case "Blue"->{
-                        System.out.println("B");
-                        blueCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
-                        blueCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
-                        blueCheck.setVisible(true);
-                        imageChecks.add(blueCheck);
-                    }
-                    case "Yellow"->{
-                        System.out.println("Y");
-                       yellowCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
-                        yellowCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
-                        yellowCheck.setVisible(true);
-                        imageChecks.add(yellowCheck);
-                    }
-                    case"Green"->{
-                        System.out.println("G");
-                        greenCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
-                        greenCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
-                        greenCheck.setVisible(true);
-                        imageChecks.add(greenCheck);
+            Map<String, Integer> playersPoints = view.getPlayersPoints();
+            if(playersPoints!=null) {
+                for (Map.Entry<String, Integer> scoreboard : playersPoints.entrySet()) {
+                    String playerColor = view.getPlayerColor(scoreboard.getKey());
+                    switch (playerColor) {
+                        case "Red" -> {
+                            System.out.println("Red");
+                            redCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
+                            redCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
+                            redCheck.setVisible(true);
+                            imageChecks.add(redCheck);
+                        }
+                        case "Blue" -> {
+                            System.out.println("B");
+                            blueCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
+                            blueCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
+                            blueCheck.setVisible(true);
+                            imageChecks.add(blueCheck);
+                        }
+                        case "Yellow" -> {
+                            System.out.println("Y");
+                            yellowCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
+                            yellowCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
+                            yellowCheck.setVisible(true);
+                            imageChecks.add(yellowCheck);
+                        }
+                        case "Green" -> {
+                            System.out.println("G");
+                            greenCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
+                            greenCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
+                            greenCheck.setVisible(true);
+                            imageChecks.add(greenCheck);
+                        }
                     }
                 }
             }
@@ -509,8 +512,6 @@ public class InGameController extends GUIController {
             }
         }
         return false;
-        //return imageChecks.stream().filter(i->!i.equals(image)).map(i->new Coordinates((int) i.getX(), (int) i.getY())).noneMatch(c->c.x==image.getX() && c.y==image.getX());
-
     }
 
     public void hideDeck(){
@@ -522,7 +523,7 @@ public class InGameController extends GUIController {
     public void hideScoreboard(){
         hideScoreboardButton.setVisible(false);
         imageChecks.forEach(i->i.setVisible(false));
-        scoreboardBox.setLayoutX(1920);
+        scoreboardBox.setLayoutX(-571);
         scoreboardBox.setVisible(false);
         scoreboardButton.setVisible(true);
         chatButton.setVisible(true);
@@ -535,7 +536,7 @@ public class InGameController extends GUIController {
         }
     }
     private void handleClickCard (MouseEvent event,Coordinates coordinates){
-        ImageView cardImage = (ImageView) event.getSource();
+
         double clickX = event.getX();
         double clickY = event.getY();
         if(clickX<100 && clickY <75){
@@ -556,6 +557,7 @@ public class InGameController extends GUIController {
             if(r==ButtonType.OK) {
                 try {
                     view.closeGame(myID);
+                    gameInfoStop.set(false);
                     changeScene("New-hello-view.fxml",e);
                 } catch (ClassNotFoundException | IOException ex) {
                    showErrorMsg("connection error");
@@ -573,8 +575,8 @@ public class InGameController extends GUIController {
         String username = l.getText();
         if(!username.equals(myName)){//if the top pane is not mine,
             List<Node> children = oldCenter.getChildren();
-            if(oldCenter.getChildren().size()>=2)
-                oldCenter.getChildren().remove(1);
+            if(children.size()>=2)
+               children.remove(1);
             try {
 
 
@@ -661,17 +663,14 @@ public class InGameController extends GUIController {
 
     }
     private void handleDragOver(DragEvent e)  {
-            double hover_x = e.getX()-1204;
-            double hover_y = e.getY()-805;
-            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
-//            System.out.println((int) Math.round(hover_x/155.5));
-//            System.out.println( (int) Math.round(hover_y/79.5));
+        double hover_x = e.getX()-1204;
+        double hover_y = e.getY()-805;
+        Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
 
-
-            if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
-                e.acceptTransferModes(TransferMode.MOVE);
-            }
-            e.consume();
+        if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
+            e.acceptTransferModes(TransferMode.MOVE);
+        }
+        e.consume();
 
 
     }
@@ -746,15 +745,10 @@ public class InGameController extends GUIController {
             text.setWrappingWidth(500);
             messageBox.getChildren().add(text);
         }
-
-
-
     }
 
     public void updateChat(){
-
         Platform.runLater(()->loadChat(chatMenu.getText()));
-
     }
 
     public void showChat(){
@@ -763,12 +757,9 @@ public class InGameController extends GUIController {
         chatButton.setVisible(false);
         chatBox.setVisible(true);
         chatBox.setLayoutX(0);
-
         for (MenuItem item : chatMenu.getItems()){
             item.setOnAction(actionEvent->loadChat(item.getText()));
         }
-
-
 
         updateChatTask = scheduler.scheduleAtFixedRate(this::updateChat, 0, 1, TimeUnit.SECONDS);
     }

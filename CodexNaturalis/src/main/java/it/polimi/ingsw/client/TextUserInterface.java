@@ -376,29 +376,35 @@ public class TextUserInterface extends UserInterface {
             t1.interrupt();
             return null;
         }
-        String color=artist.getAnsiColor(view.getPlayerColor(myName));
-
-        return color+myName + TUIAsciiArtist.RESET + ": "+ s.nextLine();
+        return myName.toUpperCase() +": "+ s.nextLine();
     }
 
     private void printGlobalChat(AtomicBoolean stop) {
         try {
-            while (true){
+            while (!stop.get()){
                 if(!stop.get()) {
                     outWriter.clearScreen();
                     List<String> chat = view.getChatList();
-                    if(chat!=null) {
-                        for (String chats : chat) {
-                            outWriter.print(chats);
-                        }
-                    }
+                    printMessages(chat);
                     Thread.sleep(3000);
                 }
+
             }
         }catch (RemoteException e){
             outWriter.print("connection error");
             System.exit(1);
         } catch (InterruptedException ignored) {
+        }
+    }
+
+    private void printMessages(List<String> chat) throws RemoteException, InterruptedException {
+        if(chat!=null) {
+            for (String message : chat) {
+                int i=message.indexOf(":");
+                String sender= message.substring(0,i);
+                String color=artist.getAnsiColor(view.getPlayerColor(sender));
+                outWriter.print(message.replace(sender,color+sender+ TUIAsciiArtist.RESET));
+            }
         }
     }
 
@@ -408,11 +414,7 @@ public class TextUserInterface extends UserInterface {
                 if (!stop.get()) {
                     outWriter.clearScreen();
                     List<String> chat = getPrivateChat(name);
-                    if(chat!=null) {
-                        for (String chats : chat) {
-                            outWriter.print(chats);
-                        }
-                    }
+                    printMessages(chat);
                     Thread.sleep(3000);
                 }
             }
