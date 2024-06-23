@@ -261,19 +261,17 @@ public class NewHelloController extends GUIController{
         } catch (PlayerNameNotUniqueException e) {
 
             username.setStyle("-fx-border-color: default");
-            Alert alert = new Alert(Alert.AlertType.ERROR,"Choose another name,this one is already taken for this game!");
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Choose another name,this one is already taken!");
             alert.showAndWait();
             username.setStyle("-fx-border-color: red");
-        } catch (IllegalOperationException e) {
-            throw new RuntimeException(e);
+        } catch (IllegalOperationException | UnacceptableNumOfPlayersException ignore) {
         } catch (InvalidGameID e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (UnacceptableNumOfPlayersException e) {
-            throw new RuntimeException(e);
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Impossible join this game try another one");
+            alert.showAndWait();
+        } catch (IOException | ClassNotFoundException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR,"CONNECTION ERROR");
+            alert.showAndWait();
+            System.exit(1);
         }
     }
     @FXML
