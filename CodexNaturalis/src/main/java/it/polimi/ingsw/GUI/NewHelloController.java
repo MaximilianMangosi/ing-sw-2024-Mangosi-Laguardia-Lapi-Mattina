@@ -230,32 +230,40 @@ public class NewHelloController extends GUIController{
     private void onPlay(ActionEvent event){
         try {
             if (myName!=null) {
-                if(isJoin){
-                    if(isSocketSelected){
-                        myID = view.joinGame(chosenGame,myName);
-                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(chosenGame,myID),serverAddress);
-                        serverHandler.start();
-                    }else{
-                        myID= viewContainer.joinGame(chosenGame,myName);
-                        view=viewContainer.getView(chosenGame);
-                    }
-                }else{
-                    if(isSocketSelected){
-                        GameKey gameKey=view.bootGame(numPlayers,myName);
-                        gameID=gameKey.gameID();
-                        myID=gameKey.userID();
-                        ServerHandler serverHandler=new ServerHandler((ViewSocket) view,new GameKey(gameID,myID),serverAddress);
-                        serverHandler.start();
-                    }else{
-                        GameKey gameKey = viewContainer.bootGame(numPlayers,myName);
-                        myID = gameKey.userID();
-                        view=viewContainer.getView(gameKey.gameID());
-                    }
-                }
-                PingPong pingPong = new PingPong(view,myID);
-                pingPong.start();
+                if(!myName.isBlank()){
+                    if (isJoin) {
 
-                changeScene("waiting-room.fxml",event);
+                        if (isSocketSelected) {
+                            myID = view.joinGame(chosenGame, myName);
+                            ServerHandler serverHandler = new ServerHandler((ViewSocket) view, new GameKey(chosenGame, myID), serverAddress);
+                            serverHandler.start();
+                        } else {
+                            myID = viewContainer.joinGame(chosenGame, myName);
+                            view = viewContainer.getView(chosenGame);
+                        }
+                    } else {
+                        if (isSocketSelected) {
+                            GameKey gameKey = view.bootGame(numPlayers, myName);
+                            gameID = gameKey.gameID();
+                            myID = gameKey.userID();
+                            ServerHandler serverHandler = new ServerHandler((ViewSocket) view, new GameKey(gameID, myID), serverAddress);
+                            serverHandler.start();
+                        } else {
+                            GameKey gameKey = viewContainer.bootGame(numPlayers, myName);
+                            myID = gameKey.userID();
+                            view = viewContainer.getView(gameKey.gameID());
+                        }
+                    }
+                    PingPong pingPong = new PingPong(view, myID);
+                    pingPong.start();
+
+                    changeScene("waiting-room.fxml", event);
+                }else{
+                    username.setStyle("-fx-border-color: default");
+                    Alert alert = new Alert(Alert.AlertType.ERROR,"You can't choose a blank username!");
+                    alert.showAndWait();
+                    username.setStyle("-fx-border-color: red");
+                }
             }
 
         } catch (PlayerNameNotUniqueException e) {
