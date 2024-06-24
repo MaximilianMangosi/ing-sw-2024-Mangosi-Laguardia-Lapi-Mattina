@@ -16,6 +16,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -24,6 +25,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -103,6 +105,14 @@ public class InGameController extends GUIController {
     private MenuButton chatMenu = new MenuButton();
     @FXML
     private TextArea inputChat;
+
+    @FXML
+    private VBox winModal;
+
+    @FXML
+    private Label winnerTxt;
+    @FXML
+    private VBox playerLeaderboardContainer;
     private Map<ImageView,Integer> handCardsId = new HashMap<>();
     private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
@@ -303,7 +313,7 @@ public class InGameController extends GUIController {
 
                     //game finished
                     if(view.isGameEnded()){
-                     //   changeScene("victory.xml", );
+                        Platform.runLater(this::onGameFinished);
                     }
                 } catch (RemoteException e) {
                     showErrorMsg("CONNECTION ERROR");
@@ -313,6 +323,47 @@ public class InGameController extends GUIController {
 
             }
         }).start();
+    }
+
+    private void onGameFinished()  {
+        winModal.setVisible(true);
+        showScoreboard();
+        try {
+            winnerTxt.setText("Winner: " + view.getWinner());
+
+            Map<String, Integer> playerPoints = view.getPlayersPoints();
+
+            List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(playerPoints.entrySet());
+            sortedEntries.sort(Map.Entry.<String, Integer>comparingByValue().reversed());
+
+            for (int i = 0; i < sortedEntries.size(); i++) {
+                Map.Entry<String, Integer> entry = sortedEntries.get(i);
+                String player = entry.getKey();
+                Integer points = entry.getValue();
+                addPlayerInWinModal(i, player, points);
+            }
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void addPlayerInWinModal(int index,String username, int points){
+        Text text1 = new Text(Integer.toString(index));
+        text1.setFont(new Font(26));
+
+        Text text2 = new Text(username);
+        text2.setFont(new Font(18));
+
+        Text text3 = new Text(Integer.toString(points));
+        text3.setFont(new Font(22));
+
+        HBox hbox = new HBox(12);
+        hbox.setMaxWidth(400);
+        hbox.setBackground(new Background(new BackgroundFill(Color.web("#e5a78a"), CornerRadii.EMPTY, Insets.EMPTY)));
+
+        hbox.getChildren().addAll(text1, text2, text3);
+
+        playerLeaderboardContainer.getChildren().add(hbox);
     }
     private void updateScoreboard(){
         try{
