@@ -35,8 +35,12 @@ public class RMIToSocketDispatcher extends Thread{
                     viewUpdater.sendAll(newMsg);
                 } else if (newMsg instanceof UpdateChatMessage) {
                     UUID receiver = ((UpdateChatMessage) newMsg).getReceiver();
-                    if(viewUpdater.getClients().containsKey(receiver))
-                        viewUpdater.sendTo(newMsg,receiver);
+                    if(receiver!=null ) {  // receiver == null means message is for everyone
+                        if (viewUpdater.getClients().containsKey(receiver))
+                            viewUpdater.sendTo(newMsg, receiver);
+                    }
+                    else
+                        viewUpdater.sendAll(newMsg);
                 } else
                     viewUpdater.sendAll(newMsg);
 

@@ -469,7 +469,6 @@ public class  ViewSocket implements View{
     @Override
     public synchronized void sendChatMessage(String message) throws IOException, ClassNotFoundException, IllegalOperationException {
         try {
-
             output.writeObject(new ChatMessage(message));
             ServerMessage reply = readMessage();
             reply.processMessage();

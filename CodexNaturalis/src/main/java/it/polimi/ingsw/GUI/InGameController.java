@@ -433,8 +433,8 @@ public class InGameController extends GUIController {
     private void updateHand(List<Card> newHand){
         for(Card card: newHand){
             int id = card.getId();
-            Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"),275,193,false,false);
-            Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"),275,193,false,false);
+            Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"),350,200,true,false);
+            Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"),350,200,true,false);
             StackPane cardStack;
 
             try {
@@ -656,7 +656,7 @@ public class InGameController extends GUIController {
             db.setContent(cpc);
             selectedCardToPlay= (ImageView) event.getSource();
         } catch (RemoteException e) {
-            showErrorMsg(e.getMessage());
+            showErrorMsg("Connection error");
         } catch (InvalidUserId e) {
             showErrorMsg(e.getMessage());
         }
@@ -732,9 +732,9 @@ public class InGameController extends GUIController {
         //TODO: Fix the fact that the username Global could exist
         try{
             if (user.equals("Global")){
-                    chatList.addAll(view.getChatList());
+                    chatList=view.getChatList();
             }else{
-                chatList.addAll(getPrivateChat(user));
+                chatList=getPrivateChat(user);
             }
         } catch (RemoteException e) {
             showErrorMsg("Connection Error");
@@ -761,7 +761,7 @@ public class InGameController extends GUIController {
             item.setOnAction(actionEvent->loadChat(item.getText()));
         }
 
-        updateChatTask = scheduler.scheduleAtFixedRate(this::updateChat, 0, 1, TimeUnit.SECONDS);
+        updateChatTask = scheduler.scheduleAtFixedRate(this::updateChat, 0, 100, TimeUnit.MILLISECONDS);
     }
 
     public void hideChat(){
@@ -783,6 +783,7 @@ public class InGameController extends GUIController {
     private void onKeyEnter(KeyEvent event){
         if (event.getCode() == KeyCode.ENTER){
             sendMessage();
+            updateChat();
         }
     }
 
