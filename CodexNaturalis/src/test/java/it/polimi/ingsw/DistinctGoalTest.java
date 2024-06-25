@@ -31,7 +31,7 @@ public class DistinctGoalTest {
         resources.put(Tool.FEATHER,2);
         resources.put(Tool.PHIAL,2);
         resources.put(Tool.SCROLL,3);
-        int ritorno =distinctGoal.calculateGoal(p);
-        assertEquals(6,ritorno);
+        int r =distinctGoal.calculateGoal(p);
+        assertEquals(6,r);
     }
 }
