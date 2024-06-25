@@ -36,7 +36,6 @@ public class TurnState extends GameState{
             System.out.println("final turn");
             return new FinalTurnState(game,gameManager,userIDs);
         }
-
         return this;
     }
 
