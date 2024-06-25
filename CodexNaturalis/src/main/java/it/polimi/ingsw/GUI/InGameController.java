@@ -146,7 +146,7 @@ public class InGameController extends GUIController {
             hideChatButton.setVisible(false);
             errorMsg.setVisible(false);
             hideError.setOnFinished(event -> errorMsg.setVisible(false));
-
+            returnToMyFieldButton.setVisible(false);
             for (String player : view.getPlayersList()){
                 if(!(player.equals(myName)))
                     chatMenu.getItems().add(new MenuItem(player));
