@@ -679,7 +679,8 @@ public class InGameController extends GUIController {
 
 
             }catch (RemoteException e){
-                //TODO ERROR MESSAGE
+                showErrorMsg("Connection error");
+                System.exit(1);
             }
         }
 
