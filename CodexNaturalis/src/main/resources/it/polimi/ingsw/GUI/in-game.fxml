@@ -205,7 +205,7 @@
             </HBox>
          </children>
       </VBox>
-      <VBox fx:id="scoreboardBox" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="571.0" style="-fx-background-color: dbd3a9; -fx-border-color: d9be4a; -fx-border-width: 10;">
+      <VBox fx:id="scoreboardBox" alignment="CENTER_LEFT" layoutX="-551.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="571.0" style="-fx-background-color: dbd3a9; -fx-border-color: d9be4a; -fx-border-width: 10;">
          <children>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="541.0">
                <children>
