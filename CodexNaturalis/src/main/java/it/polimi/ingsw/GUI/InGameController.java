@@ -675,13 +675,9 @@ public class InGameController extends GUIController {
                     returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent));
                     returnButtonPresent=true;
                 }
-
-
-
-
-
-            }catch (RemoteException e){
-                //TODO ERROR MESSAGE
+            }catch (RemoteException ignore){
+                showErrorMsg("Connection error");
+                System.exit(1);
             }
         }
 
