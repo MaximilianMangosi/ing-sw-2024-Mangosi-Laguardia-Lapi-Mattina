@@ -170,7 +170,6 @@ public abstract class GameState {
         for(Player player : game.getPlayers()){
             gameManager.deletePlayerFromPlayersToGame(player.getName());
         }
-        game=null;
     }
 
     /**
