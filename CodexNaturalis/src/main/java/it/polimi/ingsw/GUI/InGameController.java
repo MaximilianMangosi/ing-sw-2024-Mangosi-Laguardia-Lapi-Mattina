@@ -677,7 +677,7 @@ public class InGameController extends GUIController {
                 }
                 if(!returnButtonPresent) {
                     Button returnToMyFieldButton = new Button("Return");
-                    StackPane topPane = (StackPane) handBox.getParent();
+                    StackPane topPane = (StackPane) playerListBox.getParent();
                     topPane.getChildren().add(returnToMyFieldButton);
                     returnToMyFieldButton.setAlignment(Pos.BOTTOM_CENTER);
                     returnToMyFieldButton.setStyle("-fx-background-color: #e5a78a");
@@ -697,7 +697,7 @@ public class InGameController extends GUIController {
         AnchorPane oldCenter = (AnchorPane) fieldPane.getParent();
         oldCenter.getChildren().removeLast();
         fieldPane.setVisible(true);
-        StackPane topPane = (StackPane) handBox.getParent();
+        StackPane topPane = (StackPane) playerListBox.getParent();
         topPane.getChildren().removeLast();
         returnButtonPresent=false;
     }
