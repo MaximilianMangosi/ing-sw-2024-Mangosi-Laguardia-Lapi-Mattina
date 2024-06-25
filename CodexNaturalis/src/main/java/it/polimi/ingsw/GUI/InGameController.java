@@ -493,25 +493,27 @@ public class InGameController extends GUIController {
 
     }
     private void updateHand(List<Card> newHand){
-        for(Card card: newHand){
-            int id = card.getId();
-            Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"),350,200,true,false);
-            Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"),350,200,true,false);
-            StackPane cardStack;
+        if (newHand!=null) {
+            for (Card card : newHand) {
+                int id = card.getId();
+                Image frontPng = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"), 350, 200, true, false);
+                Image backPng = new Image(getClass().getResourceAsStream("/CardsBack/" + id + ".png"), 350, 200, true, false);
+                StackPane cardStack;
 
-            try {
-                cardStack = (StackPane) handBox.getChildren().get(newHand.indexOf(card));
-            } catch (IndexOutOfBoundsException e) {
-                cardStack=removedStack;
-                handBox.getChildren().add(newHand.indexOf(card),cardStack);
+                try {
+                    cardStack = (StackPane) handBox.getChildren().get(newHand.indexOf(card));
+                } catch (IndexOutOfBoundsException e) {
+                    cardStack = removedStack;
+                    handBox.getChildren().add(newHand.indexOf(card), cardStack);
+                }
+                ImageView backView = (ImageView) cardStack.getChildren().getFirst();
+                ImageView frontView = (ImageView) cardStack.getChildren().get(1);
+                backView.setImage(backPng);
+                frontView.setImage(frontPng);
+                frontView.setVisible(true);
+                backView.setVisible(false);
+
             }
-            ImageView backView = (ImageView) cardStack.getChildren().getFirst();
-            ImageView frontView = (ImageView) cardStack.getChildren().get(1);
-            backView.setImage(backPng);
-            frontView.setImage(frontPng);
-            frontView.setVisible(true);
-            backView.setVisible(false);
-
         }
     }
     public void placeCard( Coordinates position){
