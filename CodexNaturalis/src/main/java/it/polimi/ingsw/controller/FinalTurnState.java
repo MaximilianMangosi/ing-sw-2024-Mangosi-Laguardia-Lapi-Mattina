@@ -101,8 +101,10 @@ public class FinalTurnState extends GameState{
      */
     @Override
     protected GameState nextState() {
-        if(game.getPlayers().getFirst().equals(game.getCurrentPlayer()))
-            return new TerminalState(game,gameManager,userIDs);
+        if(game.getPlayers().getFirst().equals(game.getCurrentPlayer())) {
+            System.out.println("PASSO AL T-STATE");
+            return new TerminalState(game, gameManager, userIDs);
+        }
         return this;
     }
 
