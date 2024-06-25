@@ -303,6 +303,7 @@ public class InGameController extends GUIController {
                     if(!oldCurrentPlayer.equals(newCurrentPlayer)){
                         Platform.runLater(() -> updateCurrentPlayer(newCurrentPlayer));
                         oldCurrentPlayer = newCurrentPlayer;
+                        Platform.runLater(this::updateScoreboard);
                     }
                     //hand
                     List<Card> newHand=getHand();
@@ -314,6 +315,7 @@ public class InGameController extends GUIController {
                     //game finished
                     if(view.isGameEnded()){
                         Platform.runLater(this::onGameFinished);
+                        break;
                     }
                 } catch (RemoteException e) {
                     showErrorMsg("CONNECTION ERROR");
@@ -616,12 +618,12 @@ public class InGameController extends GUIController {
     }
     //
     private void showEnemyField(MouseEvent event)  {
-        Pane oldCenter = (Pane) borderPane.getCenter();
+        AnchorPane anchorParent = (AnchorPane) fieldPane.getParent();
         //fetch the other player's hand
         Label l = (Label) event.getSource();
         String username = l.getText();
         if(!username.equals(myName)){//if the top pane is not mine,
-            List<Node> children = oldCenter.getChildren();
+            List<Node> children = anchorParent.getChildren();
             if(children.size()>=2)
                children.remove(1);
             try {
@@ -633,24 +635,19 @@ public class InGameController extends GUIController {
 
                 //saves the old field and sets it invisible
                 fieldPane.setVisible(false);
-
                 //build a new field
                 StackPane newFieldPane = new StackPane();
-                newFieldPane.setPrefWidth(2408);
-                newFieldPane.setPrefHeight(1610);
-                newFieldPane.setLayoutX(-240);
-                newFieldPane.setLayoutY(-390);
+                anchorParent.getChildren().add(newFieldPane);
+                newFieldPane.setPrefWidth(5128);
+                newFieldPane.setPrefHeight(2964);
+                newFieldPane.setMinWidth(Region.USE_PREF_SIZE);
+                newFieldPane.setMinHeight(Region.USE_PREF_SIZE);
+                newFieldPane.setMaxHeight(Region.USE_PREF_SIZE);
+                newFieldPane.setMaxWidth(Region.USE_PREF_SIZE);
+                newFieldPane.setScaleX(1);
+                newFieldPane.setScaleZ(1);
 
-                AnchorPane newAnchor = new AnchorPane(newFieldPane);
-                newAnchor.setPrefWidth(2400);
-                newAnchor.setPrefHeight(1566);
-                ScrollPane newScrollPane = new ScrollPane(newAnchor);
-                newScrollPane.setPrefWidth(200);
-                newScrollPane.setPrefHeight(200);
 
-                StackPane newHugeStackPane = new StackPane(newScrollPane);
-                newHugeStackPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-                newHugeStackPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
                 //adds the enemy card
                 int id;
                 for (Coordinates c :fieldBuildingHelper){
@@ -667,8 +664,8 @@ public class InGameController extends GUIController {
                     newFieldPane.getChildren().add(newImageView);
                     newImageView.setFitWidth(200);
                     newImageView.setFitHeight(150);
-                    newImageView.setTranslateX(c.x*155.5);
-                    newImageView.setTranslateY(c.y*-79.5);
+                    newImageView.setTranslateX(c.x*152.5);
+                    newImageView.setTranslateY(c.y*-85);
                 }
                 if(!returnButtonPresent) {
                     Button returnToMyFieldButton = new Button("Return");
@@ -676,7 +673,8 @@ public class InGameController extends GUIController {
                     returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent));
                     returnButtonPresent=true;
                 }
-                ((Pane) borderPane.getCenter()).getChildren().add(newHugeStackPane);
+                ScrollPane s = (ScrollPane) anchorParent.getParent();
+
 
 
 
@@ -687,7 +685,7 @@ public class InGameController extends GUIController {
 
     }
     private void returnToMyField(MouseEvent event){
-        Pane oldCenter = (Pane) borderPane.getCenter();
+        AnchorPane oldCenter = (AnchorPane) fieldPane.getParent();
         oldCenter.getChildren().removeLast();
         fieldPane.setVisible(true);
         playerListBox.getChildren().remove(event.getSource());
@@ -710,10 +708,14 @@ public class InGameController extends GUIController {
 
     }
     private void handleDragOver(DragEvent e)  {
-        double hover_x = e.getX()-1204;
-        double hover_y = e.getY()-805;
-        Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
 
+        double hover_x = e.getX()-2564;
+        double hover_y = e.getY()-1482;
+        System.out.println(e.getX());
+        System.out.println(e.getY());
+        Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/152.5), (int) -Math.round(hover_y/85));
+//        System.out.println(newCoordinate.x);
+//        System.out.println(newCoordinate.y);
         if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
             e.acceptTransferModes(TransferMode.MOVE);
         }
@@ -725,9 +727,9 @@ public class InGameController extends GUIController {
         try{
             String p= view.getCurrentPlayer();
             Dragboard db = e.getDragboard();
-            double hover_x = e.getX()-1204;
-            double hover_y = e.getY()-805;
-            Coordinates newStandardCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) -Math.round(hover_y/79.5));
+            double hover_x = e.getX()-2564;
+            double hover_y = e.getY()-1482;
+            Coordinates newStandardCoordinate = new Coordinates((int) Math.round(hover_x/152.5), (int) -Math.round(hover_y/85));
             StackPane parent=(StackPane) selectedCardToPlay.getParent();
             if(parent.getChildren().getFirst().isVisible()){
                 view.playCardBack(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
@@ -735,14 +737,14 @@ public class InGameController extends GUIController {
                 view.playCardFront(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
             }
 
-            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/155.5), (int) Math.round(hover_y/79.5));
+            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/152.5), (int) Math.round(hover_y/85));
             ImageView newCardImage =new ImageView(db.getImage());
             newCardImage.setFitWidth(200);
             newCardImage.setFitHeight(150);
 
             fieldPane.getChildren().add(newCardImage);
-            newCardImage.setTranslateX(newCoordinate.x*155.5);
-            newCardImage.setTranslateY(newCoordinate.y * 79.5);
+            newCardImage.setTranslateX(newCoordinate.x*152.5);
+            newCardImage.setTranslateY(newCoordinate.y * 85);
             e.setDropCompleted(true);
         }catch (RemoteException ex){
             showErrorMsg(ex.getMessage());

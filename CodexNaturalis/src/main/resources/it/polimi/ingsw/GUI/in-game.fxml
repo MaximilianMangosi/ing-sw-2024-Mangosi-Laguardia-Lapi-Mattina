@@ -81,21 +81,6 @@
                </children>
             </StackPane>
          </bottom>
-         <center>
-            <StackPane BorderPane.alignment="CENTER">
-               <children>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0">
-                     <content>
-                        <AnchorPane prefHeight="1566.0" prefWidth="2400.0">
-                           <children>
-                              <StackPane fx:id="fieldPane" layoutX="-176.0" layoutY="-390.0" prefHeight="1610.0" prefWidth="2408.0" AnchorPane.bottomAnchor="390.0" AnchorPane.leftAnchor="-176.0" AnchorPane.rightAnchor="176.0" AnchorPane.topAnchor="-390.0" />
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </ScrollPane>
-               </children>
-            </StackPane>
-         </center>
          <top>
             <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
@@ -113,6 +98,21 @@
                </children>
             </StackPane>
          </top>
+         <center>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <ScrollPane hvalue="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" vvalue="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <content>
+                      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="2964.0" prefWidth="5128.0">
+                           <children>
+                              <StackPane fx:id="fieldPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="2964.0" prefWidth="5128.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+         </center>
       </BorderPane>
       <VBox fx:id="deckBox" alignment="CENTER" layoutX="1920.0" prefHeight="1080.0" prefWidth="541.0" style="-fx-background-color: dbd3a9; -fx-border-color: d9be4a; -fx-border-width: 10;">
          <children>
