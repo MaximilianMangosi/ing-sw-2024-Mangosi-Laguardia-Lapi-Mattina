@@ -364,7 +364,7 @@ public class InGameController extends GUIController {
         HBox hbox = new HBox(24);
         hbox.setAlignment(Pos.CENTER); // Set alignment to center
         hbox.setMaxWidth(400);
-        hbox.setBackground(new Background(new BackgroundFill(Color.web("#e5a78a"), CornerRadii.EMPTY, Insets.EMPTY)));
+        hbox.setBackground(new Background(new BackgroundFill(Color.web("#e5a78a"),  new CornerRadii(12), Insets.EMPTY)));
 
         hbox.getChildren().addAll(text1, text2, text3);
 
