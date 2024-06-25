@@ -107,4 +107,28 @@ public class StarterCard extends Card implements Serializable {
 
     }
 
+    public List<Resource> getCardResources() {
+        //cycle through the card angles and return a list with all the resources in the card
+
+        List<Resource> cardResources = new ArrayList<>();
+        if (!isFront()) {
+            String[] angles ={"NW","NE","SW","SE"};
+
+            for (String angle: angles)
+                if(getResourceBack(angle)!=null && !getResourceBack(angle).isEmpty())
+                    cardResources.add(getResourceBack(angle));
+        }else {
+            String[] angles ={"NW","NE","SW","SE"};
+
+            for (String angle: angles)
+                if(getResource(angle)!=null && !getResource(angle).isEmpty())
+                    cardResources.add(getResource(angle));
+
+            cardResources.addAll(getCentralResource());
+        }
+
+        return cardResources;
+    }
+
+
 }
