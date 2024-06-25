@@ -6,5 +6,4 @@ import it.polimi.ingsw.model.gamelogic.Game;
 public class ControllerTest {
     private Game game;
     private Controller controller;
-
 }

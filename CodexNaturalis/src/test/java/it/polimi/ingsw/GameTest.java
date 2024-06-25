@@ -210,7 +210,7 @@ public class GameTest {
 
     public static void fillList(ArrayList<String> jsonsList,int numOfJson,String path) throws IOException, URISyntaxException {
         for (int i = 1; i <=numOfJson; i++) {
-            jsonsList.add(Files.readString(Path.of(Server.class.getResource(path+i+".json").toURI())));
+                jsonsList.add(Files.readString(Path.of(Server.class.getResource(path+i+".json").toURI())));
         }
     }
 

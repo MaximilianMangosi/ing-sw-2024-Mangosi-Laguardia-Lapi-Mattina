@@ -122,7 +122,7 @@ public class NewHelloController extends GUIController{
             Registry registry =LocateRegistry.getRegistry(serverAddress,1099);
             viewContainer=(ViewRMIContainerInterface) registry.lookup("ViewRMI");
         } catch (RemoteException | NotBoundException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR,"Connection error");
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Connection error ");
             alert.showAndWait();
             System.exit(1);
         }
