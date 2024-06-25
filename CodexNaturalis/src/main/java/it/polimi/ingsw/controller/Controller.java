@@ -409,9 +409,10 @@ public class Controller {
             addToQueue(new TurnMessage(getCurrentPlayer()));
             addToQueue(new PointsMessage(getPlayersPoints()));
 
-            if ( currentState.isGameStarted() && getUserIDs().size() < 2) {
-                List<UUID> id = new ArrayList<>(currentState.userIDs.keySet());
-                String winner = currentState.getPlayerFromUid(id.getFirst()).getName();
+            if ( currentState.isGameStarted() && getUserIDs().size() < 2 && !currentState.isGameEnded()) {
+                List<UUID> ids = new ArrayList<>(currentState.userIDs.keySet());
+
+                String winner = currentState.getPlayerFromUid(ids.getFirst()).getName();
                 view.setWinner(winner);
                 view.setIsGameEnded();
                 addToQueue(new GameEndMessage(winner));
