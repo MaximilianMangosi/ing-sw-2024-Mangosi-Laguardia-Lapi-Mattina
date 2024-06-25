@@ -44,7 +44,7 @@ public class ClientHandler implements Runnable{
         try{
             output = new ObjectOutputStream(client.getOutputStream());
             input = new ObjectInputStream(client.getInputStream());
-            answerClient( new WaitingGamesMessage(viewContainer.getJoinableGames()));
+            answerClient( new JoinableGamesMessage(viewContainer.getJoinableGames()));
         }catch (IOException e){
             System.out.println("Couldn't connect to "+client.getInetAddress());
         }
@@ -95,8 +95,6 @@ public class ClientHandler implements Runnable{
      * @throws IOException when a connection problem occurs
      */
     public void broadCast (ServerMessage msg) throws IOException {
-        //ASSUMPTION : ONLY ONE GAME CAN BE HOSTED AT ONCE ON THE SERVER
-        //TODO: implement multiple parallel answers to different players in different games
         myViewUpdater.sendAll(msg);
     }
 

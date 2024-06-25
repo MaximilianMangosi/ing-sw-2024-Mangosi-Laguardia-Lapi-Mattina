@@ -344,7 +344,8 @@ public class InGameController extends GUIController {
             }
 
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+           showErrorMsg("Connection error");
+           System.exit(1);
         }
     }
     private void addPlayerInWinModal(int index,String username, int points){
@@ -375,28 +376,24 @@ public class InGameController extends GUIController {
                     String playerColor = view.getPlayerColor(scoreboard.getKey());
                     switch (playerColor) {
                         case "Red" -> {
-                            System.out.println("Red");
                             redCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
                             redCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
                             redCheck.setVisible(true);
                             imageChecks.add(redCheck);
                         }
                         case "Blue" -> {
-                            System.out.println("B");
                             blueCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
                             blueCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
                             blueCheck.setVisible(true);
                             imageChecks.add(blueCheck);
                         }
                         case "Yellow" -> {
-                            System.out.println("Y");
                             yellowCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
                             yellowCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
                             yellowCheck.setVisible(true);
                             imageChecks.add(yellowCheck);
                         }
                         case "Green" -> {
-                            System.out.println("G");
                             greenCheck.setTranslateX(scoreMap.get(scoreboard.getValue()).x);
                             greenCheck.setTranslateY(scoreMap.get(scoreboard.getValue()).y);
                             greenCheck.setVisible(true);
@@ -533,7 +530,6 @@ public class InGameController extends GUIController {
 
     private void handleCheckOverlap() {
         List<ImageView> checksOverlapping = imageChecks.stream().filter(this::overlaps).toList();
-        System.out.println(checksOverlapping.size());
         try {
             List<Node> scoreboard= ((StackPane) checksOverlapping.getFirst().getParent()).getChildren();
             AtomicInteger i= new AtomicInteger();

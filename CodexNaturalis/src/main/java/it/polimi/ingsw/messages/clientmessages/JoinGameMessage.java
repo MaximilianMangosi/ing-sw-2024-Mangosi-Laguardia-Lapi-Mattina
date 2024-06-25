@@ -71,7 +71,6 @@ public class JoinGameMessage extends ClientMessage {
                GameStartMessage gameStartMessage = new GameStartMessage(c);
                clientHandler.broadCast(gameStartMessage);
            }
-           System.out.println(c.getPlayersList());
            PlayersListMessage playersListMessage = new PlayersListMessage(c.getPlayersList());
            clientHandler.broadCast(playersListMessage);
 

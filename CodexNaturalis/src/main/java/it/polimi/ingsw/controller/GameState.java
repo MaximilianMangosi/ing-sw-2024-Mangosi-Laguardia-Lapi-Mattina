@@ -152,8 +152,10 @@ public abstract class GameState {
      * @author Giuseppe Laguardia
      */
     public void closeGame(UUID userID) {
-       game.removePlayer(userIDs.get(userID));
-       userIDs.remove(userID);
+        Player player = userIDs.get(userID);
+        game.removePlayer(player);
+        gameManager.deletePlayerFromPlayersToGame(player.getName());
+        userIDs.remove(userID);
 
     }
     /**
