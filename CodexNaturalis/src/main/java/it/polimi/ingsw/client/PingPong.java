@@ -29,7 +29,7 @@ public class PingPong extends  Thread{
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Connection Error ping");
-                System.exit(1);
+                break;
             } catch (InterruptedException e) {
                 break;
             }
