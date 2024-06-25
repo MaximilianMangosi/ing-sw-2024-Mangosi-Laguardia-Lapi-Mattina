@@ -92,10 +92,12 @@ public class LGoal extends Goal {
             Coordinates secondaryB = new Coordinates(current.x + modX, current.y + modY*2);
 
             Card cardA = field.get(secondaryA);
-            Reign AReign = (cardA instanceof GoldCard) ? ((GoldCard) cardA).getReign() : ((ResourceCard)cardA).getReign();
+            Reign AReign = cardA.getReign();
 
             Card cardB = field.get(secondaryB);
-            Reign BReign = (cardB instanceof GoldCard) ? ((GoldCard) cardB).getReign() : ((ResourceCard)cardB).getReign();
+            Reign BReign = cardB.getReign();
+
+            if(AReign == null || BReign == null) continue;
 
             boolean isL = field.containsKey(secondaryA)
                     && AReign.equals(secondaryReign)
