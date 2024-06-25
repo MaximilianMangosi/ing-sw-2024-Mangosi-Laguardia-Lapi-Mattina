@@ -92,9 +92,12 @@ public class LGoal extends Goal {
             Coordinates secondaryB = new Coordinates(current.x + modX, current.y + modY*2);
 
             Card cardA = field.get(secondaryA);
+            if(cardA == null) continue;
+
             Reign AReign = cardA.getReign();
 
             Card cardB = field.get(secondaryB);
+            if(cardB == null) continue;
             Reign BReign = cardB.getReign();
 
             if(AReign == null || BReign == null) continue;
