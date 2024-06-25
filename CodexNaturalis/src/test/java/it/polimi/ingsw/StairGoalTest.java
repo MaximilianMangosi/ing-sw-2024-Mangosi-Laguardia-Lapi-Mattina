@@ -24,7 +24,6 @@ public class StairGoalTest {
     @Before
     public void GameBoxSetup() throws IOException {
 
-
         ArrayList<String> resourceCardJsons=new ArrayList<>();
         String resourceCardPath="src/jsons/ResourceCard/ResourceCard_";
         int numOfResourceCard=40;
