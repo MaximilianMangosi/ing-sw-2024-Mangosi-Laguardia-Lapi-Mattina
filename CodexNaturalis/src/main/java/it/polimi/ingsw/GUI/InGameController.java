@@ -27,6 +27,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -671,8 +672,13 @@ public class InGameController extends GUIController {
                 }
                 if(!returnButtonPresent) {
                     Button returnToMyFieldButton = new Button("Return");
-                    playerListBox.getChildren().add(returnToMyFieldButton);
-                    returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent));
+                    StackPane topPane = (StackPane) handBox.getParent();
+                    topPane.getChildren().add(returnToMyFieldButton);
+                    returnToMyFieldButton.setAlignment(Pos.BOTTOM_CENTER);
+                    returnToMyFieldButton.setStyle("-fx-background-color: #e5a78a");
+                    returnToMyFieldButton.setStyle("-fx-font: Bodoni MT Condensed");
+                    returnToMyFieldButton.setTextFill(Paint.valueOf("#f2f2f2"));
+                    returnToMyFieldButton.setOnMouseClicked(this::returnToMyField);
                     returnButtonPresent=true;
                 }
             }catch (RemoteException ignore){
@@ -686,7 +692,8 @@ public class InGameController extends GUIController {
         AnchorPane oldCenter = (AnchorPane) fieldPane.getParent();
         oldCenter.getChildren().removeLast();
         fieldPane.setVisible(true);
-        playerListBox.getChildren().remove(event.getSource());
+        StackPane topPane = (StackPane) handBox.getParent();
+        topPane.getChildren().removeLast();
         returnButtonPresent=false;
     }
     private void handleDragDetected(MouseEvent event){
