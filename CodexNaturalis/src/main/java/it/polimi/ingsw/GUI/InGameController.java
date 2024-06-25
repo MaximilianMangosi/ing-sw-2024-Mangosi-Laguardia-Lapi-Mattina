@@ -414,19 +414,23 @@ public class InGameController extends GUIController {
     }
 
     private void updateVisibleCards(List<Card> newCards) {
-        Image img1 = new Image(getClass().getResourceAsStream("/CardsFront/" + newCards.get(0).getId() + ".png"));
-        visibleCard1.setImage(img1);
+        try {
+            Image img1 = new Image(getClass().getResourceAsStream("/CardsFront/" + newCards.get(0).getId() + ".png"));
+            visibleCard1.setImage(img1);
 
 
-        Image img2 = new Image(getClass().getResourceAsStream("/CardsFront/" + newCards.get(1).getId() + ".png"));
-        visibleCard2.setImage(img2);
+            Image img2 = new Image(getClass().getResourceAsStream("/CardsFront/" + newCards.get(1).getId() + ".png"));
+            visibleCard2.setImage(img2);
 
 
-        Image img3 = new Image(getClass().getResourceAsStream("/CardsFront/" + newCards.get(2).getId() + ".png"));
-        visibleCard3.setImage(img3);
+            Image img3 = new Image(getClass().getResourceAsStream("/CardsFront/" + newCards.get(2).getId() + ".png"));
+            visibleCard3.setImage(img3);
 
-        Image img4 = new Image(getClass().getResourceAsStream("/CardsFront/" + newCards.get(3).getId() + ".png"));
-        visibleCard4.setImage(img4);
+            Image img4 = new Image(getClass().getResourceAsStream("/CardsFront/" + newCards.get(3).getId() + ".png"));
+            visibleCard4.setImage(img4);
+        } catch (IndexOutOfBoundsException ignore) {
+
+        }
     }
 
     private void updateCurrentPlayer(String newCurrentPlayer){
