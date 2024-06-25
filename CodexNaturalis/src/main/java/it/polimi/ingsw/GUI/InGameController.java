@@ -303,6 +303,7 @@ public class InGameController extends GUIController {
                     if(!oldCurrentPlayer.equals(newCurrentPlayer)){
                         Platform.runLater(() -> updateCurrentPlayer(newCurrentPlayer));
                         oldCurrentPlayer = newCurrentPlayer;
+                        Platform.runLater(this::updateScoreboard);
                     }
                     //hand
                     List<Card> newHand=getHand();
@@ -314,6 +315,7 @@ public class InGameController extends GUIController {
                     //game finished
                     if(view.isGameEnded()){
                         Platform.runLater(this::onGameFinished);
+                        break;
                     }
                 } catch (RemoteException e) {
                     showErrorMsg("CONNECTION ERROR");
