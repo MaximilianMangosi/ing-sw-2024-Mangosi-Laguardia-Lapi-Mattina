@@ -88,9 +88,8 @@ public class FinalTurnState extends GameState{
     public boolean playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException, HandNotFullException {
         CheckTurnCardPosition(selectedCard,position,userId);
         game.playCardBack(selectedCard,position);
-        Player player = getPlayerFromUid(userId);
         game.nextTurn();
-        return isGameOver(player);
+        return isGameOver();
     }
 
     /**
