@@ -318,11 +318,7 @@ public class InGameController extends GUIController {
                         Platform.runLater(this::onGameFinished);
                         break;
                     }
-                } catch (RemoteException e) {
-                    showErrorMsg("CONNECTION ERROR");
-                    System.exit(1);
-                } catch (InvalidUserId ignore) {
-                }
+                } catch (RemoteException | InvalidUserId ignore) {}
 
             }
         }).start();
