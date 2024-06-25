@@ -17,6 +17,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -351,7 +352,7 @@ public class InGameController extends GUIController {
         }
     }
     private void addPlayerInWinModal(int index,String username, int points){
-        Text text1 = new Text(Integer.toString(index));
+        Text text1 = new Text(Integer.toString(index + 1) + "°");
         text1.setFont(new Font(26));
 
         Text text2 = new Text(username);
@@ -360,7 +361,8 @@ public class InGameController extends GUIController {
         Text text3 = new Text(Integer.toString(points));
         text3.setFont(new Font(22));
 
-        HBox hbox = new HBox(12);
+        HBox hbox = new HBox(24);
+        hbox.setAlignment(Pos.CENTER); // Set alignment to center
         hbox.setMaxWidth(400);
         hbox.setBackground(new Background(new BackgroundFill(Color.web("#e5a78a"), CornerRadii.EMPTY, Insets.EMPTY)));
 
