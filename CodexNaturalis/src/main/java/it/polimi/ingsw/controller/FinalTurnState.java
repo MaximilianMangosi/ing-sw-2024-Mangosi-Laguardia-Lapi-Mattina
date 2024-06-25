@@ -42,19 +42,18 @@ public class FinalTurnState extends GameState{
         //checks if it's the player's turn, if the card is legal and if the position is legal
         CheckTurnCardPosition(selectedCard, position, userId);
         game.playCardFront(selectedCard,position);
-        Player player = getPlayerFromUid(userId);
         game.nextTurn();
 
-        return isGameOver(player);
+        return isGameOver();
     }
 
     /**
      * @author Riccardo Lapi and Giuseppe Laguardia
      * if is the first player calculate the goal points
-     * @param player the player
      * @return true if the passed player is the first one in the order
      */
-    private boolean isGameOver(Player player) {
+    private boolean isGameOver() {
+        Player player=game.getCurrentPlayer();
         if(game.getPlayers().getFirst().equals(player)){
             for(Player p : game.getPlayers()){
 
