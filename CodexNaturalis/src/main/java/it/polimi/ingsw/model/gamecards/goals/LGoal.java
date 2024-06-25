@@ -89,7 +89,7 @@ public class LGoal extends Goal {
           //  if(usedCards.contains(current)) continue;
 
             Coordinates secondaryA = new Coordinates(current.x + modX, current.y + modY);
-            Coordinates secondaryB = new Coordinates(current.x + modX, current.y + modY*2);
+            Coordinates secondaryB = new Coordinates(current.x + modX, current.y + modY*3);
 
             Card cardA = field.get(secondaryA);
             if(cardA == null) continue;
