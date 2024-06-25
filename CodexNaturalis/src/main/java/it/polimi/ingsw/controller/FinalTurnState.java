@@ -65,6 +65,7 @@ public class FinalTurnState extends GameState{
                 totGoalsPoint += publicGoals[1].calculateGoal(p);
 
                 p.setGoalPoints(totGoalsPoint);
+                System.out.println(p.getName()+" "+totGoalsPoint);
             }
 
             return true;
@@ -99,8 +100,10 @@ public class FinalTurnState extends GameState{
      */
     @Override
     protected GameState nextState() {
-        if(game.getPlayers().getFirst().equals(game.getCurrentPlayer()))
-            return new TerminalState(game,gameManager,userIDs);
+        if(game.getPlayers().getFirst().equals(game.getCurrentPlayer())) {
+            System.out.println("PASSO AL T-STATE");
+            return new TerminalState(game, gameManager, userIDs);
+        }
         return this;
     }
 

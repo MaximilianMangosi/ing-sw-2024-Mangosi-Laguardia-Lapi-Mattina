@@ -232,6 +232,9 @@ public class Controller {
         handlePlayCardSocketUpdate(userId);
 
         currentState=currentState.nextState();
+
+
+        System.out.println(getCurrentPlayer());
     }
 
     public Player getPlayer(UUID userId) throws InvalidUserId {
@@ -353,6 +356,7 @@ public class Controller {
         }
 
         currentState=currentState.nextState();
+        System.out.println(getCurrentPlayer());
     }
     /**
      * Calls drawVisibleCards on the currentState to draw one of the Card visible on the table.
@@ -380,6 +384,7 @@ public class Controller {
 
 
         currentState=currentState.nextState();
+        System.out.println(getCurrentPlayer());
     }
 
     /**
