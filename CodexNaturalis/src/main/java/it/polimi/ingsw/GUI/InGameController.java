@@ -673,7 +673,7 @@ public class InGameController extends GUIController {
                     returnToMyFieldButton.setOnMouseClicked(MouseEvent -> returnToMyField(MouseEvent));
                     returnButtonPresent=true;
                 }
-                ScrollPane s = (ScrollPane) anchorParent.getParent();
+
 
 
 
@@ -711,8 +711,7 @@ public class InGameController extends GUIController {
 
         double hover_x = e.getX()-2564;
         double hover_y = e.getY()-1482;
-        System.out.println(e.getX());
-        System.out.println(e.getY());
+
         Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/152.5), (int) -Math.round(hover_y/85));
 //        System.out.println(newCoordinate.x);
 //        System.out.println(newCoordinate.y);
