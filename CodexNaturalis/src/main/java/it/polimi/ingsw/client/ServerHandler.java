@@ -35,7 +35,7 @@ public class ServerHandler extends Thread{
     @Override
     public void run() {
         try {
-            Socket UVsocket= new Socket( InetAddress.getLocalHost(),3232);
+            Socket UVsocket= new Socket( serverAddress,3232);
             ObjectOutputStream output= new ObjectOutputStream(UVsocket.getOutputStream());
             input=new ObjectInputStream(UVsocket.getInputStream());
             output.writeObject(gameKey);
