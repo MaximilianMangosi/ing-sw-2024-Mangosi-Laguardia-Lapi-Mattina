@@ -153,7 +153,9 @@ public abstract class GameState {
      */
     public void closeGame(UUID userID) {
         Player player = userIDs.get(userID);
-        game.removePlayer(player);
+        if (game!=null) {
+            game.removePlayer(player);
+        }
         gameManager.deletePlayerFromPlayersToGame(player.getName());
         userIDs.remove(userID);
 

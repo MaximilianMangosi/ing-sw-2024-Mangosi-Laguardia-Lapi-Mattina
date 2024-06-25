@@ -65,6 +65,7 @@ public class FinalTurnState extends GameState{
                 totGoalsPoint += publicGoals[1].calculateGoal(p);
 
                 p.setGoalPoints(totGoalsPoint);
+                System.out.println(p.getName()+" "+totGoalsPoint);
             }
 
             return true;
