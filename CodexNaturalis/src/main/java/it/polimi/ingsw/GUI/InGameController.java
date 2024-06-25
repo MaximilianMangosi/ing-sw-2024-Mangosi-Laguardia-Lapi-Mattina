@@ -331,6 +331,7 @@ public class InGameController extends GUIController {
     private void onGameFinished()  {
         winModal.setVisible(true);
         showScoreboard();
+
         try {
             winnerTxt.setText("Winner: " + view.getWinner());
 

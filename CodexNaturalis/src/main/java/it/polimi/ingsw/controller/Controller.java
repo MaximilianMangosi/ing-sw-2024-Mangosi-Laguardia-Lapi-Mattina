@@ -434,7 +434,7 @@ public class Controller {
         HashMap<String, Integer> scoreboard = new HashMap<>();
         List<Player> playersList = currentState.game.getPlayers();
         for (int i = 0; i< currentState.game.getNumOfPlayers();i++){
-           scoreboard.put(playersList.get(i).getName(),playersList.get(i).getPoints());
+           scoreboard.put(playersList.get(i).getName(),playersList.get(i).getPoints() + playersList.get(i).getGoalPoints());
         }
         return scoreboard;
     }
