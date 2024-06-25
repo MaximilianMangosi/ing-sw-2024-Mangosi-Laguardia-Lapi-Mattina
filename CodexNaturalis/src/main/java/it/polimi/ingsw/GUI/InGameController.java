@@ -32,6 +32,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.beans.EventHandler;
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -86,6 +87,8 @@ public class InGameController extends GUIController {
     private ImageView yellowCheck;
     @FXML
     private ImageView greenCheck;
+    @FXML
+    private Button returnToMyFieldButton;
     private List<ImageView> imageChecks=new ArrayList<>();
     @FXML
     private StackPane fieldPane;
@@ -676,14 +679,7 @@ public class InGameController extends GUIController {
                     newImageView.setTranslateY(c.y*-85);
                 }
                 if(!returnButtonPresent) {
-                    Button returnToMyFieldButton = new Button("Return");
-                    StackPane topPane = (StackPane) playerListBox.getParent();
-                    topPane.getChildren().add(returnToMyFieldButton);
-                    returnToMyFieldButton.setAlignment(Pos.BOTTOM_CENTER);
-                    returnToMyFieldButton.setStyle("-fx-background-color: #e5a78a");
-                    returnToMyFieldButton.setStyle("-fx-font: Bodoni MT Condensed");
-                    returnToMyFieldButton.setTextFill(Paint.valueOf("#f2f2f2"));
-                    returnToMyFieldButton.setOnMouseClicked(this::returnToMyField);
+                    returnToMyFieldButton.setVisible(true);
                     returnButtonPresent=true;
                 }
             }catch (RemoteException ignore){
@@ -693,12 +689,12 @@ public class InGameController extends GUIController {
         }
 
     }
-    private void returnToMyField(MouseEvent event){
+    @FXML
+    private void returnToMyField(ActionEvent event){
         AnchorPane oldCenter = (AnchorPane) fieldPane.getParent();
         oldCenter.getChildren().removeLast();
         fieldPane.setVisible(true);
-        StackPane topPane = (StackPane) playerListBox.getParent();
-        topPane.getChildren().removeLast();
+        returnToMyFieldButton.setVisible(false);
         returnButtonPresent=false;
     }
     private void handleDragDetected(MouseEvent event){

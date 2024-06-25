@@ -95,13 +95,18 @@
                         <Font name="Bodoni MT Condensed" size="25.0" />
                      </font>
                   </Button>
+                  <Button fx:id="returnToMyFieldButton" mnemonicParsing="false" onAction="#returnToMyField" style="-fx-background-color: e5a78a;" text="RETURN" textFill="#f2f2f2" StackPane.alignment="BOTTOM_CENTER">
+                     <font>
+                        <Font name="Bodoni MT Condensed" size="18.0" />
+                     </font>
+                  </Button>
                </children>
             </StackPane>
          </top>
          <center>
             <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <ScrollPane hvalue="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" vvalue="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <ScrollPane hbarPolicy="NEVER" hvalue="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" vvalue="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <content>
                       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="2964.0" prefWidth="5128.0" style="-fx-background-color: #f0e8af;">
                            <children>
