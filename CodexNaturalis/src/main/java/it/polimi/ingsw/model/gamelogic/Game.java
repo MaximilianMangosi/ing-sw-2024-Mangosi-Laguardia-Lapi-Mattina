@@ -308,14 +308,7 @@ public class Game{
         StarterCard starterCard = player.getStarterCard();
         starterCard.setIsFront(isFront);
         player.addCardToMap(starterCard, new Coordinates(0,0));
-        if(isFront) {
-            player.updateResourceCounter(starterCard.getCardResources());
-            player.updateResourceCounter(starterCard.getCentralResource());
-        }
-        else{
-            player.updateResourceCounter(starterCard.getBackResources());
-
-        }
+        player.updateResourceCounter(starterCard.getCardResources());
         player.checkAvailablePositions(new Coordinates(0,0), starterCard);
 
     }

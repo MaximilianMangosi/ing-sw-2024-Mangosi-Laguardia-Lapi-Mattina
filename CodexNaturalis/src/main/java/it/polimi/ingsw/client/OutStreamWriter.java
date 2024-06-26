@@ -127,7 +127,6 @@ public class OutStreamWriter {
             }
             System.out.println(" \u001B[0m");
         }
-
     }
 
     public void print(List<String> playersList) {
