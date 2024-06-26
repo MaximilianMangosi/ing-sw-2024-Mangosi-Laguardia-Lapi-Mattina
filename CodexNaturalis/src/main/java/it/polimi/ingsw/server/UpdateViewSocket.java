@@ -38,7 +38,6 @@ public class UpdateViewSocket extends Thread{
                 ViewUpdater viewUpdater=viewUpdaterMap.get(gameKey.gameID());
 
                 viewUpdater.addClient(gameKey.userID(),output);
-                System.out.println("Client added");
 
             } catch (IOException e) {
                 System.out.println("UpdateView socket connection dropped");

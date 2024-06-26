@@ -17,7 +17,7 @@ public class DisconnectionHandler extends Thread{
         while (true){
             controller.ping();
             try {
-                sleep(60000);
+                sleep(30000);
                 System.out.println("Disconnection handler wakes up");
             } catch (InterruptedException ignored){}
             try {

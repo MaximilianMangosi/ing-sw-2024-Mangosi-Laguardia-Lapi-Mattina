@@ -207,10 +207,6 @@ public class TextUserInterface extends UserInterface {
                             }
                         }
                     }
-                    //print field
-                    showField(myName,false);
-                    outWriter.print("Press enter to continue");
-                    s.nextLine();
                     printIdleUI();
                     break;
                 case "choose-starter-card-side":
@@ -268,13 +264,11 @@ public class TextUserInterface extends UserInterface {
                    artist.show(new Goal[]{privateGoal});
                    outWriter.print("Press enter to continue");
                    s.nextLine();
-                   artist.resetMatrix();
                    break;
                 case "show-public-goals":
                    artist.show(view.getPublicGoals());
                    outWriter.print("Press enter to continue");
                    s.nextLine();
-                   artist.resetMatrix();
                    break;
                 case "show-my-field":
                     showField(myName,false);
@@ -348,9 +342,13 @@ public class TextUserInterface extends UserInterface {
                     break;
                 case "help-command":
                     printTutorial();
+                    outWriter.print("press enter to continue");
+                    s.nextLine();
                     break;
                 case "help-card":
                     printTutorialCard();
+                    outWriter.print("press enter to continue");
+                    s.nextLine();
                     break;
                 default:
                     outWriter.print("Unknown command, try help-command");
@@ -616,7 +614,7 @@ public class TextUserInterface extends UserInterface {
                 if(chosenCardInt==0){
                     StarterCard st = getStarterCard();
                     artist.show(st,false);
-                    outWriter.print(artist.getMatrix(),st.isFront());//todo update with showStarterCard
+                    outWriter.print(artist.getMatrix(),st.isFront());
                 }
                 else{
                     Coordinates chosenCardPosition=fieldBuildingHelper.get(chosenCardInt);
@@ -689,9 +687,12 @@ public class TextUserInterface extends UserInterface {
         ViewSocket viewSocket = (ViewSocket) view;
         Map<UUID, List<String>> views = isRMI? viewContainer.getJoinableGames():viewSocket.getJoinableGames();
         if(views.isEmpty()) {
-            outWriter.print("Currently there isn't any game hosted, let's create a new one");
-            bootGame(isRMI);
-            return;
+            outWriter.print("Currently there isn't any game hosted, you wish to create a new one?");
+            String reply=s.nextLine().toLowerCase();
+            if(reply.equals("yes")) {
+                bootGame(isRMI);
+                return;
+            }
         }
         List<UUID> joinableGames = showJoinableGames(views);
         String choice = promptForGameChoice();
