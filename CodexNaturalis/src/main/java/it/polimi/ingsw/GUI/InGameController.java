@@ -32,8 +32,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import javax.swing.*;
-import java.beans.EventHandler;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -119,7 +117,6 @@ public class InGameController extends GUIController {
     @FXML
     private VBox playerLeaderboardContainer;
     private Map<ImageView,Integer> handCardsId = new HashMap<>();
-    private EventHandler playCardEvent;
     private ImageView selectedCardToPlay;
     private boolean returnButtonPresent= false;
     private final PauseTransition hideError = new PauseTransition(Duration.seconds(3));
