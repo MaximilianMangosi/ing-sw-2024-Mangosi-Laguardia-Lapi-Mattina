@@ -133,8 +133,10 @@ public class TUIAsciiArtist {
         }
         if(card.getPoints()>0)
             matrix[0][startCol+7]=point;
-        if(shouldPrint)
+        if(shouldPrint) {
             writer.print(matrix);
+            matrix=null;
+        }
 
 
     }
@@ -160,6 +162,7 @@ public class TUIAsciiArtist {
             writer.print(matrix);
 
         }
+        matrix=null;
     }
 
     /**
@@ -225,6 +228,7 @@ public class TUIAsciiArtist {
             k+=15;
         }
         writer.print(matrix);
+        matrix=null;
     }
 
     /**
@@ -233,19 +237,20 @@ public class TUIAsciiArtist {
      * @param starterCard
      */
     public void show(StarterCard starterCard,boolean printBothSide){
-            boolean printFront= starterCard.isFront();
-            buildStarterCardStructure(printBothSide);
-            if(printBothSide) {
-                showFront(starterCard);
-                showBack(starterCard);
-                matrix[5][0] = "FRONT";
-                matrix[5][14] = "BACK";
-            } else if (printFront) {
-                showFront(starterCard);
-            }else {
-                showBack(starterCard);
-            }
+        boolean printFront= starterCard.isFront();
+        buildStarterCardStructure(printBothSide);
+        if(printBothSide) {
+            showFront(starterCard);
+            showBack(starterCard);
+            matrix[5][0] = "FRONT";
+            matrix[5][14] = "BACK";
+        } else if (printFront) {
+            showFront(starterCard);
+        }else {
+            showBack(starterCard);
+        }
         writer.print(matrix);
+        matrix=null;
     }
 
     private void showBack(StarterCard starterCard) {
@@ -421,7 +426,9 @@ public class TUIAsciiArtist {
      */
     public void show (Map<Coordinates, Card> field, List<Coordinates> fieldBuildingHelper){
         int i,j;
-        matrix = new String[240][880];
+        if (matrix == null) {
+            matrix = new String[240][880];
+        }
         for (Coordinates coordinate : fieldBuildingHelper){
             Card card = field.get(coordinate);
             String color = card.getReign()!=null? card.getReign().getColorBG():YELLOW;
@@ -437,6 +444,7 @@ public class TUIAsciiArtist {
             matrix[i][j] = color+fieldBuildingHelper.indexOf(coordinate);
         }
         writer.print(matrix);
+        matrix=null;
     }
     /**
      * @author Giuseppe Laguardia, Giorgio Mattina, Riccardo Lapi, Maximilian Mangosi
@@ -446,6 +454,7 @@ public class TUIAsciiArtist {
      * @param availablePositions List of coordinates where is legal play a card
      */
     public void show(Map<Coordinates, Card> field, List<Coordinates> fieldBuildingHelper,List<Coordinates> availablePositions){
+        matrix=new String[240][880];
         addAvailablePosToField(availablePositions);
         show(field,fieldBuildingHelper);
     }

@@ -139,22 +139,5 @@ public class TUIAsciiArtistTest {
         }
 
     }
-    @Test
-    public void buildTutorial() throws IOException, URISyntaxException, InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IllegalOperationException, InvalidCardException, DeckEmptyException, InvalidGameID, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException {
-       Goal[] arr={ gb.getGoalSet().stream().filter(p->p instanceof DistinctGoal).findAny().get(),gb.getGoalSet().stream().filter(p->p instanceof IdenticalGoal).findAny().get()};
-        artist.show(arr);
-        FileWriter fileWriter=new FileWriter("src/main/resources/TUI-tutorial-card3");
-        for (String[]row: artist.getMatrix()){
-            for (String cell:row){
-                if(cell!=null)
-                    fileWriter.write(cell);
-                else
-                    fileWriter.write(" ");
-            }
-            fileWriter.write("\n");
-        }
-        new TextUserInterface().execCmd("help-card");
-
-    }
 
 }

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.view.ViewRMI;
 import it.polimi.ingsw.model.gamecards.GameBox;
 import it.polimi.ingsw.model.gamelogic.GameManager;
 import it.polimi.ingsw.view.ViewRMIContainer;
@@ -11,6 +9,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.rmi.RemoteException;
@@ -138,9 +137,9 @@ public class Server {
         gb.addDistinctGoals();
     }
 
-    private static void fillList(ArrayList<String> jsonsList, int numOfJson, String path) throws IOException, URISyntaxException, NullPointerException {
+    private static void fillList(ArrayList<String> jsonsList, int numOfJson, String path) throws IOException, NullPointerException {
         for (int i = 1; i <=numOfJson; i++) {
-            jsonsList.add(Files.readString(Path.of(Server.class.getResource(path+i+".json").toURI())));
+            jsonsList.add(new String(Server.class.getResourceAsStream(path+i+".json").readAllBytes()));
         }
     }
 
