@@ -8,4 +8,8 @@ module it.polimi.ingsw {
     requires java.rmi;
     opens it.polimi.ingsw.GUI to javafx.fxml,javafx.graphics;
     exports it.polimi.ingsw.GUI;
+    opens it.polimi.ingsw.model.gamecards.cards to com.google.gson;
+    opens it.polimi.ingsw.model.gamecards.resources to com.google.gson;
+    opens it.polimi.ingsw.model.gamecards.goals to com.google.gson;
+    opens it.polimi.ingsw.view to java.rmi;
 }
