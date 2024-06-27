@@ -11,12 +11,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Message to send a private message to a user
+ */
 public class PrivateChatMessage extends ClientMessage{
     private String message;
     private String receiver;
     private UUID sender;
     /**
-     * updates message
+     *
      * @author Giuseppe Laguardia
      */
     public PrivateChatMessage(String message, String receiver, UUID sender) {

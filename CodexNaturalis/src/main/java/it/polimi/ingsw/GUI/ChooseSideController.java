@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
@@ -105,6 +106,8 @@ public class ChooseSideController extends GUIController {
         if (sealedCards==2){
             startButton.setVisible(true);
         }
+        backImage.setOnMouseClicked(null);
+        frontImage.setOnMouseClicked(null);
 
     }
 
@@ -123,6 +126,8 @@ public class ChooseSideController extends GUIController {
         if (sealedCards==2){
             startButton.setVisible(true);
         }
+        backImage.setOnMouseClicked(null);
+        frontImage.setOnMouseClicked(null);
     }
 
     /**
@@ -141,6 +146,8 @@ public class ChooseSideController extends GUIController {
         if (sealedCards==2){
             startButton.setVisible(true);
         }
+        privateGoal1.setOnMouseClicked(null);
+        privateGoal2.setOnMouseClicked(null);
     }
 
     /**
@@ -159,6 +166,8 @@ public class ChooseSideController extends GUIController {
         if (sealedCards==2){
             startButton.setVisible(true);
         }
+        privateGoal1.setOnMouseClicked(null);
+        privateGoal2.setOnMouseClicked(null);
     }
 
     /**

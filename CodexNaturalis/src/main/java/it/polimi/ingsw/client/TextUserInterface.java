@@ -701,11 +701,10 @@ public class TextUserInterface extends UserInterface {
     /**
      * shows the list of joinable games
      * @author Giuseppe Laguardia
-     * @param views
-     * @return joinableGames
-     * @throws RemoteException
+     * @param views the map containing the list of players for each game
+     * @return the list of GameID
      */
-    private List<UUID> showJoinableGames(Map<UUID, List<String>> views) throws RemoteException {
+    private List<UUID> showJoinableGames(Map<UUID, List<String>> views) {
        List<UUID> joinableGames=new ArrayList<>();
         int i=1;
         for (Map.Entry<UUID, List<String>> entry : views.entrySet()) {
@@ -720,9 +719,9 @@ public class TextUserInterface extends UserInterface {
     /**
      * boots the game
      * @author Giuseppe Laguardia
-     * @param isRMI parameter to see if the choice is rmi or soket
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @param isRMI parameter to see if the choice is rmi or socket
+     * @throws IOException when a connection error occurs
+     * @throws ClassNotFoundException when a connection error occurs
      */
     private void bootGame(boolean isRMI) throws IOException, ClassNotFoundException {
         boolean error=true;
