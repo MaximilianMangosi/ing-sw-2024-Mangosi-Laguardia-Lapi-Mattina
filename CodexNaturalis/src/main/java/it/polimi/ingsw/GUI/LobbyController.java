@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -243,7 +244,10 @@ public class LobbyController extends GUIController{
                         Text name = new Text();
                         name.setText(s);
                         name.setTabSize(18);
-                        name.setStyle("-fx-font: Bodoni MT Condensed");
+                        name.setFont(new Font("Bodoni MT",15));
+//                        name.setStyle(
+//                                "-fx-font-size: 13;" +
+//                                "-fx-font-style: normal;");
                         playersList.getChildren().add(name);
                     }
                     TitledPane newGame = new TitledPane(String.valueOf(i),playersStackPane);
