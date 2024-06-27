@@ -82,6 +82,10 @@ public class IdenticalGoalTest {
         gb.addDistinctGoals();
     }
 
+    /**
+     * Test the Identical Goal
+     * Tested the optimization of the points.
+     */
     @Test
     public void calculate_test(){
         StarterCard starterCard= gb.getStarterCardSet().stream().toList().getFirst();
