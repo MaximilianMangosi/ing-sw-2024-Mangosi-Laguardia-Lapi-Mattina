@@ -80,41 +80,87 @@ public class Game{
         return new ArrayList<>(listOfPlayers);
     }
 
+    /**
+     * Adds a player to the list of players.
+     *
+     * @param p The player to add.
+     */
     public void addPlayer(Player p) {
         listOfPlayers.add(p);
     }
 
+    /**
+     * Gets the number of players.
+     *
+     * @return The number of players.
+     */
     public int getNumOfPlayers() {
         return numOfPlayers;
     }
 
+    /**
+     * Gets the deck of resource cards.
+     *
+     * @return A list of resource cards.
+     */
     public List<ResourceCard> getResourceCardDeck() {
         return resourceCardDeck;
     }
 
+    /**
+     * Gets the deck of gold cards.
+     *
+     * @return A list of gold cards.
+     */
     public List<GoldCard> getGoldCardDeck() {
         return goldCardDeck;
     }
 
+    /**
+     * Gets the list of visible cards.
+     *
+     * @return The list of visible cards.
+     */
     public List<Card> getVisibleCards() {
         return visibleCards;
     }
 
+    /**
+     * Gets the list of goals.
+     *
+     * @return The list of goals.
+     */
     public List<Goal> getListOfGoal() {
         return listOfGoal;
     }
 
+    /**
+     * Sets the current player.
+     *
+     * @param currentPlayer The current player.
+     */
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * Gets the current player.
+     *
+     * @return The current player.
+     */
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
+    /**
+     * Gets the array of public goals.
+     *
+     * @return An array of public goals.
+     */
     public Goal[] getPublicGoals() {
         return publicGoals;
     }
+
 
     /**
      * @author Giorgio  Mattina

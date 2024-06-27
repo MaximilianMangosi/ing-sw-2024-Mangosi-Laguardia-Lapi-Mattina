@@ -776,7 +776,7 @@ public class TextUserInterface extends UserInterface {
         ViewSocket viewSocket = (ViewSocket) view;
         Map<UUID, List<String>> views = isRMI? viewContainer.getJoinableGames():viewSocket.getJoinableGames();
         if(views.isEmpty()) {
-            outWriter.print("Currently there isn't any game hosted, you wish to create a new one?");
+            outWriter.print("Currently there isn't any game hosted, you wish to create a new one? Type yes in this case");
             String reply=s.nextLine().toLowerCase();
             if(reply.equals("yes")) {
                 bootGame(isRMI);

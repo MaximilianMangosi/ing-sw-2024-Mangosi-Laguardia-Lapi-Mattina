@@ -21,22 +21,6 @@ public class Player {
     private int goalPoints;
 
     private Map<String, List<String>> privateChat = new HashMap<>();
-
-    public List<String> getPrivateChat(String name){
-        return privateChat.get(name);
-    }
-
-    public Map<String, List<String>> getPrivateChats (){
-        return privateChat;
-    }
-    public void setPrivateChat(String user, List<String> chat){
-        privateChat.put(user,chat);
-    }
-
-    public void addMessage(String name, String message){
-        privateChat.get(name).add(message);
-    }
-
     /**
      * constructor of class Player
      * @author Giuseppe Laguardia
@@ -45,6 +29,47 @@ public class Player {
     public Player(String name){
         this.name = name;
     }
+
+    /**
+     * Gets the private chat messages for a user.
+     *
+     * @param name The user's name.
+     * @return The list of chat messages.
+     */
+    public List<String> getPrivateChat(String name) {
+        return privateChat.get(name);
+    }
+
+    /**
+     * Gets the map of all private chats.
+     *
+     * @return A map where the key is the user's name and the value is a list of chat messages.
+     */
+    public Map<String, List<String>> getPrivateChats() {
+        return privateChat;
+    }
+
+    /**
+     * Sets the private chat messages for a user.
+     *
+     * @param user The user's name.
+     * @param chat The list of chat messages.
+     */
+    public void setPrivateChat(String user, List<String> chat) {
+        privateChat.put(user, chat);
+    }
+
+    /**
+     * Adds a message to the private chat of a user.
+     *
+     * @param name The user's name.
+     * @param message The message to add.
+     */
+    public void addMessage(String name, String message) {
+        privateChat.get(name).add(message);
+    }
+
+
 
     /**
      * getter of number of points obtained through goalCards

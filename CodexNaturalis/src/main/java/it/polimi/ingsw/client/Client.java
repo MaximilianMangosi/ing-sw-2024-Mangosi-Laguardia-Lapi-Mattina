@@ -25,7 +25,13 @@ public class Client {
      */
     public static void main(String[] args) {
 
-        String serverAddress=args[0];
+        String serverAddress="";
+        try {
+            serverAddress = args[0];
+        } catch (Exception e) {
+           System.out.println("ERROR server address not found");
+           System.exit(1);
+        }
         View view;
         Scanner s=new Scanner(System.in);
         TextUserInterface tui= new TextUserInterface();

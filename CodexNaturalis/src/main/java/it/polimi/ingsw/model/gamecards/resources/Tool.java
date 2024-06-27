@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.gamecards.resources;
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.client.TUIAsciiArtist;
 /**
- * tool characteristics of the card
+ ** Tools enumeration, each tool is associated with a symbol and the yellow color
  * @author Giuseppe Laguardia
  */
 public enum Tool implements Resource {

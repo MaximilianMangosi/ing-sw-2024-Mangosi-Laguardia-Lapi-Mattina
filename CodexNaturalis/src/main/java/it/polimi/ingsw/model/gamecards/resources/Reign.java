@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * reign characteristics of the card
+ * Reigns enumeration, each reign is associated with a color (ANSI CODE COLOR) and a symbol
  * @author Giuseppe Laguardia
  */
 public enum Reign implements Resource, Serializable {
