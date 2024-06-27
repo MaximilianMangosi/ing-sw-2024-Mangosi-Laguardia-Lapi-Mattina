@@ -1,7 +1,7 @@
 # PROVA FINALE INGEGNERIA DEL SOFTWARE - AA 2023-2024
 
 # Codex Naturalis
-
+![alt text](https://github.com/MaximiliamMangosi/ing-sw-2024-Mangosi-Laguardia-Lapi-Mattina/blob/main/CodexNaturalis/src/main/resources/Icon/codex_nat_icon.png)
 ## Descrizione
 Prova finale del corso di Ingegneria del Software.
 Il progetto consiste nell'implementazione di un sistema distribuito composto da server in grado di gestire più partite 
