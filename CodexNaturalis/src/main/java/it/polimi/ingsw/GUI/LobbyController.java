@@ -94,6 +94,7 @@ public class LobbyController extends GUIController{
         try {
             isSocketSelected=true;
             socketButton.setStyle("-fx-border-color: #820933");
+            socketButton.setStyle("-fx-text-fill: black");
             RMIButton.setStyle("-fx-background-color:  #e5a78a");
             HBox parent = (HBox) socketButton.getParent();
             parent.getChildren().removeLast();
@@ -121,6 +122,7 @@ public class LobbyController extends GUIController{
         try {
             isSocketSelected=false;
             RMIButton.setStyle("-fx-border-color: #820933");
+            RMIButton.setStyle("-fx-text-fill: black");
             HBox parent = (HBox) RMIButton.getParent();
             parent.getChildren().removeFirst();
             RMIButton.setDisable(true);
