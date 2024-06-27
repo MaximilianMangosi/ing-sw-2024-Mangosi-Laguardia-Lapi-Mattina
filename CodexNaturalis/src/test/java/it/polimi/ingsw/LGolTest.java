@@ -17,6 +17,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test LGoal, create all the cards, player, and goal.
+ */
 public class LGolTest {
 
     GameBox gb=new GameBox();
@@ -80,6 +83,10 @@ public class LGolTest {
         gb.addDistinctGoals();
     }
 
+    /**
+     * Verify the LGoal.
+     * Can't use same card for same goal
+     */
     @Test
     public void calculate_91(){
         StarterCard starterCard= gb.getStarterCardSet().stream().toList().getFirst();

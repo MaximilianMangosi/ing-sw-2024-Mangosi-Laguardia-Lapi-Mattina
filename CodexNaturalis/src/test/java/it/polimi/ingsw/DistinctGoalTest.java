@@ -24,6 +24,10 @@ public class DistinctGoalTest {
     public void distinctGoalSetup (){
         Player p = new Player("Pepo");
     }
+
+    /**
+     * Test Distinct Goal
+     */
     @Test
     public void calculateGoalTest(){
         Player p = new Player("Pepo");

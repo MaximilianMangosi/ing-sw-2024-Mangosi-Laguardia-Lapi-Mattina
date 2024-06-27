@@ -62,7 +62,7 @@ public class LGoal extends Goal {
     public int calculateGoal(Player player){
 
         Map<Coordinates, Card> field = player.getField();
-      //  List<Coordinates> usedCards = new ArrayList<>();
+        List<Coordinates> usedCards = new ArrayList<>();
         int numOfLs = 0;
 
         int modY, modX;
@@ -86,7 +86,7 @@ public class LGoal extends Goal {
             if(!primaryReign.equals(currentReign)) continue;
             Coordinates current = card.getKey();
 
-          //  if(usedCards.contains(current)) continue;
+            if(usedCards.contains(current)) continue;
 
             Coordinates secondaryA = new Coordinates(current.x + modX, current.y + modY);
             Coordinates secondaryB = new Coordinates(current.x + modX, current.y + modY*3);
@@ -110,11 +110,9 @@ public class LGoal extends Goal {
                     && BReign.equals(secondaryReign);
 
             if(isL){
-                /*
                 usedCards.add(current);
                 usedCards.add(secondaryA);
                 usedCards.add(secondaryB);
-                 */
                 numOfLs++;
             }
         }

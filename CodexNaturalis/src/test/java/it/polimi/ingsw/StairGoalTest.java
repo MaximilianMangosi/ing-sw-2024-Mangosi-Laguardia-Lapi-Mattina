@@ -80,6 +80,10 @@ public class StairGoalTest {
 
 
     }
+
+    /**
+     * Calculate one stair
+     */
     @Test
     public void calculateGoal_OneStair_Test(){
         StarterCard starterCard= gb.getStarterCardSet().stream().toList().getFirst();
@@ -93,6 +97,9 @@ public class StairGoalTest {
 
         assertEquals(2,goal.calculateGoal(p));
     }
+    /**
+     * Calculate no stair
+     */
     @Test
     public void calculateGoal_ZeroStair_Test(){
 
@@ -108,6 +115,9 @@ public class StairGoalTest {
 
         assertEquals(0,goal.calculateGoal(p));
     }
+    /**
+     * Test that it doesn't reuse the same card for 2 goals
+     */
     @Test
     public void calculateGoal_NoReuse_Test(){
 
@@ -124,6 +134,9 @@ public class StairGoalTest {
 
         assertEquals(2,goal.calculateGoal(p));
     }
+    /**
+     * Test 2 Consecutive Stairs
+     */
     @Test
     public void calculateGoal_TwoConsecutiveStair_Test(){
 
@@ -141,6 +154,11 @@ public class StairGoalTest {
 
         assertEquals(4,goal.calculateGoal(p));
     }
+
+    /**
+     * Test with a Stair in the wrong direction of the goal
+     */
+    @Test
     public void calculateGoal_WrongDirection_Test(){
         StarterCard starterCard= gb.getStarterCardSet().stream().toList().getFirst();
         ArrayList<Card> plantsCard= new ArrayList<>( gb.getGoldCardSet().stream().filter(c->c.getReign()==Reign.PLANTS).toList());
