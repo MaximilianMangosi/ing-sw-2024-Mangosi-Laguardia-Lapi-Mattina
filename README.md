@@ -5,11 +5,11 @@
 ## Descrizione
 Prova finale del corso di Ingegneria del Software.
 Il progetto consiste nell'implementazione di un sistema distribuito composto da server in grado di gestire più partite 
-contemporaneamente a multipli client, i quali possono scegliere se creare una nuova partita
+contemporaneamente e multipli client, i quali possono scegliere se creare una nuova partita
 oppure unirsi ad una partita esistente.
 
-Il client può inoltre scegliere se connettersi al server utilizzando protocollo Socket o Java RMI e pattern MVC (Model Controller View).
-Il server è quindi in grado di gestire diversi client che si connettono con diversi protocolli. 
+Il client può inoltre scegliere se connettersi al server utilizzando protocollo Socket o Java RMI.L'interazione con la partita è stata implementata con pattern MVC (Model Controller View).
+Il server è inoltre in grado di gestire diversi client che si connettono con diversi protocolli. 
 
 ## Gruppo
 Il progetto è stato sviluppato dai seguenti studenti:
@@ -38,7 +38,8 @@ Sono state aggiunte le seguenti funzionalità avanzate
 
 | Funzionalità                                                         | Descrizione                                                                                                                                                                                              |
 |----------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Supporto Alle Partite Multiple**                                   |                                                                                                                                                                                                          |
+| **Supporto Alle Partite Multiple**                                   |**Il server è in grado di gestire più partite contemporaneamente.**
+                                                                                                                                                                                                          |
 | **Chat In-Game sia Globale(nella medesima partita)<br/>che Privata** | **Possibile selezionare la chat globale, leggibile da tutti i giocatori all'interno di una partita, sia un altro giocatore con cui scambiare messaggi privatamente all'interno<br/>della chat privata.** |
 
 ## Installazione
