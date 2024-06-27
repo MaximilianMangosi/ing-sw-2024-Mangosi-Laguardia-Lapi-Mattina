@@ -43,7 +43,7 @@ Sono state aggiunte le seguenti funzionalità avanzate
 
 ## Installazione
 1. Installa la versione 21 di Java [cliccando qui](https://www.java.com/en/download/help/download_options.html)
-2. Clona il repository:
+2. Clona la repository:
     ```bash
     git clone https://github.com/MaximiliamMangosi/ing-sw-2024-Mangosi-Laguardia-Lapi-Mattina/tree/main
     ```
