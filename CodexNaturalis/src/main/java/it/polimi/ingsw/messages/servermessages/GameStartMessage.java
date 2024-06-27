@@ -11,6 +11,7 @@ import it.polimi.ingsw.view.ViewSocket;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ public class GameStartMessage extends ServerMessage{
     private String currentPlayer;
     private List<String> globalChat;
     private Map<String,String> playerToColor;
+    private Map<String,Integer> playerPoints;
 
 
     public GameStartMessage(Controller c) {
@@ -34,6 +36,7 @@ public class GameStartMessage extends ServerMessage{
         currentPlayer=c.getCurrentPlayer();
         globalChat=c.getGlobalChat();
         playerToColor = c.getPlayerToColor();
+        playerPoints=c.getPlayersPoints();
         try {
             topGolds=c.getTopOfGoldCardDeck();
             topResources=c.getTopOfResourceCardDeck();
@@ -51,6 +54,7 @@ public class GameStartMessage extends ServerMessage{
         gameData.setPlayerToColor(playerToColor);
         gameData.setTopOfResourcesDeck(topResources);
         gameData.setTopOfGoldsDeck(topGolds);
+        gameData.setPlayersPoints((HashMap<String, Integer>) playerPoints);
 
     }
 }
