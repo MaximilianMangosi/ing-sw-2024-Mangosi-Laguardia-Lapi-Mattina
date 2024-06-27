@@ -109,8 +109,8 @@ public class  ViewSocket implements View{
  * @return a list of cards representing the current player's hand.
  */
     @Override
-    public List<Card> showPlayerHand(){
-        return gd.getHand();
+    public List<Card> showPlayerHand() throws IllegalOperationException {
+        return Optional.ofNullable(gd.getHand()).orElseThrow(()->new IllegalOperationException("show-hand"));
     }
 
     /**
@@ -119,8 +119,8 @@ public class  ViewSocket implements View{
      * @return player field
      */
     @Override
-    public Map<Coordinates, Card> getPlayersField(String name) {
-        return gd.getPlayerField(name);
+    public Map<Coordinates, Card> getPlayersField(String name) throws IllegalOperationException {
+        return Optional.ofNullable(gd.getPlayerField(name)).orElseThrow(()->new IllegalOperationException("show-field"));
     }
 
     /**
@@ -156,16 +156,16 @@ public class  ViewSocket implements View{
      * @return The list of legal positions.
      */
     @Override
-    public List<Coordinates> showPlayersLegalPositions()  {
-        return gd.getLegalPositions();
+    public List<Coordinates> showPlayersLegalPositions() throws IllegalOperationException {
+        return Optional.ofNullable(gd.getLegalPositions()).orElseThrow(()->new IllegalOperationException("show-field"));
     }
     /**
      * Retrieves the public goals available in the game.
      * @return An array of public goals.
      */
     @Override
-    public Goal[] getPublicGoals() {
-        return gd.getPublicGoals();
+    public Goal[] getPublicGoals() throws IllegalOperationException {
+        return Optional.ofNullable(gd.getPublicGoals()).orElseThrow(()->new IllegalOperationException("show-goal"));
     }
     /**
      * This method is deprecated and will always return null. Use {@link #showPlayerGoalOptions()}  instead.
@@ -200,8 +200,8 @@ public class  ViewSocket implements View{
      * @return The private goal of the user.
      */
     @Override
-    public Goal showPrivateGoal() {
-        return gd.getPrivateGoal();
+    public Goal showPrivateGoal() throws IllegalOperationException {
+        return Optional.ofNullable(gd.getPrivateGoal()).orElseThrow(()->new IllegalOperationException("show-goal"));
     }
     /**
      * Retrieves the list of visible cards in the game.
@@ -209,8 +209,8 @@ public class  ViewSocket implements View{
      * @return The list of visible cards.
      */
     @Override
-    public List<Card> getVisibleCards() {
-        return gd.getVisibleCards();
+    public List<Card> getVisibleCards() throws IllegalOperationException {
+        return Optional.ofNullable(gd.getVisibleCards()).orElseThrow(()->new IllegalOperationException("draw-card-visible"));
     }
     /**
      * Retrieves the winner of the game.

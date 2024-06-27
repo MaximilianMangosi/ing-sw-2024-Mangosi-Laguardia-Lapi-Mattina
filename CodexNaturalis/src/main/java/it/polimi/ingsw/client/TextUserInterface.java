@@ -305,7 +305,7 @@ public class TextUserInterface extends UserInterface {
                     System.exit(1);
                     break;
                 case "open-global-chat":
-                    outWriter.print("Write -close to exit from chat");
+                    outWriter.print("Write -c to exit from chat");
                     outWriter.print("Write -m to enter write mode");
                     AtomicBoolean stop2= new AtomicBoolean(false);
                     Thread t2 = new Thread(()->printGlobalChat(stop2));
@@ -328,7 +328,7 @@ public class TextUserInterface extends UserInterface {
                         }if (name.equals(myName)){
                             outWriter.print("You can not write a message to yourself");
                         }else {
-                            outWriter.print("Write -close to exit from chat");
+                            outWriter.print("Write -c to exit from chat");
                             outWriter.print("Write -m to enter write mode");
                             AtomicBoolean stop1=new AtomicBoolean(false);
                             Thread t1 = new Thread(()->printChat(name,stop1));
@@ -374,10 +374,10 @@ public class TextUserInterface extends UserInterface {
      * @author Giuseppe Laguardia
      * @param stop1
      * @param t1
-     * @return
-     * @throws RemoteException
+     * @return the message to be sent
+     *
      */
-    private String promptForChat(AtomicBoolean stop1, Thread t1) throws RemoteException {
+    private String promptForChat(AtomicBoolean stop1, Thread t1)  {
         String mode = s.nextLine();
         if(mode.equals("-m")) {
             stop1.set(true);
@@ -385,7 +385,7 @@ public class TextUserInterface extends UserInterface {
             t1.interrupt();
             return null;
         }
-        return myName.toUpperCase() +": "+ s.nextLine();
+        return myName +": "+ s.nextLine();
     }
 
     /**
@@ -395,7 +395,7 @@ public class TextUserInterface extends UserInterface {
      */
     private void printGlobalChat(AtomicBoolean stop) {
         try {
-            while (!stop.get()){
+            while (true){
                 if(!stop.get()) {
                     outWriter.clearScreen();
                     List<String> chat = view.getChatList();

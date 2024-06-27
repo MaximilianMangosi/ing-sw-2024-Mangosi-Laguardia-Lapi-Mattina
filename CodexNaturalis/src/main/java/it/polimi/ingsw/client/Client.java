@@ -76,6 +76,8 @@ public class Client {
                         HandNotFullException | InvalidCardException | InvalidGoalException |  IllegalPositionException |
                         DeckEmptyException e) {
                     System.out.println(e.getMessage());
+                    System.out.println("press enter to continue");
+                    s.nextLine();
                     tui.printIdleUI();
                 }
             }
