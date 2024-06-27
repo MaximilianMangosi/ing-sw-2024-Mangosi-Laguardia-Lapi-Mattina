@@ -748,7 +748,7 @@ public class InGameController extends GUIController {
                 try {
                     view.closeGame(myID);
                     gameInfoStop.set(false);
-                    changeScene("New-hello-view.fxml",e);
+                    changeScene("lobby-view.fxml",e);
                 } catch (ClassNotFoundException | IOException ex) {
                    showErrorMsg("connection error");
                    System.exit(1);

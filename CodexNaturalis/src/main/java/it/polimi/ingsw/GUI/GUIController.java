@@ -1,8 +1,6 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.client.UserInterface;
-import it.polimi.ingsw.controller.exceptions.InvalidUserId;
-import it.polimi.ingsw.view.View;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -50,8 +48,8 @@ public class GUIController extends UserInterface {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(pathXML));
         root = loader.load();
         GUIController c = loader.getController();
-        if (pathXML.equals("New-hello-view.fxml")) {
-            NewHelloController controller=(NewHelloController) c;
+        if (pathXML.equals("lobby-view.fxml")) {
+            LobbyController controller=(LobbyController) c;
             if(view.isRMI()){
                 controller.selectRMI();
             }

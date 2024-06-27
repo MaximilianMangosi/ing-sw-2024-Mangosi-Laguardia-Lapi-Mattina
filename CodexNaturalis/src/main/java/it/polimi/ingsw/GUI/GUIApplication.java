@@ -17,10 +17,10 @@ public class GUIApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("New-hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(GUIApplication.class.getResource("lobby-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 720, 600);
         String serverAddress=getParameters().getRaw().getFirst();
-        NewHelloController controller =fxmlLoader.getController();
+        LobbyController controller =fxmlLoader.getController();
         controller.setServerAddress(serverAddress);
         stage.setTitle("Codex Naturalis");
         stage.setScene(scene);
