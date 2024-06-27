@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Coordinates;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * CLass used as for printing TUI elements
+ */
 public class OutStreamWriter {
     /**
      * @author Giuseppe Laguardia
@@ -74,7 +77,11 @@ public class OutStreamWriter {
             }
         }
     }
-
+    /**
+     * @author Giuseppe Laguardia
+     * @param helper list of the player coordinates in order of entry
+     * @return the X coordinate of the further to the right
+     */
     private Integer getMaxX(List<Coordinates> helper) {
         return helper.stream().map(c -> c.x).max(Integer::compare).orElse(398);
     }

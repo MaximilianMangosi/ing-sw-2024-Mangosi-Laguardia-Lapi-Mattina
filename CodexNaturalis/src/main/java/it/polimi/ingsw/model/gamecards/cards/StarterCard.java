@@ -107,7 +107,7 @@ public class StarterCard extends Card implements Serializable {
 
     }
 
-    /**
+    /** Returns the Resources visible on the card, according to his side
      * @author Giuseppe Laguardia
      * @return resource of the card
      */

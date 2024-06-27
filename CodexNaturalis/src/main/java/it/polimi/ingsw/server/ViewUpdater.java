@@ -11,17 +11,17 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * updates the view
+ * Sends messages to the clients for views update
  * @author Giuseppe Laguardia
  */
 public class ViewUpdater  {
     private final Map<UUID, ObjectOutputStream> clients = new ConcurrentHashMap<>();
 
     /**
-     * adds client
+     * adds client outputStream to the map
      * @author Giuseppe Laguardia
-     * @param userId
-     * @param out
+     * @param userId the user id
+     * @param out the outputStream to be added
      */
     public void addClient(UUID userId, ObjectOutputStream out){
         clients.put(userId,out);
@@ -29,7 +29,7 @@ public class ViewUpdater  {
     }
 
     /**
-     * gets clients
+     * gets  all the clients
      * @author Giuseppe Laguardia
      * @return
      */
@@ -38,7 +38,7 @@ public class ViewUpdater  {
     }
 
     /**
-     * sends all messages
+     * sends  messages to all the clients
      * @author Giuseppe Laguardia
      * @param msg
      * @throws IOException
@@ -51,10 +51,10 @@ public class ViewUpdater  {
     }
 
     /**
-     * sends message to user
+     * sends message to a  user
      * @author Giuseppe Laguardia
-     * @param message
-     * @param userId
+     * @param message the message
+     * @param userId to of the receiver
      * @throws IOException
      */
     public synchronized void sendTo(ServerMessage message,UUID userId) throws IOException{
@@ -62,7 +62,7 @@ public class ViewUpdater  {
     }
 
     /**
-     * removes client
+     * removes client from map
      * @author Giuseppe Laguardia
      * @param myID
      */

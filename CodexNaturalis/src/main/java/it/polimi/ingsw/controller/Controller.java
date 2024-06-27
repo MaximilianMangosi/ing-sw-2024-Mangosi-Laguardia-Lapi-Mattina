@@ -21,16 +21,27 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * The class that controls the Game and updates Views
+ */
 public class Controller {
     protected GameState currentState;
     private ConcurrentHashMap <UUID,Boolean> pingMap= new ConcurrentHashMap<>();
     private BlockingQueue<ServerMessage> messageQueue = new LinkedBlockingQueue<>();
     private ViewRMI view;
-
+/**
+ * Gets the global chat shared by all the users
+ * @return  the global chat
+ */
     public List<String> getGlobalChat(){
         return currentState.game.getGlobalChat();
     }
-
+    /**
+     * Gets the private chat shared with the given user
+     * @param name the other user who share the chat
+     * @param userID the user ID of the player calling the method
+     * @return  the global chat
+     */
     public List<String> getPrivateChat(String name, UUID userID){
         return currentState.getPrivateChat( name,userID);
     }
@@ -52,10 +63,10 @@ public class Controller {
     /**
      * adds message to the private chat
      * @author Maximilian Mangosi
-     * @param name
-     * @param message
-     * @param userID
-     * @throws IllegalOperationException
+     * @param name the receiver's username
+     * @param message the to be sent
+     * @param userID the userID of the sender
+     * @throws IllegalOperationException when sending message isn't allowed
      */
     public void addMessage(String name, String message, UUID userID) throws IllegalOperationException {
         if(!message.isBlank()) {
@@ -69,7 +80,7 @@ public class Controller {
     /**
      * constructor of Controller, creates a new GameState
      * @author Giorgio Mattina
-     * @param gameManager
+     * @param gameManager the game manager
      */
     public Controller( GameManager gameManager) throws RemoteException {
         currentState=new LobbyState(gameManager);
@@ -191,9 +202,8 @@ public class Controller {
      * @author Giorgio Mattina
      * @param playerName the player's username joining the game
      * @return the UUID returned by currentState
-     * @throws NoGameExistsException
-     * @throws IllegalOperationException
-     * @throws PlayerNameNotUniqueException
+     * @throws IllegalOperationException when joining a game isn't allowed
+     * @throws PlayerNameNotUniqueException when the given username is taken
      */
     public UUID joinGame(UUID gameId,String playerName) throws  IllegalOperationException, PlayerNameNotUniqueException, InvalidGameID {
         UUID userID= currentState.joinGame(gameId,playerName);
@@ -252,11 +262,11 @@ public class Controller {
     }
 
     /**
-     * gets the player UUID
+     * gets the player by his UUID
      * @author Giuseppe Laguardia
-     * @param userId
-     * @return
-     * @throws InvalidUserId
+     * @param userId player'sID
+     * @return the Player object
+     * @throws InvalidUserId when the userID isn't associated to any user
      */
     public Player getPlayer(UUID userId) throws InvalidUserId {
 
@@ -678,7 +688,7 @@ public class Controller {
 
     /**
      * @author Giuseppe Laguardia
-     * @return the color of the user
+     * @return the color map of the users
      */
     public Map<String, String> getPlayerToColor() {
         Map<String,String> colorMap=new HashMap<>();

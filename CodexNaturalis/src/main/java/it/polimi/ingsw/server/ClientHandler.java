@@ -14,6 +14,9 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * The Runnable handling client messages on port 2323
+ */
 public class ClientHandler implements Runnable{
     private final Socket client;
     private ObjectOutputStream output;

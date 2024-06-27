@@ -15,6 +15,9 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The abstract class of TUI and GUI
+ */
 public abstract class UserInterface{
     protected  View view;
     protected ViewRMIContainerInterface viewContainer;
@@ -30,9 +33,9 @@ public abstract class UserInterface{
     /**
      * function to get the user hand
      * @author Giuseppe Laguardia
-     * @return
-     * @throws RemoteException
-     * @throws InvalidUserId
+     * @return the list of Card in player's hand
+     * @throws RemoteException when a connection error occurs
+     * @throws InvalidUserId when the user's ID is not associated to a player who joined a game
      */
     public List<Card> getHand() throws RemoteException, InvalidUserId, IllegalOperationException {
         if(view.isRMI())
@@ -45,8 +48,8 @@ public abstract class UserInterface{
     /**
      * returns the starter card
      * @author Giuseppe Laguardia
-     * @return
-     * @throws RemoteException
+     * @return the user's starterCard
+     * @throws RemoteException when a connection error occurs
      */
     public StarterCard getStarterCard() throws RemoteException {
         if(view.isRMI())
@@ -56,9 +59,9 @@ public abstract class UserInterface{
     /**
      * returns the goal options
      * @author Giuseppe Laguardia
-     * @return
-     * @throws RemoteException
-     * @throws InvalidUserId
+     * @return the goal options
+     * @throws RemoteException when a connection error occurs
+     * @throws InvalidUserId when a connection error occurs
      */
     public Goal[] getGoalOptions() throws RemoteException, InvalidUserId, IllegalOperationException {
         if(view.isRMI())
@@ -68,9 +71,9 @@ public abstract class UserInterface{
     /**
      * returns the private goals
      * @author Giuseppe Laguardia
-     * @return
-     * @throws RemoteException
-     * @throws InvalidUserId
+     * @return the private goal
+     * @throws RemoteException when a connection errors occurs
+     * @throws InvalidUserId when the user's ID is not associated to a player who joined a game
      */
 
     public Goal getPrivateGoal() throws RemoteException, InvalidUserId, IllegalOperationException {
@@ -82,9 +85,9 @@ public abstract class UserInterface{
     /**
      * returns private chat with another user
      * @author Giuseppe Laguardia
-     * @param user
-     * @return
-     * @throws RemoteException
+     * @param user the other user who shares the chat
+     * @return the private chat with the given user
+     * @throws RemoteException when a connection errors occurs
      */
     public  List<String> getPrivateChat(String user) throws RemoteException {
         if(view.isRMI())
@@ -94,9 +97,9 @@ public abstract class UserInterface{
     /**
      * returns the positions on witch the player can play the card
      * @author Giuseppe Laguardia
-     * @return
-     * @throws RemoteException
-     * @throws InvalidUserId
+     * @return the list of positions where is possible to place a card on the field
+     * @throws RemoteException when a connection errors occurs
+     * @throws InvalidUserId when the player's ID is not associ
      */
     public List<Coordinates> getPlayersLegalPositions() throws RemoteException, InvalidUserId, IllegalOperationException {
         if(view.isRMI())
@@ -107,16 +110,16 @@ public abstract class UserInterface{
     /**
      * sets the view
      * @author Giuseppe Laguardia
-     * @param view
+     * @param view the view to set as attribute
      */
     public void setView(View view) {
         this.view=view;
     }
 
     /**
-     * sets the server
+     * sets the server's ip address
      * @author Giuseppe Laguardia
-     * @param serverAddress
+     * @param serverAddress the serverIP address to be set as attribute
      */
     public void setServerAddress(String serverAddress) {
         this.serverAddress=serverAddress;

@@ -4,24 +4,19 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.GameKey;
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
-import it.polimi.ingsw.messages.exceptionmessages.OnlyOneGameMessage;
 import it.polimi.ingsw.messages.exceptionmessages.PlayerNameNotUniqueMessage;
 import it.polimi.ingsw.messages.exceptionmessages.UnacceptableNumOfPlayersMessage;
 import it.polimi.ingsw.messages.servermessages.GameKeyMessage;
 import it.polimi.ingsw.messages.servermessages.PlayersListMessage;
-import it.polimi.ingsw.messages.servermessages.ServerMessage;
-import it.polimi.ingsw.messages.servermessages.UserIDMessage;
 import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
-import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.server.*;
-import it.polimi.ingsw.view.ViewRMI;
 import it.polimi.ingsw.view.ViewRMIContainer;
 
 import java.io.IOException;
 import java.io.Serial;
-import java.util.UUID;
+
 public class BootGameMessage extends ClientMessage{
     @Serial
     private static final long serialVersionUID= 3697664496715415988L;

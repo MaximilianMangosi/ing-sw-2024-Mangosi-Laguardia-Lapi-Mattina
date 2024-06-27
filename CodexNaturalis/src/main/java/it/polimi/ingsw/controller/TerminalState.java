@@ -43,10 +43,9 @@ public class TerminalState extends GameState{
     }
 
     /**
-     * adds message to global chat
+     * In this state you can't send messages so the method throws always IllegalOperationException
      * @author Maximilian Mangosi
-     * @param message
-     * @throws IllegalOperationException
+     * @throws IllegalOperationException always
      */
     @Override
     public void addToGlobalChat(String message) throws IllegalOperationException {
@@ -54,12 +53,9 @@ public class TerminalState extends GameState{
     }
 
     /**
-     * adds message to private chat
+     * In this state you can't send messages so the method throws always IllegalOperationException
      * @author Maximilian Mangosi
-     * @param receiver
-     * @param message
-     * @param userID
-     * @throws IllegalOperationException
+     * @throws IllegalOperationException always
      */
     @Override
     public void addMessage(String receiver, String message, UUID userID) throws IllegalOperationException {

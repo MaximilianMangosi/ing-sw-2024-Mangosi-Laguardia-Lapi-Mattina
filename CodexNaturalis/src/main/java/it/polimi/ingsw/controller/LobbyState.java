@@ -21,7 +21,7 @@ public class LobbyState extends GameState{
      * @param numOfPlayers number of players
      * @param playerName   the nickname chosen by the player
      * @return the userId for identification
-     * @throws UnacceptableNumOfPlayersException
+     * @throws UnacceptableNumOfPlayersException when numOfPlayer isn't in range [2:4]
      * @author Giorgio Mattina
      */
     public GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, PlayerNameNotUniqueException {
@@ -66,10 +66,10 @@ public class LobbyState extends GameState{
     }
 
     /**
-     * adds message to global chat
+     *  In this state you can't send messages so the method throws always IllegalOperationException
      * @author Maximilian Mangosi
-     * @param message
-     * @throws IllegalOperationException
+     * @param message the message to be sent
+     * @throws IllegalOperationException  always
      */
     @Override
     public void addToGlobalChat(String message) throws IllegalOperationException {
@@ -77,12 +77,9 @@ public class LobbyState extends GameState{
     }
 
     /**
-     * adds message to private chat
+     * In this state you can't send messages so the method throws always IllegalOperationException
      * @author Maximilian Mangosi
-     * @param receiver
-     * @param message
-     * @param userID
-     * @throws IllegalOperationException
+     * @throws IllegalOperationException always
      */
     @Override
     public void addMessage(String receiver, String message, UUID userID) throws IllegalOperationException {

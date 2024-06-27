@@ -9,6 +9,9 @@ import it.polimi.ingsw.view.ViewRMI;
 
 import java.io.IOException;
 
+/**
+ * the Client message to send a message in global chat
+ */
 public class ChatMessage extends ClientMessage {
     private String chatMessage;
 

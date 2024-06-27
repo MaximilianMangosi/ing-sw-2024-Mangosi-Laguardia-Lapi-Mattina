@@ -2,24 +2,17 @@ package it.polimi.ingsw.messages.clientmessages;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
-import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
 import it.polimi.ingsw.messages.exceptionmessages.InvalidGameIDMessage;
-import it.polimi.ingsw.messages.exceptionmessages.NoGameExistsMessage;
 import it.polimi.ingsw.messages.exceptionmessages.PlayerNameNotUniqueMessage;
 import it.polimi.ingsw.messages.servermessages.*;
-import it.polimi.ingsw.model.gamelogic.Player;
 import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
-import it.polimi.ingsw.model.gamelogic.exceptions.NoGameExistsException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.server.ClientHandler;
 import it.polimi.ingsw.view.ViewRMIContainer;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serial;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.UUID;
 
 public class JoinGameMessage extends ClientMessage {

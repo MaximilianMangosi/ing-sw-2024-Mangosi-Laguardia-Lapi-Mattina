@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -118,7 +119,7 @@ public class WaitingRoomController extends GUIController{
             playersContainer.getChildren().clear();
             for (String name : names) {
                 Label label = new Label(name);
-                label.setStyle("-fx-font-size: 20px");
+                label.setFont(new Font("Bodoni Mt",30));
                 playersContainer.getChildren().add(label);
             }
         }

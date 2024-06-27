@@ -6,7 +6,10 @@ import it.polimi.ingsw.messages.servermessages.*;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
-
+/**
+ * Retrieves messages from Remote view and send to the Socket clients
+ * @author Giuseppe Laguardia
+ */
 public class RMIToSocketDispatcher extends Thread{
     private final Controller controller;
     private final ViewUpdater viewUpdater;
@@ -15,10 +18,7 @@ public class RMIToSocketDispatcher extends Thread{
         this.controller = controller;
         this.viewUpdater = viewUpdater;
     }
-    /**
-     * Retrieves a message from Remote view and send to the Socket clients
-     * @author Giuseppe Laguardia
-     */
+
     @Override
     public void run() {
         while (true) {

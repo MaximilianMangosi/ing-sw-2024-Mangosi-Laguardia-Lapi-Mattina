@@ -23,8 +23,8 @@ public abstract class GameState {
     /**
      * adds message to the global chat
      * @author Maximilian Mangosi
-     * @param message
-     * @throws IllegalOperationException
+     * @param message the message to be sent
+     * @throws IllegalOperationException when sending a message is not allowed
      */
     public void addToGlobalChat(String message) throws IllegalOperationException {
         game.addToGlobalChat(message);
@@ -33,20 +33,20 @@ public abstract class GameState {
     /**
      * adds message to private chat
      * @author Maximilian Mangosi
-     * @param receiver
-     * @param message
-     * @param userID
-     * @throws IllegalOperationException
+     * @param receiver the receiver's username
+     * @param message the message to be sent
+     * @param userID the id of the sender
+     * @throws IllegalOperationException when sending a message is not allowed
      */
     public void addMessage(String receiver, String message, UUID userID) throws IllegalOperationException {
        userIDs.get(userID).addMessage(receiver,message);
 
     }
 
-    /**
-     * @param gameManager
+    /**constructor of GameState
+     * @param gameManager the Game manager
      * @author Giuseppe Laguardia
-     * constructor of GameState
+     *
      */
     GameState(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -73,12 +73,12 @@ public abstract class GameState {
     /**
      * checks if it's the player's turn, if the card is legal and if the position is legal
      *
-     * @param selectedCard
-     * @param position
-     * @param userId
-     * @throws IsNotYourTurnException
-     * @throws InvalidCardException
-     * @throws IllegalPositionException
+     * @param selectedCard the card to be checked
+     * @param position the position to be checked
+     * @param userId the user to be checked
+     * @throws IsNotYourTurnException when isn't user turn
+     * @throws InvalidCardException when the card is not in user's hand
+     * @throws IllegalPositionException when the position is not valid
      * @author Giorgio Mattina
      */
     protected void CheckTurnCardPosition(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException, HandNotFullException {

@@ -13,10 +13,11 @@ import it.polimi.ingsw.model.gamecards.resources.Tool;
 
 import java.util.*;
 import java.util.List;
-
+/**
+ * Class used to pretty print game data
+ */
 public class TUIAsciiArtist {
     private String[][] matrix = new String[5][46];
-    private String[][] asciiField ;
     private  OutStreamWriter writer;
     public static final String RESET = "\u001B[0m";
     public static final String BLACK = "\u001B[30m";
@@ -36,7 +37,8 @@ public class TUIAsciiArtist {
     /**
      * write on matrix the ASCII art representing parameter Card
      * @author Giorgio Mattina
-     * @param card
+     * @param card the card to add to the matrix
+     * @param shouldPrint true when the matrix is ready to be printed
      */
 
     public void show(Card card,boolean shouldPrint) {
@@ -144,7 +146,7 @@ public class TUIAsciiArtist {
     /**
      * shows the cards
      * @author Giuseppe Laguardia
-     * @param cards
+     * @param cards the list of cards to be printed
      */
     public void show(List<Card> cards){
         if(cards.size()<=3){ //show Hand
@@ -238,7 +240,8 @@ public class TUIAsciiArtist {
     /**
      * calls buildStarterCardStructure and replaces angle and central resources based on parameter starterCard in matrix
      * @author Giorgio Mattina
-     * @param starterCard
+     * @param starterCard the starter Card to be written
+     * @param printBothSide true when the matrix needs to be print
      */
     public void show(StarterCard starterCard,boolean printBothSide){
         boolean printFront= starterCard.isFront();
@@ -260,7 +263,7 @@ public class TUIAsciiArtist {
     /**
      * shows the back side of the starter card
      * @author Giuseppe Laguardia
-     * @param starterCard
+     * @param starterCard the starterCard to be printed
      */
     private void showBack(StarterCard starterCard) {
         matrix[0][14] = YELLOW + starterCard.getResourceBack("NW").getColorFG() + starterCard.getResourceBack("NW").getSymbol() + LIGHT_WHITE ;
@@ -272,7 +275,7 @@ public class TUIAsciiArtist {
     /**
      * shows the front of the starter card
      * @author Giuseppe Laguardia Giorgio Mattina
-     * @param starterCard
+     * @param starterCard the starterCard to be printed
      */
     private void showFront(StarterCard starterCard) {
         List<Resource> centralResources = starterCard.getCentralResource();
@@ -319,7 +322,8 @@ public class TUIAsciiArtist {
      * builds the background of a goalCard in the matrix
      * @author Giorgio Mattina,Riccardo Lapi
      * @param columnStart inclusive index where the methods start to build the matrix
-     * @param goal
+     * @param goal the goal to be written on matrix
+     * @param bgColor the ANSICodeColor for the card background
      */
     private void buildGoalCardStructure (int columnStart, Goal goal,String bgColor){
         for (int i=0;i<5;i++){
@@ -366,6 +370,7 @@ public class TUIAsciiArtist {
     /**
      * Builds the background of the front and back of a starter card, which never changes and writes it in matrix
      * @author Giorgio Mattina
+     * @param buildBothSide true when is needed to print both side of the starter card
      */
     private void buildStarterCardStructure(boolean buildBothSide){
         int endCol;
@@ -422,14 +427,6 @@ public class TUIAsciiArtist {
             }
         }
 
-    }
-
-    /**
-     * @author Giorgio Mattina
-     * @return the player field
-     */
-    public String[][] getAsciiField(){
-        return asciiField;
     }
 
     /**

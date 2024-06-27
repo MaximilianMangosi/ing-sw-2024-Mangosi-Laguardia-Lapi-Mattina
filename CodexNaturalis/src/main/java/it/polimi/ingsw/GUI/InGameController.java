@@ -222,8 +222,7 @@ public class InGameController extends GUIController {
                 String colorHex=getHex(color);
                 sp.setStyle("-fx-background-color: "+colorHex);
                 Label label = new Label(p);
-                label.setStyle("-fx-font: 20px Bodoni MT Condensed");
-
+                label.setFont(new Font("Bodoni MT",25));
                 if (view.getCurrentPlayer().equals(p))
                     label.setStyle("-fx-background-color: d9be4a");
                 sp.getChildren().add(label);
@@ -872,8 +871,7 @@ public class InGameController extends GUIController {
         double hover_y = e.getY()-1482;
 
         Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/152.5), (int) -Math.round(hover_y/85));
-//        System.out.println(newCoordinate.x);
-//        System.out.println(newCoordinate.y);
+
         if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
             e.acceptTransferModes(TransferMode.MOVE);
         }
@@ -972,9 +970,9 @@ public class InGameController extends GUIController {
                 int i=message.indexOf(":");
                 String sender= message.substring(0,i-1);
                 String color=getHex(view.getPlayerColor(sender));
+                text.setFont(new Font("Bodoni MT",25));
                 text.setStyle("-fx-fill: "+color+";" +
-                        "-fx-font:30px Bodoni MT Condensed;" +
-                        "-fx-font-style: Bold;");
+                        "-fx-font-weight: Bold;");
                 messageBox.getChildren().add(text);
 
             }
