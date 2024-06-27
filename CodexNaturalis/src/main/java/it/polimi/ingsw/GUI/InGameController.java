@@ -872,8 +872,7 @@ public class InGameController extends GUIController {
         double hover_y = e.getY()-1482;
 
         Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/152.5), (int) -Math.round(hover_y/85));
-//        System.out.println(newCoordinate.x);
-//        System.out.println(newCoordinate.y);
+
         if(e.getDragboard().hasImage() && avlbPositions.contains(newCoordinate) ){
             e.acceptTransferModes(TransferMode.MOVE);
         }

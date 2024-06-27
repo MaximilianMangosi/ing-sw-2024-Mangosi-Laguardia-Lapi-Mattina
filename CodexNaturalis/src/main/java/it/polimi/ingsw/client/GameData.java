@@ -108,7 +108,6 @@ public class GameData {
      * @param chatData The list of public chat messages.
      */
     public void setChatData(List<String> chatData) {
-        System.out.println("chat received");
         this.chatData = chatData;
     }
 

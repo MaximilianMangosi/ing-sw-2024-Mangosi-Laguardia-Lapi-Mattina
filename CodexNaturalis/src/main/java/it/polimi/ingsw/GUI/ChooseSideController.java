@@ -62,7 +62,6 @@ public class ChooseSideController extends GUIController {
         privateGoal1.setImage(privateOption1);
 
         id = goalOptions[1].getId();
-        System.out.println(id);
         Image privateOption2 = new Image(getClass().getResourceAsStream("/CardsFront/" + id + ".png"));
         privateGoal2.setImage(privateOption2);
 
