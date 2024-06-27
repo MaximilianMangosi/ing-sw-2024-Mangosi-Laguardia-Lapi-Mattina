@@ -156,7 +156,7 @@ public class Game{
      * @return true if a player has reached at least 20 points
      */
     public boolean someoneHas20Points(){
-        return listOfPlayers.stream().anyMatch(p->p.getPoints()>=3);
+        return listOfPlayers.stream().anyMatch(p->p.getPoints()>=20);
     }
 
     /**

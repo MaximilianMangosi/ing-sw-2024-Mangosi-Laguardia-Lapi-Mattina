@@ -418,6 +418,7 @@ public class Controller {
         if(player.isPresent()) {
             String username= player.get().getName();
             currentState.closeGame(userID);
+
             view.updatePlayersList();
             view.updatePlayersHands();
             view.updatePrivateGoals();

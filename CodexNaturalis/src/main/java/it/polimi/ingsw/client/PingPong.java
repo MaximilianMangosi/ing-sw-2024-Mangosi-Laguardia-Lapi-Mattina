@@ -22,6 +22,7 @@ public class PingPong extends  Thread{
     }
     @Override
     public void run() {
+
         while (true) {
             try {
                 if(!view.amIPinged(myID)) {

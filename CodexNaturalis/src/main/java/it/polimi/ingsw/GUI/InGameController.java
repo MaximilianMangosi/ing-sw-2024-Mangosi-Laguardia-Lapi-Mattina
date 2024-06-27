@@ -898,20 +898,23 @@ public class InGameController extends GUIController {
                 }else{
                     view.playCardFront(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
                 }
+                Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/152.5), (int) Math.round(hover_y/85));
+                ImageView newCardImage =new ImageView(db.getImage());
+                newCardImage.setFitWidth(200);
+                newCardImage.setFitHeight(150);
+
+                fieldPane.getChildren().add(newCardImage);
+                newCardImage.setTranslateX(newCoordinate.x*152.5);
+                newCardImage.setTranslateY(newCoordinate.y * 85);
+                e.setDropCompleted(true);
             } catch (HandNotFullException | IsNotYourTurnException | RequirementsNotMetException |
                      IllegalPositionException | IllegalOperationException | InvalidCardException | IOException |
-                     ClassNotFoundException ignored) {
+                     ClassNotFoundException ex) {
+                showErrorMsg(ex.getMessage());
+
             }
 
-            Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/152.5), (int) Math.round(hover_y/85));
-            ImageView newCardImage =new ImageView(db.getImage());
-            newCardImage.setFitWidth(200);
-            newCardImage.setFitHeight(150);
 
-            fieldPane.getChildren().add(newCardImage);
-            newCardImage.setTranslateX(newCoordinate.x*152.5);
-            newCardImage.setTranslateY(newCoordinate.y * 85);
-            e.setDropCompleted(true);
         }catch (RemoteException | InvalidUserId ex){
             showErrorMsg(ex.getMessage());
             System.exit(1);
