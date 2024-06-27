@@ -2,6 +2,7 @@ package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.client.GameData;
 import it.polimi.ingsw.controller.exceptions.*;
+import it.polimi.ingsw.messages.servermessages.SuccessMessage;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
@@ -212,7 +213,7 @@ public class InGameController extends GUIController {
                 String colorHex=getHex(color);
                 sp.setStyle("-fx-background-color: "+colorHex);
                 Label label = new Label(p);
-                label.setStyle("-fx-font: Bodoni MT Condensed");
+                label.setStyle("-fx-font: 20px Bodoni MT Condensed");
 
                 if (view.getCurrentPlayer().equals(p))
                     label.setStyle("-fx-background-color: d9be4a");
@@ -232,10 +233,10 @@ public class InGameController extends GUIController {
 
     private String getHex(String color) {
         switch (color){
-            case "Green" -> {return "#32CD32";}
-            case "Yellow"->{ return  "#FFFF00";}
-            case "Blue"->{return "00BFFF";}
-            case "Red"->{return "#FF0000";}
+            case "Green" -> {return "#1a800a";}
+            case "Yellow"->{ return  "#ffd500";}
+            case "Blue"->{return "#4e83f5";}
+            case "Red"->{return "#ad031a";}
             case null, default -> {return "default";}
 
         }
@@ -800,9 +801,11 @@ public class InGameController extends GUIController {
                 Text text = new Text(message);
                 text.setWrappingWidth(500);
                 int i=message.indexOf(":");
-                String sender= message.substring(0,i);
+                String sender= message.substring(0,i-1);
                 String color=getHex(view.getPlayerColor(sender));
-                text.setFill(Paint.valueOf(color));
+                text.setStyle("-fx-fill: "+color+";" +
+                        "-fx-font:30px Bodoni MT Condensed;" +
+                        "-fx-font-style: Bold;");
                 messageBox.getChildren().add(text);
 
             }
