@@ -82,7 +82,7 @@ public class ChooseSideController extends GUIController {
             cardView.setFitHeight(193);
             handBox.getChildren().add(cardView);
         }
-        } catch (InvalidUserId ignore) {}
+        } catch (InvalidUserId | IllegalOperationException ignore) {}
     }
     public void chooseFront() throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, UnacceptableNumOfPlayersException, OnlyOneGameException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, InvalidUserId, NoGameExistsException, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, InvalidGameID {
         view.chooseStarterCardSide(true,myID);

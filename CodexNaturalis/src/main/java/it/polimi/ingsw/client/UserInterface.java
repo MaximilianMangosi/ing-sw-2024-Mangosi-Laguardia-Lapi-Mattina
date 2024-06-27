@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.GameKey;
+import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.controller.exceptions.InvalidUserId;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.cards.Card;
@@ -27,7 +28,7 @@ public abstract class UserInterface{
         this.viewContainer = viewContainer;
     }
 
-    public List<Card> getHand() throws RemoteException, InvalidUserId {
+    public List<Card> getHand() throws RemoteException, InvalidUserId, IllegalOperationException {
         if(view.isRMI())
             return view.showPlayerHand(myID);
         return view.showPlayerHand();
@@ -38,13 +39,13 @@ public abstract class UserInterface{
             return view.getStarterCard(myID);
         return view.getStarterCard();
     }
-    public Goal[] getGoalOptions() throws RemoteException, InvalidUserId {
+    public Goal[] getGoalOptions() throws RemoteException, InvalidUserId, IllegalOperationException {
         if(view.isRMI())
             return view.showPlayerGoalOptions(myID);
         return view.showPlayerGoalOptions();
     }
 
-    public Goal getPrivateGoal() throws RemoteException, InvalidUserId {
+    public Goal getPrivateGoal() throws RemoteException, InvalidUserId, IllegalOperationException {
         if(view.isRMI())
             return view.showPrivateGoal(myID);
         return view.showPrivateGoal();
@@ -54,7 +55,7 @@ public abstract class UserInterface{
             return view.getPrivateChat(user,myID);
         return view.getPrivateChat(user);
     }
-    public List<Coordinates> getPlayersLegalPositions() throws RemoteException, InvalidUserId {
+    public List<Coordinates> getPlayersLegalPositions() throws RemoteException, InvalidUserId, IllegalOperationException {
         if(view.isRMI())
             return view.showPlayersLegalPositions(myID);
         return view.showPlayersLegalPositions();

@@ -97,7 +97,7 @@
                   </Button>
                   <Button fx:id="returnToMyFieldButton" mnemonicParsing="false" onAction="#returnToMyField" style="-fx-background-color: e5a78a;" text="RETURN" textFill="#f2f2f2" StackPane.alignment="BOTTOM_CENTER">
                      <font>
-                        <Font name="Bodoni MT Condensed" size="18.0" />
+                        <Font name="Bodoni MT Condensed" size="25.0" />
                      </font>
                   </Button>
                </children>
@@ -240,7 +240,7 @@
       <Button fx:id="hideDeckButton" layoutX="1355.0" mnemonicParsing="false" onAction="#hideDeck" style="-fx-background-color: e5a78a; -fx-background-radius: 50; -fx-border-color: rgb(124,1,1); -fx-border-radius: 50;" text="X" textFill="#a80000" />
       <Label fx:id="errorMsg" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="88.0" prefWidth="744.0" style="-fx-background-color: rgba(222,219,219,0.6);" text="ERROR MESSAGE" textFill="#b51f1f" AnchorPane.bottomAnchor="510.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="510.0">
          <font>
-            <Font name="System Bold" size="30.0" />
+            <Font name="Bodoni MT Condensed" size="35.0" />
          </font>
       </Label>
       <Button fx:id="hideChatButton" layoutX="541.0" mnemonicParsing="false" onAction="#hideChat" style="-fx-background-color: e5a78a; -fx-background-radius: 50; -fx-border-color: rgb(124,1,1); -fx-border-radius: 50;" text="X" textFill="#a80000" />

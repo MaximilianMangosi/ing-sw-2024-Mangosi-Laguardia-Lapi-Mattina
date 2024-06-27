@@ -109,15 +109,21 @@
             </TextField>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="socketButton" mnemonicParsing="false" onAction="#selectSocket" prefHeight="31.0" prefWidth="90.0" style="-fx-background-color: e5a78a;" text="Socket">
+                  <Button fx:id="socketButton" mnemonicParsing="false" onAction="#selectSocket" prefHeight="31.0" prefWidth="90.0" style="-fx-background-color: e5a78a;" text="Socket" textFill="#f2f2f2">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="Bodoni MT Condensed" size="24.0" />
+                     </font>
                   </Button>
-                  <Button fx:id="RMIButton" mnemonicParsing="false" onAction="#selectRMI" prefHeight="31.0" prefWidth="59.0" style="-fx-background-color: e5a78a;" text="RMI">
+                  <Button fx:id="RMIButton" mnemonicParsing="false" onAction="#selectRMI" prefHeight="31.0" prefWidth="70.0" style="-fx-background-color: e5a78a;" text="RMI" textFill="#f2f2f2">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="Bodoni MT Condensed" size="24.0" />
+                     </font>
                   </Button>
                </children>
                <opaqueInsets>
@@ -129,15 +135,21 @@
             </HBox>
             <HBox fx:id="selectJoinOrCreate" alignment="CENTER" layoutX="260.0" layoutY="124.0" prefHeight="100.0" prefWidth="256.0">
                <children>
-                  <Button fx:id="createGameButton" mnemonicParsing="false" onAction="#selectCreateGame" prefHeight="32.0" prefWidth="158.0" style="-fx-background-color: e5a78a;" text="CREATE GAME">
+                  <Button fx:id="createGameButton" mnemonicParsing="false" onAction="#selectCreateGame" prefHeight="32.0" prefWidth="158.0" style="-fx-background-color: e5a78a;" text="CREATE GAME" textFill="#f2f2f2">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="Bodoni MT Condensed" size="24.0" />
+                     </font>
                   </Button>
-                  <Button fx:id="joinGameButton" mnemonicParsing="false" onAction="#selectJoinGame" prefHeight="32.0" prefWidth="158.0" style="-fx-background-color: e5a78a;" text="JOIN GAME">
+                  <Button fx:id="joinGameButton" mnemonicParsing="false" onAction="#selectJoinGame" prefHeight="32.0" prefWidth="158.0" style="-fx-background-color: e5a78a;" text="JOIN GAME" textFill="#f2f2f2">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="Bodoni MT Condensed" size="24.0" />
+                     </font>
                   </Button>
                </children>
                <opaqueInsets>
@@ -162,20 +174,29 @@
                                     </Text>
                                     <HBox alignment="CENTER" prefHeight="57.0" prefWidth="289.0">
                                        <children>
-                                          <Button fx:id="twoplayersbutton" mnemonicParsing="false" onAction="#select2Players" style="-fx-background-color: e5a78a;" text="2">
+                                          <Button fx:id="twoplayersbutton" mnemonicParsing="false" onAction="#select2Players" style="-fx-background-color: e5a78a;" text="2" textFill="#f2f2f2">
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </HBox.margin>
+                                             <font>
+                                                <Font name="Bodoni MT Condensed" size="24.0" />
+                                             </font>
                                           </Button>
-                                          <Button fx:id="threeplayersbutton" mnemonicParsing="false" onAction="#select3Players" style="-fx-background-color: e5a78a;" text="3">
+                                          <Button fx:id="threeplayersbutton" mnemonicParsing="false" onAction="#select3Players" style="-fx-background-color: e5a78a;" text="3" textFill="#f2f2f2">
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </HBox.margin>
+                                             <font>
+                                                <Font name="Bodoni MT Condensed" size="24.0" />
+                                             </font>
                                           </Button>
-                                          <Button fx:id="fourplayersbutton" mnemonicParsing="false" onAction="#select4Players" style="-fx-background-color: e5a78a;" text="4">
+                                          <Button fx:id="fourplayersbutton" mnemonicParsing="false" onAction="#select4Players" style="-fx-background-color: e5a78a;" text="4" textFill="#f2f2f2">
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </HBox.margin>
+                                             <font>
+                                                <Font name="Bodoni MT Condensed" size="24.0" />
+                                             </font>
                                           </Button>
                                        </children>
                                        <VBox.margin>
@@ -198,7 +219,10 @@
                                           <Insets bottom="80.0" />
                                        </VBox.margin>
                                     </Text>
-                                    <Button fx:id="refreshButton" mnemonicParsing="false" onMouseClicked="#refresh" style="-fx-background-color: e5a78a;" text="Refresh" />
+                                    <Button fx:id="refreshButton" mnemonicParsing="false" onMouseClicked="#refresh" style="-fx-background-color: e5a78a;" text="Refresh" textFill="#f2f2f2">
+                                       <font>
+                                          <Font name="Bodoni MT Condensed" size="24.0" />
+                                       </font></Button>
                                  </children>
                               </VBox>
                            </children>
@@ -206,10 +230,13 @@
                      </children></HBox>
                </children>
             </StackPane>
-            <Button fx:id="playButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPlay" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: e5a78a;" text="PLAY!">
+            <Button fx:id="playButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPlay" prefHeight="48.0" prefWidth="116.0" style="-fx-background-color: e5a78a;" text="PLAY!" textFill="#f2f2f2">
                <VBox.margin>
                   <Insets bottom="25.0" />
                </VBox.margin>
+               <font>
+                  <Font name="Bodoni MT Condensed" size="30.0" />
+               </font>
             </Button>
          </children>
          <opaqueInsets>

@@ -2,6 +2,7 @@ package it.polimi.ingsw.messages.servermessages;
 
 import it.polimi.ingsw.client.GameData;
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
@@ -29,8 +30,10 @@ public class GameStartMessage extends ServerMessage{
         currentPlayer=c.getCurrentPlayer();
         globalChat=c.getGlobalChat();
         playerToColor = c.getPlayerToColor();
-        topGolds=c.getTopOfGoldCardDeck();
-        topResources=c.getTopOfResourceCardDeck();
+        try {
+            topGolds=c.getTopOfGoldCardDeck();
+            topResources=c.getTopOfResourceCardDeck();
+        } catch (IllegalOperationException ignore) {}
     }
 
     @Override

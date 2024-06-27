@@ -22,9 +22,9 @@
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="811.0" prefWidth="115.0">
                <children>
                   <Separator maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="839.0" prefWidth="115.0" valignment="TOP" />
-                  <Button fx:id="startButton" alignment="CENTER" mnemonicParsing="false" onAction="#switchToMainStage" text="Start">
+                  <Button fx:id="startButton" alignment="CENTER" mnemonicParsing="false" onAction="#switchToMainStage" style="-fx-background-color: e5a78a;" text="Start" textFill="#f2f2f2">
                      <font>
-                        <Font size="30.0" />
+                        <Font name="Bodoni MT Condensed" size="30.0" />
                      </font>
                   </Button>
                </children>
@@ -90,7 +90,7 @@
             </HBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" layoutX="1012.0" prefHeight="842.0" prefWidth="908.0" spacing="30.0">
+      <VBox alignment="CENTER" layoutX="1010.0" layoutY="6.0" prefHeight="842.0" prefWidth="908.0" spacing="30.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CHOOSE THE SIDE OF THE STARTER CARD">
                <font>

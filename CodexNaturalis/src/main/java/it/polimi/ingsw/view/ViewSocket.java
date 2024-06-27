@@ -401,7 +401,7 @@ public class  ViewSocket implements View{
 
     @Override
     public synchronized void closeGame(UUID userID) throws ClassNotFoundException,IOException{
-    CloseGameMessage message= new CloseGameMessage(userID);
+        CloseGameMessage message= new CloseGameMessage(userID);
         output.writeObject(message);
         ServerMessage reply = readMessage();
         try {

@@ -64,7 +64,7 @@ public class TextUserInterface extends UserInterface {
      * @throws InvalidUserId
      */
 
-    public synchronized void updateIdleUI() throws RemoteException, InvalidUserId {
+    public synchronized void updateIdleUI() throws RemoteException {
         idleUI=new StringBuilder();
         String winner=view.getWinner();
         List<String> players=view.getPlayersList();
@@ -108,11 +108,14 @@ public class TextUserInterface extends UserInterface {
             }
 
             idleUI.append("\n\n");
-            if(getPrivateGoal() ==null){
-                idleUI.append("To start the game you have to choose your private goal from your goal options, try choose-goal\n");
-            }if(!didIPlayStarterCard()){
-                idleUI.append("To start the game you have to choose the side of your starter card, try choose-starter-card-side\n");
-            }
+            try {
+                if(getPrivateGoal() ==null){
+                    idleUI.append("To start the game you have to choose your private goal from your goal options, try choose-goal\n");
+                }
+                if(!didIPlayStarterCard()){
+                    idleUI.append("To start the game you have to choose the side of your starter card, try choose-starter-card-side\n");
+                }
+            } catch (IllegalOperationException | InvalidUserId ignore) {}
         } else{
             idleUI.append("Waiting for players...");
         }
@@ -278,9 +281,9 @@ public class TextUserInterface extends UserInterface {
                 case "show-field":
                     String player= null;
                     while(error) {
-                        outWriter.print("What player do you want to see the field? Insert his username");
+                        outWriter.print("What player do you want to see the field? Insert his username, insert -q tu exit");
                         player = s.nextLine();
-                        if(view.getPlayersList().contains(player)){ error=false;}
+                        if(player.equals("-q")|| view.getPlayersList().contains(player)){ error=false;}
                         else{
                             outWriter.print("This player doesn't exists");
                         }
@@ -429,7 +432,7 @@ public class TextUserInterface extends UserInterface {
      * @throws RemoteException
      * @throws InvalidUserId
      */
-    private Coordinates promptForChosenPosition() throws RemoteException, InvalidUserId {
+    private Coordinates promptForChosenPosition() throws RemoteException, InvalidUserId, IllegalOperationException {
         int chosenPositionI = s.nextInt();
         s.nextLine();
         List<Coordinates> availableCoordinates = getPlayersLegalPositions();
@@ -477,7 +480,7 @@ public class TextUserInterface extends UserInterface {
 
     }
 
-    private Integer promptForChosenDeck() throws RemoteException {
+    private Integer promptForChosenDeck() throws RemoteException, IllegalOperationException {
         outWriter.print("From which deck do you want to draw? (0,1)");
         Reign topResourceCard= null;
         Reign topGoldCard= null;
@@ -511,7 +514,7 @@ public class TextUserInterface extends UserInterface {
         return isChosenFront;
     }
 
-    private void showHand() throws RemoteException, InvalidUserId {
+    private void showHand() throws RemoteException, InvalidUserId, IllegalOperationException {
         List<Card> hand ;
         hand=getHand();
         artist.show(hand);
@@ -524,7 +527,10 @@ public class TextUserInterface extends UserInterface {
      */
     private boolean didIPlayStarterCard() throws RemoteException {
         StarterCard myStarterCard= getStarterCard();
-        Map<Coordinates,Card> field= view.getPlayersField(myName);
+        Map<Coordinates,Card> field= null;
+        try {
+            field = view.getPlayersField(myName);
+        } catch (IllegalOperationException ignore) {}
         if(field!=null)
             return field.containsValue(myStarterCard);
         return false;
@@ -563,7 +569,7 @@ public class TextUserInterface extends UserInterface {
      * @throws InvalidUserId
      * @throws RemoteException
      */
-    public void printIdleUI() throws InvalidUserId, RemoteException {
+    public void printIdleUI() throws RemoteException {
         updateIdleUI();
         outWriter.clearScreen();
         outWriter.print(String.valueOf(idleUI));
@@ -576,7 +582,7 @@ public class TextUserInterface extends UserInterface {
      * @throws InvalidUserId
      * @throws RemoteException
      */
-    private Card promptForChosenCard() throws InvalidUserId, RemoteException {
+    private Card promptForChosenCard() throws InvalidUserId, RemoteException, IllegalOperationException {
         outWriter.print("Which card do you want to play? (1,2,3)");
         showHand();
         int chosenCardI= s.nextInt();
@@ -593,7 +599,7 @@ public class TextUserInterface extends UserInterface {
      * @throws InvalidUserId
      * @throws RemoteException
      */
-    private void showField(String username,boolean availablePosition) throws InvalidUserId, RemoteException {
+    private void showField(String username,boolean availablePosition) throws InvalidUserId, RemoteException, IllegalOperationException {
         Map<Coordinates, Card> field=view.getPlayersField(username);
         List<Coordinates> fieldBuildingHelper = view.getFieldBuildingHelper(username);
         if(availablePosition) {
@@ -629,6 +635,7 @@ public class TextUserInterface extends UserInterface {
     private String promptForGameChoice() {
         outWriter.print("If you want join one of this game insert the corresponding number");
         outWriter.print("If you want to create a new game press enter");
+        outWriter.print("If you want to refresh the game list press -r");
         return s.nextLine();
     }
 
@@ -696,7 +703,7 @@ public class TextUserInterface extends UserInterface {
         }
         List<UUID> joinableGames = showJoinableGames(views);
         String choice = promptForGameChoice();
-        while (choice.isBlank() || choice.equals("r")) {
+        while (choice.isBlank() || choice.equals("-r")) {
             if (choice.isBlank()) {
                 bootGame(isRMI);
                 return;
@@ -714,6 +721,9 @@ public class TextUserInterface extends UserInterface {
                 error = false;
             } catch (NumberFormatException e) {
                 outWriter.print("Please insert a number");
+                choice = s.nextLine();
+            }catch (IndexOutOfBoundsException e1) {
+                outWriter.print("Invalid number,insert again");
                 choice=s.nextLine();
             } catch (InvalidGameID e) {
                 outWriter.print(e.getMessage());

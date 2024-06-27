@@ -48,7 +48,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     }
 
 
-    public void sendChatMessage(String message) throws IOException, ClassNotFoundException, IllegalOperationException {
+    public void sendChatMessage(String message) throws RemoteException , IllegalOperationException {
         controller.addToGlobalChat(message);
     }
 
@@ -158,9 +158,9 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @author Giorgio Mattina, Maximilian Mangosi
      * @return map playerId-playerField ( cards on the table with relative position)
      */
-    public Map<Coordinates,Card> getPlayersField(String name){
+    public Map<Coordinates,Card> getPlayersField(String name) throws IllegalOperationException {
 
-        return playersField.get(name);
+        return Optional.ofNullable(playersField).orElseThrow(()->new IllegalOperationException("show-field")).get(name);
     }
     /**
      * updates PlayersList, calling the controller
@@ -201,8 +201,8 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws InvalidUserId
      */
     @Override
-    public List<Coordinates> showPlayersLegalPositions(UUID uid) throws RemoteException, InvalidUserId {
-        return playersLegalPositions.get(uid);
+    public List<Coordinates> showPlayersLegalPositions(UUID uid) throws RemoteException, IllegalOperationException {
+        return Optional.ofNullable(playersLegalPositions).orElseThrow(()->new IllegalOperationException("show-legal-position")).get(uid);
     }
 
     @Override
@@ -239,8 +239,8 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @author Giorgio Mattina
      * @return array of public Goals
      */
-    public Goal[] getPublicGoals(){
-        return publicGoals;
+    public Goal[] getPublicGoals() throws IllegalOperationException {
+        return Optional.ofNullable(publicGoals).orElseThrow(()->new IllegalOperationException("show-goals"));
     }
 
     /**
@@ -270,8 +270,8 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @author Giorgio Mattina
      * @return map of player-private goal from view
      */
-    public Map<UUID,Goal> getPrivateGoals(){
-        return privateGoals;
+    public Map<UUID,Goal> getPrivateGoals() throws IllegalOperationException {
+        return Optional.ofNullable(privateGoals).orElseThrow(()->new IllegalOperationException("show-goals"));
     }
 
     /**
@@ -301,8 +301,8 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @author Giorgio Mattina, Maximilian Mangosi
      * @return list of visible cards from view
      */
-    public List<Card> getVisibleCards(){
-        return visibleCards;
+    public List<Card> getVisibleCards() throws IllegalOperationException {
+        return Optional.ofNullable(visibleCards).orElseThrow(()->new IllegalOperationException("show-visible-cards"));
     }
 
     /**
@@ -418,7 +418,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws InvalidUserId
      */
     @Override
-    public void drawFromDeck(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException, InvalidUserId {
+    public void drawFromDeck(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException {
         controller.drawFromDeck(userId, choice);
     }
 
@@ -434,7 +434,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws InvalidUserId
      */
     @Override
-    public void drawVisibleCard(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException, InvalidUserId {
+    public void drawVisibleCard(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException {
         controller.drawVisibleCard(userId, choice);
     }
 
@@ -477,8 +477,8 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws RemoteException
      */
     @Override
-    public List<Coordinates> getFieldBuildingHelper(String name) throws RemoteException {
-        return fieldBuildingHelper.get(name);
+    public List<Coordinates> getFieldBuildingHelper(String name) throws RemoteException, IllegalOperationException {
+        return Optional.ofNullable(fieldBuildingHelper).orElseThrow(()->new IllegalOperationException("show-field")).get(name);
     }
 
     /**
@@ -497,7 +497,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws RemoteException
      */
     @Override
-    public Reign getTopOfResourceCardDeck() throws RemoteException {
+    public Reign getTopOfResourceCardDeck() throws RemoteException, IllegalOperationException {
         return controller.getTopOfResourceCardDeck();
     }
     /**
@@ -506,7 +506,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws RemoteException
      */
     @Override
-    public Reign getTopOfGoldCardDeck() throws RemoteException {
+    public Reign getTopOfGoldCardDeck() throws RemoteException, IllegalOperationException {
         return controller.getTopOfGoldCardDeck();
     }
     /**
@@ -573,9 +573,9 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @param id
      * @return
      */
-    public List<Card> showPlayerHand(UUID id){
+    public List<Card> showPlayerHand(UUID id) throws IllegalOperationException {
         //updatePlayersHands();
-        return playersHands.get(id);
+        return Optional.ofNullable(playersHands).orElseThrow(()->new IllegalOperationException("show-hand")).get(id);
 
     }
 
@@ -591,7 +591,6 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @return the legal positions for the player uid
      */
     public List<Coordinates> showPlayersLegalPosition(UUID id){
-        //updatePlayersLegalPosition();
         return playersLegalPositions.get(id);
     }
 
@@ -600,14 +599,13 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @param uid the player uid
      * @return the Goals of the player with uid
      */
-    public Goal[] showPlayerGoalOptions(UUID uid){
-        updatePlayersGoalOptions();
-        return playersGoalOptions.get(uid);
+    public Goal[] showPlayerGoalOptions(UUID uid) throws IllegalOperationException {
+        return Optional.ofNullable(playersGoalOptions).orElseThrow(()->new IllegalOperationException(" show-goal-options")).get(uid);
     }
 
     @Override
     @Deprecated
-    public Goal[] showPlayerGoalOptions() throws RemoteException, InvalidUserId {
+    public Goal[] showPlayerGoalOptions() throws RemoteException{
         return null;
     }
 
@@ -616,8 +614,8 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @param uid the player uid
      * @return the private goal for the player uid
      */
-    public Goal showPrivateGoal(UUID uid){
-        return privateGoals.get(uid);
+    public Goal showPrivateGoal(UUID uid) throws IllegalOperationException {
+        return Optional.ofNullable(privateGoals).orElseThrow(()-> new IllegalOperationException("show-my-goal")).get(uid);
     }
 
     @Override

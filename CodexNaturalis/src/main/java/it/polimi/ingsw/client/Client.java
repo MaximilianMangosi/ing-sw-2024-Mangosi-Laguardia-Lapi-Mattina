@@ -76,6 +76,7 @@ public class Client {
                         HandNotFullException | InvalidCardException | InvalidGoalException |  IllegalPositionException |
                         DeckEmptyException e) {
                     System.out.println(e.getMessage());
+                    tui.printIdleUI();
                 }
             }
         }catch (RemoteException | NotBoundException e){

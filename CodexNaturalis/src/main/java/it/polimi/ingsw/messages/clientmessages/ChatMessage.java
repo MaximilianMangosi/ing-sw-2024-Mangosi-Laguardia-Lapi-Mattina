@@ -1,6 +1,7 @@
 package it.polimi.ingsw.messages.clientmessages;
 
 import it.polimi.ingsw.controller.exceptions.IllegalOperationException;
+import it.polimi.ingsw.messages.exceptionmessages.IllegalOperationMessage;
 import it.polimi.ingsw.messages.servermessages.SuccessMessage;
 import it.polimi.ingsw.messages.servermessages.UpdateChatMessage;
 import it.polimi.ingsw.server.ClientHandler;
@@ -21,9 +22,7 @@ public class ChatMessage extends ClientMessage {
         try {
             view.sendChatMessage(chatMessage);
         } catch (IllegalOperationException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            clientHandler.answerClient(new IllegalOperationMessage(e));
         }
         clientHandler.answerClient(new SuccessMessage());
         clientHandler.broadCast(new UpdateChatMessage("global",view.getChatList()));

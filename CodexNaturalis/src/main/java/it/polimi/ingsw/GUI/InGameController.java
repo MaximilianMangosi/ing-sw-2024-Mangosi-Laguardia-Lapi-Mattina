@@ -198,7 +198,7 @@ public class InGameController extends GUIController {
             scView.setFitHeight(150);
             fieldPane.getChildren().add(scView);
             checkGameInfo();
-        } catch (InvalidUserId ignore) {}
+        } catch (InvalidUserId | IllegalOperationException ignore) {}
     }
 
     public void updatePlayersList(List<String> players)  {
@@ -326,7 +326,7 @@ public class InGameController extends GUIController {
                         Platform.runLater(this::onGameFinished);
                         break;
                     }
-                } catch (RemoteException | InvalidUserId ignore) {}
+                } catch (RemoteException | InvalidUserId | IllegalOperationException ignore) {}
 
             }
         }).start();
@@ -686,10 +686,10 @@ public class InGameController extends GUIController {
                     returnToMyFieldButton.setVisible(true);
                     returnButtonPresent=true;
                 }
-            }catch (RemoteException ignore){
+            }catch (RemoteException e){
                 showErrorMsg("Connection error");
                 System.exit(1);
-            }
+            } catch (IllegalOperationException ignore) {}
         }
 
     }
@@ -714,6 +714,7 @@ public class InGameController extends GUIController {
             showErrorMsg("Connection error");
         } catch (InvalidUserId e) {
             showErrorMsg(e.getMessage());
+        } catch (IllegalOperationException ignore) {
         }
 
     }

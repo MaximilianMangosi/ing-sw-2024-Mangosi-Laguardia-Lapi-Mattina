@@ -286,7 +286,7 @@ public class Controller {
             addToQueue(new FieldMessage(getPlayersField().get(playerName),getView().getFieldBuildingHelper(playerName),playerName));
             addToQueue(new PointsMessage(getPlayersPoints()));
             addToQueue(new TurnMessage(getCurrentPlayer()));
-        } catch (RemoteException ignore) {}
+        } catch (RemoteException | IllegalOperationException ignore) {}
     }
 
     /**
@@ -356,7 +356,7 @@ public class Controller {
         }
 
         currentState=currentState.nextState();
-        System.out.println(getCurrentPlayer());
+
     }
     /**
      * Calls drawVisibleCards on the currentState to draw one of the Card visible on the table.
@@ -384,7 +384,6 @@ public class Controller {
 
 
         currentState=currentState.nextState();
-        System.out.println(getCurrentPlayer());
     }
 
     /**
@@ -634,19 +633,19 @@ public class Controller {
      * @author Giuseppe Laguardia
      * @return the top (first) card of the Resource cards deck
      */
-    public Reign getTopOfResourceCardDeck() {
+    public Reign getTopOfResourceCardDeck() throws IllegalOperationException {
         if(currentState.game!=null)
             return currentState.game.getResourceCardDeck().getFirst().getReign();
-        return null;
+        throw new IllegalOperationException("draw-card");
     }
     /**
      * @author Giuseppe Laguardia
      * @return the top (first) card of the Gold cards deck
      */
-    public Reign getTopOfGoldCardDeck() {
+    public Reign getTopOfGoldCardDeck() throws IllegalOperationException {
         if(currentState.game!=null)
             return currentState.game.getGoldCardDeck().getFirst().getReign();
-        return null;
+        throw new IllegalOperationException("draw-card");
     }
 
 

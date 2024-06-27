@@ -31,23 +31,23 @@ public interface ViewRMIInterface extends Remote,View  {
     public int getNumOfResourceCards() throws RemoteException;
     public int getNumOfGoldCards()  throws RemoteException;
 
-    public List<Card> showPlayerHand(UUID uid) throws RemoteException, InvalidUserId;
+    public List<Card> showPlayerHand(UUID uid) throws RemoteException, InvalidUserId, IllegalOperationException;
 
-    public Map<Coordinates,Card>getPlayersField(String name) throws RemoteException;
+    public Map<Coordinates,Card>getPlayersField(String name) throws RemoteException, IllegalOperationException;
 
     public List<String> getPlayersList() throws RemoteException;
 
     public String getCurrentPlayer() throws RemoteException;
 
-    public List<Coordinates> showPlayersLegalPositions(UUID uid) throws RemoteException, InvalidUserId;
+    public List<Coordinates> showPlayersLegalPositions(UUID uid) throws RemoteException, InvalidUserId, IllegalOperationException;
 
-    public Goal[] getPublicGoals() throws RemoteException;
+    public Goal[] getPublicGoals() throws RemoteException, IllegalOperationException;
 
-    public Goal[] showPlayerGoalOptions(UUID uid) throws RemoteException, InvalidUserId;
+    public Goal[] showPlayerGoalOptions(UUID uid) throws RemoteException, InvalidUserId, IllegalOperationException;
 
-    public Goal showPrivateGoal(UUID uid) throws RemoteException, InvalidUserId;
+    public Goal showPrivateGoal(UUID uid) throws RemoteException, InvalidUserId, IllegalOperationException;
 
-    public List<Card> getVisibleCards() throws RemoteException;
+    public List<Card> getVisibleCards() throws RemoteException, IllegalOperationException;
 
     public String getWinner() throws RemoteException;
     public StarterCard getStarterCard(UUID userId) throws RemoteException;
@@ -70,13 +70,13 @@ public interface ViewRMIInterface extends Remote,View  {
     boolean isGameStarted() throws RemoteException;
 
 
-    List<Coordinates> getFieldBuildingHelper(String name) throws RemoteException;
+    List<Coordinates> getFieldBuildingHelper(String name) throws RemoteException, IllegalOperationException;
 
     void initializeFieldBuildingHelper(String myName) throws RemoteException;
 
-    Reign getTopOfResourceCardDeck() throws  RemoteException;
+    Reign getTopOfResourceCardDeck() throws RemoteException, IllegalOperationException;
 
-    Reign getTopOfGoldCardDeck() throws RemoteException;
+    Reign getTopOfGoldCardDeck() throws RemoteException, IllegalOperationException;
     boolean amIPinged(UUID id) throws  RemoteException;
 
     void pong(UUID myID)throws RemoteException;
