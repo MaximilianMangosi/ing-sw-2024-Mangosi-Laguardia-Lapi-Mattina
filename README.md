@@ -38,7 +38,7 @@ Sono state aggiunte le seguenti funzionalità avanzate
 
 | Funzionalità                                                         | Descrizione                                                                                                                                                                                              |
 |----------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Supporto Alle Partite Multiple**                                   |**Il server è in grado di gestire più partite contemporaneamente.**
+| **Supporto Alle Partite Multiple**                                   | **Il server è in grado di gestire più partite contemporaneamente.**
                                                                                                                                                                                                           |
 | **Chat In-Game sia Globale(nella medesima partita)<br/>che Privata** | **Possibile selezionare la chat globale, leggibile da tutti i giocatori all'interno di una partita, sia un altro giocatore con cui scambiare messaggi privatamente all'interno<br/>della chat privata.** |
 
