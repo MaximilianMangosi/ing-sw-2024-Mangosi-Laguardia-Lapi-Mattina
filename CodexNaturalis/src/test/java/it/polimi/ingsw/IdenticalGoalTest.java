@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.gamecards.GameBox;
 import it.polimi.ingsw.model.gamecards.cards.Card;
 import it.polimi.ingsw.model.gamecards.cards.StarterCard;
+import it.polimi.ingsw.model.gamecards.goals.IdenticalGoal;
 import it.polimi.ingsw.model.gamecards.goals.LGoal;
 import it.polimi.ingsw.model.gamecards.goals.StairGoal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
@@ -14,16 +15,14 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Test LGoal, create all the cards, player, and goal.
- */
-public class LGolTest {
+public class IdenticalGoalTest {
 
     GameBox gb=new GameBox();
-    LGoal goal = new LGoal(3, Reign.PLANTS, Reign.MUSHROOM,91);
+    IdenticalGoal goal = new IdenticalGoal(2, Reign.MUSHROOM, 3,95);
     Player p=new Player("p");
     @Before
     public void GameBoxSetup() throws IOException {
@@ -84,24 +83,37 @@ public class LGolTest {
     }
 
     /**
-     * Verify the LGoal.
-     * Can't use same card for same goal
+     * Test the Identical Goal
+     * Tested the optimization of the points.
      */
     @Test
-    public void calculate_91(){
+    public void calculate_test(){
         StarterCard starterCard= gb.getStarterCardSet().stream().toList().getFirst();
-        ArrayList<Card> plantsCard= new ArrayList<>( gb.getGoldCardSet().stream().filter(c->c.getReign()==Reign.PLANTS).toList());
-        plantsCard.addAll(gb.getResourceCardSet().stream().filter(c->c.getReign()==Reign.PLANTS).toList());
 
-        ArrayList<Card> mashCard= new ArrayList<>( gb.getGoldCardSet().stream().filter(c->c.getReign()==Reign.MUSHROOM).toList());
-        mashCard.addAll(gb.getResourceCardSet().stream().filter(c->c.getReign()==Reign.MUSHROOM).toList());
+        List<Integer> mashCardsIds = new ArrayList<>();
+        mashCardsIds.add(5);
+
+        mashCardsIds.add(3);
+        mashCardsIds.add(4);
+        mashCardsIds.add(6);
+        mashCardsIds.add(2);
+
+        ArrayList<Card> mashCard= new ArrayList<>( gb.getResourceCardSet().stream().filter(c->mashCardsIds.contains(c.getId())).toList());
+
+        mashCard.get(0).setIsFront(true);
+        mashCard.get(1).setIsFront(true);
+        mashCard.get(2).setIsFront(true);
+        mashCard.get(3).setIsFront(true);
+        mashCard.get(4).setIsFront(true);
 
         p.addCardToMap(starterCard,new Coordinates(0,0));
-        p.addCardToMap(mashCard.get(5),new Coordinates(-1,-1));
-        p.addCardToMap(mashCard.get(6),new Coordinates(-1,1));
-        p.addCardToMap(plantsCard.get(7),new Coordinates(0,-2));
+        p.addCardToMap(mashCard.get(0),new Coordinates(-2,-2));
+        p.addCardToMap(mashCard.get(1),new Coordinates(-5,5));
+        p.addCardToMap(mashCard.get(2),new Coordinates(0,-8));
+        p.addCardToMap(mashCard.get(3),new Coordinates(0,10));
+        p.addCardToMap(mashCard.get(4),new Coordinates(4,-10));
 
-        assertEquals(3,goal.calculateGoal(p));
+        assertEquals(6,goal.calculateGoal(p));
     }
 
 }
