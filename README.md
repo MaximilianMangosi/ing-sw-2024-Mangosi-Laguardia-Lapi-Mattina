@@ -21,7 +21,7 @@ Il progetto è stato sviluppato dai seguenti studenti:
 
 
 ## Documentazione
-Di seguito il diagrammi UML del model: 
+Di seguito il diagramma UML del model: 
 
 -[UML model](https://github.com/MaximiliamMangosi/ing-sw-2024-Mangosi-Laguardia-Lapi-Mattina/blob/main/deliverables/model%20UML.jpg)
 
