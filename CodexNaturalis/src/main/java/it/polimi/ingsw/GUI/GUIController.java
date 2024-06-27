@@ -31,7 +31,7 @@ public class GUIController extends UserInterface {
     /**
      * sets the name
      * @author Maximilian Mangosi
-     * @param myName
+     * @param myName the username
      */
     public void setMyName(String myName){
         this.myName = myName;
@@ -40,9 +40,9 @@ public class GUIController extends UserInterface {
     /**
      * changes the scene
      * @author Maximilian Mangosi
-     * @param pathXML
-     * @param event
-     * @throws IOException
+     * @param pathXML the path to fxml file of the scene
+     * @param event the event used to get the  stage
+     * @throws IOException when a connection error occurs
      */
     public void changeScene(String pathXML, ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource(pathXML));

@@ -31,11 +31,15 @@ public class FinalTurnState extends GameState{
      * checks for Turn rights, and calls playCardFront
      * if the player is the last one, calculate the goal points, and set it in player.goalPoints
      * @author Riccardo Lapi and Giorgio Mattina
-     * @param selectedCard
-     * @param position
-     * @param userId
-     * @throws IsNotYourTurnException
-     * @throws RequirementsNotMetException
+     * @param selectedCard the card to be played
+     * @param position the position on the field where place the card
+     * @param userId the user ID of the user playing the card
+     * @return true if it's the last player's turn
+     * @throws IsNotYourTurnException when it's not user turn
+     * @throws InvalidCardException when the card can't be played
+     * @throws IllegalPositionException when the position is not valid
+     * @throws HandNotFullException when the user already played a card this turn
+     * @throws RequirementsNotMetException when the user's doesn't fulfill the card's requirements
      */
     public boolean playCardFront(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException {
 
@@ -65,7 +69,6 @@ public class FinalTurnState extends GameState{
                 totGoalsPoint += publicGoals[1].calculateGoal(p);
 
                 p.setGoalPoints(totGoalsPoint);
-                System.out.println(p.getName()+" "+totGoalsPoint);
             }
 
             return true;
@@ -77,14 +80,14 @@ public class FinalTurnState extends GameState{
      * Checks for turn rights, then calls playCardBack on the model . If it's the last player who is playing
      * it calculates the goalPoints of each player and returns true
      * @author Riccardo Lapi
-     * @param selectedCard
-     * @param position
-     * @param userId
+     * @param selectedCard the card to be played
+     * @param position the position on the field where place the card
+     * @param userId the user ID of the user playing the card
      * @return true if it's the last player's turn
-     * @throws IsNotYourTurnException
-     * @throws InvalidCardException
-     * @throws IllegalPositionException
-     * @throws HandNotFullException
+     * @throws IsNotYourTurnException when it's not user turn
+     * @throws InvalidCardException when the card can't be played
+     * @throws IllegalPositionException when the position is not valid
+     * @throws HandNotFullException when the user already played a card this turn
      */
     public boolean playCardBack(Card selectedCard, Coordinates position, UUID userId) throws IsNotYourTurnException, InvalidCardException, IllegalPositionException, HandNotFullException {
         CheckTurnCardPosition(selectedCard,position,userId);
@@ -101,7 +104,6 @@ public class FinalTurnState extends GameState{
     @Override
     protected GameState nextState() {
         if(game.getPlayers().getFirst().equals(game.getCurrentPlayer())) {
-            System.out.println("PASSO AL T-STATE");
             return new TerminalState(game, gameManager, userIDs);
         }
         return this;

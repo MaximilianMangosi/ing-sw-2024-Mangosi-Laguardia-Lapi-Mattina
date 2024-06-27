@@ -17,13 +17,25 @@ public class GameManager {
     public Game getGameWaiting(UUID gameID) throws InvalidGameID {
         return Optional.ofNullable(gamesWaiting.get(gameID)).orElseThrow(InvalidGameID::new);
     }
+
+    /**
+     * Add the given game to the games waiting map
+     * @param gameID the gameID
+     * @param game the game to be added
+     */
     public void addGameWaiting(UUID gameID,Game game){
         gamesWaiting.put(gameID,game);
     }
+    /**
+     * Gets the gameBox, containing all the cards of the game
+     * @return  the gameBox
+     */
     public GameBox getGameBox() {
         return gameBox;
     }
-
+    /**
+     * Sets the gameBox, containing all the cards of the game
+     */
     public void setGameBox(GameBox gameBox) {
         this.gameBox = gameBox;
     }

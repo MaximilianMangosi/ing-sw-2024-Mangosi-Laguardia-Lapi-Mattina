@@ -3,6 +3,7 @@ package it.polimi.ingsw.GUI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class GUIApplication extends Application {
         String serverAddress=getParameters().getRaw().getFirst();
         LobbyController controller =fxmlLoader.getController();
         controller.setServerAddress(serverAddress);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon/codex logo.png")));
         stage.setTitle("Codex Naturalis");
         stage.setScene(scene);
         stage.setMaxWidth(1920);

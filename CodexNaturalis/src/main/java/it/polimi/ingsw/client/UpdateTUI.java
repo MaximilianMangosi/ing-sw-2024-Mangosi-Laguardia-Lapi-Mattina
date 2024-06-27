@@ -30,9 +30,6 @@ public class UpdateTUI extends Thread{
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }catch(InterruptedException ignore){}
-//            catch ( InvalidUserId e){
-//                System.out.println(e.getMessage());
-//            }
         }
     }
 }

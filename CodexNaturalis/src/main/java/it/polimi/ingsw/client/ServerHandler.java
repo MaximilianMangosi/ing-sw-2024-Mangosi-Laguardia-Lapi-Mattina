@@ -11,6 +11,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.UUID;
 
+/**
+ * Thread for handle messages send by the server on port 3232, if the user chose TUI awakes the UpdateTUI thread everytime a message arrives
+ */
 public class ServerHandler extends Thread{
     private ObjectInputStream input;
     private ViewSocket view;
@@ -18,13 +21,26 @@ public class ServerHandler extends Thread{
     private final GameKey gameKey;
     private final String serverAddress;
 
-    public ServerHandler(ViewSocket view, UpdateTUI tuiUpdater, GameKey gameKey,String serverAddress) throws IOException {
+    /***
+     * Constructor used by TUI
+     * @param view the game's view
+     * @param tuiUpdater the
+     * @param gameKey the GameKey send to the server
+     * @param serverAddress the Server's IP address
+     */
+    public ServerHandler(ViewSocket view, UpdateTUI tuiUpdater, GameKey gameKey,String serverAddress)  {
         this.gameKey=gameKey;
         this.view=view;
         updateTUI=tuiUpdater;
         this.serverAddress=serverAddress;
     }
-    public ServerHandler(ViewSocket view,GameKey gameKey,String serverAddress) throws IOException {
+    /***
+     * Constructor used by GUI
+     * @param view the game's view
+     * @param gameKey the GameKey send to the server
+     * @param serverAddress the Server's IP address
+     */
+    public ServerHandler(ViewSocket view,GameKey gameKey,String serverAddress)  {
         this.gameKey=gameKey;
         this.view=view;
         updateTUI=null;
