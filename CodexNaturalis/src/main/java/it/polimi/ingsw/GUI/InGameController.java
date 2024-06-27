@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.gamecards.exceptions.HandFullException;
 import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamecards.goals.Goal;
 import it.polimi.ingsw.model.gamecards.resources.Reign;
-import it.polimi.ingsw.model.gamelogic.exceptions.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
@@ -20,7 +19,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -211,9 +209,11 @@ public class InGameController extends GUIController {
                 StackPane sp = new StackPane();
                 sp.setPrefWidth(maxWidth*20);
                 String color=view.getPlayerColor(p);
-                sp.setStyle("-fx-background-color: "+color);
+                String colorHex=getHex(color);
+                sp.setStyle("-fx-background-color: "+colorHex);
                 Label label = new Label(p);
-                label.setFont(new Font("Bodoni MT Condensed", 40));
+                label.setStyle("-fx-font: Bodoni MT Condensed");
+
                 if (view.getCurrentPlayer().equals(p))
                     label.setStyle("-fx-background-color: d9be4a");
                 sp.getChildren().add(label);
@@ -227,6 +227,17 @@ public class InGameController extends GUIController {
         } catch (RemoteException e) {
             showErrorMsg("connection error");
             System.exit(1);
+        }
+    }
+
+    private String getHex(String color) {
+        switch (color){
+            case "Green" -> {return "#32CD32";}
+            case "Yellow"->{ return  "#FFFF00";}
+            case "Blue"->{return "00BFFF";}
+            case "Red"->{return "#FF0000";}
+            case null, default -> {return "default";}
+
         }
     }
 
@@ -247,16 +258,12 @@ public class InGameController extends GUIController {
             view.drawFromDeck(myID,i);
             List<Card> newHand= getHand();
             updateHand(newHand);
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException | InvalidUserId e) {
            showErrorMsg("CONNECTION ERROR");
             System.exit(1);
         } catch (IsNotYourTurnException | HandFullException | IllegalOperationException | InvalidChoiceException |DeckEmptyException e) {
             showErrorMsg(e.getMessage());
-
-        }catch (InvalidGoalException | InvalidUserId | HandNotFullException | NoGameExistsException |
-                RequirementsNotMetException | UnacceptableNumOfPlayersException | OnlyOneGameException |
-                PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException |
-                ClassNotFoundException | InvalidGameID ignore){}
+        }
     }
 //JL
     private void checkGameInfo(){
@@ -451,15 +458,12 @@ public class InGameController extends GUIController {
         try {
             view.drawVisibleCard(myID,choice);
             updateHand(getHand());
-        } catch (IOException e) {
+        } catch (IOException | InvalidUserId | ClassNotFoundException e) {
            showErrorMsg("CONNECTION ERROR");
             System.exit(1);
-        } catch (IsNotYourTurnException | HandFullException | IllegalOperationException | InvalidChoiceException e) {
-           showErrorMsg(e.getMessage());
-        }catch (InvalidGoalException | InvalidUserId | HandNotFullException | NoGameExistsException |
-                RequirementsNotMetException | UnacceptableNumOfPlayersException | OnlyOneGameException |
-                PlayerNameNotUniqueException | IllegalPositionException | InvalidCardException | DeckEmptyException |
-                ClassNotFoundException | InvalidGameID ignore){
+        } catch (IsNotYourTurnException | HandFullException | IllegalOperationException | InvalidChoiceException |
+                 DeckEmptyException e) {
+            showErrorMsg(e.getMessage());
         }
     }
     private  void updateTopResource(Reign newTop){
@@ -736,10 +740,15 @@ public class InGameController extends GUIController {
             double hover_y = e.getY()-1482;
             Coordinates newStandardCoordinate = new Coordinates((int) Math.round(hover_x/152.5), (int) -Math.round(hover_y/85));
             StackPane parent=(StackPane) selectedCardToPlay.getParent();
-            if(parent.getChildren().getFirst().isVisible()){
-                view.playCardBack(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
-            }else{
-                view.playCardFront(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
+            try {
+                if(parent.getChildren().getFirst().isVisible()){
+                    view.playCardBack(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
+                }else{
+                    view.playCardFront(getHand().get(handBox.getChildren().indexOf(parent)),newStandardCoordinate,myID);
+                }
+            } catch (HandNotFullException | IsNotYourTurnException | RequirementsNotMetException |
+                     IllegalPositionException | IllegalOperationException | InvalidCardException | IOException |
+                     ClassNotFoundException ignored) {
             }
 
             Coordinates newCoordinate = new Coordinates((int) Math.round(hover_x/152.5), (int) Math.round(hover_y/85));
@@ -751,15 +760,9 @@ public class InGameController extends GUIController {
             newCardImage.setTranslateX(newCoordinate.x*152.5);
             newCardImage.setTranslateY(newCoordinate.y * 85);
             e.setDropCompleted(true);
-        }catch (RemoteException ex){
+        }catch (RemoteException | InvalidUserId ex){
             showErrorMsg(ex.getMessage());
             System.exit(1);
-        } catch (InvalidGoalException | HandFullException | InvalidChoiceException | IsNotYourTurnException |
-                 UnacceptableNumOfPlayersException | OnlyOneGameException | PlayerNameNotUniqueException | IOException |
-                 IllegalOperationException | InvalidCardException | DeckEmptyException | HandNotFullException |
-                 InvalidUserId | NoGameExistsException | RequirementsNotMetException | IllegalPositionException |
-                 ClassNotFoundException | InvalidGameID ex) {
-            showErrorMsg(ex.getMessage());
         }
 
 
@@ -782,7 +785,7 @@ public class InGameController extends GUIController {
     public void loadChat(String user){
         messageBox.getChildren().clear();
         chatMenu.setText(user);
-        List <String> chatList = new ArrayList<>();
+        List <String> chatList;
         //TODO: Fix the fact that the username Global could exist
         try{
             if (user.equals("Global")){
@@ -790,14 +793,19 @@ public class InGameController extends GUIController {
             }else{
                 chatList=getPrivateChat(user);
             }
+            for (String message : chatList){
+                Text text = new Text(message);
+                text.setWrappingWidth(500);
+                int i=message.indexOf(":");
+                String sender= message.substring(0,i);
+                String color=getHex(view.getPlayerColor(sender));
+                text.setFill(Paint.valueOf(color));
+                messageBox.getChildren().add(text);
+
+            }
         } catch (RemoteException e) {
             showErrorMsg("Connection Error");
             System.exit(1);
-        }
-        for (String message : chatList){
-            Text text = new Text(message);
-            text.setWrappingWidth(500);
-            messageBox.getChildren().add(text);
         }
     }
 

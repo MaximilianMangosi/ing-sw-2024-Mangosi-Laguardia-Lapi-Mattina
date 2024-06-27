@@ -113,7 +113,7 @@
               <!-- Default configuration for running with: mvn clean javafx:run -->
               <id>default-cli</id>
               <configuration>
-                <mainClass>it.polimi.ingsw.GUI.GUI</mainClass>
+                <mainClass>it.polimi.ingsw.GUI.ClientGUI</mainClass>
               </configuration>
             </execution>
           </executions>
@@ -157,9 +157,9 @@
               <finalName>GUI</finalName>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <MainClass>it.polimi.ingsw.GUI.GUI</MainClass>
+                  <MainClass>it.polimi.ingsw.GUI.ClientGUI</MainClass>
                   <manifestEntries>
-                    <MainClass>it.polimi.ingsw.GUI.GUI</MainClass>
+                    <MainClass>it.polimi.ingsw.GUI.ClientGUI</MainClass>
                     <Build-Number>1</Build-Number>
                   </manifestEntries>
                 </transformer>

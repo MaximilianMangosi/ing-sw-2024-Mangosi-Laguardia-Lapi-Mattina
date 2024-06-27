@@ -443,7 +443,7 @@ public class TUIAsciiArtist {
             }
             matrix[i][j] = color+fieldBuildingHelper.indexOf(coordinate);
         }
-        writer.print(matrix);
+        writer.print(matrix,fieldBuildingHelper);
         matrix=null;
     }
     /**

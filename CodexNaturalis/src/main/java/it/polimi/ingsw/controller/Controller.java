@@ -412,11 +412,13 @@ public class Controller {
             if ( currentState.isGameStarted() && getUserIDs().size() < 2 && !currentState.isGameEnded()) {
                 List<UUID> ids = new ArrayList<>(currentState.userIDs.keySet());
 
-                String winner = currentState.getPlayerFromUid(ids.getFirst()).getName();
-                view.setWinner(winner);
-                view.setIsGameEnded();
-                addToQueue(new GameEndMessage(winner));
-                deleteGameFromGameManager();
+                if (!ids.isEmpty()) {
+                    String winner = currentState.getPlayerFromUid(ids.getFirst()).getName();
+                    view.setWinner(winner);
+                    view.setIsGameEnded();
+                    addToQueue(new GameEndMessage(winner));
+                    deleteGameFromGameManager();
+                }
             }
         }
 
@@ -510,10 +512,12 @@ public class Controller {
 
     /**
      * @author Giorgio Mattina
-     * @return the name of the current player
+     * @return the name of the current player if the game is started otherwise null
      */
     public String getCurrentPlayer(){
-        return currentState.game.getCurrentPlayer().getName();
+        if(currentState.isGameStarted())
+            return currentState.game.getCurrentPlayer().getName();
+        return null;
     }
 
     /**

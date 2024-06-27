@@ -17,7 +17,9 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -42,8 +44,11 @@ public class WaitingRoomController extends GUIController{
     @Override
     public void init() {
         try {
-            File file=new File(getClass().getResource("/tutorial Codex Naturalis.mp4").toURI());
-            Media media = new Media(file.toURI().toString());
+            File tempFile = File.createTempFile("tutorial", ".mp4");
+            tempFile.deleteOnExit();
+            InputStream inputStream = getClass().getResourceAsStream("/tutorial Codex Naturalis.mp4");
+            Files.copy(inputStream, tempFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            Media media = new Media(tempFile.toURI().toString());
             MediaPlayer mediaPlayer=new MediaPlayer(media);
             tutorialVideo.setMediaPlayer(mediaPlayer);
             mediaPlayer.setAutoPlay(true);

@@ -47,7 +47,7 @@ public class ServerHandler extends Thread{
             while (true){
                 ServerMessage message = (ServerMessage) input.readObject();
                 message.processMessage(view);
-                if(updateTUI!=null) { // null when user choose GUI
+                if(updateTUI!=null) { // null when user choose ClientGUI
                     synchronized (updateTUI) {
                         updateTUI.notifyAll();
                     }

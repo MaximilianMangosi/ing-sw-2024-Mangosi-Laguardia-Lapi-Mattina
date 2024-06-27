@@ -25,7 +25,7 @@ public class PingPong extends  Thread{
             try {
                 if(!view.amIPinged(myID)) {
                     view.pong(myID);
-                    Thread.sleep(30000);
+                    Thread.sleep(20000);
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Connection Error ping");

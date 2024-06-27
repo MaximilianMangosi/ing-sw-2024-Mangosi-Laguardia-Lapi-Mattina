@@ -16,7 +16,6 @@ import java.rmi.registry.Registry;
 import java.util.*;
 
 public class Client {
-    private final String[] commands = {"start-game", "play-card", "choose-goal","choose-starter-card-side", "draw-card-from-deck", "draw-card-visible", "disconnect" };
     private UUID myUid;
 
     /**
@@ -30,6 +29,7 @@ public class Client {
         View view;
         Scanner s=new Scanner(System.in);
         TextUserInterface tui= new TextUserInterface();
+        System.out.println("\033c");
         int connectionChoice= 0;
         while (connectionChoice!=1 && connectionChoice!=2 ) {
             System.out.println("Choose how to connect to Server.\n1)Socket\n2)RMI");
@@ -73,10 +73,8 @@ public class Client {
                 } catch (ClassNotFoundException | IOException e) {
                     System.out.println("Connection error");
                 }catch (IllegalOperationException | InvalidUserId | HandFullException | IsNotYourTurnException |
-                        HandNotFullException | InvalidCardException | InvalidGoalException | InvalidChoiceException |
-                        NoGameExistsException | RequirementsNotMetException | UnacceptableNumOfPlayersException |
-                        OnlyOneGameException | PlayerNameNotUniqueException | IllegalPositionException |
-                        DeckEmptyException | InvalidGameID e) {
+                        HandNotFullException | InvalidCardException | InvalidGoalException |  IllegalPositionException |
+                        DeckEmptyException e) {
                     System.out.println(e.getMessage());
                 }
             }

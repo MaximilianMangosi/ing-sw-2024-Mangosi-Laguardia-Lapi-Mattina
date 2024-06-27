@@ -57,11 +57,11 @@ public interface ViewRMIInterface extends Remote,View  {
     public GameKey bootGame(int numOfPlayers, String playerName) throws UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException, RemoteException;
     public UUID joinGame(UUID gameId,String playerName) throws PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID, RemoteException;
     public void playCardFront(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, IllegalOperationException, InvalidUserId;
-    public void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId;
-    public void chooseStarterCardSide(boolean isFront, UUID userId) throws RemoteException, InvalidUserId, IllegalOperationException,InvalidUserId;
-    public void chooseGoal(UUID userId, Goal newGoal) throws RemoteException, InvalidGoalException, InvalidUserId, IllegalOperationException, InvalidUserId;
-    public void drawFromDeck(UUID userId,int choice) throws RemoteException, IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException, InvalidUserId;
-    public void drawVisibleCard (UUID userId,int choice) throws RemoteException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException, InvalidUserId;
+    public void playCardBack(Card selectedCard, Coordinates position,UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId, IOException, ClassNotFoundException;
+    public void chooseStarterCardSide(boolean isFront, UUID userId) throws RemoteException, IllegalOperationException, InvalidUserId, IOException, ClassNotFoundException;
+    public void chooseGoal(UUID userId, Goal newGoal) throws IOException, InvalidGoalException, IllegalOperationException, ClassNotFoundException, InvalidUserId;
+    public void drawFromDeck(UUID userId,int choice) throws RemoteException, IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException;
+    public void drawVisibleCard (UUID userId,int choice) throws RemoteException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException;
     public void closeGame(UUID userID) throws RemoteException;
 
 
