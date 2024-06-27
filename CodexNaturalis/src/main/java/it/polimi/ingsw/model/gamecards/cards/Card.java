@@ -28,7 +28,7 @@ public abstract class Card implements Serializable {
     }
 
     /**
-     * gets the image ID of the Card, used in GUI
+     * gets the image ID of the Card, used in ClientGUI
      * @return the int that identifies the card jpg
      */
     public int getId() {

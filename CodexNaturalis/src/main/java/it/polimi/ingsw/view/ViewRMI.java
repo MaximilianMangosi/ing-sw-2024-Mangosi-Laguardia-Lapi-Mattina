@@ -369,7 +369,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws InvalidUserId
      */
     @Override
-    public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId {
+    public void playCardBack(Card selectedCard, Coordinates position, UUID userId) throws RemoteException, HandNotFullException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, IllegalOperationException, InvalidCardException, InvalidUserId, IOException, ClassNotFoundException {
         controller.playCardBack(selectedCard, position, userId);
 
     }
@@ -388,7 +388,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws InvalidUserId
      */
     @Override
-    public void chooseStarterCardSide(boolean isFront, UUID userId) throws RemoteException, InvalidUserId, IllegalOperationException, InvalidUserId {
+    public void chooseStarterCardSide(boolean isFront, UUID userId) throws RemoteException, IllegalOperationException, InvalidUserId, IOException, ClassNotFoundException {
         controller.chooseStarterCardSide(isFront, userId);}
 
     /**
@@ -399,10 +399,9 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws InvalidGoalException
      * @throws InvalidUserId
      * @throws IllegalOperationException
-     * @throws InvalidUserId
      */
     @Override
-    public void chooseGoal(UUID userId, Goal newGoal) throws RemoteException, InvalidGoalException, InvalidUserId, IllegalOperationException, InvalidUserId {
+    public void chooseGoal(UUID userId, Goal newGoal) throws IOException, InvalidGoalException, IllegalOperationException, ClassNotFoundException, InvalidUserId {
         controller.chooseGoal(userId, newGoal);
     }
 

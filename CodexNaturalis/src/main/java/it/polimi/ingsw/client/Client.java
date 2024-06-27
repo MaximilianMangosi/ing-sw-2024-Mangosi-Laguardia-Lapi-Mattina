@@ -73,10 +73,8 @@ public class Client {
                 } catch (ClassNotFoundException | IOException e) {
                     System.out.println("Connection error");
                 }catch (IllegalOperationException | InvalidUserId | HandFullException | IsNotYourTurnException |
-                        HandNotFullException | InvalidCardException | InvalidGoalException | InvalidChoiceException |
-                        NoGameExistsException | RequirementsNotMetException | UnacceptableNumOfPlayersException |
-                        OnlyOneGameException | PlayerNameNotUniqueException | IllegalPositionException |
-                        DeckEmptyException | InvalidGameID e) {
+                        HandNotFullException | InvalidCardException | InvalidGoalException |  IllegalPositionException |
+                        DeckEmptyException e) {
                     System.out.println(e.getMessage());
                 }
             }
