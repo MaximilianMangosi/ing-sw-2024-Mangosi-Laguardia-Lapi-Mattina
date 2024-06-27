@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * @author Giuseppe Laguardia
+ * sends the field
+ */
 public class FieldMessage extends ServerMessage{
     Map<Coordinates, Card> newField;
     String player;

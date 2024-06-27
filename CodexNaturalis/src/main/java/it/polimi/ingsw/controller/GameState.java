@@ -20,11 +20,24 @@ public abstract class GameState {
     protected HashMap<UUID, Player> userIDs=new HashMap<>() ;
     protected GameManager gameManager;
 
-
+    /**
+     * adds message to the global chat
+     * @author Maximilian Mangosi
+     * @param message
+     * @throws IllegalOperationException
+     */
     public void addToGlobalChat(String message) throws IllegalOperationException {
         game.addToGlobalChat(message);
     }
 
+    /**
+     * adds message to private chat
+     * @author Maximilian Mangosi
+     * @param receiver
+     * @param message
+     * @param userID
+     * @throws IllegalOperationException
+     */
     public void addMessage(String receiver, String message, UUID userID) throws IllegalOperationException {
        userIDs.get(userID).addMessage(receiver,message);
 
@@ -199,6 +212,12 @@ public abstract class GameState {
         throw new IllegalOperationException("joinGame");
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @param name
+     * @param userID
+     * @return private chat
+     */
     public List<String> getPrivateChat(String name, UUID userID) {
         return userIDs.get(userID).getPrivateChat(name);
     }

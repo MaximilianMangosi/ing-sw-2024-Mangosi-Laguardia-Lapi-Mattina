@@ -5,7 +5,10 @@ import it.polimi.ingsw.view.ViewSocket;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Giuseppe Laguardia
+ * updates the visible cards
+ */
 public class VisibleCardMessage extends ServerMessage{
     List<Card> visibleCards;
     public VisibleCardMessage(List<Card> listOfCard){

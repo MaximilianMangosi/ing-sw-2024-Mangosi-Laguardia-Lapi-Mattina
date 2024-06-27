@@ -90,6 +90,10 @@ public class InitState extends GameState{
 
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return is game started
+     */
     @Override
     public boolean isGameStarted() {
         return true;

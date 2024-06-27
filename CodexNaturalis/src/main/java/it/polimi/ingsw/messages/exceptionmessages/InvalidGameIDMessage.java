@@ -6,7 +6,10 @@ import it.polimi.ingsw.model.gamecards.exceptions.RequirementsNotMetException;
 import it.polimi.ingsw.model.gamelogic.exceptions.InvalidGameID;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
-
+/**
+ * @author Giuseppe Laguardia
+ * ExceptionMessage send by the server in response to an invalid game ID
+ */
 public class InvalidGameIDMessage extends  ExceptionMessage {
     @Override
     public void processMessage() throws UnacceptableNumOfPlayersException, IllegalOperationException, PlayerNameNotUniqueException, IsNotYourTurnException, RequirementsNotMetException, IllegalPositionException, InvalidCardException, HandNotFullException, InvalidUserId, InvalidGoalException, HandFullException, DeckEmptyException, InvalidChoiceException, InvalidGameID {

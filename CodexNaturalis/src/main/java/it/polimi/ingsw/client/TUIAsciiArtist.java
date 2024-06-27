@@ -141,7 +141,11 @@ public class TUIAsciiArtist {
 
     }
 
-
+    /**
+     * shows the cards
+     * @author Giuseppe Laguardia
+     * @param cards
+     */
     public void show(List<Card> cards){
         if(cards.size()<=3){ //show Hand
             matrix=new String[5][48];
@@ -253,6 +257,11 @@ public class TUIAsciiArtist {
         matrix=null;
     }
 
+    /**
+     * shows the back side of the starter card
+     * @author Giuseppe Laguardia
+     * @param starterCard
+     */
     private void showBack(StarterCard starterCard) {
         matrix[0][14] = YELLOW + starterCard.getResourceBack("NW").getColorFG() + starterCard.getResourceBack("NW").getSymbol() + LIGHT_WHITE ;
         matrix[0][26] = YELLOW + starterCard.getResourceBack("NE").getColorFG() + starterCard.getResourceBack("NE").getSymbol() +RESET+ LIGHT_WHITE;
@@ -260,6 +269,11 @@ public class TUIAsciiArtist {
         matrix[4][26] = YELLOW + starterCard.getResourceBack("SE").getColorFG() + starterCard.getResourceBack("SE").getSymbol() +RESET+ LIGHT_WHITE;
     }
 
+    /**
+     * shows the front of the starter card
+     * @author Giuseppe Laguardia Giorgio Mattina
+     * @param starterCard
+     */
     private void showFront(StarterCard starterCard) {
         List<Resource> centralResources = starterCard.getCentralResource();
         int numOfCentralResources = centralResources.size();

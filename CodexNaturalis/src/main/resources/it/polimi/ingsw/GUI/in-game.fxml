@@ -256,7 +256,7 @@
             </MenuButton>
             <ScrollPane hbarPolicy="NEVER" prefHeight="800.0" prefWidth="541.0">
                <content>
-                  <VBox fx:id="messageBox" alignment="BOTTOM_LEFT" prefHeight="800.0" prefWidth="505.0" />
+                  <VBox fx:id="messageBox" alignment="BOTTOM_LEFT" prefHeight="800.0" prefWidth="505.0" style="-fx-background-color: #dba57f;" />
                </content>
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />

@@ -5,7 +5,10 @@ import it.polimi.ingsw.view.ViewSocket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * @author Giuseppe Laguardia
+ * updates the chat list
+ */
 public class UpdateChatMessage extends ServerMessage{
     private final String user;
     private  UUID updateReceiver;

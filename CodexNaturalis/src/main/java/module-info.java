@@ -12,4 +12,5 @@ module it.polimi.ingsw {
     opens it.polimi.ingsw.model.gamecards.resources to com.google.gson;
     opens it.polimi.ingsw.model.gamecards.goals to com.google.gson;
     opens it.polimi.ingsw.view to java.rmi;
+
 }

@@ -48,6 +48,12 @@ public class GameManager {
 
     }
 
+    /**
+     * the player name is already taken
+     * @author Giuseppe Lagurdia
+     * @param playerName
+     * @return
+     */
     private boolean isPlayerNameTaken(String playerName) {
         return playerToGame.keySet().stream().anyMatch(p -> p.equals(playerName));
     }
@@ -70,6 +76,15 @@ public class GameManager {
         playerToGame.remove(nickName);
     }
 
+    /**
+     * joins the game
+     * @author Giuseppe Laguardia
+     * @param gameID
+     * @param newPlayer
+     * @return
+     * @throws PlayerNameNotUniqueException
+     * @throws InvalidGameID
+     */
     public boolean joinGame(UUID gameID,Player newPlayer) throws PlayerNameNotUniqueException, InvalidGameID {
 
         if(isPlayerNameTaken(newPlayer.getName()))

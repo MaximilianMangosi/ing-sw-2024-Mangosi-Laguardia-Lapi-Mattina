@@ -9,6 +9,7 @@ import java.time.temporal.TemporalUnit;
 import java.util.UUID;
 
 /**
+ * @author Giuseppe Laguardia
  * Thread that until user is connected acknowledges the server that no disconnection occurred.
  *
  */
@@ -21,6 +22,7 @@ public class PingPong extends  Thread{
     }
     @Override
     public void run() {
+
         while (true) {
             try {
                 if(!view.amIPinged(myID)) {

@@ -303,7 +303,10 @@ public class GameBox {
     public void addDistinctGoals(){
         goalSet.add(new DistinctGoal(3, 99));
     }
-
+    /**
+     * for json builder
+     * @author Giuseppe Laguardia
+     */
     private class ResourceAdapter extends TypeAdapter<Resource> {
         @Override
         public void write(JsonWriter jsonWriter, Resource resource) {

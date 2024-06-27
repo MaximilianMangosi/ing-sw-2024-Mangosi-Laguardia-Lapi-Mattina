@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
+/**
+ * @author Giuseppe Laguardia
+ * sends the list of joinable games
+ */
 public class JoinableGamesMessage extends  ServerMessage {
     Map<UUID, List<String>> joinableGames;
 

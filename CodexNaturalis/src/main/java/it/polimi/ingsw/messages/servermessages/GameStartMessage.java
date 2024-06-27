@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Giuseppe Laguardia
+ * send messahe that the game has started
+ */
 public class GameStartMessage extends ServerMessage{
     private Goal[] publicGoals;
     private List<Card> visibleCards;

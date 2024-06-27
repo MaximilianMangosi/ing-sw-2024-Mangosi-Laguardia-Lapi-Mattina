@@ -36,11 +36,20 @@ public class WaitingRoomController extends GUIController{
     @FXML
     private VBox vBox;
 
+    /**
+     * when selection of the start button
+     * @author Maximilian Mangosi
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onButtonSelected(ActionEvent event) throws IOException{
         changeScene("choose-starter-card-side.fxml", event);
     }
-
+    /**
+     * initializes the scene
+     * @author Maximilian Mangosi
+     */
     @Override
     public void init() {
         try {
@@ -64,7 +73,10 @@ public class WaitingRoomController extends GUIController{
         button.setVisible(false);
         updatePlayerList();
     }
-
+    /**
+     * updates the players list
+     * @author Maximilian Mangosi
+     */
     private void updatePlayerList() {
         AtomicBoolean flag = new AtomicBoolean(false);
         new Thread(()->{
@@ -93,18 +105,14 @@ public class WaitingRoomController extends GUIController{
             }
 
             button.setVisible(true);
-            //vBox.setVisible(false);
 
         }).start();
 
-//        try {
-//            System.out.println(view.getPlayersList());
-//            createPlayerLables(view.getPlayersList());
-//        } catch (RemoteException e) {
-//            throw new RuntimeException(e);
-//        }
     }
-
+    /**
+     * inserts the players waiting in the list
+     * @author Maximilian Mangosi
+     */
     private void createPlayerLables(List<String> names) {
         if (names!=null) {
             playersContainer.getChildren().clear();
