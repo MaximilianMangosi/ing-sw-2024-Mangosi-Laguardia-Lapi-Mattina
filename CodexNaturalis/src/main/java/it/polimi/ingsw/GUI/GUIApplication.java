@@ -8,6 +8,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class GUIApplication extends Application {
+    /**
+     * starts the application
+     * @author Maximilian Mangosi
+     * @param stage
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
 

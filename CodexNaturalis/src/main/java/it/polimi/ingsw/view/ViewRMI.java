@@ -434,7 +434,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws InvalidUserId
      */
     @Override
-    public void drawVisibleCard(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException, InvalidUserId {
+    public void drawVisibleCard(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException {
         controller.drawVisibleCard(userId, choice);
     }
 
