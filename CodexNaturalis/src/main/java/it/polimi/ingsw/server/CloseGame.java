@@ -25,7 +25,7 @@ public class CloseGame extends Thread{
                     if (shouldWait) {
                         sleep(120000);
                         shouldWait = false;
-                    } else {
+                    }else {
                         controller.deleteGameFromGameManager();
                         System.out.println("CloseGame Thread deleted game");
                         return;

@@ -76,10 +76,14 @@ public abstract class UserInterface{
      * @throws InvalidUserId when the user's ID is not associated to a player who joined a game
      */
 
-    public Goal getPrivateGoal() throws RemoteException, InvalidUserId, IllegalOperationException {
-        if(view.isRMI())
-            return view.showPrivateGoal(myID);
-        return view.showPrivateGoal();
+    public Goal getPrivateGoal() throws RemoteException, InvalidUserId {
+        try {
+            if(view.isRMI())
+                return view.showPrivateGoal(myID);
+            return view.showPrivateGoal();
+        } catch (IllegalOperationException e) {
+            return null;
+        }
     }
 
     /**

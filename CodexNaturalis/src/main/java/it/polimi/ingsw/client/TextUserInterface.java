@@ -115,7 +115,7 @@ public class TextUserInterface extends UserInterface {
                 if(!didIPlayStarterCard()){
                     idleUI.append("To start the game you have to choose the side of your starter card, try choose-starter-card-side\n");
                 }
-            } catch (IllegalOperationException | InvalidUserId ignore) {}
+            } catch ( InvalidUserId ignore) {}
         } else{
             idleUI.append("Waiting for players...");
         }
@@ -264,6 +264,9 @@ public class TextUserInterface extends UserInterface {
                     break;
                 case "show-my-goal":
                    Goal privateGoal= getPrivateGoal();
+                   if(privateGoal==null){
+                       throw new IllegalOperationException("show-my-goal");
+                   }
                    artist.show(new Goal[]{privateGoal});
                    outWriter.print("Press enter to continue");
                    s.nextLine();
@@ -355,13 +358,15 @@ public class TextUserInterface extends UserInterface {
                     break;
                 default:
                     outWriter.print("Unknown command, try help-command");
+                    outWriter.print("press enter to continue");
+                    s.nextLine();
             }
             updateIdleUI();
             printIdleUI();
         }
     }
 
-    private void printTutorialCard() {
+    public void printTutorialCard() {
         Scanner s= new Scanner(getClass().getResourceAsStream("/TUI-tutorial-card.txt"));
         while (s.hasNext()){
             outWriter.print(s.nextLine());
@@ -841,7 +846,7 @@ public class TextUserInterface extends UserInterface {
      * prints the tutorial of the game
      * @author Giuseppe Laguardia
      */
-    void printTutorial(){
+    public void printTutorial(){
         Scanner s= new Scanner(getClass().getResourceAsStream("/TUI-tutorial"));
         while (s.hasNext()){
             outWriter.print(s.nextLine());

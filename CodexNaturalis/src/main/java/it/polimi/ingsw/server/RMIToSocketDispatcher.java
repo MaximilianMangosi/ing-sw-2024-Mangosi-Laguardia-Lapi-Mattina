@@ -46,6 +46,7 @@ public class RMIToSocketDispatcher extends Thread{
 
             } catch (IOException e) {
                 System.out.println("RMIToSocketDispatcher stopped");
+                break;
             }
         }
     }
