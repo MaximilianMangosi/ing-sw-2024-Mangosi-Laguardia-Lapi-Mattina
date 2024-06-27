@@ -250,7 +250,7 @@ public class InGameController extends GUIController {
             case "Green" -> {return "#1a800a";}
             case "Yellow"->{ return  "#ffd500";}
             case "Blue"->{return "#4e83f5";}
-            case "Red"->{return "#ad031a";}
+            case "Red"->{return "#fc2f21";}
             case null, default -> {return "default";}
 
         }
@@ -839,7 +839,7 @@ public class InGameController extends GUIController {
     }
 
     /**
-     * handel drag and drop
+     * handles drag on hand
      * @author Giorgio Mattina
      * @param event
      */
@@ -861,7 +861,7 @@ public class InGameController extends GUIController {
 
     }
     /**
-     * handel drag and drop
+     * handle drag Over field
      * @author Giorgio Mattina
      * @param e
      */
@@ -880,7 +880,7 @@ public class InGameController extends GUIController {
 
     }
     /**
-     * handel drag and drop
+     * handle drop on field
      * @author Giorgio Mattina
      * @param e
      */
@@ -957,7 +957,6 @@ public class InGameController extends GUIController {
         messageBox.getChildren().clear();
         chatMenu.setText(user);
         List <String> chatList;
-        //TODO: Fix the fact that the username Global could exist
         try{
             if (user.equals("Global")){
                     chatList=view.getChatList();

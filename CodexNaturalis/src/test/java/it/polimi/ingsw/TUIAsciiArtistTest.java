@@ -43,7 +43,7 @@ public class TUIAsciiArtistTest {
         }
     }
     @Before
-    public void GameSetup() throws IOException {
+    public void GameSetup()  {
 
 
         ArrayList<String> resourceCardJsons=new ArrayList<>();

@@ -428,12 +428,14 @@ public class Controller {
             String username= player.get().getName();
             currentState.closeGame(userID);
 
-            view.updatePlayersList();
-            view.updatePlayersHands();
-            view.updatePrivateGoals();
-            view.updatePlayersField();
-            view.updateCurrentPlayer();
-            view.updatePlayersPoints();
+            try {
+                view.updatePlayersList();
+                view.updatePlayersHands();
+                view.updatePrivateGoals();
+                view.updatePlayersField();
+                view.updateCurrentPlayer();
+                view.updatePlayersPoints();
+            } catch (Exception e) {return;}
 
             addToQueue(new PlayersListMessage(getPlayersList()));
             addToQueue(new RemoveFieldMessage(username));
