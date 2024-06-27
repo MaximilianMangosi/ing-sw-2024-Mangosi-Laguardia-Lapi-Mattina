@@ -34,6 +34,8 @@ L'interfaccia grafica è stata realizzata utilizzando javafx e Scene Builder per
 Oltre che alle funzionalità **BASE** quali:
 - Regole Complete + TUI + GUI + RMI o Socket
 
+Sono state aggiunte le seguenti funzionalità avanzate
+
 | Funzionalità                                                         | Descrizione                                                                                                                                                                                              |
 |----------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Supporto Alle Partite Multiple**                                   |                                                                                                                                                                                                          |
