@@ -35,6 +35,12 @@ public class Controller {
         return currentState.getPrivateChat( name,userID);
     }
 
+    /**
+     * adds message to the global chat
+     * @author Maximilian Mangosi
+     * @param message
+     * @throws IllegalOperationException
+     */
     public void addToGlobalChat(String message) throws IllegalOperationException {
         if (!message.isBlank()) {
             currentState.addToGlobalChat(message);
@@ -43,6 +49,14 @@ public class Controller {
         }
     }
 
+    /**
+     * adds message to the private chat
+     * @author Maximilian Mangosi
+     * @param name
+     * @param message
+     * @param userID
+     * @throws IllegalOperationException
+     */
     public void addMessage(String name, String message, UUID userID) throws IllegalOperationException {
         if(!message.isBlank()) {
             currentState.addMessage(name, message, userID);
@@ -237,6 +251,13 @@ public class Controller {
         System.out.println(getCurrentPlayer());
     }
 
+    /**
+     * gets the player UUID
+     * @author Giuseppe Laguardia
+     * @param userId
+     * @return
+     * @throws InvalidUserId
+     */
     public Player getPlayer(UUID userId) throws InvalidUserId {
 
         return Optional.ofNullable(currentState.userIDs.get(userId)).orElseThrow(InvalidUserId::new);
@@ -477,6 +498,12 @@ public class Controller {
         }
         return hands;
     }
+
+    /**
+     * returns all the private chats
+     * @author Giuseppe Laguardia
+     * @return
+     */
     public  Map<UUID,Map<String,List<String>>> getAllPrivateChat(){
         Map<UUID,Map<String,List<String>>> privateChats= new HashMap<>();
         for (Map.Entry<UUID, Player> entry : getUserIDs().entrySet()){
@@ -650,7 +677,10 @@ public class Controller {
         return null;
     }
 
-
+    /**
+     * @author Giuseppe Laguardia
+     * @return the color of the user
+     */
     public Map<String, String> getPlayerToColor() {
         Map<String,String> colorMap=new HashMap<>();
         for (Player p:currentState.userIDs.values()){

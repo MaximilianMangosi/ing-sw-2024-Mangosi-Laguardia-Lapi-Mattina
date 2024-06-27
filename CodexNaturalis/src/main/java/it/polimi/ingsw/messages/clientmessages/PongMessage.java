@@ -11,6 +11,13 @@ public class PongMessage extends ClientMessage {
     public PongMessage(UUID myID) {
      this.myID=myID;
     }
+
+    /**
+     * processes the message
+     * @author Giuseppe Laguardia
+     * @param clientHandler
+     * @throws IOException
+     */
     @Override
     public void processMessage(ClientHandler clientHandler) throws IOException {
         clientHandler.getController().pong(myID);

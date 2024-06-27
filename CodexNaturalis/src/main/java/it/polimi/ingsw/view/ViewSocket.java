@@ -113,16 +113,30 @@ public class  ViewSocket implements View{
         return gd.getHand();
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @param name
+     * @return player field
+     */
     @Override
     public Map<Coordinates, Card> getPlayersField(String name) {
         return gd.getPlayerField(name);
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return player list
+     */
     @Override
     public List<String> getPlayersList() {
         return gd.getPlayersList();
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return curr players
+     * @throws RemoteException
+     */
     @Override
     public String getCurrentPlayer() throws RemoteException {
         return gd.getCurrentPlayer();
@@ -226,11 +240,22 @@ public class  ViewSocket implements View{
         return gd.getStarterCard();
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @param player
+     * @return player color
+     */
     @Override
     public String getPlayerColor(String player) {
         return gd.getPlayerToColor(player);
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return message
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private ServerMessage readMessage() throws IOException, ClassNotFoundException {
         ServerMessage reply;
         reply = (ServerMessage) input.readObject();
@@ -261,7 +286,18 @@ public class  ViewSocket implements View{
        return  ((GameKeyMessage) reply).getGameKey();
     }
 
-
+    /**
+     * joins the game
+     * @author Giuseppe Laguardia
+     * @param gameId
+     * @param playerName
+     * @return
+     * @throws PlayerNameNotUniqueException
+     * @throws IllegalOperationException
+     * @throws InvalidGameID
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     @Override
     public synchronized UUID joinGame(UUID gameId,String playerName) throws PlayerNameNotUniqueException, IllegalOperationException, InvalidGameID, IOException, ClassNotFoundException {
         JoinGameMessage message = new JoinGameMessage(gameId,playerName);
@@ -374,6 +410,19 @@ public class  ViewSocket implements View{
       }
   }
 
+    /**
+     * draw card form deck
+     * @author Giuseppe Laguardia
+     * @param userId
+     * @param choice
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws HandFullException
+     * @throws InvalidChoiceException
+     * @throws IsNotYourTurnException
+     * @throws IllegalOperationException
+     * @throws DeckEmptyException
+     */
     @Override
     public synchronized void drawFromDeck(UUID userId, int choice) throws IOException, ClassNotFoundException, HandFullException, InvalidChoiceException, IsNotYourTurnException, IllegalOperationException, DeckEmptyException {
 
@@ -387,6 +436,19 @@ public class  ViewSocket implements View{
                  InvalidGoalException | InvalidGameID ignore) {}
     }
 
+    /**
+     * draw card form visible cards
+     * @author Giuseppe Laguardia
+     * @param userId
+     * @param choice
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws HandFullException
+     * @throws InvalidChoiceException
+     * @throws IsNotYourTurnException
+     * @throws IllegalOperationException
+     * @throws DeckEmptyException
+     */
     @Override
     public synchronized void drawVisibleCard(UUID userId, int choice) throws IOException, ClassNotFoundException, HandFullException, InvalidChoiceException, IsNotYourTurnException, IllegalOperationException, DeckEmptyException {
         DrawVisibleMessage message= new DrawVisibleMessage(choice,userId);
@@ -399,6 +461,13 @@ public class  ViewSocket implements View{
                  InvalidGoalException | InvalidGameID ignore) {}
     }
 
+    /**
+     * close the game
+     * @author Giuseppe Laguardia
+     * @param userID
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     @Override
     public synchronized void closeGame(UUID userID) throws ClassNotFoundException,IOException{
     CloseGameMessage message= new CloseGameMessage(userID);
@@ -412,46 +481,93 @@ public class  ViewSocket implements View{
                  InvalidUserId | InvalidGoalException | HandFullException ignore) {}
     }
 
+    /**
+     * checks if the game is ended
+     * @author Giuseppe Laguardia
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public boolean isGameEnded() throws RemoteException {
         return gd.isGameEnded();
     }
 
+    /**
+     * checks if the game has started
+     * @author Giuseppe Laguardia
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public boolean isGameStarted() throws RemoteException {
         return gd.isGameStarted();
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @param name
+     * @return field building helper
+     */
     @Override
     public List<Coordinates> getFieldBuildingHelper(String name) {
         return gd.getFieldBuilderHelper(name);
     }
 
+    /**
+     * initializes the field building helper
+     * @author Giuseppe Laguardia
+     * @param myName
+     */
     @Override
     public void initializeFieldBuildingHelper(String myName) {
         gd.setFieldBuilderHelper(myName,new ArrayList<>());
     }
 
+    /**
+     * updates the field building helper
+     * @author Giuseppe Laguardia
+     * @param position
+     * @param username
+     */
     @Override
     public void updateFieldBuildingHelper(Coordinates position, String username) {
         gd.getFieldBuilderHelper(username).add(position);
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return top resource card from resource deck
+     */
     @Override
     public Reign getTopOfResourceCardDeck() {
         return gd.getTopOfResourcesDeck();
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return top of gold card deck
+     */
     @Override
     public Reign getTopOfGoldCardDeck() {
         return gd.getTopOfGoldsDeck();
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @param id
+     * @return if pinged
+     */
     @Override
     public boolean amIPinged(UUID id) {
         return false;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @param myID
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     @Override
     public synchronized void pong(UUID myID) throws IOException, ClassNotFoundException {
         output.writeObject(new PongMessage(myID));
@@ -464,11 +580,24 @@ public class  ViewSocket implements View{
                  HandFullException | DeckEmptyException | InvalidChoiceException | InvalidGameID ignore) {}
     }
 
+    /**
+     * @author Maximilian Mangosi
+     * @return chat list
+     */
     @Override
     public List<String> getChatList() {
         return gd.getChatData();
     }
 
+    /**
+     * sends private message
+     * @author Giuseppe Laguardia
+     * @param receiver
+     * @param message
+     * @param sender
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     @Override
     public synchronized void sendPrivateMessage(String receiver, String message, UUID sender) throws IOException, ClassNotFoundException {
       output.writeObject(new PrivateChatMessage(message,receiver,sender));
@@ -486,10 +615,24 @@ public class  ViewSocket implements View{
     public List<String> getPrivateChat(String receiver, UUID uuid) {
         return null;
     }
+
+    /**
+     * @author Giuseppe Laguardia
+     * @param user
+     * @return private chat
+     */
     public List<String> getPrivateChat(String user)  {
         return gd.getPrivateChat(user);
     }
 
+    /**
+     * sends chat message
+     * @author Maximilian Mangosi
+     * @param message
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws IllegalOperationException
+     */
     @Override
     public synchronized void sendChatMessage(String message) throws IOException, ClassNotFoundException, IllegalOperationException {
         try {
@@ -503,10 +646,20 @@ public class  ViewSocket implements View{
                 RequirementsNotMetException | IllegalPositionException ignore) {}
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return game data
+     */
     public GameData getGameData() {
       return gd;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return joinable games list
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public Map<UUID, List<String>> getJoinableGames() throws IOException, ClassNotFoundException{
       output.writeObject(new RequestJoinableGamesMessage());
       readMessage().processMessage(this);

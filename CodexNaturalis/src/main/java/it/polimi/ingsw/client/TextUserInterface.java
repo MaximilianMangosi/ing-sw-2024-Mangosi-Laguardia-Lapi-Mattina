@@ -366,6 +366,14 @@ public class TextUserInterface extends UserInterface {
         s.close();
     }
 
+    /**
+     * prompts for the user to write for the chat
+     * @author Giuseppe Laguardia
+     * @param stop1
+     * @param t1
+     * @return
+     * @throws RemoteException
+     */
     private String promptForChat(AtomicBoolean stop1, Thread t1) throws RemoteException {
         String mode = s.nextLine();
         if(mode.equals("-m")) {
@@ -377,6 +385,11 @@ public class TextUserInterface extends UserInterface {
         return myName.toUpperCase() +": "+ s.nextLine();
     }
 
+    /**
+     * Prints the global chat to the user using a thread to continue updating
+     * @author Maximilian Mangosi
+     * @param stop
+     */
     private void printGlobalChat(AtomicBoolean stop) {
         try {
             while (!stop.get()){
@@ -395,6 +408,13 @@ public class TextUserInterface extends UserInterface {
         }
     }
 
+    /**
+     * function to print the message
+     * @author Giuseppe Laguardia
+     * @param chat
+     * @throws RemoteException
+     * @throws InterruptedException
+     */
     private void printMessages(List<String> chat) throws RemoteException, InterruptedException {
         if(chat!=null) {
             for (String message : chat) {
@@ -406,6 +426,12 @@ public class TextUserInterface extends UserInterface {
         }
     }
 
+    /**
+     * prints the private chat using threads to update
+     * @author Maximilian Mangosi
+     * @param name
+     * @param stop
+     */
     private void printChat(String name, AtomicBoolean stop){
         try {
             while (true){
@@ -436,6 +462,12 @@ public class TextUserInterface extends UserInterface {
         Coordinates coordinates = availableCoordinates.get(chosenPositionI);
         return coordinates;
     }
+
+    /**
+     * prompt the user to insert the number of users
+     * @author Giuseppe Laguardia
+     * @return
+     */
     private int promptForNumPlayers() {
         outWriter.print("Insert number of players");
         int numPlayers = 0;
@@ -454,6 +486,13 @@ public class TextUserInterface extends UserInterface {
         return numPlayers;
     }
 
+    /**
+     * function to join a selected game
+     * @author Giuseppe Laguardia
+     * @param isRMI
+     * @param gameID
+     * @throws InvalidGameID
+     */
     private void joinGame(boolean isRMI,UUID gameID) throws InvalidGameID {
         boolean error=true;
         promptForUsername();
@@ -477,6 +516,12 @@ public class TextUserInterface extends UserInterface {
 
     }
 
+    /**
+     * user selects which deck to draw from
+     * @author Giuseppe Laguardia
+     * @return chosenDeck
+     * @throws RemoteException
+     */
     private Integer promptForChosenDeck() throws RemoteException {
         outWriter.print("From which deck do you want to draw? (0,1)");
         Reign topResourceCard= null;
@@ -504,6 +549,11 @@ public class TextUserInterface extends UserInterface {
         return chosenDeck;
     }
 
+    /**
+     * user decides the side of the card
+     * @author Giuseppe Laguardia
+     * @return
+     */
     private boolean promptForSide(){
         boolean isChosenFront;
         outWriter.print("Which side? (f for front, b or any for back)");
@@ -511,6 +561,12 @@ public class TextUserInterface extends UserInterface {
         return isChosenFront;
     }
 
+    /**
+     * user prompts to see his current hand
+     * @author Giuseppe Laguardia
+     * @throws RemoteException
+     * @throws InvalidUserId
+     */
     private void showHand() throws RemoteException, InvalidUserId {
         List<Card> hand ;
         hand=getHand();
@@ -626,12 +682,24 @@ public class TextUserInterface extends UserInterface {
 
     }
 
+    /**
+     * prompt to create or join a game
+     * @author Giuseppe Laguardia
+     * @return
+     */
     private String promptForGameChoice() {
         outWriter.print("If you want join one of this game insert the corresponding number");
         outWriter.print("If you want to create a new game press enter");
         return s.nextLine();
     }
 
+    /**
+     * shows the list of joinable games
+     * @author Giuseppe Laguardia
+     * @param views
+     * @return joinableGames
+     * @throws RemoteException
+     */
     private List<UUID> showJoinableGames(Map<UUID, List<String>> views) throws RemoteException {
        List<UUID> joinableGames=new ArrayList<>();
         int i=1;
@@ -644,7 +712,13 @@ public class TextUserInterface extends UserInterface {
         return joinableGames;
     }
 
-
+    /**
+     * boots the game
+     * @author Giuseppe Laguardia
+     * @param isRMI parameter to see if the choice is rmi or soket
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void bootGame(boolean isRMI) throws IOException, ClassNotFoundException {
         boolean error=true;
         promptForUsername();
@@ -674,6 +748,10 @@ public class TextUserInterface extends UserInterface {
 
     }
 
+    /**
+     * user inserts the username
+     * @author Giuseppe Laguardia
+     */
     private void promptForUsername() {
         outWriter.print("Insert username");
         myName = s.nextLine();
@@ -683,6 +761,13 @@ public class TextUserInterface extends UserInterface {
         }
     }
 
+    /**
+     * the user starts the game
+     * @author Giuseppe Laguardia
+     * @param isRMI
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void startGame(boolean isRMI) throws IOException, ClassNotFoundException {
         ViewSocket viewSocket = (ViewSocket) view;
         Map<UUID, List<String>> views = isRMI? viewContainer.getJoinableGames():viewSocket.getJoinableGames();
@@ -729,6 +814,11 @@ public class TextUserInterface extends UserInterface {
         tuiUpdater.start();
 
     }
+
+    /**
+     * prints the logo of codex
+     * @author Giuseppe Laguardia
+     */
     void printLogo(){
         Scanner s= new Scanner(getClass().getResourceAsStream("/ascii-logo"));
         outWriter.print("\u001B[33m");
@@ -739,6 +829,11 @@ public class TextUserInterface extends UserInterface {
         outWriter.print(TUIAsciiArtist.RESET);
         s.close();
     }
+
+    /**
+     * prints the tutorial of the game
+     * @author Giuseppe Laguardia
+     */
     void printTutorial(){
         Scanner s= new Scanner(getClass().getResourceAsStream("/TUI-tutorial"));
         while (s.hasNext()){

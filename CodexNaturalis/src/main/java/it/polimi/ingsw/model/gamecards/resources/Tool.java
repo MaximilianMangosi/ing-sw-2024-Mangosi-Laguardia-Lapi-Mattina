@@ -2,7 +2,10 @@ package it.polimi.ingsw.model.gamecards.resources;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.client.TUIAsciiArtist;
-
+/**
+ * tool characteristics of the card
+ * @author Giuseppe Laguardia
+ */
 public enum Tool implements Resource {
     @SerializedName("f")
     FEATHER("F"),

@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+/**
+ * reign characteristics of the card
+ * @author Giuseppe Laguardia
+ */
 public enum Reign implements Resource, Serializable {
     @SerializedName("a")
     ANIMAL("\u001B[104m","\u001B[34m","A"),

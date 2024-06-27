@@ -129,8 +129,11 @@ public class OutStreamWriter {
         }
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @param playersList prints the players list
+     */
     public void print(List<String> playersList) {
         System.out.println(playersList);
-
     }
 }

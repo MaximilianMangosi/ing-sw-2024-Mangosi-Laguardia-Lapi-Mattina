@@ -5,7 +5,10 @@ import it.polimi.ingsw.view.ViewSocket;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Giuseppe Laguardia
+ * sends the list of legal positions
+ */
 public class LegalPositionMessage extends ServerMessage{
     List<Coordinates> newLegalPositions;
 

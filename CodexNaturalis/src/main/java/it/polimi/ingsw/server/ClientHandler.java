@@ -24,6 +24,7 @@ public class ClientHandler implements Runnable{
     private  ViewUpdater myViewUpdater;
 
     /**
+     * @author Giuseppe Laguardia
      *constructor of class ClientHandler
      * @param c the client socket
      * @param viewContainer contains all game's view
@@ -36,6 +37,7 @@ public class ClientHandler implements Runnable{
     }
 
     /**
+     * @author Giuseppe Laguardia
      * main thread logic, calls handleConnection
      * @author Giogio Mattina
      */
@@ -64,6 +66,7 @@ public class ClientHandler implements Runnable{
 
 
     /**
+     * @author Giuseppe Laguardia
      * reads from input and calls processMessage on the Message object
      * @author Giorgio Mattina
      * @throws IOException
@@ -82,6 +85,7 @@ public class ClientHandler implements Runnable{
     }
 
     /**
+     * @author Giuseppe Laguardia
      * sends a SuccessMessage or ExceptionMessage to the client as reply to his command
      * @param msg the message sent
      * @throws IOException when a connection problem occurss
@@ -90,6 +94,7 @@ public class ClientHandler implements Runnable{
         output.writeObject(msg);
     }
     /**
+     * @author Giuseppe Laguardia
      * Sends a message to all user containing a view's update, using viewUpdater
      * @param msg the Server Message to send
      * @throws IOException when a connection problem occurs
@@ -99,6 +104,7 @@ public class ClientHandler implements Runnable{
     }
 
     /**
+     * @author Giuseppe Laguardia
      * getter of the game controller
      * @return the controller
      */
@@ -106,11 +112,17 @@ public class ClientHandler implements Runnable{
         return this.controller;
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return all clients
+     */
+
     public Map<UUID,ObjectOutputStream> getAllClients(){
         return myViewUpdater.getClients();
     }
 
     /**
+     * @author Giuseppe Laguardia
      * Sends a message to a user containing a view's update, using viewUpdater
      * @param id the user's identifier
      * @param message the Server Message to send
@@ -121,18 +133,38 @@ public class ClientHandler implements Runnable{
         myViewUpdater.sendTo(message, id);
     }
 
+    /**
+     * removes the client
+     * @author Giuseppe Laguardia
+     * @param myID
+     */
     public void removeClient(UUID myID) {
         myViewUpdater.removeClient(myID);
     }
 
+    /**
+     * gets the view container
+     * @author Giuseppe Laguardia
+     * @return
+     */
     public ViewRMIContainer getViewContainer() {
         return viewContainer;
     }
 
+    /**
+     * sets the controller
+     * @author Giuseppe Laguardia
+     * @param c
+     */
     public void setController(Controller c) {
         controller=c;
     }
-    
+
+    /**
+     * sets the view updater
+     * @author Giuseppe Laguardia
+     * @param gameID
+     */
     public void setMyViewUpdater(UUID gameID){
         myViewUpdater=viewUpdaterMap.get(gameID);
         if(myViewUpdater==null){
@@ -142,15 +174,31 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /**
+     * adds the view updater
+     * @author Giuseppe Laguardia
+     * @param gameID
+     * @param viewUpdater
+     */
     public void addViewUpdater(UUID gameID,ViewUpdater viewUpdater) {
         viewUpdaterMap.put(gameID,viewUpdater);
         myViewUpdater=viewUpdater;
     }
 
+    /**
+     * gets the view updater
+     * @author Giuseppe Laguardia
+     *
+     * @return
+     */
     public ViewUpdater getViewUpdater() {
         return myViewUpdater;
     }
 
+    /**
+     * closes the connection
+     * @author Giuseppe Laguardia
+     */
     public void closeConnection() {
         try {
             client.close();

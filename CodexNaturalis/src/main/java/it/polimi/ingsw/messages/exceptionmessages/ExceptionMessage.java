@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.*;
 import it.polimi.ingsw.view.ViewSocket;
 
 /**
+ * @author Giuseppe Laguardia
  * Abstract class for messages sent by the server when an exception occurs
  */
 public abstract class ExceptionMessage extends ServerMessage {

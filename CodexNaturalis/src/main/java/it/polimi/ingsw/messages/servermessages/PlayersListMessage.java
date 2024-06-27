@@ -4,7 +4,10 @@ import it.polimi.ingsw.view.ViewSocket;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Giuseppe Laguardia
+ * updates the list of players in the game
+ */
 public class PlayersListMessage extends ServerMessage{
     List<String> players;
 

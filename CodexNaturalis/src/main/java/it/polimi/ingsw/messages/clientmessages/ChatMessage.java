@@ -11,10 +11,21 @@ import java.io.IOException;
 public class ChatMessage extends ClientMessage {
     private String chatMessage;
 
+    /**
+     * updates the chat message
+     * @author Maximilian Mangosi
+     * @param chatMessage
+     */
     public ChatMessage(String chatMessage){
         this.chatMessage = chatMessage;
     }
 
+    /**
+     * processes the message
+     * @author Maximilian Mangosi
+     * @param clientHandler
+     * @throws IOException
+     */
     @Override
     public void processMessage(ClientHandler clientHandler) throws IOException {
         ViewRMI view = clientHandler.getController().getView();

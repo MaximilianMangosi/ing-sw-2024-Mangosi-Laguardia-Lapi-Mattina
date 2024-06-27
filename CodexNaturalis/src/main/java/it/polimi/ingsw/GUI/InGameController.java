@@ -131,7 +131,11 @@ public class InGameController extends GUIController {
 
     private final GameData gd= new GameData();
 
-
+    /**
+     * initializes the scene
+     * @author Maximilian Mangosi Giuseppe Laguardia Giorgio Mattina
+     * @throws RemoteException
+     */
     public void init() throws RemoteException {
         try {
             deckBox.setVisible(false);
@@ -202,6 +206,11 @@ public class InGameController extends GUIController {
         } catch (InvalidUserId ignore) {}
     }
 
+    /**
+     * updates the players list
+     * @author Giuseppe Laguardia
+     * @param players
+     */
     public void updatePlayersList(List<String> players)  {
         playerListBox.getChildren().clear();
         try {
@@ -231,6 +240,12 @@ public class InGameController extends GUIController {
         }
     }
 
+    /**
+     * gets the hex code for the color
+     * @author Giuseppe Laguardia
+     * @param color
+     * @return color
+     */
     private String getHex(String color) {
         switch (color){
             case "Green" -> {return "#1a800a";}
@@ -242,6 +257,10 @@ public class InGameController extends GUIController {
         }
     }
 
+    /**
+     * initializes the score map
+     * @author Giuseppe Laguardia
+     */
     private void initializeScoreMap() {
         Scanner file= new Scanner(getClass().getResourceAsStream("/scoreboard-coordinates.txt"));
         while(file.hasNext()){
@@ -253,7 +272,11 @@ public class InGameController extends GUIController {
     }
 
 
-
+    /**
+     * draws card from deck
+     * @author Giuseppe Laguardia
+     * @param i
+     */
     private void drawFromDeck(int i) {
         try {
             view.drawFromDeck(myID,i);
@@ -266,7 +289,11 @@ public class InGameController extends GUIController {
             showErrorMsg(e.getMessage());
         }
     }
-//JL
+
+    /**
+     * checks the game info
+     * @author Giuseppe Laguardia Riccardo Lapi
+     */
     private void checkGameInfo(){
 
         new Thread(() -> {
@@ -333,6 +360,10 @@ public class InGameController extends GUIController {
         }).start();
     }
 
+    /**
+     * checks if the game is finished
+     * @author Riccardo Lapi
+     */
     private void onGameFinished()  {
         winModal.setVisible(true);
         showScoreboard();
@@ -357,6 +388,14 @@ public class InGameController extends GUIController {
            System.exit(1);
         }
     }
+
+    /**
+     * adds the player to winning window with relative points
+     * @author Riccardo Lapi
+     * @param index
+     * @param username
+     * @param points
+     */
     private void addPlayerInWinModal(int index,String username, int points){
         Text text1 = new Text(Integer.toString(index + 1) + "°");
         text1.setFont(new Font(26));
@@ -381,6 +420,11 @@ public class InGameController extends GUIController {
         hbox.getChildren().addAll(text1, spacer1, text2, spacer2, text3);
         playerLeaderboardContainer.getChildren().add(hbox);
     }
+
+    /**
+     * updates the scoreboard
+     * @author Giuseppe Laguardia
+     */
     private void updateScoreboard(){
         try{
             //reset imageView list to handle disconnections
@@ -424,6 +468,11 @@ public class InGameController extends GUIController {
 
     }
 
+    /**
+     * updates the visible cards
+     * @author Giuseppe Laguardia Riccardo Lapi Giorgio Mattina
+     * @param newCards
+     */
     private void updateVisibleCards(List<Card> newCards) {
         try {
             Image img1 = new Image(getClass().getResourceAsStream("/CardsFront/" + newCards.get(0).getId() + ".png"));
@@ -444,6 +493,11 @@ public class InGameController extends GUIController {
         }
     }
 
+    /**
+     * updates the current player color id
+     * @author Riccardo Lapi
+     * @param newCurrentPlayer
+     */
     private void updateCurrentPlayer(String newCurrentPlayer){
         playerListBox.getChildren().forEach(p -> {
            Label label = (Label) ((StackPane)p).getChildren().getFirst();
@@ -455,6 +509,12 @@ public class InGameController extends GUIController {
            }
         });
     }
+
+    /**
+     * draws the visible card
+     * @author Giuseppe Laguardia
+     * @param choice
+     */
     public void drawVisibleCard(int choice)  {
         try {
             view.drawVisibleCard(myID,choice);
@@ -467,6 +527,12 @@ public class InGameController extends GUIController {
             showErrorMsg(e.getMessage());
         }
     }
+
+    /**
+     * updates the top resource card
+     * @author Giuseppe Laguardia
+     * @param newTop
+     */
     private  void updateTopResource(Reign newTop){
         Image img = new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
         if (newTop!=null) {
@@ -480,6 +546,12 @@ public class InGameController extends GUIController {
         }
         resourceCardDeck.setImage(img);
     }
+
+    /**
+     * updates the top gold card
+     * @author Giuseppe Laguardia
+     * @param newTop
+     */
     private void updateTopGold(Reign newTop){
         Image img = new Image(getClass().getResourceAsStream("/Icon/codex_nat_icon.png"));
         if (newTop!=null) {
@@ -494,6 +566,12 @@ public class InGameController extends GUIController {
         goldCardDeck.setImage(img);
 
     }
+
+    /**
+     * updates the players hand
+     * @author Giuseppe Laguardia Maximilian Mangosi
+     * @param newHand
+     */
     private void updateHand(List<Card> newHand){
         if (newHand!=null) {
             for (Card card : newHand) {
@@ -518,6 +596,12 @@ public class InGameController extends GUIController {
             }
         }
     }
+
+    /**
+     * places the card
+     * @author Giorgio Mattina
+     * @param position
+     */
     public void placeCard( Coordinates position){
          ImageView newCardImage = selectedCardToPlay;
          newCardImage.setFitWidth(200);
@@ -528,6 +612,11 @@ public class InGameController extends GUIController {
          fieldPane.getChildren().add(newCardImage);
          handBox.getChildren().remove(selectedCardToPlay);
     }
+
+    /**
+     * shows the deck
+     * @author Giuseppe Laguardia
+     */
     public void showDeck(){
         deckButton.setVisible(false);
         deckBox.setVisible(true);
@@ -535,6 +624,11 @@ public class InGameController extends GUIController {
         hideDeckButton.setVisible(true);
 
     }
+
+    /**
+     * shows the scoreboard
+     * @author Giuseppe Laguardia Maximilian Mangosi
+     */
     public void showScoreboard(){
         updateScoreboard();
         handleCheckOverlap();
@@ -546,6 +640,10 @@ public class InGameController extends GUIController {
 
     }
 
+    /**
+     * handles the overlap between cards
+     * @author Giuseppe Laguardia Giorgio Mattina
+     */
     private void handleCheckOverlap() {
         List<ImageView> checksOverlapping = imageChecks.stream().filter(this::overlaps).toList();
         try {
@@ -568,7 +666,10 @@ public class InGameController extends GUIController {
         }
 
     }
-
+    /**
+     * handles the overlap between cards
+     * @author Giuseppe Laguardia Giorgio Mattina
+     */
     private boolean overlaps(ImageView image) {
         for (ImageView img: imageChecks){
             if(!image.equals(img)){
@@ -578,13 +679,20 @@ public class InGameController extends GUIController {
         }
         return false;
     }
-
+    /**
+     * hides the deck
+     * @author Giuseppe Laguardia
+     */
     public void hideDeck(){
         hideDeckButton.setVisible(false);
         deckBox.setLayoutX(-541);
         deckBox.setVisible(false);
         deckButton.setVisible(true);
     }
+    /**
+     * hides the scoreboard
+     * @author Giuseppe Laguardia Maximilian Mangosi
+     */
     public void hideScoreboard(){
         hideScoreboardButton.setVisible(false);
         imageChecks.forEach(i->i.setVisible(false));
@@ -594,12 +702,23 @@ public class InGameController extends GUIController {
         chatButton.setVisible(true);
         overlapAnimation.stop();
     }
+    /**
+     * flips a card
+     * @author Giuseppe Laguardia
+     */
     public void flipCard(MouseEvent e){
         StackPane cardPane= (StackPane) e.getSource();
         for( Node cardView: cardPane.getChildren()){
             cardView.setVisible(!cardView.isVisible());
         }
     }
+
+    /**
+     * handles the click of a card
+     * @author Giuseppe Laguardia Giorgio Mattina
+     * @param event
+     * @param coordinates
+     */
     private void handleClickCard (MouseEvent event,Coordinates coordinates){
 
         double clickX = event.getX();
@@ -615,6 +734,12 @@ public class InGameController extends GUIController {
         }
 
     }
+
+    /**
+     * quits the game
+     * @author Giuseppe Laguardia
+     * @param e
+     */
     public void quitGame(ActionEvent e ){
         Alert alert= new Alert(Alert.AlertType.CONFIRMATION,"If you quit you can't come back. Are you Sure?", ButtonType.OK,ButtonType.CANCEL);
         Optional<ButtonType> response= alert.showAndWait();
@@ -632,7 +757,12 @@ public class InGameController extends GUIController {
         });
 
     }
-    //
+
+    /**
+     * shows the enemy field
+     * @author Giorgio Mattina
+     * @param event
+     */
     private void showEnemyField(MouseEvent event)  {
         AnchorPane anchorParent = (AnchorPane) fieldPane.getParent();
         //fetch the other player's hand
@@ -694,6 +824,12 @@ public class InGameController extends GUIController {
         }
 
     }
+
+    /**
+     * returns to the player field
+     * @author Giorgio Mattina
+     * @param event
+     */
     @FXML
     private void returnToMyField(ActionEvent event){
         AnchorPane oldCenter = (AnchorPane) fieldPane.getParent();
@@ -702,6 +838,12 @@ public class InGameController extends GUIController {
         returnToMyFieldButton.setVisible(false);
         returnButtonPresent=false;
     }
+
+    /**
+     * handel drag and drop
+     * @author Giorgio Mattina
+     * @param event
+     */
     private void handleDragDetected(MouseEvent event){
 
         try {
@@ -718,6 +860,11 @@ public class InGameController extends GUIController {
         }
 
     }
+    /**
+     * handel drag and drop
+     * @author Giorgio Mattina
+     * @param e
+     */
     private void handleDragOver(DragEvent e)  {
 
         double hover_x = e.getX()-2564;
@@ -733,6 +880,11 @@ public class InGameController extends GUIController {
 
 
     }
+    /**
+     * handel drag and drop
+     * @author Giorgio Mattina
+     * @param e
+     */
     private void  handleDragDropped(DragEvent e){
         try{
             String p= view.getCurrentPlayer();
@@ -771,6 +923,11 @@ public class InGameController extends GUIController {
 
 
     }
+    /**
+     * handel drag and drop
+     * @author Giorgio Mattina
+     * @param e
+     */
     private void handleDragDone(DragEvent e ){
         if (e.getTransferMode() == TransferMode.MOVE) {
             removedStack = (StackPane) ((ImageView) e.getSource()).getParent();
@@ -779,6 +936,12 @@ public class InGameController extends GUIController {
 
         e.consume();
     }
+
+    /**
+     * shows an error message
+     * @author Giuseppe Laguardia
+     * @param message
+     */
     private void showErrorMsg(String message) {
         errorMsg.setText(message.toUpperCase(Locale.ROOT));
         errorMsg.setVisible(true);
@@ -786,6 +949,11 @@ public class InGameController extends GUIController {
 
     }
 
+    /**
+     * Loads the chat for global and private usage
+     * @author Maximilian Mangosi
+     * @param user
+     */
     public void loadChat(String user){
         messageBox.getChildren().clear();
         chatMenu.setText(user);
@@ -815,10 +983,18 @@ public class InGameController extends GUIController {
         }
     }
 
+    /**
+     * updates the chat using threads
+     * @author Maxiimilian Mangosi
+     */
     public void updateChat(){
         Platform.runLater(()->loadChat(chatMenu.getText()));
     }
 
+    /**
+     * shows the chat
+     * @author Maxiimilian Mangosi
+     */
     public void showChat(){
         scoreboardButton.setVisible(false);
         hideChatButton.setVisible(true);
@@ -831,7 +1007,10 @@ public class InGameController extends GUIController {
 
         updateChatTask = scheduler.scheduleAtFixedRate(this::updateChat, 0, 100, TimeUnit.MILLISECONDS);
     }
-
+    /**
+     * hides the chat
+     * @author Maxiimilian Mangosi
+     */
     public void hideChat(){
         hideScoreboardButton.setVisible(false);
         chatBox.setLayoutX(-1080);
@@ -842,11 +1021,18 @@ public class InGameController extends GUIController {
 
         updateChatTask.cancel(true);
     }
-
+    /**
+     * text prompt for the chat
+     * @author Maxiimilian Mangosi
+     */
     @FXML
     private void onTextChat(){
         chatMessage = inputChat.getText();
     }
+    /**
+     * handles the enter key in the chat box
+     * @author Maxiimilian Mangosi
+     */
     @FXML
     private void onKeyEnter(KeyEvent event){
         if (event.getCode() == KeyCode.ENTER){
@@ -854,7 +1040,10 @@ public class InGameController extends GUIController {
             updateChat();
         }
     }
-
+    /**
+     * sends the message
+     * @author Maxiimilian Mangosi
+     */
     public void sendMessage(){
         try {
             if (chatMenu.getText().equals("Global")) {

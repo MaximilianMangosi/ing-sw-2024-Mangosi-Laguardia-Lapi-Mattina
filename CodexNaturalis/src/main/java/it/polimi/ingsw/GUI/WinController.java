@@ -17,6 +17,11 @@ public class WinController extends GUIController{
     @FXML
     private Text winnerTxt;
 
+    /**
+     * initializes the scene
+     * @author Riccardo Lapi
+     * @throws RemoteException
+     */
     @Override
     public void init() throws RemoteException {
 
@@ -34,6 +39,12 @@ public class WinController extends GUIController{
                 });
     }
 
+    /**
+     * adds player to the winning table
+     * @author Riccardo Lapi
+     * @param username
+     * @param points
+     */
     private void addPlayer(String username, int points){
         Text text1 = new Text("First Text");
         text1.setFont(new Font(26));

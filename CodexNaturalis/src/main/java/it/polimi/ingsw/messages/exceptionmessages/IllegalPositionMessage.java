@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.ViewSocket;
 /**
+ * @author Giuseppe Laguardia
  * ExceptionMessage sent by the server when IllegalPositionException occurs
  */
 public class IllegalPositionMessage extends ExceptionMessage {

@@ -65,11 +65,25 @@ public class LobbyState extends GameState{
         return identity;
     }
 
+    /**
+     * adds message to global chat
+     * @author Maximilian Mangosi
+     * @param message
+     * @throws IllegalOperationException
+     */
     @Override
     public void addToGlobalChat(String message) throws IllegalOperationException {
         throw new IllegalOperationException("write message");
     }
 
+    /**
+     * adds message to private chat
+     * @author Maximilian Mangosi
+     * @param receiver
+     * @param message
+     * @param userID
+     * @throws IllegalOperationException
+     */
     @Override
     public void addMessage(String receiver, String message, UUID userID) throws IllegalOperationException {
         throw new IllegalOperationException("write message");

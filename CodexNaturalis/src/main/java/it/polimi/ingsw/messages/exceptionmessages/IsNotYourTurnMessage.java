@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersExcept
 import it.polimi.ingsw.view.ViewSocket;
 
 /**
+ * @author Giuseppe Laguardia
 *   ExceptionMessage sent by the server when PlayerNameNotUniqueException occurs
  */
 public class IsNotYourTurnMessage extends ExceptionMessage{

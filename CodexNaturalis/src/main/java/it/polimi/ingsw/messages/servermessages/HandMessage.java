@@ -13,7 +13,10 @@ import it.polimi.ingsw.view.ViewSocket;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Giuseppe Laguardia
+ * sends updated hand
+ */
 public class HandMessage extends ServerMessage{
     List<Card> newHand;
 
