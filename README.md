@@ -54,79 +54,10 @@ Oltre che alle funzionalità **BASE** quali:
    java -jar server.jar
     ```
 5. Se vuoi lanciare la TUI da terminale, leggi l'indirizzo ip stampato dal server e aggiungilo come parametro con questo comando
-```bash
-java -jar TUI.jar [Server_ip]
-```
+   ```bash
+   java -jar TUI.jar [Server_ip]
+   ```
 6. Altrimenti se vuoi lanciare la GUI, leggi l'indirizzo ip stampato dal server e aggiungilo come parametro con questo comando
-```bash
-java -jar GUI.jar [Server_ip]
-```
-## Contatti
-Per qualsiasi domanda o suggerimento, puoi contattarci a [email@example.com].
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-PEPO WAS HERE
+   ```bash
+   java -jar GUI.jar [Server_ip]
+   ```
