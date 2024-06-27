@@ -47,24 +47,60 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         this.controller=controller;
     }
 
-
+    /**
+     * sends chat message to global chat
+     * @author Maximilian Mangosi
+     * @param message
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws IllegalOperationException
+     */
     public void sendChatMessage(String message) throws IOException, ClassNotFoundException, IllegalOperationException {
         controller.addToGlobalChat(message);
     }
 
+    /**
+     * sends chat message to private chat
+     * @author Maximilian Mangosi
+     * @param receiver
+     * @param message
+     * @param sender
+     * @throws IllegalOperationException
+     * @throws RemoteException
+     */
     public void sendPrivateMessage(String receiver, String message, UUID sender) throws IllegalOperationException ,RemoteException{
         controller.addMessage(receiver, message, sender);
     }
 
+    /**
+     * gets the controller
+     * @author Giuseppe Laguardia
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public Controller getController() throws RemoteException {
         return controller;
     }
 
+    /**
+     * gets private chat
+     * @author Giuseppe Laguardia Maximilian Mangosi
+     * @param receiver
+     * @param uuid
+     * @return
+     * @throws RemoteException
+     */
     public List<String> getPrivateChat(String receiver, UUID uuid) throws RemoteException{
         return privateChat.get(uuid).get(receiver);
     }
 
+    /**
+     * gets private chat
+     * @author Giuseppe Laguardia
+     * @param user
+     * @return
+     */
     @Override
     @Deprecated
     public List<String> getPrivateChat(String user) {
@@ -80,15 +116,32 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         playersPoints=controller.getPlayersPoints();
     }
 
+    /**
+     * updates the color of players
+     * @author Giuseppe Laguardia
+     */
     public void updatePlayersColor(){
         playerToColor=controller.getPlayerToColor();
     }
 
+    /**
+     * checks if the connections is rmi
+     * @author Giuseppe Laguardia
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public boolean isRMI() throws RemoteException {
         return true;
     }
 
+    /**
+     * gets the player color
+     * @author Giuseppe Laguardia
+     * @param player
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public String getPlayerColor(String player) throws RemoteException {
         return playerToColor.get(player);
@@ -205,6 +258,13 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         return playersLegalPositions.get(uid);
     }
 
+    /**
+     * shows the players legal positions
+     * @author Giuseppe Laguardia
+     * @return
+     * @throws RemoteException
+     * @throws InvalidUserId
+     */
     @Override
     @Deprecated
     public List<Coordinates> showPlayersLegalPositions() throws RemoteException, InvalidUserId {
@@ -374,6 +434,12 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
 
     }
 
+    /**
+     * updates the field building helper
+     * @author Giuseppe Laguardia
+     * @param position
+     * @param username
+     */
     public void updateFieldBuildingHelper(Coordinates position, String username)  {
         fieldBuildingHelper.get(username).add(position);
     }
@@ -418,7 +484,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws InvalidUserId
      */
     @Override
-    public void drawFromDeck(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException, InvalidUserId {
+    public void drawFromDeck(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, DeckEmptyException, IllegalOperationException, InvalidChoiceException {
         controller.drawFromDeck(userId, choice);
     }
 
@@ -434,7 +500,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
      * @throws InvalidUserId
      */
     @Override
-    public void drawVisibleCard(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException, InvalidUserId {
+    public void drawVisibleCard(UUID userId, int choice) throws RemoteException, IsNotYourTurnException, HandFullException, IllegalOperationException, InvalidChoiceException {
         controller.drawVisibleCard(userId, choice);
     }
 
@@ -530,6 +596,11 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         controller.pong(myID);
     }
 
+    /**
+     * gets the chat list
+     * @author Maximilian Mangosi
+     * @return
+     */
     @Override
     public List<String> getChatList() {
         return globalChat;
@@ -559,11 +630,19 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
     }
 
 
-
+    /**
+     * updates the private chat list
+     * @author Maximilian Mangosi
+     * @return
+     */
     public void updatePrivateChat() {
         privateChat=controller.getAllPrivateChat();
     }
-
+    /**
+     * gets the global chat list
+     * @author Maximilian Mangosi
+     * @return
+     */
     public void updateGlobalChat() {
         globalChat = controller.getGlobalChat();
     }
@@ -604,6 +683,7 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         updatePlayersGoalOptions();
         return playersGoalOptions.get(uid);
     }
+
 
     @Override
     @Deprecated
@@ -658,12 +738,21 @@ public class ViewRMI extends UnicastRemoteObject implements ViewRMIInterface {
         starterCardMap=controller.getPlayersStarterCards();
     }
 
+    /**
+     * deletes the view
+     * @author Giuseppe Laguardia
+     * @throws RemoteException
+     */
     @Override
     public void deleteView() throws RemoteException {
         viewContainer.removeView(this);
     }
 
-
+    /**
+     * sets the view container
+     * @author Giuseppe Laguardia
+     * @param viewRMIContainer
+     */
     public void setViewContainer(ViewRMIContainer viewRMIContainer)  {
         viewContainer=viewRMIContainer;
     }

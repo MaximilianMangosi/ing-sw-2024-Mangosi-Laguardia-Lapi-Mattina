@@ -24,6 +24,12 @@ import java.rmi.registry.Registry;
 import java.util.UUID;
 
 public class HelloApplication extends Application {
+    /**
+     * starts the application
+     * @author Maximilian Mangosi
+     * @param stage
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
 

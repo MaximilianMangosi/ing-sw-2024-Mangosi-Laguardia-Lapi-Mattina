@@ -8,7 +8,9 @@ import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.ViewSocket;
-
+/**
+ * ExceptionMessage send by the server in response to the Gold card requirements are not met
+ */
 public class RequirementsNotMetMessage extends ExceptionMessage {
 
     @Override

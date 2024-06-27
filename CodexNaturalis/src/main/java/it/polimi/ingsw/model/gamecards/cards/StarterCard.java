@@ -107,6 +107,10 @@ public class StarterCard extends Card implements Serializable {
 
     }
 
+    /**
+     * @author Giuseppe Laguardia
+     * @return resource of the card
+     */
     public List<Resource> getCardResources() {
         //cycle through the card angles and return a list with all the resources in the card
 

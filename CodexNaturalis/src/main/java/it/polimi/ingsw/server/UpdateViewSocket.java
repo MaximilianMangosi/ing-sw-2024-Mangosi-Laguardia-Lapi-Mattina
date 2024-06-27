@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Thread that keeps listening to port 3232 for new UUIDs, then adds them to ViewUpdater object
+ * @author Giuseppe Laguardia
  */
 public class UpdateViewSocket extends Thread{
     private ServerSocket  UVSocket;

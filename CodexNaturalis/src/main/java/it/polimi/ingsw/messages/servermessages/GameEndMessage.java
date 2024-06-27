@@ -1,7 +1,10 @@
 package it.polimi.ingsw.messages.servermessages;
 
 import it.polimi.ingsw.view.ViewSocket;
-
+/**
+ * @author Giuseppe Laguardia
+ * sends message that the game has ended
+ */
 public class GameEndMessage extends ServerMessage{
     String winner;
 

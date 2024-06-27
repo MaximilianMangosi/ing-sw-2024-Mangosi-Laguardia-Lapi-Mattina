@@ -21,12 +21,31 @@ public class GUIController extends UserInterface {
     protected Scene scene;
     protected Parent root;
 
+    /**
+     * sets the user id
+     * @author Maximilian Mangosi
+     * @param myId
+     */
     public void setMyId(UUID myId){
         this.myID = myId;
     }
+
+    /**
+     * sets the name
+     * @author Maximilian Mangosi
+     * @param myName
+     */
     public void setMyName(String myName){
         this.myName = myName;
     }
+
+    /**
+     * changes the scene
+     * @author Maximilian Mangosi
+     * @param pathXML
+     * @param event
+     * @throws IOException
+     */
     public void changeScene(String pathXML, ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource(pathXML));
         root = loader.load();

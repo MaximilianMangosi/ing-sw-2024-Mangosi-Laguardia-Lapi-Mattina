@@ -34,6 +34,11 @@ public class HelloController extends GUIController {
     private Button selectSocketButton;
     @FXML
     private Button selectRMIButton;
+
+    /**
+     * button for selection of soket
+     * @author Maximilian Mangosi
+     */
     @FXML
     private void onSocketSelected(){
         isSocketSelected = true;
@@ -41,7 +46,10 @@ public class HelloController extends GUIController {
         selectRMIButton.setStyle("-fx-background-color: #e5a78a");
     }
 
-
+    /**
+     * button for selection of rmi
+     * @author Maximilian Mangosi
+     */
     @FXML
     private void onRmiSelected(){
         isSocketSelected = false;
@@ -49,29 +57,67 @@ public class HelloController extends GUIController {
         selectRMIButton.setStyle("-fx-background-color: #820933");
     }
 
+    /**
+     * update thr username
+     * @author Maximilian Mangosi
+     */
     @FXML
     private void onUsernameChange(){
         myName = usernameField.getText();
     }
 
+    /**
+     * on selection of two players
+     * @author Maximilian Mangosi
+     * @param event
+     * @throws IOException
+     * @throws InvalidUserId
+     */
     @FXML
     private void onSelect2Player(ActionEvent event) throws IOException, InvalidUserId {
         createNewGame(2, event);
     }
+    /**
+     * on selection of three players
+     * @author Maximilian Mangosi
+     * @param event
+     * @throws IOException
+     * @throws InvalidUserId
+     */
     @FXML
     private void onSelect3Player(ActionEvent event) throws IOException, InvalidUserId {
         createNewGame(3, event);
     }
+    /**
+     * on selection of four players
+     * @author Maximilian Mangosi
+     * @param event
+     * @throws IOException
+     * @throws InvalidUserId
+     */
     @FXML
     private void onSelect4Player(ActionEvent event) throws IOException, InvalidUserId {
         createNewGame(4, event);
     }
 
+    /**
+     * initializes the scene
+     * @author Maximilian Mangosi
+     */
     public void initialize(){
         playerNum.setVisible(false);
     }
+
+    /**
+     * switches scene when the player selects the play button
+     * @author Maximilian Mangosi
+     * @param event
+     * @throws IOException
+     * @throws IllegalOperationException
+     * @throws ClassNotFoundException
+     */
     @FXML
-    private void onPlay(ActionEvent event) throws InvalidGoalException, HandFullException, InvalidChoiceException, IsNotYourTurnException, PlayerNameNotUniqueException, IOException, IllegalOperationException, InvalidCardException, DeckEmptyException, HandNotFullException, NoGameExistsException, InvalidUserId, RequirementsNotMetException, IllegalPositionException, ClassNotFoundException, UnacceptableNumOfPlayersException, OnlyOneGameException {
+    private void onPlay(ActionEvent event) throws  IOException, IllegalOperationException, ClassNotFoundException {
         try {
             GameData gameData = new GameData();
             if (isSocketSelected) {
@@ -104,7 +150,14 @@ public class HelloController extends GUIController {
 
     }
 
-    private void createNewGame(int numOfPlayers, ActionEvent event) throws IOException, InvalidUserId {
+    /**
+     * creates a new game
+     * @author Maximilian Mangosi
+     * @param numOfPlayers
+     * @param event
+     * @throws IOException
+     */
+    private void createNewGame(int numOfPlayers, ActionEvent event) throws IOException {
 
             try {
                GameKey gameKey= view.bootGame(numOfPlayers, myName);

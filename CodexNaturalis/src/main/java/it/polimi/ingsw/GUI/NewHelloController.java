@@ -78,7 +78,11 @@ public class NewHelloController extends GUIController{
     private int numPlayers =0;
     private UUID chosenGame;
     private boolean isJoin;
-
+    /**
+     * initializes the scene
+     * @author Giorgio Mattina
+     * @author Maximilian Mangosi
+     */
     public void initialize(){
         joinableGamesStackPane.setVisible(false);
         numPlayersStackPane.setVisible(false);
@@ -88,6 +92,11 @@ public class NewHelloController extends GUIController{
 
 
     }
+    /**
+     * button for selection of socket
+     * @author Giorgio Mattina
+     * @author Maximilian Mangosi
+     */
     @FXML
     public void selectSocket(){
         try {
@@ -110,6 +119,11 @@ public class NewHelloController extends GUIController{
         }
 
     }
+    /**
+     * button for selection of rmi
+     * @author Giorgio Mattina
+     * @author Maximilian Mangosi
+     */
     @FXML
     public void selectRMI(){
         try {
@@ -127,6 +141,11 @@ public class NewHelloController extends GUIController{
             System.exit(1);
         }
     }
+
+    /**
+     * Selects the join game button
+     * @author Giorgio Mattina
+     */
     @FXML
     private void selectJoinGame(){
         playButton.setVisible(false);
@@ -140,6 +159,10 @@ public class NewHelloController extends GUIController{
         isJoin=true;
         refresh();
     }
+    /**
+     * Selects the create game button
+     * @author Giorgio Mattina
+     */
     @FXML
     private void selectCreateGame(){
         ObservableList<Node> children = selectNumPlayersOrGame.getChildren();
@@ -151,6 +174,10 @@ public class NewHelloController extends GUIController{
         playButton.setVisible(true);
         isJoin=false;
     }
+    /**
+     * on selection of two players
+     * @author Maximilian Mangosi Giorgio Mattina
+     */
     @FXML
     private void select2Players(){
       numPlayers =2;
@@ -159,6 +186,10 @@ public class NewHelloController extends GUIController{
       fourplayersbutton.setStyle("-fx-background-color: #820933");
       playButton.setVisible(true);
     }
+    /**
+     * on selection of three players
+     * @author Maximilian Mangosi Giorgio Mattina
+     */
     @FXML
     private void select3Players(){
         numPlayers=3;
@@ -167,6 +198,10 @@ public class NewHelloController extends GUIController{
         fourplayersbutton.setStyle("-fx-background-color: #820933");
         playButton.setVisible(true);
     }
+    /**
+     * on selection of four players
+     * @author Maximilian Mangosi Giorgio Mattina
+     */
     @FXML
     private void select4Players(){
         numPlayers=4;
@@ -176,10 +211,19 @@ public class NewHelloController extends GUIController{
         playButton.setVisible(true);
 
     }
+    /**
+     * update thr username
+     * @author Maximilian Mangosi Giorgio Mattina
+     */
     @FXML
     private void changeUsername(){
         myName=username.getText();
     }
+
+    /**
+     * refreshes the games list
+     * @author Giorgio Mattina
+     */
     @FXML
     private void refresh(){
         noGamesHosted.setVisible(false);
@@ -225,7 +269,12 @@ public class NewHelloController extends GUIController{
 
 
     }
-
+    /**
+     * switches scene when the player selects the play button
+     * @author Maximilian Mangosi Giorgio Mattina
+     * @param event
+     *
+     */
     @FXML
     private void onPlay(ActionEvent event){
         try {
@@ -282,6 +331,13 @@ public class NewHelloController extends GUIController{
             System.exit(1);
         }
     }
+
+    /**
+     * chooses the game
+     * @author Giorgio Mattina
+     * @param e
+     * @param id
+     */
     @FXML
     private void chooseThisGame(MouseEvent e,UUID id){
         TitledPane child = (TitledPane) e.getSource();

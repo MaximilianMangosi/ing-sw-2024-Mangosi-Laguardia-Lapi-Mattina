@@ -13,6 +13,7 @@ import it.polimi.ingsw.view.ViewSocket;
 
 public class InvalidCardMessage extends  ExceptionMessage{
 /**
+ * @author Giuseppe Laguardia
  *   ExceptionMessage sent by the server when InvalidCardException occurs
  */
     @Override

@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.ViewSocket;
 /**
+ * @author Giuseppe Laguardia
  *   ExceptionMessage sent by the server when IllegalOperationException occurs
  */
 public class IllegalOperationMessage  extends ExceptionMessage{

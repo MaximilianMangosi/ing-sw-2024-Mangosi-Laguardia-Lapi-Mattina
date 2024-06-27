@@ -9,6 +9,7 @@ import java.time.temporal.TemporalUnit;
 import java.util.UUID;
 
 /**
+ * @author Giuseppe Laguardia
  * Thread that until user is connected acknowledges the server that no disconnection occurred.
  *
  */

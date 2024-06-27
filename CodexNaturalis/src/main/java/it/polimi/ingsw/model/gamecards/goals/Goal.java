@@ -71,6 +71,11 @@ public abstract class Goal implements Serializable {
     public int getPoints(){
         return points;
     }
+
+    /**
+     * @author Giorgio Mattina
+     * @return the id
+     */
     public int getId(){
         return id;
     }

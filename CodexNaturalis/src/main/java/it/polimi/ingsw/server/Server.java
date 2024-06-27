@@ -84,6 +84,13 @@ public class Server {
             System.out.println("Connection error unable to export object:\n" + ex.getMessage());}
     }
 
+    /**
+     * sets up the game box
+     * @author Giuseppe Laguardia
+     * @param gb
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     private static void gameBoxSetup(GameBox gb) throws IOException ,URISyntaxException{
         ArrayList<String> resourceCardJsons = new ArrayList<>();
         String resourceCardPath = "/jsons/ResourceCard/ResourceCard_";
@@ -137,6 +144,15 @@ public class Server {
         gb.addDistinctGoals();
     }
 
+    /**
+     * fills the json list
+     * @author Giuseppe Laguardia
+     * @param jsonsList
+     * @param numOfJson
+     * @param path
+     * @throws IOException
+     * @throws NullPointerException
+     */
     private static void fillList(ArrayList<String> jsonsList, int numOfJson, String path) throws IOException, NullPointerException {
         for (int i = 1; i <=numOfJson; i++) {
             jsonsList.add(new String(Server.class.getResourceAsStream(path+i+".json").readAllBytes()));

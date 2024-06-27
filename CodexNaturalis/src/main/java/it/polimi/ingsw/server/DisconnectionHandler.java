@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 
 /**
  * keeps calling ping on the controller, which sets the boolean value in pingMap to false for each UUID
+ * @author Giuseppe Laguardia
  */
 public class DisconnectionHandler extends Thread{
     private Controller controller;

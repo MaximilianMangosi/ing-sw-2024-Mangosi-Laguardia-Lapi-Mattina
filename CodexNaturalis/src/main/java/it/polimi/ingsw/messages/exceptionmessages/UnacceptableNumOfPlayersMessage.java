@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersExcept
 import it.polimi.ingsw.view.ViewSocket;
 
 /**
+ * @author Giuseppe Laguardia
  * ExceptionMessage send by the server in response to BootGameMessage if UnacceptableNumOfPlayersException occurs
  */
 public class UnacceptableNumOfPlayersMessage extends ExceptionMessage{

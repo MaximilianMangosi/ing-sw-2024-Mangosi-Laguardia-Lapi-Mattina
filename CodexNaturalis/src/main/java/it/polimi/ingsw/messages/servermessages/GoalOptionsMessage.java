@@ -9,7 +9,10 @@ import it.polimi.ingsw.model.gamelogic.exceptions.OnlyOneGameException;
 import it.polimi.ingsw.model.gamelogic.exceptions.PlayerNameNotUniqueException;
 import it.polimi.ingsw.model.gamelogic.exceptions.UnacceptableNumOfPlayersException;
 import it.polimi.ingsw.view.ViewSocket;
-
+/**
+ * @author Giuseppe Laguardia
+ * sends the goal options
+ */
 public class GoalOptionsMessage extends ServerMessage{
     private Goal[] goalOptions;
 

@@ -15,13 +15,21 @@ public class PrivateChatMessage extends ClientMessage{
     private String message;
     private String receiver;
     private UUID sender;
-
+    /**
+     * updates message
+     * @author Giuseppe Laguardia
+     */
     public PrivateChatMessage(String message, String receiver, UUID sender) {
         this.message = message;
         this.receiver = receiver;
         this.sender = sender;
     }
-
+    /**
+     * processes the message
+     * @author Giuseppe Laguardia
+     * @param clientHandler
+     * @throws IOException
+     */
     @Override
     public void processMessage(ClientHandler clientHandler) throws IOException {
         try {
