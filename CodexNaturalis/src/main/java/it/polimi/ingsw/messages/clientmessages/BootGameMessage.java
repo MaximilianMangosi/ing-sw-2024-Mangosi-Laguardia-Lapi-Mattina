@@ -58,8 +58,6 @@ public class BootGameMessage extends ClientMessage{
             PlayersListMessage msg = new PlayersListMessage(c.getPlayersList());
             clientHandler.broadCast(msg);
             new RMIToSocketDispatcher(c,clientHandler.getViewUpdater()).start();
-            new CloseGame(c).start();
-            new DisconnectionHandler(c).start();
         } catch (UnacceptableNumOfPlayersException e) {
             UnacceptableNumOfPlayersMessage answer = new UnacceptableNumOfPlayersMessage();
             clientHandler.answerClient(answer);
