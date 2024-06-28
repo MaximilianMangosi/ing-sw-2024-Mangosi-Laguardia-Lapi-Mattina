@@ -23,7 +23,7 @@ Il progetto è stato sviluppato dai seguenti studenti:
 ## Documentazione
 Di seguito il diagramma UML del model: 
 
--[UML model](https://github.com/MaximiliamMangosi/ing-sw-2024-Mangosi-Laguardia-Lapi-Mattina/blob/main/deliverables/model%20UML.jpg)
+-[UML model](https://github.com/MaximiliamMangosi/ing-sw-2024-Mangosi-Laguardia-Lapi-Mattina/blob/main/deliverables/final/UML/model%20UML.jpg)
 
 All'interno della cartella "deliverables" sono inoltre presenti i sequence diagrams delle interazioni client-server.
 
