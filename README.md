@@ -28,7 +28,8 @@ Di seguito il diagramma UML del model:
 All'interno della cartella "deliverables" sono inoltre presenti i sequence diagrams delle interazioni client-server.
 
 ## GUI
-L'interfaccia grafica è stata realizzata utilizzando javafx e Scene Builder per i file .fxml di ogni scena.
+L'interfaccia grafica è stata realizzata utilizzando javafx e Scene Builder per i file .fxml di ogni scena. Per un' ottimale fruizione consigliamo l'installzione del font Bodoni MT Condensed.
+Qualore necessario è disponibile qui : Bodoni MT Condensed.
 
 ## Funzionalità Avanzate
 Oltre che alle funzionalità **BASE** quali:
@@ -42,7 +43,7 @@ Sono state aggiunte le seguenti funzionalità avanzate
 | **Chat In-Game sia Globale(nella medesima partita)<br/>che Privata** | **Possibile selezionare la chat globale, leggibile da tutti i giocatori all'interno di una partita, sia un altro giocatore con cui scambiare messaggi privatamente all'interno<br/>della chat privata.** |
 
 ## Installazione
-1. Installa la versione 21 di Java [cliccando qui](https://www.java.com/en/download/help/download_options.html)
+1. Installa la versione 21 di Java [cliccando qui](https://www.java.com/en/download/help/download_options.html) 
 2. Clona la repository:
     ```bash
     git clone https://github.com/MaximiliamMangosi/ing-sw-2024-Mangosi-Laguardia-Lapi-Mattina/tree/main
