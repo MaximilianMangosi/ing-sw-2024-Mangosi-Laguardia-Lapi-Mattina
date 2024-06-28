@@ -17,7 +17,6 @@ public class PlayersListMessage extends ServerMessage{
 
     @Override
     public void processMessage(ViewSocket view) {
-        System.out.println(players);
         view.getGameData().setPlayersList(players);
     }
 }

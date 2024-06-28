@@ -109,10 +109,10 @@ public class Controller {
         for (Map.Entry<UUID,Boolean> entry: pingMap.entrySet() ){
             UUID userID=entry.getKey();
             if(userID!=null && !entry.getValue()){
-                closeGame(userID);
                 try {
                     System.out.println(getPlayer(userID).getName()+" kicked");
                 } catch (InvalidUserId ignore) {}
+                closeGame(userID);
                 kickedPlayers.add(userID);
             }
         }
@@ -257,8 +257,6 @@ public class Controller {
 
         currentState=currentState.nextState();
 
-
-        System.out.println(getCurrentPlayer());
     }
 
     /**

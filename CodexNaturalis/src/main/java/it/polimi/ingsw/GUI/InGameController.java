@@ -430,7 +430,6 @@ public class InGameController extends GUIController {
             imageChecks= new ArrayList<>();
             Map<String, Integer> playersPoints = view.getPlayersPoints();
             if(playersPoints!=null) {
-                System.out.println("ciao");
                 for (Map.Entry<String, Integer> scoreboard : playersPoints.entrySet()) {
                     String playerColor = view.getPlayerColor(scoreboard.getKey());
                     switch (playerColor) {
