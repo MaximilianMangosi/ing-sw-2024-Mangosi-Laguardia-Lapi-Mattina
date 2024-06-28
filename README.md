@@ -29,7 +29,7 @@ All'interno della cartella "deliverables" sono inoltre presenti i sequence diagr
 
 ## GUI
 L'interfaccia grafica è stata realizzata utilizzando javafx e Scene Builder per i file .fxml di ogni scena. Per un' ottimale fruizione consigliamo l'installzione del font Bodoni MT Condensed.
-Qualore necessario è disponibile qui : Bodoni MT Condensed.
+Qualore necessario è disponibile qui : -[Bodoni MT Condensed](CodexNaturalis/src/main/resources/bod_cr.ttf).
 
 ## Funzionalità Avanzate
 Oltre che alle funzionalità **BASE** quali:
